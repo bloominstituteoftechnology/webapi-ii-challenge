@@ -56,7 +56,7 @@ When the client makes a `GET` request to `/posts`:
 
 - Otherwise, send down the full array of posts as a JSON response.
 
-## `POST /posts`
+### `POST /posts`
 When the client makes a `POST` request to `/posts`:
 
 - Ensure that the client provides both `title` and `contents` in the request
@@ -69,7 +69,7 @@ When the client makes a `POST` request to `/posts`:
   the posts array. Return the newly created post object, with its assigned `id`,
   to the client in a JSON response.
 
-## `PUT /posts`
+### `PUT /posts`
 When the client makes a `PUT` request to `/posts`:
 
 - Ensure that the client provides `id`, `title`, and `contents` in the request
@@ -83,7 +83,7 @@ When the client makes a `PUT` request to `/posts`:
 - Modify the post with the given `id`, updating its `title` and `contents`.
   Respond with the newly updated post object in a JSON response.
 
-## `DELETE /posts`
+### `DELETE /posts`
 When the client makes a `DELETE` request to `/posts`:
 
 - Ensure that the client provides an `id` in the request body, and that the `id`
