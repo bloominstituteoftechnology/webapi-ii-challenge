@@ -23,7 +23,22 @@ server.use(bodyParser.json());
 
 // GET ROUTE R
 server.get("/posts", (req, res) => {
-  console.log("hey");
+  const term = req.query.term;
+  console.log(term);
+  
+  if (term) {
+    const filtered = posts.filter(post => (post['title'].toLowerCase().includes(term.toLowerCase()) || post['contents'].toLowerCase().includes(term.toLocaleLowerCase())));
+    console.log(filtered);
+    if (filtered.length > 0) {
+      res.json({ filtered });
+      return;
+    } else {
+      res.status(STATUS_USER_ERROR);
+      res.json({ error: 'No results matching term' });
+      return;
+    }
+  }
+  
   res.json({ posts });
 });
 
@@ -55,7 +70,6 @@ server.put("/posts", (req, res) => {
   const contents = req.body.contents;
   const postNum = req.body.id;
   const updatedPost = {title, contents, id: postNum};
-  console.log(updatedPost);
   if (!postNum) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Must provide an id value'});
@@ -90,13 +104,32 @@ server.put("/posts", (req, res) => {
   }
   
   posts[index] = updatedPost;
-  console.log(updatedPost);
   res.json({ posts });
 });
 
 // DELETE ROUTE D
 server.delete("/posts", (req, res) => {
-  res.send("Hi from Delete");
+  const postNum = req.body.id;
+  let index;
+  const indexer = () => {
+    for (let i = 0; i < posts.length; i++) {
+      if (posts[i].id === postNum) {
+        index = i;
+        return index;
+      }
+    }
+    index = false;
+    return index;
+  };
+  indexer();
+  if (!index) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Must provide valid id' });
+    return;
+  }
+  
+  posts.splice(index, 1);
+  res.send({ success: true });
 });
 
 module.exports = { posts, server };
