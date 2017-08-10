@@ -1,4 +1,4 @@
-# Node.js and Express - OKAY √
+``# Node.js and Express - OKAY √
 Topics:
   * Client and server
   * Node.js and Express
@@ -28,9 +28,16 @@ Twitter. - OKAY √
       added 311 packages in 27.106s
 ```
 
-- Run `npm test` to run the tests. If you'd like, you can run `npm test:watch`
+- Run `npm test` to run the tests. If you'd like, you can run `npm test:watch` - OKAY √
   to automatically re-reun the tests when you make modifications. - OKAY
   - NOTE: `npm test:watch` REPORTS AN ERROR
+  - Changing package.json line 7 to:
+  ```js
+  "watch": "npm test -- --watch"
+  ```
+
+  - using `npm run watch` to run nyancat with automatic updating
+
 - To test your application in your browser, or by using
   [Postman](https://www.getpostman.com/), make sure you've installed `nodemon`
   via `npm install -g nodemon` and then run `nodemon src/app.js`. `nodemon` will
