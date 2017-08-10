@@ -38,6 +38,7 @@ server.get('/', (req, res) => {
 server.get('/posts', (req, res) => {
   // default to display entire posts array
   // res.send('HTTP GET: "Hello!"');
+  // console.log('server.get('/posts', ... ) YAY')
   res.json({ posts });
 });
 
@@ -48,7 +49,12 @@ server.post('/posts', (req, res) => {
     contents: "The post contents"
   }
   */
-  res.send('HTTP POST something?');
+  const title = req.body.title;
+  const content = req.body.content;
+
+  // console.log('server.post('/posts',, ... ) YAY');
+  // res.send('HTTP POST something?');
+  res.json({ posts })
 });
 
 server.put('/posts', (req, res) => {
