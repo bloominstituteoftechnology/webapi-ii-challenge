@@ -13,4 +13,22 @@ server.use(bodyParser.json());
 
 // TODO: your code to handle requests
 
+// req = request
+// res = response
+server.get('/posts', (req, res) => {
+  res.json({ posts });
+});
+
+server.post('/posts', (req, res) => {
+  // return;
+});
+
+server.put('/posts', (req, res) => {
+  // return;
+});
+
+server.delete('/posts', (req, res) => {
+  // return;
+});
+
 module.exports = { posts, server };
