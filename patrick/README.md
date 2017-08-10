@@ -1,4 +1,4 @@
-# Node.js and Express
+# Node.js and Express - OKAY √
 Topics:
   * Client and server
   * Node.js and Express
@@ -12,10 +12,22 @@ You've been focusing on client-side JavaScript thus far, but now you'll make the
 transition to server-side. The goal here is to handle requests from the client
 and deliver back responses. You'll develop an API to allow you to create, read,
 update, and delete posts, as if you were making an application like Facebook or
-Twitter.
+Twitter. - OKAY √
 
 ## Running the Project
-- Run `npm install` to download the dependencies.
+- `cd` into your "patrick" subfolder: -  - OKAY √
+- Run `npm install` to download the dependencies. - DONE √
+  ```console
+  $  npm i
+      npm notice created a lockfile as package-lock.json. You should commit this file.
+      npm WARN eslint-config-airbnb@14.1.0 requires a peer of eslint-plugin-jsx-a11y@^3.0.2 || ^4.0.0 but none was instal
+      led.
+      npm WARN eslint-config-airbnb@14.1.0 requires a peer of eslint-plugin-react@^6.9.0 but none was installed.
+      npm WARN node-express@0.0.1 No repository field.
+
+      added 311 packages in 27.106s
+```
+
 - Run `npm test` to run the tests. If you'd like, you can run `npm test:watch`
   to automatically re-reun the tests when you make modifications.
 - To test your application in your browser, or by using
