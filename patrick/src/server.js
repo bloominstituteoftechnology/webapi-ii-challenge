@@ -55,7 +55,21 @@ server.post('/posts', (req, res) => {
   */
   const title = req.body.title;
   const contents = req.body.contents;
-  // differentiate POST from what is posted...
+
+  // error checks
+  if (!title) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Please add a TITLE to your post.' });
+    return;
+  }
+  if (!contents) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Please add CONTENTS to your post.' });
+    return;
+  }
+
+  // differentiate var name of POST action from what is posted...
+  // singular
   const aPost = { title, contents };
   posts.push(aPost);
 
@@ -65,10 +79,12 @@ server.post('/posts', (req, res) => {
 });
 
 server.put('/posts', (req, res) => {
+  // console.log('server.put('/posts',, ... ) YAY');
   res.send('HTTP PUT something?');
 });
 
 server.delete('/posts', (req, res) => {
+  // console.log('server.delete('/posts',, ... ) YAY');
   res.send('HTTP DELETE something?');
 });
 
