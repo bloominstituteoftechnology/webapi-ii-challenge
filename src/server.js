@@ -13,7 +13,7 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
-server.post('/post', (req, res) => {
+server.post('/posts', (req, res) => {
   const singlePost = req.body.singlePost;
   if (!singlePost.title || !singlePost.contents) {
     res.status(STATUS_USER_ERROR);
@@ -25,6 +25,31 @@ server.post('/post', (req, res) => {
   idCounter += 1;
   res.json(singlePost);
 });
+
+server.get('/posts', (req, res) => {
+  res.json({posts})
+})
+
+server.delete('/posts', (req, res) => {
+  const deletePost = req.body.deletePost.ID; // delete req.body.deletePost.ID
+  if (!deletePost) {
+    res.status(STATUS_USER_ERROR);
+    res.json({error: 'Please include ID.'});
+    return;
+  }
+
+  posts.forEach((p) => {
+    if (p.ID == deletePost) {
+      // console.log(p);
+      posts.splice(p.ID, 1);
+      res.json({success: true})
+      return;
+    }
+  })
+
+  res.status(STATUS_USER_ERROR);
+  res.json({error: 'ID provided is invalid.'})
+})
 
 console.log('server listening on port 3000');
 
