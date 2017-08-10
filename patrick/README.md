@@ -1,4 +1,4 @@
-# Node.js and Express - OKAY √
+``# Node.js and Express - OKAY √
 Topics:
   * Client and server
   * Node.js and Express
@@ -28,21 +28,29 @@ Twitter. - OKAY √
       added 311 packages in 27.106s
 ```
 
-- Run `npm test` to run the tests. If you'd like, you can run `npm test:watch`
-  to automatically re-reun the tests when you make modifications.
+- Run `npm test` to run the tests. If you'd like, you can run `npm test:watch` - OKAY √
+  to automatically re-reun the tests when you make modifications. - OKAY
+  - NOTE: `npm test:watch` REPORTS AN ERROR
+  - Changing package.json line 7 to:
+  ```js
+  "watch": "npm test -- --watch"
+  ```
+
+  - using `npm run watch` to run nyancat with automatic updating - DONE √
+
 - To test your application in your browser, or by using
   [Postman](https://www.getpostman.com/), make sure you've installed `nodemon`
   via `npm install -g nodemon` and then run `nodemon src/app.js`. `nodemon` will
   keep the server running and automatically restart it if you change anything.
   You can now make requests to `http://localhost:3000` in your browser or
-  Postman!
-- Make modifications to `src/server.js` to make the tests pass.
+  Postman! - OKAY √
+- Make modifications to `src/server.js` to make the tests pass. - OKAY √
 - If you'd like, feel free to reference the tests in `tests/server.test.js` as
-  you're developing.
-- Once all tests have passed, you're done! Send us a pull request.
+  you're developing. - OKAY √
+- Once all tests have passed, you're done! Send us a pull request. - OKAY √
 
-## Instructions
-You'll create an API that allows the client to create, read, update, and delete
+## Instructions - OKAY √
+You'll create an API that allows the client to **create, read, update, and delete**
 posts. The posts will be maintained in memory as a JavaScript array. Each post
 is an object in the array of the following form:
 
@@ -59,7 +67,7 @@ contents of the post, also as a String.
 There are five main route handlers that will allow the client to read/modify the
 array.
 
-### `GET /posts`
+### `GET /posts` - OKAY √
 When the client makes a `GET` request to `/posts`:
 
 - If the client provides the query-string parameter `term`, filter the posts to
@@ -68,7 +76,7 @@ When the client makes a `GET` request to `/posts`:
 
 - Otherwise, send down the full array of posts as a JSON response.
 
-### `POST /posts`
+### `POST /posts` - OKAY √
 When the client makes a `POST` request to `/posts`:
 
 - Ensure that the client provides both `title` and `contents` in the request
@@ -81,7 +89,7 @@ When the client makes a `POST` request to `/posts`:
   the posts array. Return the newly created post object, with its assigned `id`,
   to the client in a JSON response.
 
-### `PUT /posts`
+### `PUT /posts` - OKAY √
 When the client makes a `PUT` request to `/posts`:
 
 - Ensure that the client provides `id`, `title`, and `contents` in the request
@@ -95,7 +103,7 @@ When the client makes a `PUT` request to `/posts`:
 - Modify the post with the given `id`, updating its `title` and `contents`.
   Respond with the newly updated post object in a JSON response.
 
-### `DELETE /posts`
+### `DELETE /posts` - OKAY √
 When the client makes a `DELETE` request to `/posts`:
 
 - Ensure that the client provides an `id` in the request body, and that the `id`

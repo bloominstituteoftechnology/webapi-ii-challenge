@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: #bbbbff;
+}
+.main {
+  background-color: #ff9922;
+  text-align: center;
+}
+img {
+  height: 200px;
+}
