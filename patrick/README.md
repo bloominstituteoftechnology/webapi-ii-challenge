@@ -36,7 +36,7 @@ Twitter. - OKAY √
   "watch": "npm test -- --watch"
   ```
 
-  - using `npm run watch` to run nyancat with automatic updating
+  - using `npm run watch` to run nyancat with automatic updating - DONE √
 
 - To test your application in your browser, or by using
   [Postman](https://www.getpostman.com/), make sure you've installed `nodemon`
@@ -50,7 +50,7 @@ Twitter. - OKAY √
 - Once all tests have passed, you're done! Send us a pull request. - OKAY √
 
 ## Instructions - OKAY √
-You'll create an API that allows the client to create, read, update, and delete
+You'll create an API that allows the client to **create, read, update, and delete**
 posts. The posts will be maintained in memory as a JavaScript array. Each post
 is an object in the array of the following form:
 
