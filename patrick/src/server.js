@@ -16,11 +16,18 @@ server.use(bodyParser.json());
 // req = request
 // res = response
 server.get('/posts', (req, res) => {
+  // default to display entire posts array
   res.json({ posts });
 });
 
 server.post('/posts', (req, res) => {
-  // return;
+  /* add a post to posts array
+  {
+    title: "The post title",
+    contents: "The post contents"
+  }
+  */
+
 });
 
 server.put('/posts', (req, res) => {
