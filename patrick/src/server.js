@@ -54,10 +54,10 @@ server.post('/posts', (req, res) => {
   }
   */
   const title = req.body.title;
-  const content = req.body.content;
+  const contents = req.body.contents;
   // differentiate POST from what is posted...
-  const blogPost = { title, content };
-  posts.push(blogPost);
+  const aPost = { title, contents };
+  posts.push(aPost);
 
   // console.log('server.post('/posts',, ... ) YAY');
   // res.send('HTTP POST something?');
