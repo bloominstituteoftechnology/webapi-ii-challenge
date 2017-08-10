@@ -39,7 +39,7 @@ server.get('/posts', (req, res) => {
   // default to display entire posts array
   // res.send('HTTP GET: "Hello!"');
   // console.log('server.get('/posts', ... ) YAY')
-  res.json({ posts });
+  res.json(posts);
 });
 
 // when server receives (i.e. when client sends)
