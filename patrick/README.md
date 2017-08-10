@@ -29,7 +29,8 @@ Twitter. - OKAY √
 ```
 
 - Run `npm test` to run the tests. If you'd like, you can run `npm test:watch`
-  to automatically re-reun the tests when you make modifications.
+  to automatically re-reun the tests when you make modifications. - OKAY
+  - NOTE: `npm test:watch` REPORTS AN ERROR
 - To test your application in your browser, or by using
   [Postman](https://www.getpostman.com/), make sure you've installed `nodemon`
   via `npm install -g nodemon` and then run `nodemon src/app.js`. `nodemon` will
