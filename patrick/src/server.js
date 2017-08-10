@@ -31,10 +31,10 @@ server.get('/', (req, res) => {
 // req = request
 // res = response
 // when the server receives
-// i.e. when the client send
+// i.e. when the client sends
 // an HTTP GET request
 // to GET a resource at the /posts location
-// invoke the request, response callBack
+// invoke the request, response CallBack
 server.get('/posts', (req, res) => {
   // default to display entire posts array
   // res.send('HTTP GET: "Hello!"');
@@ -42,6 +42,10 @@ server.get('/posts', (req, res) => {
   res.json({ posts });
 });
 
+// when server receives (i.e. when client sends)
+// an HTTP POST request
+// to POST a resource at the /posts location
+// invoke (req, res) CallBack
 server.post('/posts', (req, res) => {
   /* add a post to posts array
   {
@@ -54,7 +58,7 @@ server.post('/posts', (req, res) => {
 
   // console.log('server.post('/posts',, ... ) YAY');
   // res.send('HTTP POST something?');
-  res.json({ posts })
+  res.json({ posts });
 });
 
 server.put('/posts', (req, res) => {
