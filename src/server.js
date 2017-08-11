@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-
+let id = 0;
 const STATUS_USER_ERROR = 422;
 const STATUS_NOT_FOUND = 404;
 
@@ -30,46 +30,45 @@ server.use(bodyParser.json());
 
 server.get('/posts', (req, res) => {
   const term = req.query.term;
-  // if (term) {
-  //   const filteredPosts = posts.filter((post) => {
-  //     return (post.title.includes(term));
-  //   });
-    // res.json(filteredPosts);
-  // // }
-  // if (posts.length === 0) {
-  //   res.status(404).send({ error: 'Not found' });
-  //   return;
-  // }
-  res.json(posts);
+  if (term) {
+    const filteredPosts = posts.filter((post) => {
+      return (post.title.indexOf(term) !== -1 || post.contents.indexOf(term) !== -1);
+    });
+    res.json(filteredPosts);
+  }
+  if (!term) {
+    res.json(posts);
+  }
 });
 
-const post = {};
+server.post('/posts', (req, res) => {
+  const { title, contents } = req.body;
+  if (!title) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Must provide a title' });
+    return;
+  }
+  if (!contents) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Must provide contents' });
+    return;
+  }
+  const newPost = {
+    id,
+    title,
+    contents
+  };
+  posts.push(newPost);
+  res.json(newPost);
+  id++;
+});
 
 server.put('/posts', (req, res) => {
-
+  
 });
 
 server.delete('/posts', (req, res) => {
 
-});
-
-server.post('/posts', (req, res) => {
-  const title = req.body.title;
-  const content = req.body.content;
-  if (!title) {
-    res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Must provide a title or content' });
-    return;
-  }
-  if (post[title]) {
-    res.status(STATUS_USER_ERROR);
-    res.json({ error: 'That title already exists' });
-    return;
-  }
-  post['title'] = title;
-  post['content'] = content;
-  posts.push(post);
-  res.json(post);
 });
 
 module.exports = { posts, server };
