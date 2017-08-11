@@ -22,67 +22,59 @@ server.use(bodyParser.json());
 // //////////////////////////
 
 // GET ROUTE R
-server.get("/posts", (req, res) => {
+server.get('/posts', (req, res) => {
   const term = req.query.term;
-  console.log(term);
-  
   if (term) {
-    const filtered = posts.filter(post => (post['title'].toLowerCase().includes(term.toLowerCase()) || post['contents'].toLowerCase().includes(term.toLocaleLowerCase())));
-    console.log(filtered);
+    const filtered = posts.filter(post => (post.title.toLowerCase().includes(term.toLowerCase()) || post.contents.toLowerCase().includes(term.toLocaleLowerCase())));
     if (filtered.length > 0) {
       res.json({ filtered });
       return;
-    } else {
-      res.status(STATUS_USER_ERROR);
-      res.json({ error: 'No results matching term' });
-      return;
     }
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'No results matching term' });
+    return;
   }
-  
   res.json({ posts });
 });
-
 // POST ROUTE C
-server.post("/posts", (req, res) => {
+server.post('/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
-  
   if (!title) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Must provide a title value'});
+    res.json({ error: 'Must provide a title value' });
     return;
   }
   if (!contents) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Must provide a contents value'});
+    res.json({ error: 'Must provide a contents value' });
     return;
   }
   id++;
-  const newPost = { title, contents, id};
+  const newPost = { title, contents, id };
   posts.push(newPost);
-  
   res.json({ posts });
 });
 
 // PUT ROUTE U
-server.put("/posts", (req, res) => {
+server.put('/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
   const postNum = req.body.id;
-  const updatedPost = {title, contents, id: postNum};
+  const updatedPost = { title, contents, id: postNum };
   if (!postNum) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Must provide an id value'});
+    res.json({ error: 'Must provide an id value' });
     return;
   }
   if (!title) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Must provide a title value'});
+    res.json({ error: 'Must provide a title value' });
     return;
   }
   if (!contents) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Must provide a contents value'});
+    res.json({ error: 'Must provide a contents value' });
     return;
   }
   let index;
@@ -102,13 +94,12 @@ server.put("/posts", (req, res) => {
     res.json({ error: 'Must provide valid id' });
     return;
   }
-  
   posts[index] = updatedPost;
   res.json({ posts });
 });
 
 // DELETE ROUTE D
-server.delete("/posts", (req, res) => {
+server.delete('/posts', (req, res) => {
   const postNum = req.body.id;
   let index;
   const indexer = () => {
@@ -127,7 +118,6 @@ server.delete("/posts", (req, res) => {
     res.json({ error: 'Must provide valid id' });
     return;
   }
-  
   posts.splice(index, 1);
   res.send({ success: true });
 });
