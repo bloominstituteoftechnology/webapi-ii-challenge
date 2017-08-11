@@ -46,9 +46,9 @@ server.get('/posts', (req, res) => {
 
   // if there's a term, do some stuff otherwise show all
   if (!term) {
-  // default to display entire posts array
-  // res.send('HTTP GET: "Hello!"');
-  // console.log('server.get('/posts', ... ) YAY')
+    // default to display entire posts array
+    // res.send('HTTP GET: "Hello!"');
+    // console.log('server.get('/posts', ... ) YAY')
     res.json(posts);
   } else if (term) {
     const filtered = posts.filter((post) => {
