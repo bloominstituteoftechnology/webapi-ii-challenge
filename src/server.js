@@ -27,26 +27,38 @@ server.post('/posts', (req, res) => {
 });
 
 server.get('/posts', (req, res) => {
-  res.json({posts})
+  const term = req.query.term
+  res.json({term})
 });
 
 server.put('/posts', (req, res) => {
   const updatedPost = req.body.updatePost;
-  if (!updatedPost.id || !updatedPost.title || !updatedPost.contents) {
+  if (!updatedPost.ID || !updatedPost.title || !updatedPost.contents) {
     res.status(STATUS_USER_ERROR);
-    res.json({error: 'Please provide id, title, and contents'});
+    res.json({error: 'Please provide ID, title, and contents'});
     return;
   }
-  posts.forEach((post) => {
-    if (post.ID === parseInt(updatedPost.id, 10)) {
-      post.title = updatedPost.title,
-      post.contents = updatedPost.contents;
-      res.json({post});
-      return;
-    }
-  });
-  res.status(STATUS_USER_ERROR);
-  res.json({error: 'id not found in the data set'});
+
+  const targetedPost = posts.find((post) => {
+    return (post.ID === parseInt(updatedPost.ID, 10))
+  })
+  if (targetedPost) {
+    targetedPost.title = updatedPost.title,
+    targetedPost.contents = updatedPost.contents;
+    res.json({targetedPost});
+  } else {
+    res.status(STATUS_USER_ERROR);
+    res.json({error: 'ID not found in the data set'});
+  }
+  // posts.forEach((post) => {
+  //   if (post.ID === parseInt(updatedPost.ID, 10)) {
+  //     post.title = updatedPost.title,
+  //     post.contents = updatedPost.contents;
+  //     res.json({post});
+  //   }
+  // });
+  // res.status(STATUS_USER_ERROR);
+  // res.json({error: 'ID not found in the data set'});
 });
 
 
