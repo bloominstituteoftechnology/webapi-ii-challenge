@@ -60,32 +60,6 @@ server.put('/posts', (req, res) => {
 
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 server.delete('/posts', (req, res) => {
   const deletePost = req.body.deletePost.ID; // delete req.body.deletePost.ID
   if (!deletePost) {
