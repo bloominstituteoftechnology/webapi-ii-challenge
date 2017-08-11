@@ -12,5 +12,8 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
+server.get('/posts', (req, res) => {
+  res.send('RESPONSE from server: HTTP GET /posts');
+});
 
 module.exports = { posts, server };
