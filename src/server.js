@@ -28,7 +28,14 @@ server.post('/posts', (req, res) => {
 
 server.get('/posts', (req, res) => {
   const term = req.query.term
-  res.json({term})
+  if (term) {
+    const matchedPosts = posts.filter((post) => {
+      return (post.title.includes(term) || post.contents.includes(term));
+    });
+    res.json(matchedPosts);
+    return;
+  }
+  res.json(posts);
 });
 
 server.put('/posts', (req, res) => {
@@ -50,15 +57,7 @@ server.put('/posts', (req, res) => {
     res.status(STATUS_USER_ERROR);
     res.json({error: 'ID not found in the data set'});
   }
-  // posts.forEach((post) => {
-  //   if (post.ID === parseInt(updatedPost.ID, 10)) {
-  //     post.title = updatedPost.title,
-  //     post.contents = updatedPost.contents;
-  //     res.json({post});
-  //   }
-  // });
-  // res.status(STATUS_USER_ERROR);
-  // res.json({error: 'ID not found in the data set'});
+
 });
 
 
