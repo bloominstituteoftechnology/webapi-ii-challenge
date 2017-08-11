@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 
 const STATUS_USER_ERROR = 422;
+const STATUS_OK = 200;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
@@ -101,6 +102,11 @@ server.put('/posts', (req, res) => {
 // DELETE ROUTE D
 server.delete('/posts', (req, res) => {
   const postNum = req.body.id;
+  if (!postNum) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Must provide an id value'});
+    return;
+  }
   let index;
   const indexer = () => {
     for (let i = 0; i < posts.length; i++) {
@@ -113,7 +119,7 @@ server.delete('/posts', (req, res) => {
     return index;
   };
   indexer();
-  if (!index) {
+  if (index === false) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Must provide valid id' });
     return;
