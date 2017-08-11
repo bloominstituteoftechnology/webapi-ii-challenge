@@ -34,7 +34,7 @@ server.get('/posts', (req, res) => {
     res.json({ error: 'No results matching term' });
     return;
   }
-  res.json({ posts });
+  res.json(posts);
 });
 // POST ROUTE C
 server.post('/posts', (req, res) => {
@@ -53,7 +53,7 @@ server.post('/posts', (req, res) => {
   id++;
   const newPost = { title, contents, id };
   posts.push(newPost);
-  res.json({ posts });
+  res.json(newPost);
 });
 
 // PUT ROUTE U
@@ -95,7 +95,7 @@ server.put('/posts', (req, res) => {
     return;
   }
   posts[index] = updatedPost;
-  res.json({ posts });
+  res.json(posts);
 });
 
 // DELETE ROUTE D
