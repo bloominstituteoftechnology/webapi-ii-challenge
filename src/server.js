@@ -27,7 +27,7 @@ server.get('/posts', (req, res) => {
   if (term) {
     const filtered = posts.filter(post => (post.title.toLowerCase().includes(term.toLowerCase()) || post.contents.toLowerCase().includes(term.toLocaleLowerCase())));
     if (filtered.length > 0) {
-      res.json({ filtered });
+      res.json(filtered);
       return;
     }
     res.status(STATUS_USER_ERROR);
@@ -95,7 +95,7 @@ server.put('/posts', (req, res) => {
     return;
   }
   posts[index] = updatedPost;
-  res.json(posts);
+  res.json(updatedPost);
 });
 
 // DELETE ROUTE D
