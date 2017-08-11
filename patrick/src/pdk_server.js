@@ -64,7 +64,7 @@ server.get('/posts', (req, res) => {
   // e.g. http://localhost:3000/posts?termKEY=termVALUE
   // after = enters term as a param value
   const term = req.query.term;
-  console.log(term); // requires ?termKEY=termVALUE to log to nodemon server output
+  // console.log(term); // requires ?termKEY=termVALUE to log to nodemon server output
 
   // if there's a term, do some stuff otherwise show all
   if (!term) {

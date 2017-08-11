@@ -13,7 +13,7 @@ const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
 
-// TODO: FILTERS
+// READ
 server.get('/posts', (req, res) => {
   const term = req.query.term;
   // if no term, just send the posts array
@@ -32,7 +32,7 @@ server.get('/posts', (req, res) => {
   }
 });
 
-// TODO: PASS "Request POST /posts adds a post:" TEST
+// CREATE
 server.post('/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
@@ -52,29 +52,36 @@ server.post('/posts', (req, res) => {
   id++;
 });
 
-// TODO: PUT
+// UPDATE
 server.put('/posts', (req, res) => {
-  const title = req.body.title;
-  const contents = req.body.contents;
-  id = req.body.id; // not sure if this is right
+  const putTitle = req.body.title;
+  const putContents = req.body.contents;
+  const putID = req.body.id; // not sure if this is right
+  const putPost = { putID, putTitle, putContents };
 
-  if (!title) {
+  if (!putTitle) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please modify the TITLE too.' });
     return;
   }
-  if (!contents) {
+  if (!putContents) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please modify the CONTENTS too.' });
     return;
   }
-  if (!id) {
+  if (!putID) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please use an ID to identify the post.' });
     return;
-  } // else if BAD id
+  } else if (putID) {
+    for (let i = 0; i < posts; i++) {
+      if (putID === posts[i].id) {
+        posts[putID] = putPost;
+      }
+    }
+  }
 
-  res.send(posts);
+  res.json(putPost);
 });
 
 // TODO: DELETE
