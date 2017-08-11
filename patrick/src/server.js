@@ -58,5 +58,8 @@ server.put('/posts', (req, res) => {
 });
 
 // TODO: DELETE
+server.delete('/posts', (req, res) => {
+  res.send(posts);
+});
 
 module.exports = { posts, server };
