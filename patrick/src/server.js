@@ -56,7 +56,7 @@ server.post('/posts', (req, res) => {
 server.put('/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
-  const id = req.body.id;
+  id = req.body.id; // not sure if this is right
 
   if (!title) {
     res.status(STATUS_USER_ERROR);
@@ -72,7 +72,7 @@ server.put('/posts', (req, res) => {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please use an ID to identify the post.' });
     return;
-  }
+  } // else if BAD id
 
   res.send(posts);
 });
