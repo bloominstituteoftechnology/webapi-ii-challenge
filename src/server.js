@@ -119,7 +119,7 @@ server.delete('/posts', (req, res) => {
     return;
   }
   posts.splice(index, 1);
-  res.send({ success: true });
+  res.json({ success: true });
 });
 
 module.exports = { posts, server };
