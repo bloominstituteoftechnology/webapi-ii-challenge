@@ -56,6 +56,8 @@ server.post('/posts', (req, res) => {
 server.put('/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
+  const id = req.body.id;
+
   if (!title) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please modify the TITLE too.' });
@@ -66,6 +68,12 @@ server.put('/posts', (req, res) => {
     res.json({ error: 'Please modify the CONTENTS too.' });
     return;
   }
+  if (!id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Please use an ID to identify the post.' });
+    return;
+  }
+
   res.send(posts);
 });
 
