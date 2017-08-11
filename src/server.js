@@ -77,7 +77,8 @@ server.put('/posts', (req, res) => {
       return;
     }
   });
-  res.status(STATUS_USER_ERROR).json({ error: 'Invalid ID was given' });
+  res.status(STATUS_USER_ERROR);
+  res.json({ error: 'Invalid ID was given' });
 });
 
 server.delete('/posts', (req, res) => {
