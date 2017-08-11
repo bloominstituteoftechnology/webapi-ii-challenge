@@ -54,33 +54,41 @@ server.post('/posts', (req, res) => {
 
 // UPDATE
 server.put('/posts', (req, res) => {
-  const putTitle = req.body.title;
-  const putContents = req.body.contents;
-  const putID = req.body.id; // not sure if this is right
-  const putPost = { putID, putTitle, putContents };
+  const title = req.body.title;
+  const contents = req.body.contents;
+  id = req.body.id; // not sure if this is right
+  const putPost = { id, title, contents };
 
-  if (!putTitle) {
+  if (!title) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please modify the TITLE too.' });
     return;
   }
-  if (!putContents) {
+  if (!contents) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please modify the CONTENTS too.' });
     return;
   }
-  if (!putID) {
+  let postsIndex;
+  if (!id) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please use an ID to identify the post.' });
     return;
-  } else if (putID) {
+  } else if (id) {
+    let badID = true;
+
     for (let i = 0; i < posts; i++) {
-      if (putID === posts[i].id) {
-        posts[putID] = putPost;
+      if (id === posts[i].id) {
+        badID = false;
+        postsIndex = 1;
+        return postsIndex;
+      }
+      if (badID === true) {
+        res.status(STATUS_USER_ERROR);
       }
     }
   }
-
+  posts[postsIndex] = putPost;
   res.json(putPost);
 });
 
