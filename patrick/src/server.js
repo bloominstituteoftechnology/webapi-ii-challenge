@@ -15,7 +15,24 @@ server.use(bodyParser.json());
 
 // TODO: FILTERS
 server.get('/posts', (req, res) => {
-  res.json(posts);
+  // res.json(posts);
+  const term = req.query.term;
+  if (!term) {
+    // default to display entire posts array
+    // res.send('HTTP GET: "Hello!"');
+    // console.log('server.get('/posts', ... ) YAY')
+    res.json(posts);
+  } else if (term) {
+    const filtered = posts.filter((post) => {
+      return post.title.indexOf(term) !== -1 || post.contents.indexOf(term) !== -1;
+    });
+    if (filtered.length > 0) {
+      res.json(filtered);
+      return;
+    }
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Please try again.' });
+  }
 });
 
 // TODO: PASS "Request POST /posts adds a post:" TEST
