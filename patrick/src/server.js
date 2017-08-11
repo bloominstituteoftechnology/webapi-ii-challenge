@@ -17,4 +17,8 @@ server.get('/posts', (req, res) => {
   res.json(posts); // <--- THIS ALONE PASSES FIRST TEST
 });
 
+server.post('/posts', (req, res) => {
+  res.send('from HTTP POST /posts');
+});
+
 module.exports = { posts, server };
