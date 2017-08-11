@@ -23,15 +23,16 @@ server.post('/posts', (req, res) => {
     res.json({ error: 'Must give contents' });
     return;
   }
-  posts.push({
+  const newpost = {
     title,
     contents,
     id,
-  });
+  };
+  posts.push(newpost);
   id++;
   // check that it has title and content
   // check for id ((???)) let id = 0 id++
-  res.json(posts[id - 1]);
+  res.json(newpost);
 });
 
 server.get('/posts', (req, res) => {
@@ -50,11 +51,11 @@ server.get('/posts', (req, res) => {
   // search the array, search title + contents for the filter word
   // if it has the word, then you would posts.push to empty array
   // return that array
-  const q = req.query.q;
-  if (!q) res.json(posts);
+  const term = req.query.term;
+  if (!term) res.json(posts);
   let newposts = [];
   newposts = posts.filter((post) => {
-    return (post.title.includes(q) || post.contents.includes(q));
+    return (post.title.includes(term) || post.contents.includes(term));
   });
   res.json(newposts);
 });
@@ -94,8 +95,21 @@ server.delete('/posts', (req, res) => {
     res.json({ error: 'Must give valid id' });
     return;
   }
-  posts.splice(localid, 1);
-  res.json({ success: true });
+  for (let i = 0; i < posts.length; i++) {
+    if (localid === posts[i].id) {
+      posts.splice(i, 1);
+      res.json({ success: true });
+      return;
+    } else if (i === posts.length - 1) {
+      res.status(STATUS_USER_ERROR);
+      res.json({ error: 'Must give valid id' });
+      return;
+    }
+  }
+// posts.splice(localid, 1);
+// currently not accounting for deleting something in the same spot twice
+// (an array with 5 things delete thing on index 2 twice will get rid of index 3 on the second delete)
+// will fix
 });
 
 
