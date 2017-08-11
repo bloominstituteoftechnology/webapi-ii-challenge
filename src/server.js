@@ -31,6 +31,7 @@ server.get('/posts', (req, res) => {
   res.status(result.status);
   return res.json(postsFiltered);
 });
+
 server.post('/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
@@ -50,12 +51,13 @@ server.post('/posts', (req, res) => {
   id++;
   return;
 });
+
 // TODO: your code to handle requests
+
 server.put('/posts', (req, res) => {
   const checkId = req.body.id;
   const newTitle = req.body.title;
   const newContents = req.body.contents;
-  // let notFound = 404;
   let status = STATUS_USER_ERROR;
   let index = 0;
   if (!newTitle || !newContents) {
@@ -73,6 +75,25 @@ server.put('/posts', (req, res) => {
   });
   res.status(status);
   res.json(status === STATUS_OK ? posts[index] : { error: 'Invalid User Data' });
+});
+
+server.delete('/posts', (req, res) => {
+  const checkId = req.body.id;
+  let status = STATUS_USER_ERROR;
+  if (!checkId) {
+    res.status(status);
+    res.json({ error: 'Invalid ID!' });
+    return;
+  }
+  posts.map((post, index) => {
+    if (post.id === checkId) {
+      posts.splice(index, 1);
+      status = STATUS_OK;
+    }
+    return true;
+  });
+  res.status(status);
+  res.json(status === STATUS_OK ? { success: true } : { error: 'Invalid Information' });
 });
 
 module.exports = { posts, server };
