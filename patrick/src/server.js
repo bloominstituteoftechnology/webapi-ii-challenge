@@ -28,6 +28,7 @@ server.get('/', (req, res) => {
   });
 });
 
+// READ
 // req = request
 // res = response
 // when the server receives
@@ -36,12 +37,27 @@ server.get('/', (req, res) => {
 // to GET a resource at the /posts location
 // invoke the request, response CallBack
 server.get('/posts', (req, res) => {
+  // e.g. http://localhost:3000/posts?term
+  // query enters term as a param key
+  // e.g. http://localhost:3000/posts?termKEY=termVALUE
+  // after = enters term as a param value
+  const term = req.query.term;
+  console.log(term); // requires ?termKEY=termVALUE to log to nodemon server output
+
+  // if there's a term, do some stuff otherwise show all
+  if (!term) {
   // default to display entire posts array
   // res.send('HTTP GET: "Hello!"');
   // console.log('server.get('/posts', ... ) YAY')
-  res.json(posts);
+    res.json(posts);
+  } else if (term) {
+    const filtered = posts.filter((post) => {
+      return post.title.indexOf(term) !== -1 || post.contents.indexOf(term) !== -1;
+    });
+  }
 });
 
+// CREATE
 // when server receives (i.e. when client sends)
 // an HTTP POST request
 // to POST a resource at the /posts location
@@ -75,14 +91,17 @@ server.post('/posts', (req, res) => {
 
   // console.log('server.post('/posts',, ... ) YAY');
   // res.send('HTTP POST something?');
-  res.json({ posts });
+  // res.json({ posts });
+  res.json(posts);
 });
 
+// UPDATE
 server.put('/posts', (req, res) => {
   // console.log('server.put('/posts',, ... ) YAY');
   res.send('HTTP PUT something?');
 });
 
+// DESTROY
 server.delete('/posts', (req, res) => {
   // console.log('server.delete('/posts',, ... ) YAY');
   res.send('HTTP DELETE something?');

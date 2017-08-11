@@ -1,4 +1,7 @@
-``# Node.js and Express - OKAY √
+Add to package.json: "start": "nodemon src/app.js"...???
+
+
+# Node.js and Express - OKAY √
 Topics:
   * Client and server
   * Node.js and Express
@@ -26,7 +29,7 @@ Twitter. - OKAY √
       npm WARN node-express@0.0.1 No repository field.
 
       added 311 packages in 27.106s
-```
+  ```
 
 - Run `npm test` to run the tests. If you'd like, you can run `npm test:watch` - OKAY √
   to automatically re-reun the tests when you make modifications. - OKAY
@@ -62,10 +65,10 @@ is an object in the array of the following form:
 ```
 
 `title` is the title of the post, as a String. `contents` contains the body
-contents of the post, also as a String.
+contents of the post, also as a String. - OKAY √
 
-There are five main route handlers that will allow the client to read/modify the
-array.
+There are **five** main route handlers that will allow the client to read/modify the
+array. - AM I RETARDED OR ARE THERE ONLY FOUR LISTED???????????????????????????????
 
 ### `GET /posts` - OKAY √
 When the client makes a `GET` request to `/posts`:
