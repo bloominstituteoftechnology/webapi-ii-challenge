@@ -101,6 +101,8 @@ const addPost = (post) => {
     // We do this so the post object is always up-to-date. It can then be
     // compared to the existing posts during a subsequent get request.
     post.id = newPost.id;
+    // console.log(newPost); => TEST TO SEE WHAT NEW POST IS AND HOW IT'S FORMATTED
+    // console.log(post); => TEST TO SEE WHAT POST IS AND IF IT MATCHES UP TO NEW POST
     return post;
   });
 };
@@ -156,6 +158,8 @@ describe('Request', () => {
       return addPost(post)
         .then(() => req(METHOD_GET, STATUS_OK))
         .then((posts) => {
+          // console.log(posts); => TEST TO SEE IF POSTS ARE ADDING TO ARRAY
+          // console.log(posts.length); => TEST TO SEE IF POSTS LENGTH HAS CHANGED
           expect(posts).to.have.length(1);
           expect(posts[0]).to.deep.equal(post);
         });
