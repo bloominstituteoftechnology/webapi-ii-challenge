@@ -104,7 +104,7 @@ server.delete('/posts', (req, res) => {
   const postNum = req.body.id;
   if (!postNum) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Must provide an id value'});
+    res.json({ error: 'Must provide an id value' });
     return;
   }
   let index;
