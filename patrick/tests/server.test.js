@@ -95,6 +95,7 @@ const req = (method, status, body = null, path = PATH) => {
 const addPost = (post) => {
   return req(METHOD_POST, STATUS_OK, post).then((newPost) => {
     expect(newPost).to.have.property('title').that.equals(post.title);
+    // expect(newPost).to.have.property('title').that.equals(post[0].title);
     expect(newPost).to.have.property('contents').that.equals(post.contents);
     expect(newPost).to.have.property('id').that.is.a('number');
 
@@ -118,7 +119,7 @@ describe('Request', () => {
         .then(posts => expect(posts).to.have.length(0));
     });
 
-    it('filters the post by title if a search term if given', () => {
+    it('filters the post by title if a search term is given', () => {
       const posts = [
         { title: 'first title', contents: 'contents' },
         { title: 'second', contents: 'contents' },
@@ -134,7 +135,7 @@ describe('Request', () => {
         });
     });
 
-    it('filters the post by contents if a search term if given', () => {
+    it('filters the post by contents if a search term is given', () => {
       const posts = [
         { title: 'title', contents: 'hi there' },
         { title: 'title', contents: 'hello' },

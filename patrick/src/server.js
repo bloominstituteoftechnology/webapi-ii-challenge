@@ -1,79 +1,41 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 
-const fs = require('fs');
-
 const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [];
+// const posts = [];
+const posts = []; // Karthik's hint re: using let posts = [] ???????
+let id = 0;
 
 const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
 
-// TODO: your code to handle requests
-
-// dummy pages
-server.get('/hello', (req, res) => {
-  res.send('<h1>Hello!</h1>');
-});
-server.get('/', (req, res) => {
-  fs.readFile('index.html', 'utf8', (err, contents) => {
-    if (err) {
-      throw err;
-    }
-    res.send(contents);
-  });
-});
-
-// READ
-// req = request
-// res = response
-// when the server receives
-// i.e. when the client sends
-// an HTTP GET request
-// to GET a resource at the /posts location
-// invoke the request, response CallBack
+// TODO: FILTERS
 server.get('/posts', (req, res) => {
-  // e.g. http://localhost:3000/posts?term
-  // query enters term as a param key
-  // e.g. http://localhost:3000/posts?termKEY=termVALUE
-  // after = enters term as a param value
   const term = req.query.term;
-  console.log(term); // requires ?termKEY=termVALUE to log to nodemon server output
-
-  // if there's a term, do some stuff otherwise show all
+  // if no term, just send the posts array
   if (!term) {
-    // default to display entire posts array
-    // res.send('HTTP GET: "Hello!"');
-    // console.log('server.get('/posts', ... ) YAY')
     res.json(posts);
   } else if (term) {
     const filtered = posts.filter((post) => {
       return post.title.indexOf(term) !== -1 || post.contents.indexOf(term) !== -1;
     });
-    res.json(filtered);
+    if (filtered.length > 0) {
+      res.json(filtered);
+      return;
+    }
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Please try again.' });
   }
 });
 
-// CREATE
-// when server receives (i.e. when client sends)
-// an HTTP POST request
-// to POST a resource at the /posts location
-// invoke (req, res) CallBack
+// TODO: PASS "Request POST /posts adds a post:" TEST
 server.post('/posts', (req, res) => {
-  /* add a post to posts array
-  {
-    title: "The post title",
-    contents: "The post contents"
-  }
-  */
   const title = req.body.title;
   const contents = req.body.contents;
-
-  // error checks
   if (!title) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please add a TITLE to your post.' });
@@ -84,28 +46,20 @@ server.post('/posts', (req, res) => {
     res.json({ error: 'Please add CONTENTS to your post.' });
     return;
   }
-
-  // differentiate var name of POST action from what is posted...
-  // singular
-  const aPost = { title, contents };
-  posts.push(aPost);
-
-  // console.log('server.post('/posts',, ... ) YAY');
-  // res.send('HTTP POST something?');
-  // res.json({ posts });
-  res.json(posts);
+  const newPost = { id, title, contents };
+  posts.push(newPost);
+  res.json(newPost);
+  id++;
 });
 
-// UPDATE
+// TODO: PUT
 server.put('/posts', (req, res) => {
-  // console.log('server.put('/posts',, ... ) YAY');
-  res.send('HTTP PUT something?');
+  res.send(posts);
 });
 
-// DESTROY
+// TODO: DELETE
 server.delete('/posts', (req, res) => {
-  // console.log('server.delete('/posts',, ... ) YAY');
-  res.send('HTTP DELETE something?');
+  res.send(posts);
 });
 
 module.exports = { posts, server };
