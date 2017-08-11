@@ -54,6 +54,7 @@ server.get('/posts', (req, res) => {
     const filtered = posts.filter((post) => {
       return post.title.indexOf(term) !== -1 || post.contents.indexOf(term) !== -1;
     });
+    res.json(filtered);
   }
 });
 
