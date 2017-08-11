@@ -13,7 +13,8 @@ server.use(bodyParser.json());
 
 // TODO: your code to handle requests
 server.get('/posts', (req, res) => {
-  res.send('RESPONSE from server: HTTP GET /posts');
+  // res.send('RESPONSE from server: HTTP GET /posts');
+  res.json(posts); // <--- THIS ALONE PASSES FIRST TEST
 });
 
 module.exports = { posts, server };
