@@ -54,6 +54,18 @@ server.post('/posts', (req, res) => {
 
 // TODO: PUT
 server.put('/posts', (req, res) => {
+  const title = req.body.title;
+  const contents = req.body.contents;
+  if (!title) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Please modify the TITLE too.' });
+    return;
+  }
+  if (!contents) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Please modify the CONTENTS too.' });
+    return;
+  }
   res.send(posts);
 });
 
