@@ -15,12 +15,9 @@ server.use(bodyParser.json());
 
 // TODO: FILTERS
 server.get('/posts', (req, res) => {
-  // res.json(posts);
   const term = req.query.term;
+  // if no term, just send the posts array
   if (!term) {
-    // default to display entire posts array
-    // res.send('HTTP GET: "Hello!"');
-    // console.log('server.get('/posts', ... ) YAY')
     res.json(posts);
   } else if (term) {
     const filtered = posts.filter((post) => {
@@ -56,6 +53,9 @@ server.post('/posts', (req, res) => {
 });
 
 // TODO: PUT
+server.put('/posts', (req, res) => {
+  res.send(posts);
+});
 
 // TODO: DELETE
 
