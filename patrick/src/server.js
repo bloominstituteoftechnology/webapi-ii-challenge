@@ -15,37 +15,26 @@ server.use(bodyParser.json());
 
 // TODO: FILTERS
 server.get('/posts', (req, res) => {
-  res.json(posts); // <--- THIS ALONE PASSES FIRST TEST
+  res.json(posts);
 });
 
 // TODO: PASS "Request POST /posts adds a post:" TEST
 server.post('/posts', (req, res) => {
-  // res.send('RESPONSE from server: HTTP POST /posts');
   const title = req.body.title;
+  const contents = req.body.contents;
   if (!title) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please add a TITLE to your post.' });
     return;
   }
-  const contents = req.body.contents;
   if (!contents) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please add CONTENTS to your post.' });
     return;
   }
-  const newPost = [id, title, contents];
-  // for (let i = 0; i < newPost.length; i++) {
-  //   posts.newPost[i];
-  // }
-  // newPost.forEach((item, index) => {
-  //   posts[newPost[index]] = item;
-  // });
-  posts.push(id, title, contents);
-  // posts.push(contents);
-  // posts.id.push(id);
-  // posts = Object.assign(posts, id, title, contents);
-  // res.json({ posts }); // <~~~ per KV intro video
-  res.json(posts);     // <~~~ per Tai
+  const newPost = { id, title, contents };
+  posts.push(newPost);
+  res.json(newPost);
   id++;
 });
 
