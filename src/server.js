@@ -30,27 +30,10 @@ server.post('/posts', (req, res) => {
   };
   posts.push(newpost);
   id++;
-  // check that it has title and content
-  // check for id ((???)) let id = 0 id++
   res.json(newpost);
 });
 
 server.get('/posts', (req, res) => {
-  // if(!title){
-  //   res.status(STATUS_USER_ERROR);
-  //   res.json({ error: 'Must give title' });
-  //   return;
-  // }
-  // if(!contents) {
-  //   res.status(STATUS_USER_ERROR);
-  //   res.json({ error: 'Must give contents' });
-  //   return;
-  // }
-
-  // for the filter:
-  // search the array, search title + contents for the filter word
-  // if it has the word, then you would posts.push to empty array
-  // return that array
   const term = req.query.term;
   if (!term) res.json(posts);
   let newposts = [];
@@ -84,11 +67,6 @@ server.put('/posts', (req, res) => {
     res.json({ error: 'Must give valid id' });
     return;
   }
-  // if (localid >= posts.length) {
-  //   res.status(STATUS_USER_ERROR);
-  //   res.json({ error: 'Must give valid id' });
-  //   return;
-  // }
   for (let i = 0; i < posts.length; i++) {
     if (posts[i].id === req.body.id) {
       posts[i] = req.body;
@@ -119,12 +97,5 @@ server.delete('/posts', (req, res) => {
   res.status(STATUS_USER_ERROR);
   res.json({ error: 'Must give valid id' });
   return;
-// posts.splice(localid, 1);
-// currently not accounting for deleting something in the same spot twice
-// (an array with 5 things delete thing on index 2 twice will get rid of index 3 on the second delete)
-// will fix
 });
-
-
-// TODO: your code to handle requests
 module.exports = { posts, server };
