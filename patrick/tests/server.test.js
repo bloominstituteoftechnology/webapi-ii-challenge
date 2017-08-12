@@ -95,7 +95,6 @@ const req = (method, status, body = null, path = PATH) => {
 const addPost = (post) => {
   return req(METHOD_POST, STATUS_OK, post).then((newPost) => {
     expect(newPost).to.have.property('title').that.equals(post.title);
-    // expect(newPost).to.have.property('title').that.equals(post[0].title);
     expect(newPost).to.have.property('contents').that.equals(post.contents);
     expect(newPost).to.have.property('id').that.is.a('number');
 

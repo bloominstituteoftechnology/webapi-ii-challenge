@@ -2,12 +2,13 @@ const bodyParser = require('body-parser');
 const express = require('express');
 
 const STATUS_USER_ERROR = 422;
+const STATUS_AWESOME = 200;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
 // const posts = [];
 const posts = []; // Karthik's hint re: using let posts = [] ???????
-let id = 0;
+let id = 1;
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -46,22 +47,25 @@ server.post('/posts', (req, res) => {
     res.json({ error: 'Please add CONTENTS to your post.' });
     return;
   }
+
   const newPost = { id, title, contents };
+  id++;
   posts.push(newPost);
   res.json(newPost);
-  id++;
 });
 
 // UPDATE
 server.put('/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
-  id = req.body.id; // not sure if this is right
-  const putPost = { id, title, contents };
+  const putId = req.body.id;
+  // const putPost = req.body;
+  console.log('HELLO');
+  console.log(req.body);
 
   if (!title) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Please modify the TITLE too.' });
+    res.json({ error: 'Please modify the TITLE.' });
     return;
   }
   if (!contents) {
@@ -69,27 +73,37 @@ server.put('/posts', (req, res) => {
     res.json({ error: 'Please modify the CONTENTS too.' });
     return;
   }
-  let postsIndex;
-  if (!id) {
+  if (!putId) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Please use an ID to identify the post.' });
     return;
-  } else if (id) {
-    let badID = true;
-
-    for (let i = 0; i < posts; i++) {
-      if (id === posts[i].id) {
-        badID = false;
-        postsIndex = 1;
-        return postsIndex;
-      }
-      if (badID === true) {
-        res.status(STATUS_USER_ERROR);
-      }
-    }
   }
-  posts[postsIndex] = putPost;
-  res.json(putPost);
+  // const arty = posts.find((x) => {
+  //   return x.id === putId;
+  // });
+  // console.log(arty);
+  // console.log(req.body);
+  console.log('Scooby snacks', posts);
+
+  console.log('HERE I AM!');
+  for (let i = 0; i < posts.length; i++) {
+    console.log(`input ID: ${putId}`);
+    console.log(`post array index id value: ${posts[i].id}`);
+    if (putId === posts[i].id) {
+      console.log('inside the for loop if');
+      // badID = false;
+      // postsIndex = i;
+      posts[i] = req.body;
+      // putPost = posts[i];
+      res.status(STATUS_AWESOME);
+      res.json(req.body);
+      return;
+    }
+    console.log('after the for loop');
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'That id is not in the array.' });
+    return;
+  }
 });
 
 // TODO: DELETE
