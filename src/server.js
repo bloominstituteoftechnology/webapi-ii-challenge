@@ -74,23 +74,37 @@ server.put('/posts', (req, res) => {
     res.json({ error: 'Must give contents' });
     return;
   }
-  if (!localid || typeof localid !== 'number' || localid >= posts.length) {
+  if (!localid) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Must give valid id' });
     return;
   }
+  if (typeof localid !== 'number') {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Must give valid id' });
+    return;
+  }
+  // if (localid >= posts.length) {
+  //   res.status(STATUS_USER_ERROR);
+  //   res.json({ error: 'Must give valid id' });
+  //   return;
+  // }
   for (let i = 0; i < posts.length; i++) {
     if (posts[i].id === req.body.id) {
-      posts[i].title = req.body.title;
-      posts[i].contents = req.body.contents;
+      posts[i] = req.body;
+      const newpost = posts[i];
+      res.json(newpost);
+      return;
     }
   }
-  res.json(posts[localid]);
+  res.status(STATUS_USER_ERROR);
+  res.json({ error: 'Must give valid id' });
+  return;
 });
 
 server.delete('/posts', (req, res) => {
   const localid = req.body.id;
-  if (!localid || typeof localid !== 'number' || localid >= posts.length) {
+  if (!localid || typeof localid !== 'number') {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'Must give valid id' });
     return;
@@ -100,12 +114,11 @@ server.delete('/posts', (req, res) => {
       posts.splice(i, 1);
       res.json({ success: true });
       return;
-    } else if (i === posts.length - 1) {
-      res.status(STATUS_USER_ERROR);
-      res.json({ error: 'Must give valid id' });
-      return;
     }
   }
+  res.status(STATUS_USER_ERROR);
+  res.json({ error: 'Must give valid id' });
+  return;
 // posts.splice(localid, 1);
 // currently not accounting for deleting something in the same spot twice
 // (an array with 5 things delete thing on index 2 twice will get rid of index 3 on the second delete)
