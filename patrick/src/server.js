@@ -59,8 +59,8 @@ server.put('/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
   const putId = req.body.id;
-  console.log('HELLO');
-  console.log(req.body);
+  // console.log('HELLO');
+  // console.log(req.body);
 
   if (!title) {
     res.status(STATUS_USER_ERROR);
@@ -77,20 +77,20 @@ server.put('/posts', (req, res) => {
     res.json({ error: 'Please use an ID to identify the post.' });
     return;
   }
-  console.log('Scooby snacks', posts);
-  console.log('HERE I AM!');
+  // console.log('Scooby snacks', posts);
+  // console.log('HERE I AM!');
   for (let i = 0; i < posts.length; i++) {
-    console.log(`input ID: ${putId}`);
-    console.log(`post array index id value: ${posts[i].id}`);
+    // console.log(`input ID: ${putId}`);
+    // console.log(`post array index id value: ${posts[i].id}`);
     if (putId === posts[i].id) {
-      console.log('inside the for loop IF');
+      // console.log('inside the for loop IF');
       posts[i] = req.body;
       res.status(STATUS_AWESOME);
       res.json(req.body);
       return;
     }
   }
-  console.log('after the for loop');
+  // console.log('after the for loop');
   res.status(STATUS_USER_ERROR);
   res.json({ error: 'That id is not in the array.' });
   return;
