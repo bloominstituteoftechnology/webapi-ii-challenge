@@ -2,84 +2,91 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const fs = require('fs');
 
+const STATUS_OK = 200;
+const STATUS_NOT_FOUND = 404;
 const STATUS_USER_ERROR = 422;
+const STATUS_SERVER_ERROR = 500;
+
 
 let posts = [
-    { id: '1', title: 'node-express1', contents:'read' },
-    { id: '2', title: 'node-express2', contents:'create' },
-    { id: '3', title: 'node-express3', contents:'update' },
-    { id: '4', title: 'node-express4', contents:'delete' }
-    ];
+    { 'title': "The post title",
+      'contents': "The post contents"
+    }];
 
 const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
 
 server.get('/posts', (req, res) => {
-    res.send(posts);
-    const { title, contents } = req.body;
-    const term = {
-        title,
-        contents
-    }
-    if (term) {
-        const filteredPost = posts.filter((post) => {
-          return post.title.indexOf(post) !== -1 || post.contents.indexOf(post) !== -1;
-        });
-        res.json({ filteredPost });
-        return;
-    } else {
-      res.json({ posts });
-    }
+  const title = req.body.title;
+  const contents = req.body.contents;
+  const term = req.query.term;
+  if (term) {
+    const filteredPost = posts.filter((post) => {
+      return post.title.indexOf(post) !== -1 || post.contents.indexOf(post) !== -1;
+    });
+    res.json(filteredPost);
+  } else {
+    res.json(posts);
+  }
 });
 
 server.post('/posts', (req, res) => {
-    const { id, title, contents } = req.body;
-    if (!title || !contents) {
-      res.status(STATUS_USER_ERROR);
-      res.json({ error: `title or contents missing`});
-      return;
-    }
-    const newPost = {
-      id,
-      title,
-      contents
-    };
-    posts.push(newPost);
-    res.json({ posts });
+  const { id, title, contents } = req.body;
+  if (!title || !contents) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'title or contents missing' });
+    return;
+  }
+  const newPost = {
+    id,
+    title,
+    contents 
+  };
+  posts.push(newPost);
+  console.log(newPost);
+  res.json(newPost);
 });
 
 server.put('/posts', (req, res) => {
-
-    const postsId = req.param.id;
-    const { title, contents } = req.body;
-
-    if (!title || !contents || !postsId) {
-      res.status(STATUS_USER_ERROR);
-      res.json({ error: `title or contents or id missing`});
+  const postsId = req.body.id;
+  const title = req.body.title;
+  const contents = req.body.contents;
+  if (!title || !contents || !postsId) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'title or contents or id missing' });
+    return;
+  }
+  for (let i = 0; i < posts.length; i++) {
+    if (postsId === posts[i].id) {
+      posts[i].title = title;
+      posts[i].contents = contents;
+      postsId++;
+      res.status(STATUS_OK).json({ title, contents, postsId });
       return;
     }
-    posts.forEach((post, i) => {
-    if (post.id === postsId) {
-      res.status(200).json({ title, contents,  postsId });
-      return;
-    }
-    });
-    res.status(422).json({ Error: 'invalid id ' });
-    posts[id] = true;
-    res.json({ posts });
+  }
+  res.status(STATUS_USER_ERROR).json({ error: 'bad id ' });
 });
 
 server.delete('/posts', (req, res) => {
-    const { id, title, contents } = req.body;
-    const posts1 = req.params.id;
-    const posts2 = req.params.id;
-    if (!id) {
-      res.status(STATUS_USER_ERROR);
-      res.json({ error: `id missing `});
+  const { id, title, contents } = req.body;
+  const posts1 = req.params.id;
+  if (!id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'id missing' });
+    return;
+  }
+  for (let i = 0; i < posts.length; i++) {
+    if (posts1 === posts[i].id) {
+      posts[i].title = 'title';
+      posts[i].contents = 'contents';
+      posts.splice(i, 1);
+      res.status(STATUS_OK).json({ success: true });
       return;
     }
-    posts.slice(posts1);
-    res.json({ posts });
+  }
+  res.status(STATUS_USER_ERROR);
+  res.json({ error: 'bad id' });
 });
 module.exports = { posts, server };
