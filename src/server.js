@@ -9,7 +9,8 @@ const STATUS_SERVER_ERROR = 500;
 
 
 let posts = [
-    { 'title': "The post title",
+    { 'id': 1,
+      'title': "The post title",
       'contents': "The post contents"
     }];
 
@@ -18,12 +19,13 @@ const server = express();
 server.use(bodyParser.json());
 
 server.get('/posts', (req, res) => {
+  const id = req.body.id;
   const title = req.body.title;
   const contents = req.body.contents;
   const term = req.query.term;
   if (term) {
     const filteredPost = posts.filter((post) => {
-      return post.title.indexOf(post) !== -1 || post.contents.indexOf(post) !== -1;
+      return post.title.indexOf(post) !== -1 || post.contents.indexOf(post) !== 1;
     });
     res.json(filteredPost);
   } else {
@@ -32,7 +34,8 @@ server.get('/posts', (req, res) => {
 });
 
 server.post('/posts', (req, res) => {
-  const { id, title, contents } = req.body;
+  const id = 2;
+  const { title, contents } = req.body;
   if (!title || !contents) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'title or contents missing' });
@@ -61,7 +64,7 @@ server.put('/posts', (req, res) => {
     if (postsId === posts[i].id) {
       posts[i].title = title;
       posts[i].contents = contents;
-      postsId++;
+    //   postsId++;
       res.status(STATUS_OK).json({ title, contents, postsId });
       return;
     }
