@@ -79,7 +79,7 @@ server.put('/posts', (req, res) => {
     return;
   }
 
-  // TODO What if they only want to update title/contents?
+  // IDEA What if they only want to update title/contents?
   if (!req.body.title || !req.body.contents || !req.body.id) { // If any parameters are misisng, notify user.
     let response = "You need to send ";
     if (!req.body.title && !req.body.contents) {
@@ -95,16 +95,21 @@ server.put('/posts', (req, res) => {
     return;
   }
 
+  // Flag necessary because otherwise will run error even if is found.
+  let didHit = false;
   posts.forEach((post, i) => { // Search through the posts for our id.
     if (post.id === req.body.id) {
       post.title = req.body.title;
       post.contents = req.body.contents;
       res.json(post);
-      return;
+      didHit = true;
     }
   });
 
-  res.json({error: "That id wasn't found."});
+  if (!didHit) {
+    res.status(STATUS_USER_ERROR);
+    res.json({error: "That id wasn't found."});
+  }
 });
 
 server.delete('/posts', (req, res) => {
@@ -120,15 +125,19 @@ server.delete('/posts', (req, res) => {
     return;
   }
 
+  let didHit = false;
   posts.forEach((post, i) => {
     if (post.id === req.body.id) {
       posts.splice(i, 1);
       res.json({success: true});
-      return;
+      didHit = true;
     }
   });
-  res.status(STATUS_USER_ERROR);
-  res.json({error: "id didn't match any posts in memory."});
+
+  if (!didHit) {
+    res.status(STATUS_USER_ERROR);
+    res.json({error: "id didn't match any posts in memory."});
+  }
 });
 
 module.exports = { posts, server };
