@@ -23,7 +23,7 @@ server.get('/', (req, res) => {
 server.get('/posts', (req, res) => { // Display the posts.
   if (posts.length === 0) {
     res.status(STATUS_USER_ERROR);
-    res.json({error: "There are no posts in memory."});
+    res.json({ error: 'There are no posts in memory.' });
     return;
   }
 
@@ -96,20 +96,17 @@ server.put('/posts', (req, res) => {
   }
 
   // Flag necessary because otherwise will run error even if is found.
-  let didHit = false;
-  posts.forEach((post, i) => { // Search through the posts for our id.
-    if (post.id === req.body.id) {
-      post.title = req.body.title;
-      post.contents = req.body.contents;
-      res.json(post);
-      didHit = true;
+  for (let i = 0; i < posts.length; i++) {
+    if (posts[i].id === req.body.id) {
+      posts[i].title = req.body.title;
+      posts[i].contents = req.body.contents;
+      res.json(posts[i]);
+      return;
     }
-  });
-
-  if (!didHit) {
-    res.status(STATUS_USER_ERROR);
-    res.json({error: "That id wasn't found."});
   }
+
+  res.status(STATUS_USER_ERROR);
+  res.json({error: "That id wasn't found."});
 });
 
 server.delete('/posts', (req, res) => {
@@ -125,19 +122,16 @@ server.delete('/posts', (req, res) => {
     return;
   }
 
-  let didHit = false;
-  posts.forEach((post, i) => {
-    if (post.id === req.body.id) {
+  for (let i = 0; i < posts.length; i++) {
+    if (posts[i].id === req.body.id) {
       posts.splice(i, 1);
       res.json({success: true});
-      didHit = true;
+      return;
     }
-  });
-
-  if (!didHit) {
-    res.status(STATUS_USER_ERROR);
-    res.json({error: "id didn't match any posts in memory."});
   }
+
+  res.status(STATUS_USER_ERROR);
+  res.json({error: "id didn't match any posts in memory."});
 });
 
 module.exports = { posts, server };
