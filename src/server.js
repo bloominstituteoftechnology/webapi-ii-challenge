@@ -42,7 +42,7 @@ server.put('/posts', (req, res) => {
   const contents = req.body.contents;
   if (!title || !contents || !id) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'missing information' });
+    res.json({ error: 'Missing information!' });
     return;
   }
   let found = false;
@@ -56,7 +56,7 @@ server.put('/posts', (req, res) => {
   });
   if (!found) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'id not found' });
+    res.json({ error: 'id not found!' });
     return;
   }
 });
@@ -65,7 +65,7 @@ server.delete('/posts', (req, res) => {
   const id = req.body.id;
   if (!id) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'no id given' });
+    res.json({ error: 'No id given!' });
     return;
   }
   let found = false;
@@ -78,7 +78,7 @@ server.delete('/posts', (req, res) => {
   });
   if (!found) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'id not found' });
+    res.json({ error: 'id not found!' });
     return;
   }
 });
