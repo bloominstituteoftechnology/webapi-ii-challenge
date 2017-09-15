@@ -93,3 +93,11 @@ When the client makes a `DELETE` request to `/posts`:
 
 - Remove the post with the given `id` from the array of posts. Return the
   object `{ success: true }` in a JSON response.
+
+## Extra Credit
+If you finish up this lab early, take this opportunity to access a public API. Some
+good ones include Twitter, Facebook, SendGrid, IBM Watson, IMDB, the Star Wars API etc. Choose one 
+that gives you access to data or functionality that you're interested in. Figure out how to 
+get an access token to that API, and how to use that token to authenticate requests from a node
+server. Once you successfully grab some data back from your API of choice, maybe render it in a
+React application. Be creative here and have fun!
