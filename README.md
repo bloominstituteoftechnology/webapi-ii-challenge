@@ -99,5 +99,6 @@ If you finish up this lab early, take this opportunity to access a public API. S
 good ones include Twitter, Facebook, SendGrid, IBM Watson, IMDB, the Star Wars API etc. Choose one 
 that gives you access to data or functionality that you're interested in. Figure out how to 
 get an access token to that API, and how to use that token to authenticate requests from a node
-server. Once you successfully grab some data back from your API of choice, maybe render it in a
-React application. Be creative here and have fun!
+server. Use the [request](https://github.com/request/request) node.js library to request data from your API of choice. Once you 
+successfully grab some data back from your API of choice, maybe render it in a React application. 
+Be creative here and have fun!
