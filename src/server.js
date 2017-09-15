@@ -18,9 +18,9 @@ server.get('/posts', (req, res) => {
     posts.forEach((post) => {
       if (post.title.includes(term) || post.contents.includes(term)) newPosts.push(post);
     });
-    res.send(newPosts);
+    res.json(newPosts);
   }
-  res.send(posts);
+  res.json(posts);
 });
 
 server.post('/posts', (req, res) => {
