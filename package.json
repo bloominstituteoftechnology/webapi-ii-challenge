@@ -4,7 +4,7 @@
   "description": "LambdaSchool Node.js and Express",
   "scripts": {
     "test": "eslint tests/*.js && eslint src/*.js && mocha -R nyan tests",
-    "test:watch": "npm test -- --watch"
+    "watch": "npm test -- --watch"
   },
   "license": "ISC",
   "dependencies": {
