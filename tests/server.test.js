@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHTTP = require('chai-http');
 
-const server = require('../src/server.js');
+const { server, posts, utils } = require('../src/server.js');
 
 const STATUS_OK = 200;
 const STATUS_NOT_FOUND = 404;
@@ -67,7 +67,7 @@ const expectStatus = (expected, res, method) => {
  * given, sends it along with the request. Checks for the expected status. */
 const req = (method, status, body = null, path = PATH) => {
   const property = method.toLowerCase();
-  let request = chai.request(server.server)[property](path);
+  let request = chai.request(server)[property](path);
 
   if (body) {
     request = request.send(body);
@@ -109,43 +109,44 @@ describe('Request', () => {
   beforeEach(() => {
     // Reset posts before each test. Note that we must modify the array inline,
     // not reassign the array.
-    server.posts.splice(0, server.posts.length);
+    Object.keys(utils.getPosts()).forEach(id => utils.removePost(id));
+    utils.clearId();
   });
 
   describe(`${METHOD_GET} ${PATH}`, () => {
     it('retrieves the list of posts', () => {
       return req(METHOD_GET, STATUS_OK)
-        .then(posts => expect(posts).to.have.length(0));
+        .then(receivedPosts => expect(Object.keys(receivedPosts)).to.have.length(0));
     });
 
     it('filters the post by title if a search term if given', () => {
-      const posts = [
+      const postsMock = [
         { title: 'first title', contents: 'contents' },
         { title: 'second', contents: 'contents' },
         { title: 'third title', contents: 'contents' },
       ];
 
-      return Promise.all(posts.map(p => addPost(p)))
+      return Promise.all(postsMock.map(p => addPost(p)))
         .then(() => req(METHOD_GET, STATUS_OK, null, `${PATH}?term=title`))
         .then((found) => {
-          expect(found).to.have.length(2);
-          expect(found).to.deep.include(posts[0]);
-          expect(found).to.deep.include(posts[2]);
+          expect(Object.keys(found)).to.have.length(2);
+          expect(found[0]).to.deep.equal(postsMock[0]);
+          expect(found[2]).to.deep.equal(postsMock[2]);
         });
     });
 
     it('filters the post by contents if a search term if given', () => {
-      const posts = [
+      const postsMock = [
         { title: 'title', contents: 'hi there' },
         { title: 'title', contents: 'hello' },
         { title: 'title', contents: 'hey there' },
       ];
 
-      return Promise.all(posts.map(p => addPost(p)))
+      return Promise.all(postsMock.map(p => addPost(p)))
         .then(() => req(METHOD_GET, STATUS_OK, null, `${PATH}?term=hello`))
         .then((found) => {
-          expect(found).to.have.length(1);
-          expect(found).to.deep.include(posts[1]);
+          expect(Object.keys(found)).to.have.length(1);
+          expect(found[1]).to.deep.equal(postsMock[1]);
         });
     });
   });
@@ -155,9 +156,9 @@ describe('Request', () => {
       const post = { title: 'first title', contents: 'first contents' };
       return addPost(post)
         .then(() => req(METHOD_GET, STATUS_OK))
-        .then((posts) => {
-          expect(posts).to.have.length(1);
-          expect(posts[0]).to.deep.equal(post);
+        .then((receivedPosts) => {
+          expect(Object.keys(receivedPosts)).to.have.length(1);
+          expect(receivedPosts[0]).to.deep.equal(post);
         });
     });
 
@@ -172,8 +173,8 @@ describe('Request', () => {
 
   describe(`${METHOD_PUT} ${PATH}`, () => {
     it('updates a post', () => {
-      const post1 = { title: 'first title', contents: 'first contents' };
-      const post2 = { title: 'second title', contents: 'second contents' };
+      const post1 = { id: 0, title: 'first title', contents: 'first contents' };
+      const post2 = { id: 1, title: 'second title', contents: 'second contents' };
       const updates = { title: 'new title', contents: 'new contents' };
 
       return Promise.all([addPost(post1), addPost(post2)])
@@ -186,10 +187,10 @@ describe('Request', () => {
           expect(updatedPost).to.deep.equal(Object.assign({}, post2, updates));
           return req(METHOD_GET, STATUS_OK);
         })
-        .then((posts) => {
-          expect(posts).to.have.length(2);
-          expect(posts).to.deep.include(post1);
-          expect(posts).to.deep.include(Object.assign({}, post2, updates));
+        .then((recievedPosts) => {
+          expect(Object.keys(recievedPosts)).to.have.length(2);
+          expect(recievedPosts[0]).to.deep.equal(post1);
+          expect(recievedPosts[1]).to.deep.equal(Object.assign({}, post2, updates));
         });
     });
 
@@ -234,9 +235,9 @@ describe('Request', () => {
           expect(body).to.deep.equal({ success: true });
           return req(METHOD_GET, STATUS_OK);
         })
-        .then((posts) => {
-          expect(posts).to.have.length(1);
-          expect(posts).to.deep.include(post2);
+        .then((receivedPosts) => {
+          expect(Object.keys(receivedPosts)).to.have.length(1);
+          expect(receivedPosts[1]).to.deep.include(post2);
         });
     });
 
@@ -245,7 +246,7 @@ describe('Request', () => {
     });
 
     it('reports a bad id', () => {
-      return req(METHOD_DELETE, STATUS_USER_ERROR, { id: 1 });
+      return req(METHOD_DELETE, STATUS_USER_ERROR, { id: 99 });
     });
   });
 });
