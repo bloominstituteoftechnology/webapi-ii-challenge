@@ -246,7 +246,7 @@ describe('Request', () => {
     });
 
     it('reports a bad id', () => {
-      return req(METHOD_DELETE, STATUS_USER_ERROR, { id: 99 });
+      return req(METHOD_DELETE, STATUS_USER_ERROR, { id: 1 });
     });
   });
 });
