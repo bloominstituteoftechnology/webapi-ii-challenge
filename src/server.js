@@ -15,10 +15,14 @@ const checkPostId = (postArr, id) => {
   return postArr.findIndex(post => id === post.id);
 };
 
+const handleUserError = (res, message) => {
+  return res.status(STATUS_USER_ERROR).json(message);
+};
+
 const invalidId = (res) => {
-  return res
-    .status(STATUS_USER_ERROR)
-    .json({ error: 'Post not found, ensure you entered the correct id' });
+  return handleUserError(res, {
+    error: 'Post not found, ensure you entered the correct id',
+  });
 };
 
 // TODO: your code to handle requests
@@ -41,9 +45,9 @@ server.get('/posts', (req, res) => {
 server.post('/posts', (req, res) => {
   const { title, contents } = req.body;
   if (!title || !contents) {
-    return res
-      .status(STATUS_USER_ERROR)
-      .json({ error: 'You must supply a title and content for your post' });
+    return handleUserError(res, {
+      error: 'You must supply a title and content for your post',
+    });
   }
   const post = {
     title,
@@ -57,7 +61,7 @@ server.post('/posts', (req, res) => {
 server.put('/posts', (req, res) => {
   const { title, contents, id } = req.body;
   if (!title || !contents || !id) {
-    return res.status(STATUS_USER_ERROR).json({
+    return handleUserError(res, {
       error:
         'You must supply a title, content, and id for the post you want to update',
     });
@@ -77,9 +81,7 @@ server.delete('/posts', (req, res) => {
   const { id } = req.body;
 
   if (!id) {
-    return res
-      .status(STATUS_USER_ERROR)
-      .json({ error: 'You must supply an id' });
+    return handleUserError(res, { error: 'You must supply an id' });
   }
   const postToDelete = checkPostId(posts, id);
 
