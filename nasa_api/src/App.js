@@ -25,7 +25,7 @@ class App extends Component {
           <br/>
           <br/>
           <br/>
-          <div className="App-title">NASA API</div>
+          <div className="App-title"><span>LAMBDA SCHOOL</span>: NASA API</div>
           
         </header>
         <div className="App-intro">

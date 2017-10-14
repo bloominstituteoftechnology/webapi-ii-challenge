@@ -31,7 +31,9 @@ body {
 .App-title {
   font-size: 1.5em;
 }
-
+.App-title span {
+  color: #49b0f0;
+}
 .App-intro {
   font-size: large;
   text-align: center;
