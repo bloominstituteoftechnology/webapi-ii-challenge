@@ -73,7 +73,7 @@ server.delete('/posts', (req, res) => {
       if (post.id !== id) different++;
       return post.id !== id;
     }
-    return post;
+    return true;
   });
   if ((filteredData.length === posts.length && different > 0) || different === 0) {
     res.status(STATUS_USER_ERROR).json({ error: 'no post with matching id found' });
@@ -85,7 +85,7 @@ server.delete('/posts', (req, res) => {
       posts.splice(i, 1);
     }
   }
-  res.json(posts);
+  res.json({ success: true });
 });
 
 module.exports = { posts, server };
