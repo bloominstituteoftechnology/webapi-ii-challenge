@@ -29,7 +29,7 @@ const expectStatus = (expected, res, method) => {
   if (expected === STATUS_SERVER_ERROR || expected === STATUS_NOT_FOUND) {
     throw new Error(
       'The expected status should be something other than ' +
-      `${STATUS_SERVER_ERROR} and ${STATUS_NOT_FOUND}`
+        `${STATUS_SERVER_ERROR} and ${STATUS_NOT_FOUND}`,
     );
   }
 
@@ -37,18 +37,19 @@ const expectStatus = (expected, res, method) => {
     case STATUS_SERVER_ERROR:
       throw new Error(
         `Your server threw an error during ${method} ${PATH} (status code ` +
-        '500); scroll up to see the expection and backtrace'
+          '500); scroll up to see the expection and backtrace',
       );
 
     case STATUS_NOT_FOUND:
       throw new Error(
         `You haven't implemented a handler for ${method} ${PATH} (status ` +
-        'code 404)'
+          'code 404)',
       );
 
     default:
       if (expected !== res.status) {
-        const msg = `Expected status ${expected} but got ${res.status} from ` +
+        const msg =
+          `Expected status ${expected} but got ${res.status} from ` +
           `${method} ${PATH}`;
         throw new Error(msg);
       }
@@ -94,9 +95,15 @@ const req = (method, status, body = null, path = PATH) => {
  * the post object's id based on what's returned by the server. */
 const addPost = (post) => {
   return req(METHOD_POST, STATUS_OK, post).then((newPost) => {
-    expect(newPost).to.have.property('title').that.equals(post.title);
-    expect(newPost).to.have.property('contents').that.equals(post.contents);
-    expect(newPost).to.have.property('id').that.is.a('number');
+    expect(newPost)
+      .to.have.property('title')
+      .that.equals(post.title);
+    expect(newPost)
+      .to.have.property('contents')
+      .that.equals(post.contents);
+    expect(newPost)
+      .to.have.property('id')
+      .that.is.a('number');
 
     // We do this so the post object is always up-to-date. It can then be
     // compared to the existing posts during a subsequent get request.
@@ -114,8 +121,9 @@ describe('Request', () => {
 
   describe(`${METHOD_GET} ${PATH}`, () => {
     it('retrieves the list of posts', () => {
-      return req(METHOD_GET, STATUS_OK)
-        .then(posts => expect(posts).to.have.length(0));
+      return req(METHOD_GET, STATUS_OK).then(posts =>
+        expect(posts).to.have.length(0),
+      );
     });
 
     it('filters the post by title if a search term if given', () => {
@@ -204,19 +212,17 @@ describe('Request', () => {
     });
 
     it('reports a missing title', () => {
-      return addPost({ title: 'title', contents: 'contents' })
-        .then((post) => {
-          const body = { id: post.id, contents: 'new contents' };
-          return req(METHOD_PUT, STATUS_USER_ERROR, body);
-        });
+      return addPost({ title: 'title', contents: 'contents' }).then((post) => {
+        const body = { id: post.id, contents: 'new contents' };
+        return req(METHOD_PUT, STATUS_USER_ERROR, body);
+      });
     });
 
     it('reports missing contents', () => {
-      return addPost({ title: 'title', contents: 'contents' })
-        .then((post) => {
-          const body = { id: post.id, title: 'new title' };
-          return req(METHOD_PUT, STATUS_USER_ERROR, body);
-        });
+      return addPost({ title: 'title', contents: 'contents' }).then((post) => {
+        const body = { id: post.id, title: 'new title' };
+        return req(METHOD_PUT, STATUS_USER_ERROR, body);
+      });
     });
   });
 

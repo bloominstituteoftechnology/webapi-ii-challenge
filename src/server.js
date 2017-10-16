@@ -11,6 +11,86 @@ const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
 
+const checkPostId = (postArr, id) => {
+  return postArr.findIndex(post => id === post.id);
+};
+
+const handleUserError = (res, message) => {
+  return res.status(STATUS_USER_ERROR).json(message);
+};
+
+const invalidId = (res) => {
+  return handleUserError(res, {
+    error: 'Post not found, ensure you entered the correct id',
+  });
+};
+
 // TODO: your code to handle requests
+server.get('/posts', (req, res) => {
+  const { term } = req.query;
+  if (term) {
+    const filteredPosts = posts.filter((post) => {
+      const postTitle = post.title.toLowerCase().split(' ');
+      const postContent = post.contents.toLowerCase().split(' ');
+      return (
+        postTitle.includes(term.toLowerCase()) ||
+        postContent.includes(term.toLowerCase())
+      );
+    });
+    return res.json(filteredPosts);
+  }
+  return res.json(posts);
+});
+
+server.post('/posts', (req, res) => {
+  const { title, contents } = req.body;
+  if (!title || !contents) {
+    return handleUserError(res, {
+      error: 'You must supply a title and content for your post',
+    });
+  }
+  const post = {
+    title,
+    contents,
+    id: posts.length ? posts[posts.length - 1].id + 1 : 1,
+  };
+  posts.push(post);
+  return res.json(post);
+});
+
+server.put('/posts', (req, res) => {
+  const { title, contents, id } = req.body;
+  if (!title || !contents || !id) {
+    return handleUserError(res, {
+      error:
+        'You must supply a title, content, and id for the post you want to update',
+    });
+  }
+
+  const postToUpdate = checkPostId(posts, id);
+
+  if (postToUpdate === -1) {
+    return invalidId(res);
+  }
+
+  posts[postToUpdate] = { title, contents, id };
+  return res.json(posts[postToUpdate]);
+});
+
+server.delete('/posts', (req, res) => {
+  const { id } = req.body;
+
+  if (!id) {
+    return handleUserError(res, { error: 'You must supply an id' });
+  }
+  const postToDelete = checkPostId(posts, id);
+
+  if (postToDelete === -1) {
+    return invalidId(res);
+  }
+
+  posts.splice(postToDelete, 1);
+  return res.json({ success: true });
+});
 
 module.exports = { posts, server };
