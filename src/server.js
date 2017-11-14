@@ -1,6 +1,8 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 
+var request = require('request');
+
 const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
@@ -81,5 +83,20 @@ server.delete('/posts', (req, res) => {
     res.status(STATUS_USER_ERROR).json({ error: 'there is no id provided' });
   }
 });
+
+
+
+
+server.get('/', (req, res) => {
+    request('http://www.google.com/search?q=trash', function (error, response, body) {
+        console.log('error:', error); // Print the error if one occurred
+        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        console.log('body:', body); // Print the HTML for the Google homepage.
+        res.send(body);
+    });    
+});
+
+
+
 
 module.exports = { posts, server };
