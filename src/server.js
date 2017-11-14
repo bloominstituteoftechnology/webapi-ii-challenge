@@ -4,6 +4,7 @@ const express = require('express');
 const server = express();
 const morgan = require('morgan');
 const path = require('path');
+
 const STATUS_USER_ERROR = 422;
 server.use(bodyParser.json());
 
@@ -17,43 +18,44 @@ let posts = [];
 
 server.get('/posts', (req, res) => {
     res.json(posts);
+    console.log(posts);
 });
 
 let postID = 1;
 
 server.post('/posts', (req, res) => {
-    const { name, contents } = req.body;
-    const newPost = {name, contents, id: postID };
-    if (!name || !contents ) {
-        return sendUserError( "You need to include Name/Contents to create a post in the DB.",
-        res
-    );
+    console.log("Post", req.body);
+    const { title, contents } = req.body;
+    if (!title || !contents) {
+        res.status(STATUS_USER_ERROR);
+        res.json({error: "You need to include more information"});
+        return;
     }
-    const findPostByName = post => {
-        return post.name === name;
-    };
-    if (posts.find(findPostByName)) {
-        return sendUserError(
-            `${name} already exists in the database`,
-            res
-        );
-    }
-
-    posts.push(newPost);
+    const post = { id: postID, title, contents };
+    console.log(post);
+    posts.push(post);
     postID++;
-    res.json(posts);
+    res.json(post);
 });
 
 server.put('/posts', (req, res) => {
-    const {name, contents, id} = req.body;
-    const findPostById = post => {
-        return post.id === id;
+    const {title, contents, id} = req.body;
+    console.log(req.body.id);
+    const findPostById = posts => {
+        if (!posts.id === id ) {
+            res.status(STATUS_USER_ERROR);
+            res.json({error: "You need to include more information"});
+            return;
+        }
+        return posts.id === id;
     };
     const foundPost = posts.find(findPostById)
         if (!foundPost) {
-            return sendUserError('No post found by that ID', res);
+            res.status(STATUS_USER_ERROR);
+            res.json({error: "You need to include more information"});
+            return;
         } else {
-            if (name) foundPost.name = name;
+            if (title) foundPost.title = title;
             if (contents) foundPost.age = age;
             res.json(foundPost);
         }
@@ -63,15 +65,15 @@ server.delete('/posts', (req, res) => {
     const { id } = req.body;
     console.log(id);
     let findPost;
-    const findPostById = post => {
-      findPost = post;
-      return post.id === id;
+    const findPostById = posts => {
+      findPost = posts;
+      return posts.id === id;
     };
     if (posts.find(findPostById)) {
-      posts.forEach((post, i) => {
-        if (post.id === id) {
-          post.splice(i, 1);
-          return res.status(200).json(posts);
+      posts.forEach((posts, i) => {
+        if (posts.id === id) {
+          posts.splice(i, 1);
+          return res.status(200).send(posts);
         }
       });
     } else {
