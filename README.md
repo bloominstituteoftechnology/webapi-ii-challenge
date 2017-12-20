@@ -16,18 +16,13 @@ Twitter.
 
 ## Running the Project
 - Run `npm install` to download the dependencies.
-- Run `npm test` to run the tests. If you'd like, you can run `npm test:watch`
-  to automatically re-run the tests when you make modifications.
 - To test your application in your browser, or by using
   [Postman](https://www.getpostman.com/), make sure you've installed `nodemon`
   via `npm install -g nodemon` and then run `nodemon src/app.js`. `nodemon` will
   keep the server running and automatically restart it if you change anything.
   You can now make requests to `http://localhost:3000` in your browser or
   Postman!
-- Make modifications to `src/server.js` to make the tests pass.
-- If you'd like, feel free to reference the tests in `tests/server.test.js` as
-  you're developing.
-- Once all tests have passed, you're done! Send us a pull request.
+- Make modifications to `src/server.js` and test it with Postman.
 
 ## Instructions
 You'll create an API that allows the client to create, read, update, and delete
