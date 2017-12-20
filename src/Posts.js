@@ -1,10 +1,20 @@
+/* eslint-disable no-else-return */
+/* eslint-disable no-restricted-syntax */
 class Posts {
   constructor(posts = []) {
     this.posts = posts;
   }
 
-  getPosts() {
-    return this.posts;
+  getPosts(filter = '') {
+    if (filter) {
+      return this.posts.filter((post) => {
+        const vals = Object.values(post);
+        console.log(vals);
+        return vals.some(val => String(val).includes(filter));
+      });
+    } else {
+      return this.posts;
+    }
   }
 
   addPost(post) {

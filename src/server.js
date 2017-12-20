@@ -6,19 +6,28 @@ const STATUS_USER_ERROR = 422;
 
 const generateId = ((function generateId() {
   let id = 0;
-  return () => ++id;
+  return () => id++;
 })());
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = new Posts([]);
+const posts = new Posts([{
+  id: generateId(),
+  title: 'Test Title',
+  contents: 'Test Message'
+}]);
 
 const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
 
 server.get('/posts', (req, res) => {
-  res.status(200).json(posts.getPosts());
+  if ('term' in req.query) {
+    const filteredPosts = posts.getPosts(req.query.term);
+    res.status(200).json(filteredPosts);
+  } else {
+    res.status(200).json(posts.getPosts());
+  }
 });
 
 server.post('/posts', (req, res) => {
@@ -33,7 +42,7 @@ server.post('/posts', (req, res) => {
 });
 
 server.put('/posts', (req, res) => {
-  const post = { ...req.body };
+  const post = req.body;
   if (Posts.isValidPost(post) && posts.containsPost(post)) {
     posts.updatePost(post);
     res.status(200).json(post);
@@ -49,10 +58,10 @@ server.delete('/posts', (req, res) => {
     if (removedPost) {
       res.status(200).json({ success: true });
     } else {
-      res.status(404).json({ error: 'Error message' });
+      res.status(422).json({ error: 'Error message' });
     }
   } else {
-    res.status(404).json({ error: 'Error message' });
+    res.status(422).json({ error: 'Error message' });
   }
 });
 
