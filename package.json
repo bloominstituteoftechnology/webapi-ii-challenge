@@ -15,7 +15,21 @@
     "eslint": "^3.17.1",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
-    "express": "^4.15.4",
+    "express": "^4.16.2",
     "mocha": "^3.5.0"
-  }
+  },
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexCassell/Node-Express-Lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/AlexCassell/Node-Express-Lab/issues"
+  },
+  "homepage": "https://github.com/AlexCassell/Node-Express-Lab#readme"
 }
