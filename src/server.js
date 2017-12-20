@@ -11,11 +11,7 @@ const generateId = ((function generateId() {
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = new Posts([{
-  id: generateId(),
-  title: 'Test Title',
-  contents: 'Test Message'
-}]);
+const posts = new Posts([]);
 
 const server = express();
 // to enable parsing of json bodies for post requests
