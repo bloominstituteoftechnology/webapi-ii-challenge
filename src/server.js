@@ -12,5 +12,7 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
-
+server.listen(3000, () => {
+  console.log("Let's get this show started!");
+});
 module.exports = { posts, server };
