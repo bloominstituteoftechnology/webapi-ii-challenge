@@ -32,7 +32,6 @@ server.post('/posts', (req, res) => {
   const post = req.body;
 
   if (!post.title || !post.content) {
-    console.log('post error');
     const error = { error: 'Must have title and content' };
     res.status(400).json(error);
   } else {
@@ -74,14 +73,12 @@ const deletePost = (postId) => {
   for (let i = 0; i < posts.length; i++) {
     if (posts[i].id === postId) {
       posts.splice(i, 1);
-      console.log(posts);
     }
   }
 };
 server.delete('/posts', (req, res) => {
   const post = req.body;
   if (!post.id || !findIfId(post.id)) {
-    console.log('delete error');
     const error = { error: 'Invalid Id' };
     res.status(400).json(error);
   } else {
