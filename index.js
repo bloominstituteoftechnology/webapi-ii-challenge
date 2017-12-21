@@ -4,8 +4,19 @@ console.log ('index is executed'); // CommonJS module syntax
 const express = require('express');
 const server = express(); // this is a web server 
 
-server.get('/', function(req, res))
-  res.send(<h1>Hello CS5!</h1>)<p>This is a long paragraph</p>;
+// middleware 
+// client -sends-> request -to-> [server] -run->middleware -then run-> (request handlers)
+server.use(function(req, res, next) {
+  console.log('middleware 1')
+  next(); 
+});
+
+server.use(function(req, res, next) {
+  console.log('middleware 2')
+});
+
+server.get('/', function(req, res) { // req, res === the homies 
+  res.send(<h1>Hello CS5!</h1>)<p>This is a long paragraph</p>);
 });
 
 const port = 8000; 
