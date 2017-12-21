@@ -97,3 +97,8 @@ get an access token to that API, and how to use that token to authenticate reque
 server. Use the [request](https://github.com/request/request) node.js library to request data from your API of choice. Once you 
 successfully grab some data back from your API of choice, maybe render it in a React application. 
 Be creative here and have fun!
+
+## heres what luis suggested i do to get better
+
+
+create a react app with an input box, set up an onChange event that hits the api passing what is in the input as the `term`. Use `axios`. When the data comes back show it in the component
