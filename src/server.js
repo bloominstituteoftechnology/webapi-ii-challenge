@@ -24,14 +24,20 @@ server.use(bodyParser.json());
 
 // GET Request
 
-server.get("/posts", (req, res) => {
-    res.status(200).json(posts);
-});
+// server.get("/posts", (req, res) => {
+//     res.status(200).json(posts);
+// });
 
 
-server.get("/posts/:term", function( req, res ) {
-    const post = posts.find(post => post.title.includes(req.params.term) || post.contents.includes(req.params.term));
-    res.status(200).json(post);
+server.get('/posts/', function(req, res) {
+		if (req.query.term) {
+			const result = posts.filter(post => {
+				return post.title.includes(req.query.term) || post.contents.includes(req.query.term);
+			})
+			res.status(200).json(result);
+		} else {
+			res.status(200).json(posts);
+		}
 });
 
 server.post('/posts', (req, res) => {
