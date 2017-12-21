@@ -13,7 +13,7 @@ server.use(bodyParser.json());
 
 
 const errorMissingParam = {
-  error: 'Bad Request - missing parameters'
+  error: 'Error Message'
 };
 
 // TODO: your code to handle requests
