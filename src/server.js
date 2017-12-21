@@ -29,24 +29,36 @@ server.post('/api/posts', (req, res) => {
   if (typeof req.body.title === 'string' && typeof req.body.content === 'string') {
     const newPost = { id: [posts.length], title: req.body.title, content: req.body.content };
     posts.push(newPost);
-    res.status(200).json(posts);
+    res.status(200).json(newPost);
   } else {
-    res.status(400).json({ error: 'needs title and content' });
+    res.status(STATUS_USER_ERROR).json({ error: 'needs title and content' });
   }
 });
 
 server.put('/api/posts', (req, res) => {
-  if (typeof req.body.title === 'string' && typeof req.body.content === 'string' && typeof req.body.id === 'number') {
-    const replacementPost = { id: req.body.id, title: req.body.title, content: req.body.content };
+    // shorthand from lecture
+  const { id, title, content } = req.body;
+  if (title && content && id) {
+    const replacementPost = { id, title, content };
     // find if a post already has this id
-    if (posts[req.body.id]) {
-      posts[req.body.id] = replacementPost;
+    if (posts[id]) {
+      posts[id] = replacementPost;
       res.send(posts);
     } else {
-      res.status(400).json({ error: 'not a valid id' });
+      res.status(STATUS_USER_ERROR).json({ error: 'not a valid id' });
     }
   } else {
-    res.status(400).json({ error: 'please include all needed data' });
+    res.status(STATUS_USER_ERROR).json({ error: 'please include all needed data' });
+  }
+});
+
+server.delete('/api/posts', (req, res) => {
+  const id = req.body.id;
+  if (posts[id]) {
+    posts.splice(id, 1);
+    res.status(200).json({ success: true });
+  } else {
+    res.status(STATUS_USER_ERROR).json({ error: 'not found' });
   }
 });
 module.exports = { posts, server };
