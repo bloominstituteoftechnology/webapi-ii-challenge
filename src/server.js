@@ -7,9 +7,9 @@ const STATUS_USER_ERROR = 422;
 // to change this to a let binding if you need to reassign it.
 const posts = [
   { id: 1, title: 'Mary', content: 'Yes she did' },
-  { id: 2, title: 'Shitty shitty bang bang', content: 'Choo choo' }
+  { id: 2, title: 'Chitty Chitty bang bang', content: 'Choo choo' }
 ];
-let id = 1;
+let id = posts.length + 1;
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -33,7 +33,7 @@ server.post('/posts', (req, res) => {
 
   if (!post.title || !post.content) {
     const error = { error: 'Must have title and content' };
-    res.status(400).json(error);
+    res.status(422).json(error);
   } else {
     post.id = id++;
     posts.push(post);
@@ -59,10 +59,10 @@ server.put('/posts', (req, res) => {
   const post = req.body;
   if (!post.title || !post.content || !post.id) {
     const error = { error: 'Need all information' };
-    res.status(400).json(error);
+    res.status(422).json(error);
   } else if (!findIfId(post.id)) {
     const errorId = { error: 'No Id Found' };
-    res.status(400).json(errorId);
+    res.status(404).json(errorId);
   } else {
     updateData(post.id, post.title, post.content);
     res.status(200).json(post);
@@ -80,7 +80,7 @@ server.delete('/posts', (req, res) => {
   const post = req.body;
   if (!post.id || !findIfId(post.id)) {
     const error = { error: 'Invalid Id' };
-    res.status(400).json(error);
+    res.status(404).json(error);
   } else {
     deletePost(post.id);
     const success = { success: true };
