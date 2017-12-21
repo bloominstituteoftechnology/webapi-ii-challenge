@@ -69,22 +69,36 @@ server.get('/posts', function(req, res) {
     if (searchTerm) 
     // filter the collection
     const filteredPosts = posts.filter(post => {
-
-    })
+        return (
+            post.title.includes(searchTerm) || post.contents.
+        );
+    );
 });
+res.status(200).json(filteredPosts)
+} else }
+res.status(200).json(posts)
+}
 
-server.post('/posts', function(req, res) 
+server.post('/posts', function(req, res) {}
  const { title, contents } = req.body; 
- if (title && contents) {
-     const id = getNextId(); 
-     const post = { ...req.body, id }
-     posts.push(post);
-     res.status(200).json(post);
+ 
+ if (id && title && contents) {
+     let post = posts.find(p => p.id === Number(id));
+     if (post) {
+       Object.assign(post, req.body);
+       res.status(200).json(post);
  } else { 
    res 
      .status(STATUS_USER_ERROR)
      .json({ error: 'Please provide title and contents.'
     }
+     }
+     const id = getNextId(); 
+     const post = { ...req.body, id }
+
+     posts.push(post);
+
+     
 });
 
 server.put('/posts', function(req, res) {
