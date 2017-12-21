@@ -116,10 +116,10 @@ const changeData = (data, selectedPost, type) => {
             return selectedPost;
 
         case 'delete':
-            const x = posts.findIndex(item => {
+            const index = posts.findIndex(item => {
                 return item.id == selectedPost.id;
             });
-            posts.splice(x, 1);
+            posts.splice(index, 1);
             posts[0].idCounter--;
             return { success: true };
 
