@@ -1,6 +1,10 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 
+const errorMissingParam = {
+  error: 'Bad Request - missing parameters'
+  };
+
 
 const STATUS_USER_ERROR = 422;
 
@@ -41,26 +45,30 @@ server.get('/posts/:term', (req, res) => {
 });
 
 server.post('/posts', (req, res) => {
-  if (typeof req.body.title === 'string' && typeof req.body.contents === 'string') {
-    const post = { title: req.body.title, contents: req.body.contents, id: posts.length } 
-    posts.push(post);
+  if (post.id !== undefined && post.contents !== undefined) {
+    const newPost = {};
+    newPost.id = posts.length;
+    newPost.title = post.title;
+    newPost.contents = post.contents;
+    posts.push(newPost);
+
     res.status(200).json(post);
   } else {
-    res.status(503).json({ error: 'POST: missing title and/or body' });
+    res.status(422).json(errorMissingParam);
   }
 });
 
-server.put('/posts',  (req, res) => {
-  if (typeof req.body.title === 'string' && typeof req.body.contents === 'string' && typeof req.body.id === 'string') {
-    if (parseInt(req.body.id) && parseInt(req.body.id) <= posts.length) {
-      const post = { title: req.body.title, contents: req.body.contents, id: req.body.id };
-      posts[req.body.id] = post;
-      res.status(200).json(post);
+server.put('/posts', (req, res) => {
+  if (post.id !== undefined && post.title !== undefined && post.contents !== undefined) {
+    const targetIndex = posts.findIndex(item => item.id === post.id);
+    if (targetIndex !== -1) {
+      posts[targetIndex].title = post.title;
+      posts[targetIndex].contents = post.contents;
+
+      res.status(200).json(posts);
     } else {
-      res.status(503).json({ error: 'POST: ID not found' });
+      res.status(422).json(errorMissingParam);
     }
-  } else {
-    res.status(503).json({ error: 'POST: missing title, body, or ID' });
   }
 });
 
