@@ -22,7 +22,7 @@ server.get('/bigger-file', (req, res) => {
 
       res.send(contents);
   });
-  );//sending html data to client 
+  ); //sending html data to client 
 
 server.get('/lesson-plan', (req, res) => {
     const lessonPlan = {
@@ -36,7 +36,10 @@ server.get('/lesson-plan', (req, res) => {
     res.json(lessonPlan);
 
 });
-server.listen(3000);
+server.listen((4000, function() {
+    console.log('I see you');
+
+});
 
 //JSON-- Javascript Object Notation
 //A way to represent a javascript object as a string

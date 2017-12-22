@@ -23,11 +23,11 @@ server.use(function(req, res, next) {
 });
 
 server.get('/', function(req, res) { // req, res === the homies 
-  res.send(<h1>Hello CS5!</h1>)<p>This is a long paragraph</p>);
+  res.send(<h1>Hello CS5!</h1>)<p>This is a long paragraph</p>;
 });
 
-const clientUrl = path.join(); 
-server.use('*', express.static())
+const clientUrl = path.join(__dirname, 'client');
+server.use('*', express.static(clientUrl))
 
 const port = 8000; 
 server.listen(port, () => console.log('Server running on ${port}));
