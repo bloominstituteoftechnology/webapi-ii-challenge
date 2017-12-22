@@ -53,7 +53,7 @@ server.post('/posts', (req, res) => {
   posts.push(req.body);
   res.status(200).json(req.body);
 });
-
+// TODO: fix put
 server.put('/posts', (req, res) => {
   if (req.body.id == undefined || req.body.title == undefined || req.body.contents == undefined) {
     res.status(400).json({ "error": "Error message" });
@@ -69,7 +69,7 @@ server.put('/posts', (req, res) => {
   };
 });
 
-
+// TODO: fix delete
 
 module.exports = {
   server
