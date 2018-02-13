@@ -19,12 +19,13 @@ server.get('/posts', (req, res) => {
   const query = req.query.term;
 
   if (query === undefined) res.send(posts);
-
-  res.send(
-    posts.filter(
-      post => post.title.includes(query) || post.contents.includes(query),
-    ),
-  );
+  else {
+    res.send(
+      posts.filter(
+        post => post.title.includes(query) || post.contents.includes(query),
+      ),
+    );
+  }
 });
 
 server.post('/posts', (req, res) => {
@@ -35,12 +36,12 @@ server.post('/posts', (req, res) => {
     res
       .status(STATUS_USER_ERROR)
       .send({ error: 'Title or contents undefined.' });
+  } else {
+    const newPost = { id: nextId++, title, contents };
+
+    posts.push(newPost);
+    res.send(newPost);
   }
-
-  const post = { id: nextId++, title, contents };
-
-  posts.push(post);
-  res.send(post);
 });
 
 server.put('/posts', (req, res) => {
@@ -48,25 +49,37 @@ server.put('/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
 
-  if (id === undefined || title === undefined || contents === undefined)
+  if (id === undefined || title === undefined || contents === undefined) {
     res
       .status(STATUS_USER_ERROR)
       .send({ error: 'ID, title, or contents undefined.' });
+  } else {
+    const editPost = posts.find(post => post.id === id);
 
-  let postFound = false;
-
-  posts = posts.map(post => {
-    if (post.id === id) {
-      postFound = true;
-      return { ...post, title, contents };
+    if (editPost === undefined) {
+      res
+        .status(STATUS_USER_ERROR)
+        .send({ error: `Post with ID -${id}- not found.` });
+    } else {
+      editPost.title = title;
+      editPost.contents = contents;
+      res.send(editPost);
     }
-    return post;
-  });
+  }
+});
 
-  if (postFound) res.send({ id, title, contents });
-  res
-    .status(STATUS_USER_ERROR)
-    .send({ error: `Post with ID -${id}- not found.` });
+server.delete('/posts', (req, res) => {
+  const id = req.body.id;
+
+  const postsLength = posts.length;
+
+  posts = posts.filter(post => post.id !== id);
+
+  if (posts.length === postsLength) {
+    res
+      .status(STATUS_USER_ERROR)
+      .send({ error: `Post with ID -${id}- not found.` });
+  } else res.send({ success: true });
 });
 
 module.exports = { posts, server };
