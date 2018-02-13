@@ -13,4 +13,31 @@ server.use(bodyParser.json());
 
 // TODO: your code to handle requests
 
+let nextId = 0;
+
+server.get('/posts', (req, res) => {
+  const query = req.query.term;
+
+  res.send(
+    posts.filter(
+      post => post.title.includes(query) || post.contents.includes(query),
+    ),
+  );
+});
+
+server.post('/posts', (req, res) => {
+  const title = req.body.title;
+  const contents = req.body.contents;
+
+  if (title === undefined || contents === undefined)
+    res
+      .status(STATUS_USER_ERROR)
+      .send({ error: 'Title or contents undefined.' });
+
+  const post = { id: nextId++, title, contents };
+
+  posts.push(post);
+  res.send(post);
+});
+
 module.exports = { posts, server };
