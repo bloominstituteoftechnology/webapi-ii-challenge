@@ -12,5 +12,24 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
+server.get('/posts', (req, res) => {
+  const { term } = req.query;
+  console.log('term', term);
+  if (term) {
+    const termPosts = posts.filter((post) => {
+      const postTitle = post.title.split(' ');
+      const postContent = post.contents.split(' ');
+      return (postTitle.includes(term) || postContent.includes(term));
+    });
+    if (!termPosts.legnth) {
+      res.status(STATUS_USER_ERROR);
+      res.send({ error: `No posts were found using the term (${term})` });
+    } else {
+      res.send({ posts: termPosts });
+    }
+  } else {
+    res.send({ posts });
+  }
+});
 
 module.exports = { posts, server };
