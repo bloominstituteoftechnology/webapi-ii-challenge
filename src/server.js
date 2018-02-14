@@ -6,7 +6,7 @@ const SUCCESS = 200;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [];
+let posts = [];
 //let id = 0
 let id = 1;
 
@@ -93,5 +93,23 @@ server.put("/posts", (req, res) => {
        res.json(findPost); 
     }
 }); 
+
+server.delete('/posts', (req, res) => {
+    const { id } = req.body;
+    if (!id) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: `User must provide an id` });
+        return;
+    }
+    const findPost = posts.find(index => index.id === id);
+    if (!findPost) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: `User must provide a valid id ${id}` });
+        return;
+    }
+    posts = posts.filter(index => index.id !== id);
+    res.json({ success: true });
+});
+
 
 module.exports = { posts, server };
