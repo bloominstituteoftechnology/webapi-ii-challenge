@@ -51,6 +51,7 @@ server.get('/posts', (req, res) => {
   res.json(posts);
 });
 
+// DELETE operation
 server.delete('/posts', (req, res) => {
   // verify that an ID to delete was provided
   if (!req.body.id) {
@@ -73,6 +74,33 @@ server.delete('/posts', (req, res) => {
   }
   res.status(STATUS_USER_ERROR);
   res.json({ error: `Post with ID ${req.body.id} not found, cannot delete` });
+});
+
+// PUT operation
+server.put('/posts', (req, res) => {
+  if (!req.body.id || !req.body.title || !req.body.contents) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Must provide an id, title, and contents' });
+  }
+
+  let successIndex = 0;
+  const putSuccess = posts.find((post, index) => {
+    if (post.id === Number(req.body.id)) {
+      posts[index].title = req.body.title;
+      posts[index].contents = req.body.contents;
+      successIndex = index;
+      return true;
+    }
+    return false;
+  });
+
+  if (putSuccess) {
+    res.status(STATUS_SUCCESS);
+    res.json(posts[successIndex]);
+    return;
+  }
+  res.status(STATUS_USER_ERROR);
+  res.json({ error: `Post with ID ${req.body.id} not found, cannot update` });
 });
 
 server.listen(3000);
