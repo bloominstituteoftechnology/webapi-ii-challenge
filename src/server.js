@@ -39,16 +39,46 @@ server.get('/posts', (req, res) => {
       // no matching posts were found
       res.status(STATUS_NO_CONTENT);
       res.json({ searchResults: `No posts found containing ${req.query.term}` });
-    } else {
-      // matching posts were found
-      res.status(STATUS_SUCCESS);
-      res.json({ searchResults: matchingPosts });
+      return;
     }
+    // matching posts were found
+    res.status(STATUS_SUCCESS);
+    res.json({ searchResults: matchingPosts });
   } else {
     // no search term, return all
     res.status(STATUS_SUCCESS);
     res.json(posts);
   }
+});
+
+server.delete('/posts', (req, res) => {
+  // verify that an ID to delete was provided
+  if (!req.body.id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Must provide an ID number to delete' });
+    return;
+  }
+  // id to delete was provided, search for it
+  let indexToDelete = null;
+  let index = 0;
+  const maxPosts = posts.length;
+  while (indexToDelete === null && index < maxPosts) {
+    if (posts[index].id === Number(req.body.id)) {
+      indexToDelete = index;
+    }
+    ++index;
+  }
+  if (index === maxPosts) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: `Post with ID ${req.body.id} does not exist, nothing to delete` })
+    return;
+  }
+  // const indexToDelete = posts.reduce((temp, post, index) => {
+    //   return post.id === Number(req.body.id) ? index : null;
+    // }, 0);
+    // console.log('indexToDelete is: ', indexToDelete);
+  posts.splice(indexToDelete, 1);
+  res.json({ delete: `deleting at index ${indexToDelete}` });
 });
 
 server.listen(3000);
