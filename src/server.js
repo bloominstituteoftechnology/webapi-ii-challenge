@@ -143,4 +143,26 @@ server.get('/yelp/:query/:city', (req, res) => {
     .auth(null, null, true, yelpK);
 });
 
+const gKey = 'INSERT_API_KEY_HERE';
+
+server.get('/gMaps/:city/:query', (req, res) => {
+  const OUTPUT_TYPE = 'json';
+  const baseURL = 'https://maps.googleapis.com/maps/api/place/nearbysearch';
+  const city = req.params.city;
+
+  const query = req.params.query;
+
+  request(
+    `https://maps.googleapis.com/maps/api/place/textsearch/${OUTPUT_TYPE}?query=${query}+in+${city}&key=${gKey}`,
+    (err, response, body) => {
+      console.log(body);
+      res.status(response.statusCode).send(
+        JSON.parse(body).results.map((place, i) => {
+          return `${place.name} in ${place.formatted_address}`;
+        }),
+      );
+    },
+  );
+});
+
 module.exports = { posts, server };
