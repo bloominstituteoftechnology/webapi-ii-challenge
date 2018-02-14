@@ -91,7 +91,7 @@ server.delete('/posts', (req, res) => {
 const me = {};
 
 server.get('/dota2/me', (req, res) => {
-  const profileId = '';
+  const profileId = 'INSERT_PROFILE_ID_HERE';
   const URL = `https://api.opendota.com/api/players/${profileId}`;
 
   request(URL, (error, response, body) => {
