@@ -2,7 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 
 const STATUS_USER_ERROR = 422;
-const POST_ADDED = 200;
+const STATUS_OK = 200;
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
 const posts = [];
