@@ -66,50 +66,49 @@ server.get("/posts", (req, res) => {
 });
 
 server.put("/posts", (req, res) => {
-    const { id, title, contents } = req.body;
-    if (!id) {
-        res.status(STATUS_USER_ERROR);
-        res.json({ error: "User must provide a post id" });
-        return;
-    }
-    if (!title) {
-        res.status(STATUS_USER_ERROR);
-        res.json({ error: "User must provide a post title" });
-        return;
-    }
-    if (!contents) {
-        res.status(STATUS_USER_ERROR);
-        res.json({ error: "User must provide post contents" });
-        return;
-    }
-    const findPost = posts.find(index => index.id === id);
-    if (!findPost) {
-        res.status(STATUS_USER_ERROR);
-        res.json({ error: `Post with id ${id} not found` });
-        return;
-    } else {
-       findPost.title = title;
-       findPost.contents = contents;
-       res.json(findPost); 
-    }
-}); 
-
-server.delete('/posts', (req, res) => {
-    const { id } = req.body;
-    if (!id) {
-        res.status(STATUS_USER_ERROR);
-        res.json({ error: `User must provide an id` });
-        return;
-    }
-    const findPost = posts.find(index => index.id === id);
-    if (!findPost) {
-        res.status(STATUS_USER_ERROR);
-        res.json({ error: `User must provide a valid id ${id}` });
-        return;
-    }
-    posts = posts.filter(index => index.id !== id);
-    res.json({ success: true });
+  const { id, title, contents } = req.body;
+  if (!id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: "User must provide a post id" });
+    return;
+  }
+  if (!title) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: "User must provide a post title" });
+    return;
+  }
+  if (!contents) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: "User must provide post contents" });
+    return;
+  }
+  const findPost = posts.find(index => index.id === id);
+  if (!findPost) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: `Post with id ${id} not found` });
+    return;
+  } else {
+    findPost.title = title;
+    findPost.contents = contents;
+    res.json(findPost);
+  }
 });
 
+server.delete("/posts", (req, res) => {
+  const { id } = req.body;
+  if (!id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: `User must provide an id` });
+    return;
+  }
+  const findPost = posts.find(index => index.id === id);
+  if (!findPost) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: `User must provide a valid id ${id}` });
+    return;
+  }
+  posts = posts.filter(index => index.id !== id);
+  res.json({ success: true });
+});
 
 module.exports = { posts, server };
