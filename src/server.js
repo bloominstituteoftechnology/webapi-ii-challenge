@@ -17,14 +17,14 @@ server.use(bodyParser.json());
 // TODO: your code to handle requests
 
 server.post("/posts", (req, res) => {
-  const {title, contents} = req.body;
+  const { title, contents } = req.body;
   if (!title) {
     res.status(STATUS_USER_ERROR);
-    res.json({error: "User must provide a title"});
+    res.json({ error: "User must provide a title" });
     return;
   } else if (!contents) {
     res.status(STATUS_USER_ERROR);
-    res.json({error: "User must provide post contents"});
+    res.json({ error: "User must provide post contents" });
     return;
   } else {
     //id++;
@@ -40,7 +40,7 @@ server.post("/posts", (req, res) => {
 
 server.get("/posts", (req, res) => {
   const term = req.query.term;
-  if (!term) {
+  /*if (!term) {
     const postContent = posts.map(post => post[1]);
     res.status(SUCCESS);
     res.json(postContent);
@@ -51,6 +51,17 @@ server.get("/posts", (req, res) => {
     res.status(SUCCESS);
     res.json(containsTerm);
     return;
+  }*/
+  if (term) {
+    const containsTerm = posts.filter(post => {
+      return (
+        post.title.indexOf(term) !== -1 || post.contents.indexOf(term) !== -1
+      );
+    });
+    res.status(SUCCESS);
+    res.json(containsTerm);
+  } else {
+    res.json(posts);
   }
 });
 
