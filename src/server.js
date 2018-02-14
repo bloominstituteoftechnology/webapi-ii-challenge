@@ -44,11 +44,11 @@ server.get('/posts', (req, res) => {
     // matching posts were found
     res.status(STATUS_SUCCESS);
     res.json({ searchResults: matchingPosts });
-  } else {
-    // no search term, return all
-    res.status(STATUS_SUCCESS);
-    res.json(posts);
+    return;
   }
+  // no search term, return all
+  res.status(STATUS_SUCCESS);
+  res.json(posts);
 });
 
 server.delete('/posts', (req, res) => {
@@ -62,12 +62,13 @@ server.delete('/posts', (req, res) => {
   let indexToDelete = null;
   let index = 0;
   const maxPosts = posts.length;
-  while (indexToDelete === null && index < maxPosts) {
+  while (indexToDelete === null && index <= maxPosts) {
     if (posts[index].id === Number(req.body.id)) {
       indexToDelete = index;
     }
     ++index;
   }
+
   if (index === maxPosts) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: `Post with ID ${req.body.id} does not exist, nothing to delete` })
