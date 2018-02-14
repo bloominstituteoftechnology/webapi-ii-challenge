@@ -1,3 +1,5 @@
+const request = require('request');
+
 const bodyParser = require('body-parser');
 const express = require('express');
 
@@ -80,6 +82,65 @@ server.delete('/posts', (req, res) => {
       .status(STATUS_USER_ERROR)
       .send({ error: `Post with ID -${id}- not found.` });
   } else res.send({ success: true });
+});
+
+/* *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~ */
+/* *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~ Extra Credit *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~ */
+/* *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~ */
+
+const me = {};
+
+server.get('/dota2/me', (req, res) => {
+  const profileId = '';
+  const URL = `https://api.opendota.com/api/players/${profileId}`;
+
+  request(URL, (error, response, body) => {
+    me.data = JSON.parse(response.body);
+
+    me.data.profile.account_id = 0;
+    me.data.profile.personaname = 'EE';
+    me.data.profile.steamid = 0;
+    me.data.profile.avatar = '';
+    me.data.profile.avatarmedium = '';
+    me.data.profile.avatarfull = '';
+    me.data.profile.profileurl = '';
+
+    if (me.data.solo_competitive_rank !== 9999) {
+      me.data.solo_competitive_rank = 9999;
+    }
+
+    if (me.data.competitive_rank !== 9999) {
+      me.data.competitive_rank = 9999;
+    }
+
+    if (me.data.rank_tier !== 9999) {
+      me.data.rank_tier = 9999;
+    }
+
+    if (me.data.mmr_estimate.estimate !== 9999) {
+      me.data.mmr_estimate.estimate = 9999;
+    }
+
+    res.status(response.statusCode).send(me.data);
+  });
+});
+
+const yelpK = 'INSERT_API_KEY_HERE';
+
+server.get('/yelp/:query/:city', (req, res) => {
+  const baseURL = 'https://api.yelp.com/v3/businesses/search';
+  const q = req.params.query;
+  const city = req.params.city;
+
+  request
+    .get(`${baseURL}?term=${q}&location=${city}`, (err, response, body) => {
+      res.status(response.statusCode).send(
+        JSON.parse(response.body).businesses.map((business, i) => {
+          return business.name;
+        }),
+      );
+    })
+    .auth(null, null, true, yelpK);
 });
 
 module.exports = { posts, server };
