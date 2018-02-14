@@ -65,4 +65,33 @@ server.get("/posts", (req, res) => {
   }
 });
 
+server.put("/posts", (req, res) => {
+    const { id, title, contents } = req.body;
+    if (!id) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: "User must provide a post id" });
+        return;
+    }
+    if (!title) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: "User must provide a post title" });
+        return;
+    }
+    if (!contents) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: "User must provide post contents" });
+        return;
+    }
+    const findPost = posts.find(index => index.id === id);
+    if (!findPost) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: `Post with id ${id} not found` });
+        return;
+    } else {
+       findPost.title = title;
+       findPost.contents = contents;
+       res.json(findPost); 
+    }
+}); 
+
 module.exports = { posts, server };
