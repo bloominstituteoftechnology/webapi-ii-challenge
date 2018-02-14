@@ -40,17 +40,34 @@ server.post('/posts', (req,res) => {
     const addPost = {id, title, contents};
     id++;
     posts.push(addPost);
-    res.status(POST_ADDED);
+    res.status(STATUS_OK);
     res.json({ posts });
     return;
 });
 
-// POST /posts
-//Require client: title || contents in req body
-// JSON error object - needs appropriate status code
-//If all correct, create new post object
-//Post needs unique, numeric id and add to post array
-//return newly created post object with assigned id to client in a JSON response
+server.put('/posts', (req, res) => {
+    const title = req.body.title;
+    const contents = req.body.contents;
+    const id = req.body.id;
+    console.log(title, contents, id);
+    if (!title || !contents || !id) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: 'Please provide a title, content, and id' });
+        return;
+    }
+    let updateIndex = posts.findIndex((post) => post.id === id);
+    if (updateIndex < 0) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: 'Please provide an existing id value' });
+        return;
+    }
+    let updated = {id, title, contents};
+    posts[updateIndex] = updated;
+
+    res.status(STATUS_OK);
+    res.json({ posts });
+    return;
+});
 
 
 module.exports = { posts, server };
