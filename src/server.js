@@ -5,7 +5,7 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [];
+let posts = [];
 let id = 0;
 
 const server = express();
@@ -44,6 +44,35 @@ server.post('/posts', (req, res) => {
         posts.push(newPost);
         res.json(newPost);
         ++id;
+    }
+});
+
+server.put('/posts', (req, res) => {
+    const title = req.body.title;
+    const contents = req.body.contents;
+    const postId = req.body.id;
+    const allIds = posts.map(post => {
+        return post.id
+    });
+    console.log(allIds);
+
+    if (!title || !contents || !postId || title.length === 0 || contents.length === 0 || postId.length === 0) {
+        res.status(STATUS_USER_ERROR);
+        res.json({error: "Must provide the id, title, and contents"});
+    } 
+    if (!allIds.includes(postId)) {
+        res.status(STATUS_USER_ERROR);
+        res.json({error: "No such post id exist"});
+    } else {
+        const index = allIds.indexOf(postId);
+        const postToUpdate = {
+            id: postId,
+            title,
+            contents
+        };
+        
+        posts.splice(index, 1, postToUpdate);
+        res.send(postToUpdate);
     }
 });
 
