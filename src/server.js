@@ -24,6 +24,7 @@ server.post('/posts', (req, res) => {
   posts.push(newPost);
   res.status(STATUS_SUCCESS);
   res.json(newPost);
+  postId++;
 });
 
 // GET operation:  GET all or just those containing specific term in title or contents
