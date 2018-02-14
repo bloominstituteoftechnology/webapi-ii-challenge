@@ -19,10 +19,10 @@ server.post("/posts", (req, res) => {
   const {title, contents} = req.body;
   if (!title) {
     res.status(STATUS_USER_ERROR);
-    res.json("User must provide a title");
+    res.json({error: "User must provide a title"});
   } else if (!contents) {
     res.status(STATUS_USER_ERROR);
-    res.json("User must provide post contents");
+    res.json({error: "User must provide post contents"});
   } else {
     id++;
     posts.push([id, title, contents]);
