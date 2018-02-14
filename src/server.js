@@ -58,28 +58,21 @@ server.delete('/posts', (req, res) => {
     res.json({ error: 'Must provide an ID number to delete' });
     return;
   }
-  // id to delete was provided, search for it
-  let indexToDelete = null;
-  let index = 0;
-  const maxPosts = posts.length;
-  while (indexToDelete === null && index <= maxPosts) {
-    if (posts[index].id === Number(req.body.id)) {
-      indexToDelete = index;
+  // id to delete was provided, delete the post
+  const deleteSuccess = posts.find((post, index) => {
+    if (post.id === Number(req.body.id)) {
+      posts.splice(index, 1);
+      return true;
     }
-    ++index;
-  }
-
-  if (index === maxPosts) {
-    res.status(STATUS_USER_ERROR);
-    res.json({ error: `Post with ID ${req.body.id} does not exist, nothing to delete` })
+    return false;
+  });
+  if (deleteSuccess) {
+    res.status(STATUS_SUCCESS);
+    res.json({ success: true });
     return;
   }
-  // const indexToDelete = posts.reduce((temp, post, index) => {
-    //   return post.id === Number(req.body.id) ? index : null;
-    // }, 0);
-    // console.log('indexToDelete is: ', indexToDelete);
-  posts.splice(indexToDelete, 1);
-  res.json({ delete: `deleting at index ${indexToDelete}` });
+  res.status(STATUS_USER_ERROR);
+  res.json({ error: `Post with ID ${req.body.id} not found, cannot delete` });
 });
 
 server.listen(3000);
