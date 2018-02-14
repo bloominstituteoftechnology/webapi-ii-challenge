@@ -17,20 +17,12 @@ server.use(bodyParser.json());
 // TODO: your code to handle requests
 server.get('/posts', (req, res) => {
   const { term } = req.query;
-  console.log('term', term);
   if (term) {
-  	console.log('IM here');
     const termPosts = posts.filter((post) => {
-      console.log('post.title', post.title);
-      console.log('post.contents', post.contents);
       const postTitle = post.title.split(' ');
       const postContent = post.contents.split(' ');
-      console.log('postTitle', postTitle);
-      console.log('postContent', postContent);
       return (postTitle.includes(term) || postContent.includes(term));
     });
-    console.log('termPosts', termPosts);
-    console.log('termPosts.length =', termPosts.length);
     if (!termPosts.length) {
       res.status(STATUS_USER_ERROR);
       res.send({ error: `No posts were found using the term (${term})` });
@@ -55,6 +47,27 @@ server.post('/posts', (req, res) => {
   posts.push(newPost);
   postId++;
   res.send({ posts: newPost });
+});
+
+server.put('/posts', (req, res) => {
+  const { id, title, contents } = req.body;
+  if (id === undefined || !title || !contents) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: "Must provide title, contents, and id" });
+    return;
+  }
+  const findPostById = post => {
+    return post.id == id;
+	}
+  const foundPost = posts.find(findPostById);
+  if (!foundPost) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: 'No post was found by that id' });
+  } else {
+    foundPost.title = title;
+    foundPost.contents = contents;
+    res.send(foundPost);
+  }
 });
 
 module.exports = { posts, server };
