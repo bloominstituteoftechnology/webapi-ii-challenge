@@ -1,13 +1,21 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const fs = require('fs');
+
+const PORT = 3030;
+const STATUS_USER_ERROR = 422;
+const STATUS_SUCCESS = 200;
 
 const server = express();
-const PORT = 3030;
 
 server.listen(PORT);
+server.use(bodyParser.json());
 
 server.get('/', (req, res) => {
-    res.send('Hello Troy!');
+    res.send(
+        '<p>Hello Troy!</p>'+
+        '<p>The fun stuff is at /posts</p>'
+    );
 });
 
 
