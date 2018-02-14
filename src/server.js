@@ -37,7 +37,7 @@ server.post('/posts', (req, res) => {
         res.json({error: "Must provide both title and contents"});
     } else {
         const newPost = {
-            id,
+            id: id + '',
             title,
             contents
         }
@@ -60,7 +60,7 @@ server.put('/posts', (req, res) => {
         res.status(STATUS_USER_ERROR);
         res.json({error: "Must provide the id, title, and contents"});
     } 
-    if (!allIds.includes(postId)) {
+    else if (!allIds.includes(postId)) {
         res.status(STATUS_USER_ERROR);
         res.json({error: "No such post id exist"});
     } else {
@@ -72,7 +72,29 @@ server.put('/posts', (req, res) => {
         };
         
         posts.splice(index, 1, postToUpdate);
-        res.send(postToUpdate);
+        res.json(postToUpdate);
+    }
+});
+
+server.delete('/posts', (req, res) => {
+    const postId = req.body.id;
+    const allIds = posts.map(post => {
+        return post.id
+    });
+    console.log(postId);
+    console.log(allIds);
+
+    if (!postId || postId.length === 0) {
+        res.status(STATUS_USER_ERROR);
+        res.json({error: "Must provide a post id"});
+    }
+    else if (!allIds.includes(postId)) {
+        res.status(STATUS_USER_ERROR);
+        res.json({error: "No such post id exist"});
+    } else {
+        const index = allIds.indexOf(postId);
+        posts.splice(index, 1);
+        res.json({success: `You've successfuly deleted post with id ${postId}`});
     }
 });
 
