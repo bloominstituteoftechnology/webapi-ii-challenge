@@ -69,5 +69,27 @@ server.put('/posts', (req, res) => {
     return;
 });
 
+server.delete('/posts', (req, res) => {
+    const id = req.body.id;
+
+    if (!id) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: 'Please provide an id' });
+        return;
+    }
+    let updateIndex = posts.findIndex((post) => post.id === id);
+    console.log('index is', updateIndex);
+    if (updateIndex < 0) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: 'Please provide an existing id value' });
+        return;
+    }
+    posts.splice(updateIndex, 1);
+    res.status(STATUS_OK);
+    res.json({ posts });
+
+return;
+});
+
 
 module.exports = { posts, server };
