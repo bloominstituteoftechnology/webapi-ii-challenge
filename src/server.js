@@ -70,6 +70,28 @@ server.put('/posts', (req, res) => {
   }
 });
 
+server.delete('/posts', (req, res) => {
+  const { id } = req.body;
+  if (id === undefined) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: "Must provide id" });
+    return;
+  }
+  let removedPost = null;
+  for(let i = 0; i < posts.length; i++) {
+    if (posts[i].id == id) {
+      removedPost = posts.splice(i, 1);
+      break;
+    }
+  }
+  if (!removedPost) {
+  	res.status(STATUS_USER_ERROR);
+  	res.send({ error: "Post not found by that id" });
+  } else {
+    res.send(removedPost);
+  }
+})
+
 module.exports = { posts, server };
 
 
