@@ -5,10 +5,7 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [
-	{ title: 'Goals', contents: 'Go to the gym everyday', id: 0 },
-	{ title: 'Lambda School', contents: 'Computer Science Academy', id: 1}
-];
+const posts = [];
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -30,15 +27,15 @@ server.get('/posts', (req, res) => {
       res.send({ posts: termPosts });
     }
   } else {
-    res.send({ posts });
+    res.send({ posts, length: posts.length });
   }
 });
 
-let postId = 2;
+let postId = 0;
 
 server.post('/posts', (req, res) => {
   const { title, contents } = req.body;
-  const newPost = { title, contents, id: postId }
+  const newPost = { title, contents, id: postId };
   if (!title || !contents) {
     res.status(STATUS_USER_ERROR);
     res.send({ error: 'Must provide title and contents' });
@@ -53,12 +50,12 @@ server.put('/posts', (req, res) => {
   const { id, title, contents } = req.body;
   if (id === undefined || !title || !contents) {
     res.status(STATUS_USER_ERROR);
-    res.send({ error: "Must provide title, contents, and id" });
+    res.send({ error: 'Must provide title, contents, and id' });
     return;
   }
-  const findPostById = post => {
-    return post.id == id;
-	}
+  const findPostById = (post) => {
+    return post.id === id;
+  };
   const foundPost = posts.find(findPostById);
   if (!foundPost) {
     res.status(STATUS_USER_ERROR);
@@ -74,30 +71,22 @@ server.delete('/posts', (req, res) => {
   const { id } = req.body;
   if (id === undefined) {
     res.status(STATUS_USER_ERROR);
-    res.send({ error: "Must provide id" });
+    res.send({ error: 'Must provide id' });
     return;
   }
   let removedPost = null;
-  for(let i = 0; i < posts.length; i++) {
-    if (posts[i].id == id) {
+  for (let i = 0; i < posts.length; i++) {
+    if (posts[i].id === id) {
       removedPost = posts.splice(i, 1);
       break;
     }
   }
   if (!removedPost) {
-  	res.status(STATUS_USER_ERROR);
-  	res.send({ error: "Post not found by that id" });
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: 'Post not found by that id' });
   } else {
     res.send(removedPost);
   }
-})
+});
 
 module.exports = { posts, server };
-
-
-
-
-
-
-
-
