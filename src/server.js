@@ -24,10 +24,10 @@ server.get('/posts', (req, res) => {
       res.status(STATUS_USER_ERROR);
       res.send({ error: `No posts were found using the term (${term})` });
     } else {
-      res.send({ posts: termPosts });
+      res.send(termPosts);
     }
   } else {
-    res.send({ posts, length: posts.length });
+    res.send(posts);
   }
 });
 
@@ -43,7 +43,7 @@ server.post('/posts', (req, res) => {
   }
   posts.push(newPost);
   postId++;
-  res.send({ posts: newPost });
+  res.send(newPost);
 });
 
 server.put('/posts', (req, res) => {
@@ -85,7 +85,7 @@ server.delete('/posts', (req, res) => {
     res.status(STATUS_USER_ERROR);
     res.send({ error: 'Post not found by that id' });
   } else {
-    res.send(removedPost);
+    res.send({ success: true });
   }
 });
 
