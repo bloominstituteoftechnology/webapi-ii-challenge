@@ -54,7 +54,7 @@ server.post('/posts', (req, res) => {
 
 server.put('/posts', (req, res) => {
   const { id, title, contents } = req.body;
-  if (!title || !contents || !id) {
+  if (!title || !contents || id === undefined) {
     return handleUserError(
       { error: 'Provide title/contents/id in order to update an object' },
       res,
@@ -81,7 +81,7 @@ server.put('/posts', (req, res) => {
 
 server.delete('/posts', (req, res) => {
   const { id } = req.body;
-  if (!id) {
+  if (id === undefined) {
     return handleUserError({ error: 'Provide a valid ID, please' }, res);
   }
   const post = posts.find((newPost) => {
@@ -98,10 +98,6 @@ server.delete('/posts', (req, res) => {
   res.json({ success: true });
 });
 
-  /* server.listen(3000, (err) => {
-    if (err) console.log('error: ', err);
-    console.log('server is running on port 3000');
-  });
-}); */
+// });
 
 module.exports = { posts, server };
