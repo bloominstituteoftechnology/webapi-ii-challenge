@@ -9,6 +9,7 @@ const posts = [{
   title: 'ma',
   content: 'Habiassdada'
 }];
+let id = 1;
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -30,6 +31,18 @@ server.get('/posts', (req, res) => {
 
 server.post('/posts', (req, res) => {
   const { title, contents } = req.body;
+  if (!title) {
+    res.status(STATUS_USER_ERROR);
+    res.json('err: you must provide a title!');
+  }
+  if (!contents) {
+    res.status(STATUS_USER_ERROR);
+    res.json('err: you must provide a contents!')
+  }
+   const newPost = {newId: id++, title, contents};
+  
+   res.json(newPost);
+
 });
 
 
