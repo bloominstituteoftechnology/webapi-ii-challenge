@@ -20,29 +20,41 @@ const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
 
-server.get('/posts', (req, res) => {
-  const term = req.query.term;
-  let searchResults = [
-    {
-      title: 'Title 3',
-      contents: 'fish fly',
-    }
-  ];
-  if (term) {
-    for (let i = 0; i < posts.length; i++) {
-      const postValue = Object.values(posts[i]);
-      postValue.forEach(value => {
-        if (value.indexOf(term !== -1)) {
-          searchResults.push(posts[i]);
-        }
-      });
-    }
-    res.send(searchResults);
-  } else {
-    res.send(posts);
-  }
-});
 
 // TODO: your code to handle requests
+
+server.get('/posts', (req, res) => {
+  const term = req.query.term;
+  const searchResults = [];
+  if (term) {
+    posts.forEach((element) => {
+      if (element.title.includes(term) || element.content.includes(term)) {
+        searchResults.push(element);
+      } else {
+        res.send({ error: 'No match!' });
+      }
+    });
+    res.send(searchResults);
+  }
+  res.status(200);
+  res.send(posts);
+});
+
+let idCounter = 1;
+
+server.post('/posts', (req, res) => {
+  const title = req.body.title;
+  const contents = req.body.contents;
+  const newObj = { title: '', contents: '', id: idCounter };
+  if (!title || !contents) {
+    res.send({ error: 'Error message' });
+  } else {
+    newObj.title = title;
+    newObj.contents = contents;
+    newObj.id = idCounter++;
+    posts.push(newObj);
+    res.json(posts);
+  }
+});
 
 module.exports = { posts, server };
