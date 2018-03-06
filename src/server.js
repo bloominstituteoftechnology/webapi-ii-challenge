@@ -8,8 +8,8 @@ const STATUS_USER_ERROR = 422;
 const posts = [
   { 
     title: "Title",
-    content: "Content",
-    id: 1
+    contents: "Content",
+    id: "1"
   }
 ];
 
@@ -65,6 +65,53 @@ server.post('/posts', (req, res) => {
     res.json(post);
   }
 
+});
+
+
+
+// ### `PUT /posts`
+// When the client makes a `PUT` request to `/posts`:
+
+// - Ensure that the client provides `id`, `title`, and `contents` in the request
+//   body. If any of these don't exist, send an object of the form `{ error: "Error
+//   message" }` as a JSON response. Make sure to respond with an appropriate
+//   status code.
+
+// - If the `id` doesn't correspond to a valid post, respond with an error in the
+//   same form as above.
+
+// - Modify the post with the given `id`, updating its `title` and `contents`.
+//   Respond with the newly updated post object in a JSON response.
+
+server.put('/posts', (req, res) => {
+  const { id, title, contents} = req.body;
+  if(!id || !title || !contents){
+    res.status(STATUS_USER_ERROR);
+    res.json({error: "Missing id, title or contents"});
+  }
+
+  if (id) {
+    const postFound = posts.filter((post) => {
+      return post.id === id;
+    });
+
+
+    if(postFound.length === 0){
+      res.status(STATUS_USER_ERROR);
+      res.json({error: "Post not found"});
+    }
+
+    if(postFound.length > 0) {
+      posts.forEach((post) => {
+        if (post.id === id) {
+          post.title = title;
+          post.contents = contents;
+        }
+        res.status(200);
+        res.json(post);
+      });
+    }
+  }
 });
 
 
