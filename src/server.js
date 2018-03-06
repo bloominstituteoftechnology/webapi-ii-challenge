@@ -6,7 +6,7 @@ const STATUS_USER_SUCCESS = 200;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [
+let posts = [
   {
     id: 1,
     title: 'This is a Title of a post',
@@ -29,7 +29,6 @@ server.use(bodyParser.json());
 
 server.get('/posts', (req, res) => {
   let filteredPosts;
-
   if (req.query.term) {
     const term = req.query.term.toLowerCase();
     filteredPosts = posts.filter((post) => {
@@ -52,22 +51,52 @@ server.get('/posts', (req, res) => {
 });
 
 server.post('/posts', (req, res) => {
-  if(req.body.title === undefined || req.body.contents === undefined) {
+  const { title, contents } = req.body;
+  if (title === undefined || contents === undefined) {
     res.status(STATUS_USER_ERROR);
-    res.send({ error: "Error message" });
+    res.send({ error: 'Error message' });
   } else {
     idCounter++;
     const newPost = {
       id: idCounter,
-      ...req.body
-    }
+      ...req.body,
+    };
     posts.push(newPost);
     res.status(STATUS_USER_SUCCESS);
     res.send(newPost);
-  }  
+  }
 });
 
-server.put('/posts', (req, res) => {});
+server.put('/posts', (req, res) => {
+  const { id, title, contents } = req.body;
+  let foundPost = false;
+  posts.forEach((post) => {
+    if (post.id === id) foundPost = true;
+  });
+  if (
+    id === undefined ||
+    title === undefined ||
+    contents === undefined ||
+    !foundPost
+  ) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: 'You must enter an existing id and title and contents' });
+  } else {
+    const newPost = {
+      id,
+      title,
+      contents,
+    };
+    posts = posts.map((post) => {
+      if (post.id === id) {
+        return newPost;
+      }
+      return post;
+    });
+    res.status(STATUS_USER_SUCCESS);
+    res.send(newPost);
+  }
+});
 
 server.delete('/posts', (req, res) => {});
 
