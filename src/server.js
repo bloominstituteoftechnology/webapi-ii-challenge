@@ -53,9 +53,28 @@ server.delete('/posts', (req, res) => {
       res.send({ success: true });
     } else {
       res.status(STATUS_USER_ERROR);
-      res.send({ error: "Post does not exist!"});
+      res.send({ error: "Post with that ID does not exist!"});
     }
   })
 })
+
+server.put('/posts', (req, res) => {
+  const clientProvided = req.body;
+  if(!clientProvided.id || !clientProvided.title || !clientProvided.content) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: "YOU ARE MISSING SOMETHING, COULD BE ANYTHING" });
+  }
+  posts.forEach((elem) => {
+    if(clientProvided.id.toString() === elem["id"].toString()) {
+      elem["title"] = clientProvided.title;
+      elem["content"] = clientProvided.content;
+      res.status(STATUS_SUCCESS);
+      res.send(elem);
+    } else {
+      res.status(STATUS_USER_ERROR);
+      res.send({ error: "Post with that ID does not exist!"});
+    }
+  });
+});
 
 module.exports = { posts, server };
