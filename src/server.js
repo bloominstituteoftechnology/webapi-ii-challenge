@@ -13,4 +13,28 @@ server.use(bodyParser.json());
 
 // TODO: your code to handle requests
 
+server.get('/posts', (req, res) => {
+  const term = req.query.term;
+  if (term) {
+    const newPosts = posts.filter((post) => {
+      return posts.title.includes(term) || posts.contents.includes(term);
+    });
+    res.json(newPosts);
+  } else {
+    res.json(posts);
+  }
+});
+
+// server.post('/posts:', (req, res) => {
+//   const title = req.body.title;
+//
+//   if (title.length >= 1 && contents.length >= 1) {
+//     res.json(posts);
+//   } else {
+//     res.status(STATUS_USER_ERROR);
+//     res.json('You must submit both the title and the content')
+//   }
+// });
+
+
 module.exports = { posts, server };
