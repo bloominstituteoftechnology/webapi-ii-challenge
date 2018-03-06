@@ -19,7 +19,7 @@ server.use(bodyParser.json());
 
 // TODO: your code to handle requests
 server.get('/', (req, res) => {
-    res.send('<h1>Welcome to the Jungle!</h1>');
+    res.send('<h1>Posts</h1>');
 }
 
 server.get('/posts', (req, res) => {
@@ -57,10 +57,25 @@ server.put('/posts', (req, res) => {
         if (post1) {
             Object.assign(post1, req.body);
             res.status(200).json(post1);
-        } else  {
-            res.status(STATUS_USER_ERROR).json({ error: 'There is no post with that ID'});
-        } 
+        } else {
+            res.status(STATUS_USER_ERROR).json({ error: 'There is no post with that ID' });
+        }
     } else {
-        res.status(STATUS_USER_ERROR).json({ error: 'Please provide title, contents and ID'});
+        res.status(STATUS_USER_ERROR).json({ error: 'Please provide title, contents and ID' });
     }
-})
+});
+
+server.delete('/posts', (req, res) => {
+    const { id } = req.body;
+    if (id) {
+        const postIndex = posts.findIndex(post => post.id === Number(id));
+        if (postIndex !== -1) {
+            posts.splice(postIndex, 1);
+            res.status(200).json({ success: true });
+        } else {
+            res.status(STATUS_USER_ERROR).json({ error: 'Post ID cannot be found' });
+        }
+    } else {
+        res.status(STATUS_USER_ERROR).json({ error: 'Please provide the post ID' })
+    }
+});
