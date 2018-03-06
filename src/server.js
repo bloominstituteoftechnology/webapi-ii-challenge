@@ -69,7 +69,7 @@ server.post('/posts', (req, res) => {
   }
   newPost.id = ++idCounter;
   posts.push(newPost);
-  res.send(newPost);
+  res.json(newPost);
 });
 
 module.exports = {posts, server};
