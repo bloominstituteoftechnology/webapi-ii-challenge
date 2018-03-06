@@ -7,10 +7,34 @@ const STATUS_USER_ERROR = 422;
 // to change this to a let binding if you need to reassign it.
 const posts = [];
 
+let nextId = 1;
+
+function getNextId() {
+    return nextId++;
+}
+
 const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
+server.get('/', (req, res) => {
+    res.send('<h1>Welcome to the Jungle!</h1>');
+}
+
+server.get('/posts', (req, res) => {
+    const searchTerm = req.query.term;
+        if (searchTerm) {
+            const filteredPosts = posts.filter(post => {
+                return (
+                    post.title.includes(searchTerm) || post.contents.includes(searchTerm)
+                );
+            });
+            res.status(200).json(filteredPosts);
+        } else {
+            res.status(200).json(posts);
+        }
+    })
+
 
 module.exports = { posts, server };
