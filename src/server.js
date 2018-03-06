@@ -37,6 +37,7 @@ server.get('/posts', (req, res) => {
   }
 });
 
+let nextID = 4;
 server.post('/posts', (req, res) => {
   if (!req.body.title) {
     res.status(STATUS_USER_ERROR);
@@ -44,6 +45,11 @@ server.post('/posts', (req, res) => {
   } else if (!req.body.contents) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'You Did Not Include a Title' });
+  } else {
+    const note = { id: nextID++, title: req.body.title, contents: req.body.contents };
+    posts.push(note);
+    res.status(STATUS_OKAY);
+    res.json();
   }
 });
 
