@@ -1,13 +1,14 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const cors = require('cors');
 
 const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-let posts = [
+const posts = [
   { 
-    title: "Title",
+    title: "Dummy Post from server",
     contents: "Content",
     id: "1"
   }
@@ -16,6 +17,7 @@ let posts = [
 const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
+server.use(cors());
 
 // TODO: your code to handle requests
 
@@ -49,6 +51,7 @@ server.get('/posts', (req, res) => {
 //   to the client in a JSON response.
 
 server.post('/posts', (req, res) => {
+  console.log(req.body);
   const { title, contents } = req.body;
   // console.log(req.body);
   if (!title || !contents) {
@@ -127,7 +130,6 @@ server.delete('/posts', (req, res) => {
     posts = posts.filter((post) => {
       return post.id !== id;
     });
-    console.log('after return');
     res.status(200);
     res.json({ success: true });
   }
