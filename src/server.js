@@ -26,7 +26,7 @@ server.get('/posts', (req, res) => {
         });
         if (arraySearch.length < 1) {
             res.status(404);
-            res.json({ error: `${term} not found`});
+            res.json(`${term} not found`);
         } else {
             res.json(arraySearch);
         }
