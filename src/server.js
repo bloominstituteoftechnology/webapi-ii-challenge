@@ -5,7 +5,7 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [{ title: "The post title", contents: "The post contents" }];
+const posts = [{ title: "The post title", contents: "The post contents" }, { title: "The water title", contents: "The post contents" }];
 // posts is an array of objects - { title: "The post title", contents: "The post contents" }
 
 const server = express();
@@ -17,12 +17,21 @@ server.get('/posts', (req, res) => {
 // If the client provides the query-string parameter term, filter the posts to those that have the term in their title or contents (or both), and send down those posts in a JSON response.
 // Otherwise, send down the full array of posts as a JSON response.
     const { term } = req.query;
-    if (!term) {
-        res.json(posts);
-    } else {
-        for (let i=0; i<posts.length; i++) {
-            (Object.values(posts[i]).includes(term)) ? res.json(posts[i]): res.json(posts);
+    if (term) {
+        const arraySearch = posts.filter(post => {
+            return (
+                post.title.toLowerCase().includes(term.toLowerCase()) ||
+                post.contents.toLowerCase().includes(term.toLowerCase())
+            );
+        });
+        if (arraySearch.length < 1) {
+            res.status(404);
+            res.json({ error: `${term} not found`});
+        } else {
+            res.json(arraySearch);
         }
+    } else {
+        res.json(posts);
     }
 });
 
