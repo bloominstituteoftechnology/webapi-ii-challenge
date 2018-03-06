@@ -98,6 +98,26 @@ server.put('/posts', (req, res) => {
   }
 });
 
-server.delete('/posts', (req, res) => {});
+server.delete('/posts', (req, res) => {
+  const { id } = req.body;
+  let foundPost = false;
+  if (req.body.id) {
+    posts.forEach((post) => {
+      if (post.id === id) {
+        foundPost = true;
+      }
+    });
+  } 
+  if (foundPost === true) {
+    posts = posts.filter(post => {
+     return post.id !== req.body.id;
+    });
+    res.status(STATUS_USER_SUCCESS);
+    res.send({ success:true });
+  } else {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: "Error message" });
+  }
+});
 
 module.exports = { posts, server };
