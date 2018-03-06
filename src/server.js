@@ -6,7 +6,6 @@ const STATUS_USER_SUCCESS = 200;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-let idCounter = 3;
 const posts = [
   {
     id: 1,
@@ -19,6 +18,8 @@ const posts = [
     contents: 'This is not the body',
   },
 ];
+
+let idCounter = posts.length;
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -50,7 +51,21 @@ server.get('/posts', (req, res) => {
   }
 });
 
-server.post('/posts', (req, res) => {});
+server.post('/posts', (req, res) => {
+  if(req.body.title === undefined || req.body.contents === undefined) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: "Error message" });
+  } else {
+    idCounter++;
+    const newPost = {
+      id: idCounter,
+      ...req.body
+    }
+    posts.push(newPost);
+    res.status(STATUS_USER_SUCCESS);
+    res.send(newPost);
+  }  
+});
 
 server.put('/posts', (req, res) => {});
 
