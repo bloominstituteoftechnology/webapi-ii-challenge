@@ -38,9 +38,11 @@ server.post('/posts', (req, res) => {
   if (title !== undefined && contents !== undefined) {
     const newPostObj = {
       title: title,
-      contents: contents
+      contents: contents,
+      id: uniqueID
     };
     postArr.push(newPostObj);
+    uniqueID++;
     res.status(200);
     res.send('theyre defined');
   } else {
