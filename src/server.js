@@ -8,18 +8,28 @@ const STATUS_USER_ERROR = 422;
 
 let idCounter = 4;
 
-const posts = [{title: "b",
-	contents: "b",
-id: 1},
-              {title: "ac",
-								contents: "b",
-							id: 2},
-              {title: "b",
-								contents: "cd",
-							id: 3},
-              {title: "e",
-								contents: "f",
-							id: 4} ];
+const posts = [
+  {
+    title: 'b',
+    contents: 'b',
+    id: 1,
+  },
+  {
+    title: 'ac',
+    contents: 'b',
+    id: 2,
+  },
+  {
+    title: 'b',
+    contents: 'cd',
+    id: 3,
+  },
+  {
+    title: 'e',
+    contents: 'f',
+    id: 4,
+  },
+];
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -29,7 +39,7 @@ server.use(bodyParser.json());
 server.get('/posts', (req, res) => {
   const searchTerm = req.query.term;
   if (searchTerm === undefined) {
-    res.send( { userPosts: posts } );
+    res.send({userPosts: posts});
   } else {
     let newArr = [];
     posts.forEach(obj => {
@@ -38,25 +48,28 @@ server.get('/posts', (req, res) => {
       }
     });
     if (newArr.length === 0) {
-      res.send( { userPosts: posts } );
+      res.send({userPosts: posts});
     } else {
-      res.send( { userPosts: newArr } );
+      res.send({userPosts: newArr});
     }
   }
 });
 
 server.post('/posts', (req, res) => {
-	const newPost = req.body;
-	if (!newPost.title) {
-		res.status(405);
-		res.send({ error: "Missing title" });
-		return;
-	}
-	if (!newPost.contents) {
-		res.status(405);
-		res.send({ error: "Missing contents" });
-		return;
-	}
-})
+  const newPost = req.body;
+  if (!newPost.title) {
+    res.status(405);
+    res.send({error: 'Missing title'});
+    return;
+  }
+  if (!newPost.contents) {
+    res.status(405);
+    res.send({error: 'Missing contents'});
+    return;
+  }
+  newPost.id = ++idCounter;
+  posts.push(newPost);
+  res.send(newPost);
+});
 
-module.exports = { posts, server };
+module.exports = {posts, server};
