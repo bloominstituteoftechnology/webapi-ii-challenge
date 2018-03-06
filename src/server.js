@@ -7,7 +7,7 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [];
+let posts = [];
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -66,6 +66,31 @@ server.put('/posts', (req, res) => {
     if (title) foundPost.title = title;
     if (contents) foundPost.age = contents;
     res.json(foundPost);
+  }
+});
+
+server.delete('/posts/:id', (req, res) => {
+  const check = posts.length;
+  const { id } = req.params;
+  if (!id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({
+      error: 'user did not include an id',
+    });
+  } else {
+    posts = posts.filter(post => post.id !== +id);
+    if (posts.length === check) {
+      res.status(STATUS_USER_ERROR);
+      res.json({
+        error: 'user entered id that does not exist',
+      });
+    } else {
+      res.status(STATUS_SUCCESS);
+      res.json({
+        success: true,
+        data: posts,
+      });
+    }
   }
 });
 
