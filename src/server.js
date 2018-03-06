@@ -46,9 +46,9 @@ server.delete('/posts', (req, res) => {
     res.status(STATUS_USER_ERROR);
     res.send({ error: "NO ID error" });
   }
-  posts.forEach((elem) => {
+  posts.forEach((elem, i) => {
     if(clientProvided.id.toString() === elem["id"].toString()) {
-      posts.splice(parseInt(clientProvided.id)-1,1);
+      posts.splice(i, 1);
       res.status(STATUS_SUCCESS);
       res.send({ success: true });
     } else {
@@ -61,21 +61,20 @@ server.delete('/posts', (req, res) => {
 server.put('/posts', (req, res) => {
   const clientProvided = req.body;
   if(clientProvided.id && clientProvided.title && clientProvided.content) {
-    posts.forEach((elem) => {
-    if(clientProvided.id.toString() === elem["id"].toString()) {
-      elem["title"] = clientProvided.title;
-      elem["content"] = clientProvided.content;
-      res.status(STATUS_SUCCESS);
-      res.send(elem);
-    } else {
+    const index = posts.findIndex((elem) => { return clientProvided.id.toString() === elem["id"].toString() } )
+    if (index === -1 ) {
       res.status(STATUS_USER_ERROR);
       res.send({ error: "Post with that ID does not exist!"});
+    } else {
+      posts[index]["title"] = clientProvided.title;
+      posts[index]["content"] = clientProvided.content;
+      res.status(STATUS_SUCCESS);
+      res.send(posts[index]);
     }
-  });
-} else {
-  res.status(STATUS_USER_ERROR);
-  res.send({ error: "YOU ARE MISSING SOMETHING, COULD BE ANYTHING" });
-}
+  } else {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: "YOU ARE MISSING SOMETHING, COULD BE ANYTHING" });
+  }
 });
 
 module.exports = { posts, server };
