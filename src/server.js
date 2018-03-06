@@ -7,24 +7,13 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [
-  {
-    title: 'example one',
-    contents: 'lorem ipsum'
-  },
-  {
-    title: 'example two',
-    contents: 'lorem ipsum'
-  },
-  {
-    title: 'test',
-    contents: 'lorem ipsum'
-  },
-];
+const posts = [];
 
 const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
+
+let idCounter = 0;
 
 
 server.get('/posts', (req, res) => {
@@ -41,10 +30,23 @@ server.get('/posts', (req, res) => {
       posts,
     });
   }
-  res.status(STATUS_SUCCESS);
-  res.send({
-  });
 });
-// TODO: your code to handle requests
+
+server.post('/posts', (req, res) => {
+  const { title, contents } = req.body;
+  if (!title || !contents) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Post must include a title and contents.' });
+  } else {
+    const newPost = {
+      id: idCounter++,
+      title,
+      contents,
+    };
+    posts.push(newPost);
+    res.status(STATUS_SUCCESS);
+    res.json(newPost);
+  }
+});
 
 module.exports = { posts, server };
