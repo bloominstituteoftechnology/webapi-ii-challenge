@@ -66,4 +66,29 @@ server.post('/posts', (req, res) => {
   }
 });
 
+server.put('/posts', (req, res) => {
+  const {
+    title,
+    contents,
+    postID
+  } = req.body;
+
+  const getID = posts.map((post) => {
+    return post.uniqeID;
+  });
+
+  if (title === '' || contents === '' || postID === '') {
+    res.status(STATUS_USER_ERROR).json({ error: 'Must provide id, title, and contents' });
+  } else {
+    const index = getID.indexOf(Number(postID));
+    const updatePost = {
+      uniqueID: Number(postID),
+      title,
+      contents
+    };
+    posts.splice(index, 1, updatePost);
+    res.status(STATUS_SUCCESS).json(updatePost);
+  }
+});
+
 module.exports = { posts, server };
