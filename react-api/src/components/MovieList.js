@@ -1,5 +1,6 @@
 import React from 'react';
 import rp from 'request-promise';
+import Movie from './Movie';
 const thing = {
     '1': 'tt0111161',
     '2': 'tt0068646',
@@ -22,6 +23,18 @@ const thing = {
     '19': 'tt0047478',
     '20': 'tt0076759',
 };
+
+// {
+//     Poster
+//         :
+//         "https://images-na.ssl-images-amazon.com/images/M/MV5BY2Q2NzQ3ZDUtNWU5OC00Yjc0LThlYmEtNWM3NTFmM2JiY2VhXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
+//     Ratings
+//         :
+//         [{}, {value: '98%'}, {}],
+//     Title
+//         :
+//         "The Godfather"
+// }
 class MovieList extends React.Component {
     state = {
         movies: [],
@@ -40,28 +53,31 @@ class MovieList extends React.Component {
             };
             rp(options)
                 .then(res => {
-                    this.state.movies.push(res);
-                    console.log(this.state);
+                    let inter = this.state.movies;
+                    inter.push(res);
+                    this.setState({ movies: inter })
                 })
                 .catch(err => {
-                    console.error(err);
+
                 });
         }
     }
     render() {
         return (
-            <div>
-                {this.state.movies ? (
-                    this.state.movies.map(movie => {
-                        <Movie
+            <div className="MoviesList">
+                <div>MovieList!</div>
+                {this.state.movies.length > 0 ? (
+                    this.state.movies.map((movie, i) => {
+                        return <Movie
+                            key={i}
                             title={movie.Title}
-                            rating={movie.Ratings[1].value}
+                            rating={movie.Ratings[1].Value}
                             posterURL={movie.Poster}
                         />;
                     })
                 ) : (
-                    <div>Loading...</div>
-                )}
+                        <div>Loading...</div>
+                    )}
             </div>
         );
     }
