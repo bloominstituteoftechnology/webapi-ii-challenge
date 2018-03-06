@@ -15,7 +15,6 @@ server.use(bodyParser.json());
 
 let idCounter = 0;
 
-
 server.get('/posts', (req, res) => {
   const { term } = req.query;
   if (term) {
@@ -23,12 +22,10 @@ server.get('/posts', (req, res) => {
       return post.title.includes(term) || post.contents.includes(term);
     });
     res.status(STATUS_SUCCESS);
-    res.send({ filtered });
+    res.json(filtered);
   } else {
     res.status(STATUS_SUCCESS);
-    res.send({
-      posts,
-    });
+    res.json(posts);
   }
 });
 
@@ -61,17 +58,17 @@ server.put('/posts', (req, res) => {
     res.json({ error: 'Post needs an id, title, and contents' });
   } else if (!foundPost) {
     res.status(STATUS_USER_ERROR);
-    res.json('No post found by that ID');
+    res.json({ error: 'No post found by that ID' });
   } else {
     if (title) foundPost.title = title;
-    if (contents) foundPost.age = contents;
+    if (contents) foundPost.contents = contents;
     res.json(foundPost);
   }
 });
 
-server.delete('/posts/:id', (req, res) => {
+server.delete('/posts', (req, res) => {
   const check = posts.length;
-  const { id } = req.params;
+  const { id } = req.body;
   if (!id) {
     res.status(STATUS_USER_ERROR);
     res.json({
@@ -88,7 +85,6 @@ server.delete('/posts/:id', (req, res) => {
       res.status(STATUS_SUCCESS);
       res.json({
         success: true,
-        data: posts,
       });
     }
   }
