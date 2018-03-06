@@ -73,20 +73,23 @@ server.put('/posts', (req, res) => {
     postID
   } = req.body;
 
-  const getID = posts.map((post) => {
-    return post.uniqeID;
+  let indexHolder = null;
+
+  posts.forEach((post, index) => {
+    if (post.uniqueID === postID) {
+      indexHolder = index;
+    }
   });
 
   if (title === '' || contents === '' || postID === '') {
     res.status(STATUS_USER_ERROR).json({ error: 'Must provide id, title, and contents' });
-  } else {
-    const index = getID.indexOf(Number(postID));
+  } else if (indexHolder !== null) {
     const updatePost = {
-      uniqueID: Number(postID),
+      uniqueID: postID,
       title,
       contents
     };
-    posts.splice(index, 1, updatePost);
+    posts[indexHolder] = updatePost;
     res.status(STATUS_SUCCESS).json(updatePost);
   }
 });
