@@ -7,7 +7,7 @@ const STATUS_SUCCESS = 200;
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
 let idCounter = 0;
-const posts = [];
+let posts = [];
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -66,6 +66,29 @@ server.put('/posts', (req, res) => {
   } else {
     res.status(STATUS_USER_ERROR);
     res.send({ error: 'You did not include anything in either title, content and/or id' });
+  }
+});
+
+server.delete('/posts', (req, res) => {
+  if (req.body.id || req.body.id === 0) {
+    let matched = false;
+    posts = posts.filter((item) => {
+      if (req.body.id !== item.id) {
+        return item;
+      }
+      matched = true;
+      return null;
+    });
+    if (matched) {
+      res.status(STATUS_SUCCESS);
+      res.send({ success: true });
+    } else {
+      res.status(STATUS_USER_ERROR);
+      res.send({ error: 'no corresponding id was found' });
+    }
+  } else {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: 'you did not give us a valid id' });
   }
 });
 
