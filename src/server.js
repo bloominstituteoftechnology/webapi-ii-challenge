@@ -12,7 +12,6 @@ const posts = [
 		content: 'content',
 		id: 1
   },
-
   {
     title: 'test search',
 		content: 'content search',
@@ -27,22 +26,30 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
-
 server.get('/posts/', (req, res) => {
   res.status(200);
   res.send(posts);
 });
 
 server.get('/posts/search', (req, res) => {
-  const title = req.query.title;
-  let filteredPosts = [];
+  const title = req.query.title.toLowerCase();
+	let filteredPosts = [];
+
   if (title) {
-    filteredPosts = posts.filter((post) => {
-      return title === post.title;
+		filteredPosts = posts.filter((post) => {
+			let postTitle = post.title.toLowerCase();
+			postTitle = postTitle.split(' ');
+      return postTitle.includes(title);
     });
-  }
-  res.status(200);
-  res.send(filteredPosts);
+	}
+	
+	if (filteredPosts.length === 0) {
+		res.status(200);
+		res.send(posts);
+	} else {
+		res.status(200);
+		res.send(filteredPosts);
+	}
 });
 
 server.post('/posts/', (req, res) => {
