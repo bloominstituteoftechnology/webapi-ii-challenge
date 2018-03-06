@@ -14,3 +14,4 @@ server.use(bodyParser.json());
 // TODO: your code to handle requests
 
 module.exports = { posts, server };
+// test
