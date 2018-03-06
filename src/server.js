@@ -5,14 +5,14 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [
+let posts = [
   {
-    id: 10,
+    id: 0,
     title: 'Title 1',
     contents: 'dogs run',
   },
   {
-    id: 11,
+    id: 1,
     title: 'Title 2',
     contents: 'cats meow',
   },
@@ -28,7 +28,7 @@ server.get('/posts', (req, res) => {
   const term = req.query.term;
   const searchResults = [];
   if (term) {
-    posts.forEach(element => {
+    posts.forEach((element) => {
       if (element.title.includes(term) || element.content.includes(term)) {
         searchResults.push(element);
       } else {
@@ -66,16 +66,30 @@ server.put('/posts', (req, res) => {
     res.send({ error: 'Error message' });
     res.status(422);
   }
-  posts.forEach(element => {
+  posts.forEach((element) => {
     if (element.id !== id) {
       res.send({ error: 'Error message' });
     } else if (element.id === id) {
-      element.title = title; 
+      element.title = title;
       element.contents = contents;
       res.send(element);
     }
   });
+});
 
+server.delete('/posts', (req, res) => {
+  const id = req.body.id;
+  if (!id) {
+    res.send({ error: 'Error message' });
+  }
+  posts = posts.filter(post => post.id !== id);
+  res.send({ success: true });
+  // posts.forEach((element) => {
+  //   if (element.id !== id) {
+  //     res.send({ error: 'Error message' });
+  //   } else {
+  //   }
+  // });
 });
 
 module.exports = { posts, server };
