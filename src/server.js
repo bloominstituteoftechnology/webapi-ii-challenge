@@ -13,6 +13,23 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
+posts = [
+  {
+    id: 0,
+    title: "First post title",
+    contents: "First post contents"
+  },
+  {
+    id: 1,
+    title: "Second post title",
+    contents: "Second post contents"
+  },
+  {
+    id: 2,
+    title: "Third post title",
+    contents: "Third post contents"
+  }
+]
 server.get('/__', (req, res) => {
   if (!req.___._____) {
 
@@ -23,7 +40,10 @@ server.get('/__', (req, res) => {
   }
 });
 
-server.post('/__', (req, res) => {
+server.post('/', (req, res) => {
+  const {
+
+  }
   if (!req.___._____) {
 
     // some code here
