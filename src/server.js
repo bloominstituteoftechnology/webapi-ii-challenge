@@ -5,7 +5,7 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [
+let posts = [
   { 
     title: "Title",
     contents: "Content",
@@ -68,23 +68,10 @@ server.post('/posts', (req, res) => {
 });
 
 
-
-// ### `PUT /posts`
-// When the client makes a `PUT` request to `/posts`:
-
-// - Ensure that the client provides `id`, `title`, and `contents` in the request
-//   body. If any of these don't exist, send an object of the form `{ error: "Error
-//   message" }` as a JSON response. Make sure to respond with an appropriate
-//   status code.
-
-// - If the `id` doesn't correspond to a valid post, respond with an error in the
-//   same form as above.
-
-// - Modify the post with the given `id`, updating its `title` and `contents`.
-//   Respond with the newly updated post object in a JSON response.
-
 server.put('/posts', (req, res) => {
+
   const { id, title, contents} = req.body;
+
   if(!id || !title || !contents){
     res.status(STATUS_USER_ERROR);
     res.json({error: "Missing id, title or contents"});
@@ -111,6 +98,38 @@ server.put('/posts', (req, res) => {
         res.json(post);
       });
     }
+  }
+});
+
+
+// ### `DELETE /posts`
+// When the client makes a `DELETE` request to `/posts`:
+
+// - Ensure that the client provides an `id` in the request body, and that the `id`
+//   corresponds to a valid post. If there's an error, send an object of the form
+//   `{ error: "Error message" }` as a JSON response. Make sure to respond with an
+//   appropriate status code.
+
+// - Remove the post with the given `id` from the array of posts. Return the
+//   object `{ success: true }` in a JSON response.
+
+
+server.delete('/posts', (req, res) => {
+
+  const { id } = req.body;
+
+  if(!id){
+    res.status(STATUS_USER_ERROR);
+    res.json({error: "Missing id"});
+  }
+
+  if (id) {
+    posts = posts.filter((post) => {
+      return post.id !== id;
+    });
+    console.log('after return');
+    res.status(200);
+    res.json({ success: true });
   }
 });
 
