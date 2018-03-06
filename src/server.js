@@ -13,26 +13,44 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
-server.post('/gues', (req, res) => {
-  if (!req.body.letter) {
-    res.status(STATUS_USER_ERROR);
-    res.json({error: "User must provide a letter"});
-  } else if (req.body.letter.length >1) {
-    res.status(STATUS_USER_ERROR);
-    res.json({error: "User must provide one letter only"});
-  } else if (typeof req.body.letter !== 'string') {
-    res.status(STATUS_USER_ERROR);
-    res.json({error: "Letter must be provided as a string"});
-  } else if (guessedLetters[req.body.letter]) {
-    res.status(STATUS_USER_ERROR);
-    res.json({error: 'The letter "${req.body.letter}" was already guessed'});
-  } else {
-    guessedLetters[req.body.letter] = true;
+server.get('/__', (req, res) => {
+  if (!req.___._____) {
+
+    // some code here
+  }  else {
     res.status(STATUS_SUCCESS);
     res.send();
   }
 });
 
+server.post('/__', (req, res) => {
+  if (!req.___._____) {
 
+    // some code here
+  }  else {
+    res.status(STATUS_SUCCESS);
+    res.send();
+  }
+});
+
+server.put('/__', (req, res) => {
+  if (!req.___._____) {
+
+    // some code here
+  }  else {
+    res.status(STATUS_SUCCESS);
+    res.send();
+  }
+});
+
+server.delete('/__', (req, res) => {
+  if (!req.___._____) {
+
+    // some code here
+  }  else {
+    res.status(STATUS_SUCCESS);
+    res.send();
+  }
+});
 
 module.exports = { posts, server };
