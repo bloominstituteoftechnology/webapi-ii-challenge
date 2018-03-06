@@ -6,18 +6,22 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
+let idGen = 3;
 const posts = [
   {
     title: 'X One',
-    contents: 'The post contents'
+    contents: 'The post contents',
+    id: 0
   },
   {
     title: 'X Two',
-    contents: 'The post contents'
+    contents: 'The post contents',
+    id: 1
   },
   {
     title: 'X Three',
-    contents: 'The target contents'
+    contents: 'The target contents',
+    id: 2
   }
 ];
 
@@ -58,6 +62,26 @@ server.get('/posts', (req, res) => {
     res.status(STATUS_SUCCESS);
     res.send({ results });
   }
+});
+
+server.post('/posts', (req, res) => {
+  const { body } = req;
+  if (
+    !body.hasOwnProperty('title') ||
+    !body.hasOwnProperty('contents') ||
+    body['title'] === '' ||
+    body['contents'] === ''
+  ) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: 'Error Message' });
+  }
+  const { title, contents } = body;
+  title.toString();
+  contents.toString();
+  posts.push({ title, contents, id: idGen });
+  ++idGen;
+  res.status(STATUS_SUCCESS);
+  res.send({ posts });
 });
 
 // TODO: your code to handle requests
