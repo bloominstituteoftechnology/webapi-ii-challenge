@@ -6,40 +6,54 @@ const STATUS_USER_ERROR = 422; //Unprocessable Entity
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [];
+// let posts = [];
 
 const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
-posts = [
+let posts = [
   {
     id: 0,
     title: "First post title",
-    contents: "First post contents"
+    content: "First post content"
   },
   {
     id: 1,
     title: "Second post title",
-    contents: "Second post contents"
+    content: "Second post content"
   },
   {
     id: 2,
     title: "Third post title",
-    contents: "Third post contents"
+    content: "Third post content"
   }
 ]
-server.get('/__', (req, res) => {
-  if (!req.___._____) {
-
+server.get('/posts/:term', (req, res) => {
+  const {
+    term
+  } =req.params;
+  // console.log("Third",term);
+  //  '/posts/blue' in browser
+  let result=[];  // holds all hits.
+  if (term) { 
     // some code here
+    for (let post in posts){
+      if(post.title.toLowerCase().includes(term.toLowerCase())
+      || (post.content.toLowerCase().includes(term.toLowerCase())))
+      result.push(posts[post]);
+    }
   }  else {
     res.status(STATUS_SUCCESS);
-    res.send();
+    res.send(posts); // sends everything if no match
+  }
+  if(result===[]){
+    res.status(STATUS_SUCCESS);
+    res.send(posts); // sends everything if no match
   }
 });
-
+/*
 server.post('/', (req, res) => {
   const {
 
@@ -51,6 +65,7 @@ server.post('/', (req, res) => {
     res.status(STATUS_SUCCESS);
     res.send();
   }
+  if result=[]
 });
 
 server.put('/__', (req, res) => {
@@ -72,5 +87,5 @@ server.delete('/__', (req, res) => {
     res.send();
   }
 });
-
+*/
 module.exports = { posts, server };
