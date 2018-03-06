@@ -49,4 +49,24 @@ server.post('/posts', (req, res) => {
   }
 });
 
+server.put('/posts', (req, res) => {
+  const { id, title, contents } = req.body;
+  const findPostByID = (post) => {
+    return post.id === +id;
+  };
+  const foundPost = posts.find(findPostByID);
+
+  if (!id || !title || !contents) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Post needs an id, title, and contents' });
+  } else if (!foundPost) {
+    res.status(STATUS_USER_ERROR);
+    res.json('No post found by that ID');
+  } else {
+    if (title) foundPost.title = title;
+    if (contents) foundPost.age = contents;
+    res.json(foundPost);
+  }
+});
+
 module.exports = { posts, server };
