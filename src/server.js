@@ -46,4 +46,27 @@ server.post('/posts', (req, res) => {
   }
 });
 
+server.put('/posts', (req, res) => {
+  if (req.body.title && req.body.contents && (req.body.id || req.body.id === 0)) {
+    let matched = false;
+    posts.forEach((item, i) => {
+      if (req.body.id === item.id) {
+        matched = true;
+        posts.splice(i, 1, req.body);
+      }
+    });
+    if (!matched) {
+      res.status(STATUS_USER_ERROR);
+      res.send({ error: `The provided ID, ${req.body.id}, did not match any posts` });
+    } else {
+      res.status(STATUS_SUCCESS);
+
+      res.send(req.body);
+    }
+  } else {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: 'You did not include anything in either title, content and/or id' });
+  }
+});
+
 module.exports = { posts, server };
