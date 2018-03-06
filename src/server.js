@@ -34,8 +34,7 @@ server.get('/posts', (req, res) => {
         } else {
             res.status(200).json(posts);
         }
-    })
-
+    });
 module.exports = { posts, server };
 
 server.post('./posts', (req, res) => {
@@ -47,6 +46,21 @@ server.post('./posts', (req, res) => {
         posts.push(post);
         res.status(200).json(post);
     } else {
-        res.status(STATUS_USER_ERROR).json({ error: 'Please provide title contents.'});
+        res.status(STATUS_USER_ERROR).json({ error: 'Please provide title contents.' });
     }
 });
+
+server.put('/posts', (req, res) => {
+    const { title, contents, id } = req.body;
+    if (title && contents && id) {
+        const post1 = posts.find(post => post.id === Number(id));
+        if (post1) {
+            Object.assign(post1, req.body);
+            res.status(200).json(post1);
+        } else  {
+            res.status(STATUS_USER_ERROR).json({ error: 'There is no post with that ID'});
+        } 
+    } else {
+        res.status(STATUS_USER_ERROR).json({ error: 'Please provide title, contents and ID'});
+    }
+})
