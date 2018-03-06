@@ -46,16 +46,15 @@ server.delete('/posts', (req, res) => {
     res.status(STATUS_USER_ERROR);
     res.send({ error: "NO ID error" });
   }
-  posts.forEach((elem, i) => {
-    if(clientProvided.id.toString() === elem["id"].toString()) {
-      posts.splice(i, 1);
-      res.status(STATUS_SUCCESS);
-      res.send({ success: true });
-    } else {
+    const index = posts.findIndex((elem) => { return clientProvided.id.toString() === elem["id"].toString() })
+    if(index === -1) {
       res.status(STATUS_USER_ERROR);
       res.send({ error: "Post with that ID does not exist!"});
+    } else {
+      posts.splice(index, 1);
+      res.status(STATUS_SUCCESS);
+      res.send({ success: true });
     }
-  })
 })
 
 server.put('/posts', (req, res) => {
