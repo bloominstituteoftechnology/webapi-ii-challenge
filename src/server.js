@@ -23,7 +23,7 @@ server.get('/', (req, res) => {
 }
 
 server.get('/posts', (req, res) => {
-    const searchTerm = req.query.term;
+        const searchTerm = req.query.term;
         if (searchTerm) {
             const filteredPosts = posts.filter(post => {
                 return (
@@ -36,5 +36,17 @@ server.get('/posts', (req, res) => {
         }
     })
 
-
 module.exports = { posts, server };
+
+server.post('./posts', (req, res) => {
+    const { title, contents } = req.body;
+    if (title && contents) {
+        const id = getNextId();
+        const post = req.body;
+        post.id = id;
+        posts.push(post);
+        res.status(200).json(post);
+    } else {
+        res.status(STATUS_USER_ERROR).json({ error: 'Please provide title contents.'});
+    }
+});
