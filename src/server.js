@@ -28,9 +28,9 @@ server.use(bodyParser.json());
 
 server.get('/posts', (req, res) => {
   let filteredPosts;
-  const term = req.query.term.toLowerCase();
 
-  if (term) {
+  if (req.query.term) {
+    const term = req.query.term.toLowerCase();
     filteredPosts = posts.filter((post) => {
       return (
         post.title.toLowerCase().indexOf(term) >= 0 ||
@@ -46,7 +46,7 @@ server.get('/posts', (req, res) => {
     }
   } else {
     res.status(STATUS_USER_ERROR);
-    res.send('Please enter a search term.');
+    res.send(posts);
   }
 });
 
