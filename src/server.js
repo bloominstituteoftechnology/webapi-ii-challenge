@@ -41,11 +41,11 @@ server.get('/posts', (req, res) => {
       res.status(STATUS_USER_SUCCESS);
       res.send(filteredPosts);
     } else {
-      res.status(STATUS_USER_ERROR);
+      res.status(STATUS_USER_SUCCESS);
       res.send(posts);
     }
   } else {
-    res.status(STATUS_USER_ERROR);
+    res.status(STATUS_USER_SUCCESS);
     res.send(posts);
   }
 });
@@ -107,16 +107,16 @@ server.delete('/posts', (req, res) => {
         foundPost = true;
       }
     });
-  } 
+  }
   if (foundPost === true) {
-    posts = posts.filter(post => {
-     return post.id !== req.body.id;
+    posts = posts.filter((post) => {
+      return post.id !== req.body.id;
     });
     res.status(STATUS_USER_SUCCESS);
-    res.send({ success:true });
+    res.send({ success: true });
   } else {
     res.status(STATUS_USER_ERROR);
-    res.send({ error: "Error message" });
+    res.send({ error: 'Error message' });
   }
 });
 
