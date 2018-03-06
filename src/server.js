@@ -1,11 +1,16 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 
+const STATUS_SUCCESS = 200;
 const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [];
+const posts = [
+    { title: 'The post title', contents: 'The post contents' },
+    { title: 'The second post title', contents: 'The post contents' },
+    { title: 'The third post title', contents: 'The post contents' }
+];
 
 let nextId = 1;
 
@@ -18,23 +23,20 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
-server.get('/', (req, res) => {
-    res.send('<h1>Posts</h1>');
-}
-
 server.get('/posts', (req, res) => {
-        const searchTerm = req.query.term;
-        if (searchTerm) {
-            const filteredPosts = posts.filter(post => {
-                return (
-                    post.title.includes(searchTerm) || post.contents.includes(searchTerm)
-                );
-            });
-            res.status(200).json(filteredPosts);
-        } else {
-            res.status(200).json(posts);
-        }
-    });
+    const searchTerm = req.query.term;
+    if (searchTerm) {
+        const filteredPosts = posts.filter(post => {
+            return (
+                post.title.includes(searchTerm) || post.contents.includes(searchTerm)
+            );
+        });
+        res.status(STATUS_SUCCESS).json(filteredPosts);
+    } else {
+        res.status(STATUS_SUCCESS).json(posts);
+    }
+});
+
 module.exports = { posts, server };
 
 server.post('./posts', (req, res) => {
