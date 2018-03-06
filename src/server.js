@@ -105,4 +105,28 @@ server.put('/posts', (req, res) => {
   }
 });
 
+server.delete("/posts", (req, res) => {
+  const newPost  = req.body;
+  if (!newPost.id) {
+    res.status(405);
+    res.send({ error: 'Missing ID' });
+    return;
+  }
+
+  let idEqual = false;
+  posts = posts.filter(obj => {
+    if (obj.id !== Number(newPost.id)) {
+      return obj;
+    }
+    idEqual = true;
+  });
+
+  if (idEqual) {
+    res.json({ success: true });
+    } else {
+      res.send({ error: 'ID no match!' });
+    }
+})
+
+
 module.exports = { posts, server };
