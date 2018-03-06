@@ -43,7 +43,11 @@ server.get('/posts', (req, res) => {
       );
     });
     // console.log(searchArray);
-    res.json(searchArray);
+    if (searchArray.length < 1) {
+      res.send(`<h1>${term} was not found</h1>`);
+    } else {
+      res.json(searchArray);
+    }
   } else {
     res.json(posts);
   }
