@@ -60,11 +60,8 @@ server.delete('/posts', (req, res) => {
 
 server.put('/posts', (req, res) => {
   const clientProvided = req.body;
-  if(!clientProvided.id || !clientProvided.title || !clientProvided.content) {
-    res.status(STATUS_USER_ERROR);
-    res.send({ error: "YOU ARE MISSING SOMETHING, COULD BE ANYTHING" });
-  }
-  posts.forEach((elem) => {
+  if(clientProvided.id && clientProvided.title && clientProvided.content) {
+    posts.forEach((elem) => {
     if(clientProvided.id.toString() === elem["id"].toString()) {
       elem["title"] = clientProvided.title;
       elem["content"] = clientProvided.content;
@@ -75,6 +72,10 @@ server.put('/posts', (req, res) => {
       res.send({ error: "Post with that ID does not exist!"});
     }
   });
+} else {
+  res.status(STATUS_USER_ERROR);
+  res.send({ error: "YOU ARE MISSING SOMETHING, COULD BE ANYTHING" });
+}
 });
 
 module.exports = { posts, server };
