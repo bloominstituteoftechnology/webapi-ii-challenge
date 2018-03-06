@@ -91,4 +91,23 @@ server.put('/posts', (req, res) => {
   }
 });
 
+server.delete('/posts', (req, res) => {
+  const {
+    postID
+  } = req.body;
+
+  const getID = posts.map((post) => {
+    return post.uniqeID;
+  });
+
+  if (postID === '') {
+    res.status(STATUS_USER_ERROR).json({ error: 'Must provide an ID' });
+  } else {
+    const index = getID.indexOf(Number(postID));
+
+    posts.splice(index, 1);
+    res.status(STATUS_SUCCESS).json({ success: true });
+  }
+});
+
 module.exports = { posts, server };
