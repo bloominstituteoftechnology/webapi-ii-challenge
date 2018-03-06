@@ -6,6 +6,7 @@ const STATUS_SUCCESS = 200;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
+let idCounter = 0;
 const posts = [];
 
 const server = express();
@@ -15,18 +16,33 @@ server.use(bodyParser.json());
 // TODO: your code to handle requests
 server.get('/posts', (req, res) => {
   if (req.query.term) {
-    let strictRegex = new RegExp(terms, 'i');
-
-    const searched = posts.filter(item => {
+    const strictRegex = new RegExp(req.query.term, 'i');
+    const searched = posts.filter((item) => {
       if (item.title.match(strictRegex) || item.contents.match(strictRegex)) {
         return item;
       }
+      return null;
     });
     res.status(STATUS_SUCCESS);
     res.send(searched);
   } else {
     res.status(STATUS_SUCCESS);
     res.send(posts);
+  }
+});
+
+server.post('/posts', (req, res) => {
+  if (req.body.title && req.body.contents) {
+    const newPost = {};
+    newPost.id = idCounter++;
+    newPost.title = req.body.title;
+    newPost.contents = req.body.contents;
+    posts.push(newPost);
+    res.status(STATUS_SUCCESS);
+    res.send(newPost);
+  } else {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: 'You did not include anything in either title and/or body' });
   }
 });
 
