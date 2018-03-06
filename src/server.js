@@ -27,18 +27,19 @@ server.use(bodyParser.json());
 server.get('/posts', (req, res) => {
   const term = req.query.term;
   const searchResults = [];
-  if (term) {
-    posts.forEach((element) => {
-      if (element.title.includes(term) || element.content.includes(term)) {
-        searchResults.push(element);
-      } else {
-        res.send({ error: 'No match!' });
-      }
-    });
-    res.send(searchResults);
+  if (!term) {
+    res.status(200);
+    res.send(posts);
   }
-  res.status(200);
-  res.send(posts);
+  posts.forEach((element) => {
+    if (element.title.includes(term) || element.contents.includes(term)) {
+      searchResults.push(element);
+    }
+  });
+  if (searchResults.length === 0) {
+    res.send({ error: 'No Match!' });
+  }
+  res.send(searchResults);
 });
 
 let idCounter = 1;
