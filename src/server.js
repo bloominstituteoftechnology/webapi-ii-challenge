@@ -35,14 +35,18 @@ server.use(bodyParser.json());
 server.get('/posts', (req, res) => {
   const term = req.query.term;
   // console.log('term: ', term);
-  const searchArray = posts.filter((post) => {
-    return (
-      post.title.toLowerCase().split(' ').includes(term.toLowerCase()) ||
-      post.contents.toLowerCase().split(' ').includes(term.toLowerCase())
-    );
-  });
-  // console.log(searchArray);
-  res.json(searchArray);
+  if (term) {
+    const searchArray = posts.filter((post) => {
+      return (
+        post.title.toLowerCase().split(' ').includes(term.toLowerCase()) ||
+        post.contents.toLowerCase().split(' ').includes(term.toLowerCase())
+      );
+    });
+    // console.log(searchArray);
+    res.json(searchArray);
+  } else {
+    res.json(posts);
+  }
   /**
    * - If the client provides the query-string parameter `term`, filter the posts to
    those that have the `term` in their `title` or `contents` (or both), and
