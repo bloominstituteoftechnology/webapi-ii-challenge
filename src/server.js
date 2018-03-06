@@ -53,14 +53,32 @@ server.post('/posts', (req, res) => {
   }
 });
 
+const checkID = (idToCheck) => {
+    let flag = false;
+    posts.forEach((post) => {
+      if (post.id === idToCheck) return (flag = true);
+    });
+    return flag;
+  };
+
 server.delete('/posts', (req, res) => {
+    console.log('REQ.BODY.ID', req.body.id);
   if (!req.body.id) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'You Did Not Include an ID' });
   }
-  const id = req.body.id;
-  const result = posts.filter(post => post[id] === req.body.id);
-  posts = result;
+
+  if (!checkID(Number(req.body.id))) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: "The ID You Tried to Delete Doesn's Exist or you entered a non-number" });
+  }
+
+  const id = Number(req.body.id);
+  posts = posts.filter(post => {
+    console.log('POST ID', post.id !== id)  
+    return post.id !== id;
+  });
+  console.log('RESULT', posts);
   res.status(STATUS_OKAY);
   res.json();
 });
