@@ -8,7 +8,7 @@ const STATUS_USER_ERROR = 422;
 
 let idCounter = 4;
 
-const posts = [
+let posts = [
   {
     title: 'b',
     contents: 'b',
@@ -39,7 +39,7 @@ server.use(bodyParser.json());
 server.get('/posts', (req, res) => {
   const searchTerm = req.query.term;
   if (searchTerm === undefined) {
-    res.send({userPosts: posts});
+    res.send({ userPosts: posts });
   } else {
     let newArr = [];
     posts.forEach(obj => {
@@ -48,9 +48,9 @@ server.get('/posts', (req, res) => {
       }
     });
     if (newArr.length === 0) {
-      res.send({userPosts: posts});
+      res.send({ userPosts: posts });
     } else {
-      res.send({userPosts: newArr});
+      res.send({ userPosts: newArr });
     }
   }
 });
@@ -59,12 +59,12 @@ server.post('/posts', (req, res) => {
   const newPost = req.body;
   if (!newPost.title) {
     res.status(405);
-    res.send({error: 'Missing title'});
+    res.send({ error: 'Missing title' });
     return;
   }
   if (!newPost.contents) {
     res.status(405);
-    res.send({error: 'Missing contents'});
+    res.send({ error: 'Missing contents' });
     return;
   }
   newPost.id = ++idCounter;
@@ -72,4 +72,37 @@ server.post('/posts', (req, res) => {
   res.json(newPost);
 });
 
-module.exports = {posts, server};
+server.put('/posts', (req, res) => {
+  const newPost = req.body;
+  if (!newPost.title) {
+    res.status(405);
+    res.send({ error: 'Missing title' });
+    return;
+  }
+  if (!newPost.contents) {
+    res.status(405);
+    res.send({ error: 'Missing contents' });
+    return;
+  }
+  if (!newPost.id) {
+    res.status(405);
+    res.send({ error: 'Missing ID' });
+    return;
+  }
+  let idEqual = false;
+  posts = posts.map(obj => {
+    if (obj.id === Number(newPost.id)) {
+      idEqual = true;
+      return req.body;
+    }
+    return obj;
+  });
+  
+  if (idEqual) {
+  res.json(req.body);
+  } else {
+    res.send({ error: 'ID no match!' });
+  }
+});
+
+module.exports = { posts, server };
