@@ -69,8 +69,13 @@ server.put('/posts', (req, res) => {
   posts.forEach(element => {
     if (element.id !== id) {
       res.send({ error: 'Error message' });
+    } else if (element.id === id) {
+      element.title = title; 
+      element.contents = contents;
+      res.send(element);
     }
   });
+
 });
 
 module.exports = { posts, server };
