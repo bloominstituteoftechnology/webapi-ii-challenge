@@ -14,13 +14,27 @@ server.use(bodyParser.json());
 // TODO: your code to handle requests
 
 let uniqueID = 0;
-let postArr = [{title: "test1", contents: "blah blah"}, {title: "test5", contents: "blah blah"}, {title: "test10", contents: "test1 blah"}];
+let postArr = [{title: "test1", contents: "ahh blah"}, {title: "test5", contents: "blah blah"}, {title: "test10", contents: "test1 blah"}];
 
 
 server.get('/posts', (req, res) => {
   const term = req.query.term
   let indexArr = [];
-  let filteredPosts = postArr.filter(post => post.title === term)
+  let filteredPosts = postArr.filter((post) => {
+    if (post.title === term) {
+      return true;
+    } else {
+      let contentSwitch = false;
+      post.contents.split(' ').forEach((contentWord) => {
+        if (contentWord === term) {
+          console.log('its true');
+          contentSwitch = true;
+        }
+      });
+      return contentSwitch;
+    }
+  });
+
   if (filteredPosts.length === 0) {
     res.status(200);
     res.send(postArr);
