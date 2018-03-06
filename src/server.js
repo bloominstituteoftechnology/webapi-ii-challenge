@@ -11,12 +11,12 @@ const posts = [
   {
     id: 1,
     title: 'This is a Title of a post',
-    content: 'This is the content body',
+    contents: 'This is the content body',
   },
   {
     id: 2,
     title: 'This is a Zebra of a post',
-    content: 'This is not the body',
+    contents: 'This is not the body',
   },
 ];
 
@@ -28,12 +28,15 @@ server.use(bodyParser.json());
 
 server.get('/posts', (req, res) => {
   let filteredPosts;
-  if (req.query.term) {
-    filteredPosts = posts.filter(
-      post =>
-        post.title.toLowerCase().indexOf(req.query.term.toLowerCase()) > 0 ||
-        post.contents.toLowerCase().indexOf(req.query.term.toLowerCase()) > 0
-    );
+  const term = req.query.term.toLowerCase();
+
+  if (term) {
+    filteredPosts = posts.filter((post) => {
+      return (
+        (post.title.toLowerCase().indexOf(term) >= 0) ||
+        (post.contents.toLowerCase().indexOf(term) >= 0)
+      );
+    });
     res.status(STATUS_USER_SUCCESS);
     res.send(filteredPosts);
   }
