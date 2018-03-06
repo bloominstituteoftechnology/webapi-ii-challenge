@@ -25,7 +25,7 @@ server.get('/posts', (req, res) => {
     res.status(STATUS_SUCCESS);
     res.send(posts)
   }
-})
+});
 
 server.post('/posts', (req, res) => {
   const clientProvided = req.body;
@@ -36,8 +36,26 @@ server.post('/posts', (req, res) => {
     res.send(clientProvided);
   } else {
     res.status(STATUS_USER_ERROR);
-    res.send({ error: "error" })
+    res.send({ error: "error" });
   }
+});
+
+server.delete('/posts', (req, res) => {
+  const clientProvided = req.body;
+  if (!clientProvided.id) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: "NO ID error" });
+  }
+  posts.forEach((elem) => {
+    if(clientProvided.id.toString() === elem["id"].toString()) {
+      posts.splice(parseInt(clientProvided.id)-1,1);
+      res.status(STATUS_SUCCESS);
+      res.send({ success: true });
+    } else {
+      res.status(STATUS_USER_ERROR);
+      res.send({ error: "Post does not exist!"});
+    }
+  })
 })
 
 module.exports = { posts, server };
