@@ -5,14 +5,21 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
+
+let idCounter = 4;
+
 const posts = [{title: "b",
-              contents: "b"},
+	contents: "b",
+id: 1},
               {title: "ac",
-              contents: "b"},
+								contents: "b",
+							id: 2},
               {title: "b",
-              contents: "cd"},
+								contents: "cd",
+							id: 3},
               {title: "e",
-              contents: "f"} ];
+								contents: "f",
+							id: 4} ];
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -37,5 +44,19 @@ server.get('/posts', (req, res) => {
     }
   }
 });
+
+server.post('/posts', (req, res) => {
+	const newPost = req.body;
+	if (!newPost.title) {
+		res.status(405);
+		res.send({ error: "Missing title" });
+		return;
+	}
+	if (!newPost.contents) {
+		res.status(405);
+		res.send({ error: "Missing contents" });
+		return;
+	}
+})
 
 module.exports = { posts, server };
