@@ -33,23 +33,21 @@ server.get('/posts', (req, res) => {
   if (term) {
     filteredPosts = posts.filter((post) => {
       return (
-        (post.title.toLowerCase().indexOf(term) >= 0) ||
-        (post.contents.toLowerCase().indexOf(term) >= 0)
+        post.title.toLowerCase().indexOf(term) >= 0 ||
+        post.contents.toLowerCase().indexOf(term) >= 0
       );
     });
-    res.status(STATUS_USER_SUCCESS);
-    res.send(filteredPosts);
+    if (filteredPosts.length > 0) {
+      res.status(STATUS_USER_SUCCESS);
+      res.send(filteredPosts);
+    } else {
+      res.status(STATUS_USER_ERROR);
+      res.send(posts);
+    }
+  } else {
+    res.status(STATUS_USER_ERROR);
+    res.send('Please enter a search term.');
   }
-  //   if (filteredPosts.length > 0) {
-
-  //   } else {
-  //     res.status(STATUS_USER_ERROR);
-  //     res.send(posts);
-  //   }
-  // } else {
-  //   res.status(STATUS_USER_ERROR);
-  //   res.send('Please enter a search term.');
-  // }
 });
 
 server.post('/posts', (req, res) => {});
