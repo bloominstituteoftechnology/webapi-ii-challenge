@@ -31,15 +31,15 @@ server.get('/posts/', (req, res) => {
   res.json(posts);
 });
 
-server.get('/posts/term', (req, res) => {
-	const title = req.query.title.toLowerCase();
+server.get('/posts/search', (req, res) => {
+	const term = req.query.term.toLowerCase();
 	let filteredPosts = [];
 
-  if (title) {
+  if (term) {
 		filteredPosts = posts.filter((post) => {
 			let postTitle = post.title.toLowerCase();
-			postTitle = postTitle.split(' ');
-      return postTitle.includes(title);
+			let postContent = post.contents.toLowerCase();
+			if (postTitle.includes(term) || postContent.includes(term)) return true;
     });
 	}
 	
