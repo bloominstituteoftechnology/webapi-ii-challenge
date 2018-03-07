@@ -41,15 +41,15 @@ let nextID = 4;
 server.post('/posts', (req, res) => {
   if (!req.body.title) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'You Did Not Include a Title' });
+    res.json({ error: 'You Did Not Include a Title.' });
   } else if (!req.body.contents) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'You Did Not Include a Content' });
+    res.json({ error: 'You Did Not Include a Content.' });
   } else {
     const note = { id: nextID++, title: req.body.title, contents: req.body.contents };
     posts.push(note);
     res.status(STATUS_OKAY);
-    res.json();
+    res.json(note);
   }
 });
 
@@ -62,25 +62,20 @@ const checkID = (idToCheck) => {
 };
 
 server.delete('/posts', (req, res) => {
-  console.log('REQ.BODY.ID', req.body.id);
   if (!req.body.id) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'You Did Not Include an ID' });
+    res.json({ error: 'You Did Not Include an ID.' });
   }
-
   if (!checkID(Number(req.body.id))) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: "The ID You Tried to Delete Doesn's Exist or you entered a non-number" });
+    res.json({ error: "The ID You Tried to Delete Doesn's Exist or you entered a non-number." });
   }
-
   const id = Number(req.body.id);
   posts = posts.filter((post) => {
-    console.log('POST ID', post.id !== id);
     return post.id !== id;
   });
-  console.log('RESULT', posts);
   res.status(STATUS_OKAY);
-  res.json();
+  res.json({ success: true });
 });
 
 const updateNote = (noteToUpdate) => {
@@ -96,23 +91,23 @@ const updateNote = (noteToUpdate) => {
 server.put('/posts', (req, res) => {
   if (!req.body.id) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'You Did Not Include an ID' });
+    res.json({ error: 'You Did Not Include an ID.' });
   }
   if (!req.body.title) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'You Did Not Include a Title' });
+    res.json({ error: 'You Did Not Include a Title.' });
   }
   if (!req.body.contents) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: 'You Did Not Include Content for the Note' });
+    res.json({ error: 'You Did Not Include Content for the Note.' });
   }
   if (!checkID(Number(req.body.id))) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: "The ID You Tried to Delete Doesn's Exist or you entered a non-number" });
+    res.json({ error: "The ID You Tried to Update Doesn's Exist or You Entered a Non-Number." });
   }
   updateNote(req.body);
   res.status(STATUS_OKAY);
-  res.json();
+  res.json(req.body);
 });
 
 module.exports = { posts, server };
