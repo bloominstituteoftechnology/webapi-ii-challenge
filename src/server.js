@@ -99,7 +99,7 @@ server.post('/posts', (req, res) => {
 
 server.put('/posts', (req, res) => {
   const { id, title, contents } = req.body;
-  const checkId = () => id === req.body.id;
+  const checkId = () => id === req.params.id;
   // console.log(checkId());
   const index = posts.findIndex(checkId);
   // console.log(index);
@@ -133,4 +133,14 @@ server.put('/posts', (req, res) => {
  *    Respond with the newly updated post object in a JSON response.
  *
  */
-module.exports = { posts, server };
+
+server.delete('/posts', (req, res) => {
+  const { id, title, contents } = req.body;
+  const checkId = () => id === req.params.id;
+  const index = posts.findIndex(checkId);
+  console.log('index: ', index, 'id: ', id, 'req.params.id: ', req.params.id);
+  posts.splice(index, 1);
+  res.json(posts);
+});
+
+ module.exports = { posts, server };
