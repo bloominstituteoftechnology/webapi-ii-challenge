@@ -9,12 +9,12 @@ const STATUS_USER_ERROR = 422;
 let posts = [
   {
     title: 'test',
-		content: 'content',
+		contents: 'contents',
 		id: 1
   },
   {
     title: 'test search',
-		content: 'content search',
+		contents: 'content search',
 		id: 2,
   }
 ];
@@ -28,11 +28,11 @@ server.use(bodyParser.json());
 // TODO: your code to handle requests
 server.get('/posts/', (req, res) => {
   res.status(200);
-  res.send(posts);
+  res.json(posts);
 });
 
-server.get('/posts/search', (req, res) => {
-  const title = req.query.title.toLowerCase();
+server.get('/posts/term', (req, res) => {
+	const title = req.query.title.toLowerCase();
 	let filteredPosts = [];
 
   if (title) {
@@ -48,52 +48,60 @@ server.get('/posts/search', (req, res) => {
 		res.send(posts);
 	} else {
 		res.status(200);
-		res.send(filteredPosts);
+		res.json(filteredPosts);
 	}
 });
 
 server.post('/posts/', (req, res) => {
-	if (!req.body.title && !req.body.content) {
-		res.status(400);
-		res.send({ error: 'You did not provide both title and contents' });
+	if (req.body.title && !req.body.contents) {
+		res.status(STATUS_USER_ERROR);
+		res.json({ error: 'You did not provide a title' })
 	}
-	let { title, content } = req.body;
+	if (!req.body.title && req.body.contents) {
+		res.status(STATUS_USER_ERROR);
+		res.json({ error: 'You did not provide contents' })
+	}
+	if (!req.body.title && !req.body.contents) {
+		res.status(STATUS_USER_ERROR);
+		res.json({ error: 'You did not provide both title and contents' });
+	}
+	let { title, contents } = req.body;
 	idCounter++;
 	let newPost = {
 		title: title,
-		content: content,
+		contents: contents,
 		id: idCounter,
 	}
 	posts.push(newPost);
 	res.status(200);
-	res.send(newPost);
+	res.json(newPost);
 })
 
 server.put('/posts/', (req, res) => {
-	let { title, content, id } = req.body;
+	let { title, contents, id } = req.body;
 	let updatedPost = {
 		title: title,
-		content: content,
+		contents: contents,
 		id: id
 	}
 	let postsId = posts.map(post => post.id);
   console.log(postsId);
 	
-	if (!title || !content || !id) {
-		res.status(400);
-		res.send({ error: 'You did not include an ID, Title and Content' })
+	if (!title || !contents || !id) {
+		res.status(STATUS_USER_ERROR);
+		res.json({ error: 'You did not include an ID, Title and Contents' })
 	}
 	if (!postsId.includes(id)) {
-		res.status(400);
-		res.send({ error: 'Invalid ID'})
+		res.status(STATUS_USER_ERROR);
+		res.json({ error: 'Invalid ID'})
 	}
-	if (title && content && id) {
+	if (title && contents && id) {
 		posts = posts.filter((post) => {
 			return post.id !== id;
 		})
 		posts.push(updatedPost);
 		res.status(200);
-		res.send(updatedPost);
+		res.json(updatedPost);
 	}
 })
 
@@ -103,10 +111,10 @@ server.delete('/posts', (req, res) => {
 	if (id && postsId.includes(id)) {
 		posts = posts.filter(post => !(post.id === id));
 		res.status(200);
-		res.send({ success: true });
+		res.json({ success: true });
 	} else {
-		res.status(400);
-		res.send({ error: 'Invalid ID' });
+		res.status(STATUS_USER_ERROR);
+		res.json({ error: 'Invalid ID' });
 	}
 })
 
