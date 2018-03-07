@@ -7,19 +7,19 @@ const STATUS_USER_SUCCESS = 200;
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
 let posts = [
-  {
-    id: 1,
-    title: 'This is a Title of a post',
-    contents: 'This is the content body',
-  },
-  {
-    id: 2,
-    title: 'This is a Zebra of a post',
-    contents: 'This is not the body',
-  },
+  // {
+  //   id: 1,
+  //   title: 'This is a Title of a post',
+  //   contents: 'This is the content body',
+  // },
+  // {
+  //   id: 2,
+  //   title: 'This is a Zebra of a post',
+  //   contents: 'This is not the body',
+  // },
 ];
 
-let idCounter = posts.length;
+let idCounter = posts.length + 1;
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -56,11 +56,11 @@ server.post('/posts', (req, res) => {
     res.status(STATUS_USER_ERROR);
     res.send({ error: 'Error message' });
   } else {
-    idCounter++;
     const newPost = {
       id: idCounter,
       ...req.body,
     };
+    idCounter++;
     posts.push(newPost);
     res.status(STATUS_USER_SUCCESS);
     res.send(newPost);
@@ -70,38 +70,36 @@ server.post('/posts', (req, res) => {
 server.put('/posts', (req, res) => {
   const { id, title, contents } = req.body;
   let foundPost = false;
-  posts.forEach((post) => {
-    if (post.id === id) foundPost = true;
-  });
-  if (
-    id === undefined ||
-    title === undefined ||
-    contents === undefined ||
-    !foundPost
-  ) {
-    res.status(STATUS_USER_ERROR);
-    res.send({ error: 'You must enter an existing id and title and contents' });
-  } else {
-    const newPost = {
-      id,
-      title,
-      contents,
-    };
-    posts = posts.map((post) => {
+  const newPost = {
+    id,
+    title,
+    contents,
+  };
+  if (id !== undefined && title !== undefined && contents !== undefined) {
+    posts.forEach((post, i) => {
       if (post.id === id) {
-        return newPost;
+        posts[i] = newPost;
+        foundPost = true;
       }
-      return post;
     });
-    res.status(STATUS_USER_SUCCESS);
-    res.send(newPost);
+    if (!foundPost) {
+      console.log(foundPost);
+      res.status(STATUS_USER_ERROR);
+      res.send({ error: 'You must enter an existing id to update a post' });
+    } else {
+      res.status(STATUS_USER_SUCCESS);
+      res.send(newPost);
+    }
+  } else {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: 'You must enter an id, title, and contents' });
   }
 });
 
 server.delete('/posts', (req, res) => {
   const { id } = req.body;
   let foundPost = false;
-  if (req.body.id) {
+  if (id) {
     posts.forEach((post) => {
       if (post.id === id) {
         foundPost = true;
@@ -109,9 +107,11 @@ server.delete('/posts', (req, res) => {
     });
   }
   if (foundPost === true) {
-    posts = posts.filter((post) => {
-      return post.id !== req.body.id;
+    const filteredArr = posts.filter((post) => {
+      return post.id !== id;
     });
+    posts = null;
+    posts = filteredArr;
     res.status(STATUS_USER_SUCCESS);
     res.send({ success: true });
   } else {
