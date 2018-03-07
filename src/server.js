@@ -75,8 +75,8 @@ server.post('/posts', (req, res) => {
   if (
     !body.hasOwnProperty('title') ||
     !body.hasOwnProperty('contents') ||
-    body['title'] === '' ||
-    body['contents'] === ''
+    body.title === '' ||
+    body.contents === ''
   ) {
     res.status(STATUS_USER_ERROR);
     res.send({
@@ -99,9 +99,9 @@ server.put('/posts', (req, res) => {
     !body.hasOwnProperty('title') ||
     !body.hasOwnProperty('contents') ||
     !body.hasOwnProperty('id') ||
-    body['title'] === '' ||
-    body['contents'] === '' ||
-    body['id'] === ''
+    body.title === '' ||
+    body.contents === '' ||
+    body.id === ''
   ) {
     res.status(STATUS_USER_ERROR);
     res.send({
