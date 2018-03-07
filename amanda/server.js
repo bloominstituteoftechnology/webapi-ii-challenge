@@ -57,13 +57,35 @@ server.put("/posts", (req, res) => {
   if (!post) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: "No post with that id." });
+  } else {
+    post.title = title;
+    post.content = content;
+    res.status(STATUS_SUCCESS);
+    res.json(post);
   }
-  post.title = title;
-  post.content = content;
-  res.status(STATUS_SUCCESS);
-  res.json(post);
 });
 
-server.delete("/posts", (req, res) => {});
+server.delete("/posts", (req, res) => {
+  const { id } = req.body;
+
+  if (id === undefined) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: "Please enter a valid id." });
+  }
+
+  const post = posts.find(info => {
+    return info.id === id;
+  });
+
+  if (!post) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: "No post with that id." });
+  }
+  posts.filter(info => {
+    return info.id !== id;
+  });
+  res.status(STATUS_SUCCESS);
+  res.json({ success: true });
+});
 
 module.exports = { posts, server };
