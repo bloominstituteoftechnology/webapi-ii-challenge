@@ -26,10 +26,10 @@ const posts = [
 ];
 
 const server = express();
-server.use((req, res, next) => {
-  console.log('You got a Request');
-  next();
-});
+// server.use((req, res, next) => {
+//   console.log('You got a Request');
+//   next();
+// });
 
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
@@ -40,7 +40,7 @@ server.get('/posts', (req, res) => {
 
   if (!term || term === '' || term === undefined) {
     res.status(STATUS_SUCCESS);
-    res.send({ posts });
+    res.send(posts);
   }
 
   posts.forEach((post) => {
@@ -141,5 +141,6 @@ server.delete('/posts', (req, res) => {
   }
 });
 // TODO: your code to handle requests
+/* eslint no-prototype-builtins: 0 */
 
 module.exports = { posts, server };
