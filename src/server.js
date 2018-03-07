@@ -5,7 +5,7 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [{ title: "The post title", contents: "The post contents" }, { title: "The water title", contents: "The post contents" }];
+const posts = [];
 // posts is an array of objects - { title: "The post title", contents: "The post contents" }
 
 const server = express();
@@ -35,15 +35,34 @@ server.get('/posts', (req, res) => {
     }
 });
 
+let idCounter = 0;
+const newPost = {};
 server.post('/posts', (req, res) => {
 // Ensure that the client provides both title and contents in the request body. If any of these don't exist, send an object of the form { error: "Error message" } as a JSON response. Make sure to respond with an appropriate status code.
 // If all fields are provided, create a new post object. Assign the post a unique, numeric id property that will act as its identifier, and add it to the posts array. Return the newly created post object, with its assigned id, to the client in a JSON response.
+    const { title, contents } = req.body;
+    if (!title && !contents) {
+        res.status(STATUS_USER_ERROR);
+        res.json({ error: 'Error message' });
+    } else {
+        // console.log({ title, contents });
+        idCounter++;
+        const newPost = {
+            id: idCounter,
+            title: title,
+            contents: contents
+        };
+        posts.push(newPost);
+        res.status(200);
+        res.json(newPost);
+    }
 });
 
 server.put('/posts', (req, res) => {
 // Ensure that the client provides id, title, and contents in the request body. If any of these don't exist, send an object of the form { error: "Error message" } as a JSON response. Make sure to respond with an appropriate status code.
 // If the id doesn't correspond to a valid post, respond with an error in the same form as above.
 // Modify the post with the given id, updating its title and contents. Respond with the newly updated post object in a JSON response.
+    
 });
 
 server.delete('/posts', (req, res) => {
