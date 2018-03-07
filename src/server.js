@@ -14,16 +14,16 @@ server.use(bodyParser.json());
 // TODO: your code to handle requests
 server.get('/posts', (req, res) => {
   if (req.query.term) {
-    let matching = [];
-    posts.forEach(function(element) {
-      if (Object.values(element).includes(req.query.term.replace(/"/g,""))){
+    const matching = [];
+    posts.forEach((element) => {
+      if (Object.values(element).includes(req.query.term.replace(/"/g, ''))) {
         matching.push(element);
       }
-    })
+    });
     res.send(matching);
   } else {
     res.status(STATUS_SUCCESS);
-    res.send(posts)
+    res.send(posts);
   }
 });
 
@@ -36,7 +36,7 @@ server.post('/posts', (req, res) => {
     res.send(clientProvided);
   } else {
     res.status(STATUS_USER_ERROR);
-    res.send({ error: "error" });
+    res.send({ error: 'error' });
   }
 });
 
@@ -44,35 +44,35 @@ server.delete('/posts', (req, res) => {
   const clientProvided = req.body;
   if (!clientProvided.id) {
     res.status(STATUS_USER_ERROR);
-    res.send({ error: "NO ID error" });
+    res.send({ error: 'NO ID error' });
   }
-    const index = posts.findIndex((elem) => { return clientProvided.id.toString() === elem["id"].toString() })
-    if(index === -1) {
-      res.status(STATUS_USER_ERROR);
-      res.send({ error: "Post with that ID does not exist!"});
-    } else {
-      posts.splice(index, 1);
-      res.status(STATUS_SUCCESS);
-      res.send({ success: true });
-    }
-})
+  const index = posts.findIndex((elem) => { return clientProvided.id.toString() === elem.id.toString(); });
+  if (index === -1) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: 'Post with that ID does not exist!' });
+  } else {
+    posts.splice(index, 1);
+    res.status(STATUS_SUCCESS);
+    res.send({ success: true });
+  }
+});
 
 server.put('/posts', (req, res) => {
   const clientProvided = req.body;
-  if(clientProvided.id && clientProvided.title && clientProvided.content) {
-    const index = posts.findIndex((elem) => { return clientProvided.id.toString() === elem["id"].toString() } )
-    if (index === -1 ) {
+  if (clientProvided.id && clientProvided.title && clientProvided.content) {
+    const index = posts.findIndex((elem) => { return clientProvided.id.toString() === elem.id.toString(); });
+    if (index === -1) {
       res.status(STATUS_USER_ERROR);
-      res.send({ error: "Post with that ID does not exist!"});
+      res.send({ error: 'Post with that ID does not exist!' });
     } else {
-      posts[index]["title"] = clientProvided.title;
-      posts[index]["content"] = clientProvided.content;
+      posts[index].title = clientProvided.title;
+      posts[index].content = clientProvided.content;
       res.status(STATUS_SUCCESS);
       res.send(posts[index]);
     }
   } else {
     res.status(STATUS_USER_ERROR);
-    res.send({ error: "YOU ARE MISSING SOMETHING, COULD BE ANYTHING" });
+    res.send({ error: 'YOU ARE MISSING SOMETHING, COULD BE ANYTHING' });
   }
 });
 
