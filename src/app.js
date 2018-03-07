@@ -1,3 +1,6 @@
-const { server } = require('./server.js');
+const { server,port } = require('./server.js');
 
-server.listen(3000);
+server.listen(port, err => {
+    if (err) console.log(err);
+    console.log(`server is listening on port ${port}`);
+});
