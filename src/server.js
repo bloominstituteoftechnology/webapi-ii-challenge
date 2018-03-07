@@ -97,4 +97,17 @@ server.put('/posts/', (req, res) => {
 	}
 })
 
+server.delete('/posts', (req, res) => {
+	let { id } = req.body;
+	let postsId = posts.map(post => post.id);
+	if (id && postsId.includes(id)) {
+		posts = posts.filter(post => !(post.id === id));
+		res.status(200);
+		res.send({ success: true });
+	} else {
+		res.status(400);
+		res.send({ error: 'Invalid ID' });
+	}
+})
+
 module.exports = { posts, server };
