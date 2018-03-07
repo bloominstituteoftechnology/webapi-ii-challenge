@@ -9,17 +9,17 @@ const STATUS_USER_ERROR = 422;
 let idGen = 3;
 const posts = [
   {
-    title: 'X One',
+    title: 'A One',
     contents: 'The post contents',
     id: 0
   },
   {
-    title: 'X Two',
+    title: 'A Two',
     contents: 'The post contents',
     id: 1
   },
   {
-    title: 'X Three',
+    title: 'A Three',
     contents: 'The target contents',
     id: 2
   }
@@ -38,7 +38,7 @@ server.get('/posts', (req, res) => {
   const { term } = req.query;
   const results = [];
 
-  if (!term) {
+  if (!term || term === '' || term === undefined) {
     res.status(STATUS_SUCCESS);
     res.send({ posts });
   }
@@ -52,7 +52,12 @@ server.get('/posts', (req, res) => {
       if (tempTitle.substring(i, i + l) === term) results.push(post);
     }
     for (let i = 0; i <= tempContents.length - l; i++) {
-      if (tempContents.substring(i, i + l) === term) results.push(post);
+      if (
+        tempContents.substring(i, i + l) === term &&
+        !results.includes(post)
+      ) {
+        results.push(post);
+      }
     }
   });
   if (results.length === 0) {
@@ -73,15 +78,46 @@ server.post('/posts', (req, res) => {
     body['contents'] === ''
   ) {
     res.status(STATUS_USER_ERROR);
-    res.send({ error: 'Error Message' });
+    res.send({
+      error:
+        'Object Requires Title and Contents. Also no empty strings naughty user...'
+    });
   }
   const { title, contents } = body;
   title.toString();
   contents.toString();
-  posts.push({ title, contents, id: idGen });
+  posts.push({ title, contents, id: idGen.toString() });
   ++idGen;
   res.status(STATUS_SUCCESS);
   res.send({ posts });
+});
+
+server.put('/posts', (req, res) => {
+  const { body } = req;
+  if (
+    !body.hasOwnProperty('title') ||
+    !body.hasOwnProperty('contents') ||
+    !body.hasOwnProperty('id') ||
+    body['title'] === '' ||
+    body['contents'] === '' ||
+    body['id'] === ''
+  ) {
+    res.status(STATUS_USER_ERROR);
+    res.send({
+      error:
+        'Object Requires Title and Contents and Id. Also no empty strings naughty user...'
+    });
+  }
+  const { title, contents, id } = body;
+  if (posts[id] === undefined || posts[id] === null) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ Error: `No valid entry for id ${id}` });
+  }
+  if (id <= posts.length - 1 && id >= 0) {
+    posts[id] = { title, contents, id };
+  }
+  res.status(STATUS_SUCCESS);
+  res.send({ updatedPost: { title, contents, id } });
 });
 
 // TODO: your code to handle requests
