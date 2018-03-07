@@ -1,5 +1,5 @@
 {
-  "name": "node-express",
+  "name": "express",
   "version": "0.0.1",
   "description": "LambdaSchool Node.js and Express",
   "scripts": {
@@ -17,5 +17,18 @@
     "eslint-plugin-import": "^2.2.0",
     "express": "^4.15.4",
     "mocha": "^3.5.0"
-  }
+  },
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/didacta/Node-Express-Lab.git"
+  },
+  "author": "Igor Yermak & Russell Stinson",
+  "bugs": {
+    "url": "https://github.com/didacta/Node-Express-Lab/issues"
+  },
+  "homepage": "https://github.com/didacta/Node-Express-Lab#readme"
 }
