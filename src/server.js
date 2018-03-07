@@ -20,6 +20,12 @@ const server = express();
 server.use(bodyParser.json());
 server.use(cors());
 
+server.get('/prices', (req, res) => {
+  request('https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH,DASH,LTC&tsyms=USD', (error, response, body) => {
+    res.send(body);
+  });
+});
+
 server.get('/posts', (req, res) => {
   request('https://swapi.co/api/people', (error, response, body) => {
     res.send(body);
