@@ -97,4 +97,40 @@ server.post('/posts', (req, res) => {
 }
 );
 
+server.put('/posts', (req, res) => {
+  const { id, title, contents } = req.body;
+  const checkId = () => id === req.body.id;
+  // console.log(checkId());
+  const index = posts.findIndex(checkId);
+  // console.log(index);
+  // console.log(title);
+  // console.log(contents);
+  // console.log(id);
+  if (!title || !contents || !id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Posts must contain a title, an id, and contents' });
+  } else if (id !== req.body.id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'You must update an existing post' });
+  } else {
+    posts.splice(index, 1, { id, title, contents });
+    res.json(posts);
+  }
+});
+/**
+ * ### `PUT /posts`
+ *  When the client makes a `PUT` request to `/posts`:
+ *
+ *  - Ensure that the client provides `id`, `title`, and `contents` in the request
+ *    body. If any of these don't exist, send an object of the form `{ error: "Error
+ *    message" }` as a JSON response. Make sure to respond with an appropriate
+ *    status code.
+ *
+ *  - If the `id` doesn't correspond to a valid post, respond with an error in the
+ *    same form as above.
+ *
+ *  - Modify the post with the given `id`, updating its `title` and `contents`.
+ *    Respond with the newly updated post object in a JSON response.
+ *
+ */
 module.exports = { posts, server };
