@@ -13,33 +13,33 @@ server.use(bodyParser.json());
 let idCounter = 2;
 // TODO: your code to handle requests
 let posts = [{
-    id: 0,
-    title: "First post title",
-    contents: "First post contents"
-  },
-  {
-    id: 1,
-    title: "Second post title",
-    contents: "Second post contents"
-  },
-  {
-    id: 2,
-    title: "Third post title",
-    contents: "Third post contents"
-  }
-]
+  id: 0,
+  title: 'First post title',
+  contents: 'First post contents'
+},
+{
+  id: 1,
+  title: 'Second post title',
+  contents: 'Second post contents'
+},
+{
+  id: 2,
+  title: 'Third post title',
+  contents: 'Third post contents'
+}
+];
 
-server.get("/", (req, res) => {
-res.status(STATUS_SUCCESS);
-res.send(posts);  // HAD 'FRIENDS' INSTEAD OF POSTS
+server.get('/', (req, res) => {
+  res.status(STATUS_SUCCESS);
+  res.send(posts);  // HAD 'FRIENDS' INSTEAD OF POSTS
 });
 
-server.get("/posts/:id/", (req, res) => {  // HAD 'USERS' INSTEAD OF POSTS?
+server.get('/posts/:id/', (req, res) => {  // HAD 'USERS' INSTEAD OF POSTS?
   const {
     id
   } = req.params;
   res.status(200);
-  res.send(posts[id])
+  res.send(posts[id]);
 });
 server.get('/posts/:term/', (req, res) => {
   const {
@@ -50,26 +50,28 @@ server.get('/posts/:term/', (req, res) => {
     for (let post in posts) {
       if (posts[post].title.toLowerCase().includes(term.toLowerCase()) ||
           posts[post].contents.toLowerCase().includes(term.toLowerCase())) {
-          result.push(posts[post]);
+        result.push(posts[post]);
       }
     }
     res.status(STATUS_SUCCESS);
-    (result.length === 0) ? res.send(posts): res.send(result);
+    (result.length === 0) ? res.send(posts) : res.send(result);
   } else {
-      res.status(STATUS_SUCCESS);
-      res.send(posts);
+    res.status(STATUS_SUCCESS);
+    res.send(posts);
   }
 });
 server.post('/posts/', (req, res) => {
-  /*let {
+  /*
+  let {
     post
-  }=req.body;*/
+  }=req.body;
+  */
   let post = req.body;
   // console.log('dddd', post);
   if (!post.title || !post.contents) {
-    res.status(STATUS_USER_ERROR)
+    res.status(STATUS_USER_ERROR);
     let msg = {
-        error: "'Please fill out the whole post.'"
+      error: "'Please fill out the whole post.'"
     };
     res.json(msg);
   } else {
@@ -84,21 +86,21 @@ server.put('/posts/', (req, res) => {
   let newPost = req.body;
   let post;
   if (!newPost || !newPost.id || !newPost.contents || !newPost.title || !(newPost.id in posts)) {
-      res.status(STATUS_USER_ERROR)
-      let msg = {
-          error: "'Please fill out the whole post.'"
-      };
-      res.json(msg);
+    res.status(STATUS_USER_ERROR);
+    let msg = {
+      error: "'Please fill out the whole post.'"
+    };
+    res.json(msg);
   } else {
-      res.status(STATUS_SUCCESS);
-      for (let i in posts) {
-        if (posts[i].id == newPost.id) {
-            console.log('success');
-            posts[i].title = newPost.title;
-            posts[i].contents = newPost.contents;
-        }
+    res.status(STATUS_SUCCESS);
+    for (let i in posts) {
+      if (posts[i].id == newPost.id) {
+        // console.log('success');
+        posts[i].title = newPost.title;
+        posts[i].contents = newPost.contents;
       }
-      res.send(posts);
+    }
+    res.send(posts);
   }
 });
 server.delete('/posts/', (req, res) => {
@@ -114,7 +116,7 @@ server.delete('/posts/', (req, res) => {
       if (posts[i].id === post.id) {
         posts.splice(i, 1);
       }
-      }
+    }
     res.status(STATUS_SUCCESS);
     res.send(posts);
   }
