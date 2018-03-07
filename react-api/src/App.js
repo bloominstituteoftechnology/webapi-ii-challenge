@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import MovieList from './components/MovieList';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import SingleMovieView from './components/SingleMovieView';
 import './App.css';
 
 class App extends Component {
 
   render() {
     return (
-      <div className="App">
-      <h1>Pick a movie:</h1>
-        <MovieList />
-      </div>
+      <Router>
+        <div className="App">
+          <Route path='/' component={MovieList} exact />
+          <Route path='/movie/:id' component={SingleMovieView} />
+        </div>
+      </Router>
     );
   }
 }

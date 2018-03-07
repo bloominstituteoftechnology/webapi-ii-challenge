@@ -1,6 +1,7 @@
 import React from 'react';
 import rp from 'request-promise';
 import Movie from './Movie';
+import './MovieList.css';
 const thing = {
     '1': 'tt0111161',
     '2': 'tt0068646',
@@ -40,7 +41,7 @@ class MovieList extends React.Component {
         movies: [],
     };
     componentDidMount() {
-        for (let i = 1; i < 3; i++) {
+        for (let i = 1; i <= 20; i++) {
             const options = {
                 uri: `http://www.omdbapi.com/?i=${thing[i]}`,
                 qs: {
@@ -55,29 +56,32 @@ class MovieList extends React.Component {
                 .then(res => {
                     let inter = this.state.movies;
                     inter.push(res);
-                    this.setState({ movies: inter })
+                    this.setState({ movies: inter });
                 })
-                .catch(err => {
-
-                });
+                .catch(err => {});
         }
     }
     render() {
         return (
-            <div className="MoviesList">
-                <div>MovieList!</div>
-                {this.state.movies.length > 0 ? (
-                    this.state.movies.map((movie, i) => {
-                        return <Movie
-                            key={i}
-                            title={movie.Title}
-                            rating={movie.Ratings[1].Value}
-                            posterURL={movie.Poster}
-                        />;
-                    })
-                ) : (
-                        <div>Loading...</div>
+            <div>
+                <h1>Pick a movie:</h1>
+                <div className="MoviesList">
+                    {this.state.movies.length > 0 ? (
+                        this.state.movies.map((movie, i) => {
+                            return (
+                                <Movie
+                                    key={movie.imdbID}
+                                    id={movie.imdbID}
+                                    title={movie.Title}
+                                    rating={movie.Ratings[1].Value}
+                                    posterURL={movie.Poster}
+                                />
+                            );
+                        })
+                    ) : (
+                        <div className="loading">Loading...</div>
                     )}
+                </div>
             </div>
         );
     }
