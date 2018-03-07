@@ -1,20 +1,25 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+
 const STATUS_USER_ERROR = 422;
+const STATUS_SUCCESS = 200;
+
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [];
+let posts = [];
 // posts is an array of objects - { title: "The post title", contents: "The post contents" }
+
 const server = express();
 // to enable parsing of json bodies for post requests
 server.use(bodyParser.json());
+
 // TODO: your code to handle requests
 server.get('/posts', (req, res) => {
 // If the client provides the query-string parameter term, filter the posts to those that have the term in their title or contents (or both), and send down those posts in a JSON response.
 // Otherwise, send down the full array of posts as a JSON response.
     const { term } = req.query;
     if (term) {
-        const arraySearch = posts.filter(post => {
+        const arraySearch = posts.filter((post) => {
             return (
                 post.title.toLowerCase().includes(term.toLowerCase()) ||
                 post.contents.toLowerCase().includes(term.toLowerCase())
@@ -30,6 +35,7 @@ server.get('/posts', (req, res) => {
         res.json(posts);
     }
 });
+
 let idCounter = 0;
 const newPost = {};
 server.post('/posts', (req, res) => {
@@ -48,20 +54,30 @@ server.post('/posts', (req, res) => {
             contents: contents
         };
         posts.push(newPost);
-        res.status(200);
+        res.status(STATUS_SUCCESS);
         res.json(newPost);
     }
 });
+
 server.put('/posts', (req, res) => {
 // Ensure that the client provides id, title, and contents in the request body. If any of these don't exist, send an object of the form { error: "Error message" } as a JSON response. Make sure to respond with an appropriate status code.
 // If the id doesn't correspond to a valid post, respond with an error in the same form as above.
 // Modify the post with the given id, updating its title and contents. Respond with the newly updated post object in a JSON response.
     const { id, title, contents } = req.body;
+    console.log(req.body);
     if (id && title && contents) {
-        posts.forEach(post => {
-            if (post[id] === id) {
-            post = { id, title, contents };
-            res.status(200);
+        posts.forEach((post) => {
+            if (post.id === id) {
+                post.id = id;
+                post.title = title;
+                post.contents = contents;
+            // updatedPost = { 
+            //     id: id,
+            //     title: title,
+            //     contents: contents 
+            // };
+            // post = updatedPost;
+            res.status(STATUS_SUCCESS);
             res.json(post);
             } else {
                 res.status(STATUS_USER_ERROR);
@@ -73,6 +89,7 @@ server.put('/posts', (req, res) => {
         res.json({ error: 'id, title, contents not found' });
     }
 });
+
 server.delete('/posts', (req, res) => {
 // Ensure that the client provides an id in the request body, and that the id corresponds to a valid post. If there's an error, send an object of the form { error: "Error message" } as a JSON response. Make sure to respond with an appropriate status code.
 // Remove the post with the given id from the array of posts. Return the object { success: true } in a JSON response.
@@ -80,22 +97,21 @@ server.delete('/posts', (req, res) => {
     if (id) {
         posts.forEach(post => {
             if (post.id === id) {
-                posts = posts.filter(post => {
+                let remainingPosts = posts.filter((post) => {
                     return post.id !== id;
                 });
-                res.status(200);
+                posts = remainingPosts;
+                res.status(STATUS_SUCCESS);
                 res.json({ success: true });
             } else {
                 res.status(STATUS_USER_ERROR);
                 res.json({ error: 'id not found' });
             }
         });
-<<<<<<< HEAD
     } else {
         res.status(STATUS_USER_ERROR);
         res.json({ error: 'id not found' });
-=======
->>>>>>> 23c405378732f3071cc4781dd257db73eaa21439
     }
 });
+
 module.exports = { posts, server };
