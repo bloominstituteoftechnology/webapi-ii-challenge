@@ -112,9 +112,14 @@ server.delete('/posts', (req, res) => {
 		posts = posts.filter(post => !(post.id === id));
 		res.status(200);
 		res.json({ success: true });
-	} else {
+	}
+	if (id && !(postsId.includes(id))) {
 		res.status(STATUS_USER_ERROR);
-		res.json({ error: 'Invalid ID' });
+		res.json({ error: 'ID does not exist!' });
+	}
+	if (!id) {
+		res.status(STATUS_USER_ERROR);
+		res.json({ error: 'You did not provide an id!' });
 	}
 })
 
