@@ -54,15 +54,15 @@ server.post('/posts', (req, res) => {
 });
 
 const checkID = (idToCheck) => {
-    let flag = false;
-    posts.forEach((post) => {
-      if (post.id === idToCheck) return (flag = true);
-    });
-    return flag;
-  };
+  let flag = false;
+  posts.forEach((post) => {
+    if (post.id === idToCheck) return (flag = true);
+  });
+  return flag;
+};
 
 server.delete('/posts', (req, res) => {
-    console.log('REQ.BODY.ID', req.body.id);
+  console.log('REQ.BODY.ID', req.body.id);
   if (!req.body.id) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'You Did Not Include an ID' });
@@ -74,11 +74,43 @@ server.delete('/posts', (req, res) => {
   }
 
   const id = Number(req.body.id);
-  posts = posts.filter(post => {
-    console.log('POST ID', post.id !== id)  
+  posts = posts.filter((post) => {
+    console.log('POST ID', post.id !== id);
     return post.id !== id;
   });
   console.log('RESULT', posts);
+  res.status(STATUS_OKAY);
+  res.json();
+});
+
+const updateNote = (noteToUpdate) => {
+  posts.forEach((post) => {
+    if (post.id === Number(noteToUpdate.id)) {
+      post.title = noteToUpdate.title;
+      post.contents = noteToUpdate.contents;
+      return;
+    }
+  });
+};
+
+server.put('/posts', (req, res) => {
+  if (!req.body.id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'You Did Not Include an ID' });
+  }
+  if (!req.body.title) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'You Did Not Include a Title' });
+  }
+  if (!req.body.contents) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'You Did Not Include Content for the Note' });
+  }
+  if (!checkID(Number(req.body.id))) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: "The ID You Tried to Delete Doesn's Exist or you entered a non-number" });
+  }
+  updateNote(req.body);
   res.status(STATUS_OKAY);
   res.json();
 });
