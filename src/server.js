@@ -46,14 +46,15 @@ server.get('/posts', (req, res) => {
   posts.forEach((post) => {
     const tempTitle = post.title.toLowerCase();
     const tempContents = post.contents.toLowerCase();
-    term.toLowerCase();
-    const l = term.length;
+    const tempTerm = term.toLowerCase();
+    const l = tempTerm.length;
+
     for (let i = 0; i <= tempTitle.length - l; i++) {
-      if (tempTitle.substring(i, i + l) === term) results.push(post);
+      if (tempTitle.substring(i, i + l) === tempTerm) results.push(post);
     }
     for (let i = 0; i <= tempContents.length - l; i++) {
       if (
-        tempContents.substring(i, i + l) === term &&
+        tempContents.substring(i, i + l) === tempTerm &&
         !results.includes(post)
       ) {
         results.push(post);
@@ -120,6 +121,25 @@ server.put('/posts', (req, res) => {
   res.send({ updatedPost: { title, contents, id } });
 });
 
+server.delete('/posts', (req, res) => {
+  const { body } = req;
+  if (!body.hasOwnProperty('id')) {
+    res.status(STATUS_USER_ERROR);
+    res.send({ error: 'Delete requires a target id' });
+  }
+
+  const { id } = body;
+  if (posts.length > id > -1 && posts[id] !== null && posts[id] !== undefined) {
+    delete posts[id];
+    res.status(STATUS_SUCCESS);
+    res.send({ Success: true });
+  } else {
+    res.status(STATUS_USER_ERROR);
+    res.send({
+      error: `Entry with ID '${id}' does not exist... Pick again padawan`
+    });
+  }
+});
 // TODO: your code to handle requests
 
 module.exports = { posts, server };
