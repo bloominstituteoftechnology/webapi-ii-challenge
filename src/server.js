@@ -81,9 +81,9 @@ server.delete('/posts', (req, res) => {
     }
   };
   if (!id) {
-    res.status(STATUS_USER_ERROR)
+    res.status(STATUS_USER_ERROR);
     res.json({ error: 'User must provide matching id to delete post' });
-  } else if ( id !== req.body.id) {
+  } else if (id !== req.body.id) {
     res.status(STATUS_USER_ERROR);
     res.json({ error: 'You must delete an existing post' });
   } else {
