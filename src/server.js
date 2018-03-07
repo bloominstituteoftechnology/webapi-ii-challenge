@@ -19,7 +19,7 @@ let uniqueID = 0;
 
 
 server.get('/posts', (req, res) => {
-  const term = req.query.term
+  const term = req.query.term;
   // let indexArr = [];
   const filteredPosts = posts.filter((post) => {
     if (post.title === term) {
@@ -73,6 +73,10 @@ server.put('/posts', (req, res) => {
     postID
   } = req.body;
 
+  const getID = posts.map((post) => {
+    return post.uniqueID;
+  });
+
   let indexHolder = null;
 
   posts.forEach((post, index) => {
@@ -83,13 +87,15 @@ server.put('/posts', (req, res) => {
 
   if (title === '' || contents === '' || postID === '') {
     res.status(STATUS_USER_ERROR).json({ error: 'Must provide id, title, and contents' });
-  } else if (indexHolder !== null) {
+  } else if (!getID.includes(postID) || indexHolder === null) {
+    res.status(STATUS_USER_ERROR).json({ error: 'Invalid ID' });
+  } else {
     const updatePost = {
-      uniqueID: postID,
       title,
-      contents
+      contents,
+      uniqueID: postID
     };
-    posts[indexHolder] = updatePost;
+    posts.splice(indexHolder, 1, updatePost);
     res.status(STATUS_SUCCESS).json(updatePost);
   }
 });
@@ -100,15 +106,22 @@ server.delete('/posts', (req, res) => {
   } = req.body;
 
   const getID = posts.map((post) => {
-    return post.uniqeID;
+    return post.uniqueID;
+  });
+  let indexHolder = null;
+
+  posts.forEach((post, index) => {
+    if (post.uniqueID === postID) {
+      indexHolder = index;
+    }
   });
 
   if (postID === '') {
     res.status(STATUS_USER_ERROR).json({ error: 'Must provide an ID' });
+  } else if (!getID.includes(postID) || indexHolder === null) {
+    res.status(STATUS_USER_ERROR).json({ error: 'Invalid ID' });
   } else {
-    const index = getID.indexOf(Number(postID));
-
-    posts.splice(index, 1);
+    posts.splice(indexHolder, 1);
     res.status(STATUS_SUCCESS).json({ success: true });
   }
 });
