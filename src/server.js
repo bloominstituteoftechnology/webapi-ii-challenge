@@ -32,7 +32,7 @@ let addPost = {}; // new post object arr.
 
 server.post('/posts', (req, res) => {
   const { title, contents } = req.body; // both fields req.
-  if (!title && !contents) {
+  if (!title || !contents) {
     res.status(STATUS_USER_ERROR); //return err. if client does not provide both fields
     res.json({ error: 'Error Message' });
   } else { // otherwise increment ID, add a new post and return a OK status 
@@ -49,9 +49,36 @@ server.post('/posts', (req, res) => {
   }
 });
 
+server.put('/posts/', (req, res) => {
+  const { id, title, contents } = req.body;
+  if (!title || !content || !id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Error Message' });
+
+  } else {
+    const newPost = {
+      id, title, contents
+    };
+    posts[posts.findIndex(post => post.id === id)] = newPost;
+    res.status(200);
+    res.json(newPost);
+  }
 
 
+});
 
+server.delete('/posts', (req, res) => {
+  const { id } = req.body;
+  if (!id) {
+    res.status(STATUS_USER_ERROR);
+    res.json({ error: 'Error Message' });
+
+  } else {
+    posts.splice(post.findIndex(post => post.id === id), 1);
+    res.status(200);
+    res.json({ success: true });
+  }
+});
 
 
 
