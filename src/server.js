@@ -79,6 +79,14 @@ server.put('/posts/', (req, res) => {
 	let postsId = posts.map(post => post.id);
   console.log(postsId);
 	
+	if (!title || !content || !id) {
+		res.status(400);
+		res.send({ error: 'You did not include an ID, Title and Content' })
+	}
+	if (!postsId.includes(id)) {
+		res.status(400);
+		res.send({ error: 'Invalid ID'})
+	}
 	if (title && content && id) {
 		posts = posts.filter((post) => {
 			return post.id !== id;
@@ -86,16 +94,6 @@ server.put('/posts/', (req, res) => {
 		posts.push(updatedPost);
 		res.status(200);
 		res.send(updatedPost);
-	}
-
-	if (!postsId.includes(id)) {
-		res.status(400);
-		res.send({ error: 'Invalid ID'})
-	}
-	 
-	if (!title && !content && !id) {
-		res.status(400);
-		res.send({ error: 'You did not include an ID, Title and Content' })
 	}
 })
 
