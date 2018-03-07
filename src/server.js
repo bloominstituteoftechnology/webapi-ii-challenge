@@ -26,7 +26,13 @@ let posts = [{
         contents: "Third post contents"
     }
 ]
-server.get("/users/:id/", (req, res) => {
+
+server.get("/", (req, res) => {
+res.status(STATUS_SUCCESS);
+res.send(posts);  // HAD 'FRIENDS' INSTEAD OF POSTS
+});
+
+server.get("/posts/:id/", (req, res) => {  // HAD 'USERS' INSTEAD OF POSTS?
     const {
         id
     } = req.params;
