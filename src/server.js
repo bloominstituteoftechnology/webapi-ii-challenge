@@ -32,8 +32,13 @@ server.get("/posts", (req, res) => {
         if (title.indexOf(term) > -1 || content.indexOf(term) > -1){
             console.log("Result found!")
             res.json(post);
-        }
+            res.end();
+        }; 
     })
+
+    console.log("No result found");
+    res.status(STATUS_USER_ERROR);
+    res.send("No matching term was found!");
 })
 
 server.post("/posts", (req, res) => {
