@@ -7,7 +7,7 @@ const STATUS_USER_ERROR = 422;
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
-const posts = [{ title: 'First post' }, { doge: 'MacGruber' }];
+const posts = [{ title: 'First post', content: "I like turtles" }, { title: 'Doge 1', content: "MacGruber" }];
 
 const server = express();
 // to enable parsing of json bodies for post requests
@@ -19,19 +19,19 @@ server.get("/", (req, res) => {
 })
 
 server.get("/posts", (req, res) => {
-    posts.forEach(post => {
-        let key = Object.keys(post);
-        let value = Object.values(post);
-        let valSplit = value[0].split(" ");
-        let query = req.query.term;
+    let term = req.query.term.toLowerCase();
 
-        if (!query){
-            console.log("No query provided");
-            res.json(posts);
-        } else {
-            if (query === key[0] || valSplit.indexOf(query) > -1){
-                res.json(post);
-            } 
+    if (!term) {
+        res.json(posts);
+        res.end();
+    }
+
+    posts.forEach(post => {
+        let title = post.title.toLowerCase().split(" ");
+        let content = post.content.toLowerCase().split(" ");
+        if (title.indexOf(term) > -1 || content.indexOf(term) > -1){
+            console.log("Result found!")
+            res.json(post);
         }
     })
 })
