@@ -36,5 +36,11 @@ server.get("/posts", (req, res) => {
     })
 })
 
+server.post("/posts", (req, res) => {
+    const body = req.body;
+    posts.push(body);
+    res.send(posts);
+})
+
 
 module.exports = { posts, server };
