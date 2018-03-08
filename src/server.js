@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 
 const STATUS_USER_ERROR = 422;
+const USER_ERROR_OBJECT = { error: "422: Unprocessable Entity"}
 
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
@@ -42,9 +43,20 @@ server.get("/posts", (req, res) => {
 })
 
 server.post("/posts", (req, res) => {
-    const body = req.body;
-    posts.push(body);
-    res.send(posts);
+    if (!req.body.title || !req.body.content){
+        res.status(STATUS_USER_ERROR);
+        res.json(USER_ERROR_OBJECT);
+        res.end();
+    }
+
+    //generate ID
+    const newPost = {
+        title: req.body.title,
+        content: req.body.content
+    }
+
+    //send ID
+    res.json(newPost);
 })
 
 
