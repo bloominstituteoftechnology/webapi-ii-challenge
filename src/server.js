@@ -1,5 +1,5 @@
-const bodyParser = require("body-parser");
-const express = require("express");
+const bodyParser = require('body-parser');
+const express = require('express');
 /* eslint-disable */
 
 const STATUS_USER_ERROR = 422;
@@ -7,9 +7,9 @@ const STATUS_USER_ERROR = 422;
 // This array of posts persists in memory across requests. Feel free
 // to change this to a let binding if you need to reassign it.
 const posts = [
-  { title: "first title", contents: "contents" },
-  { title: "second", contents: "contents" },
-  { title: "third title", contents: "contents" }
+  { title: 'first title', contents: 'contents' },
+  { title: 'second', contents: 'contents' },
+  { title: 'third title', contents: 'contents' }
 ];
 
 let idCounter = 2;
@@ -20,7 +20,7 @@ server.use(bodyParser.json());
 
 // TODO: your code to handle requests
 
-server.get("/posts", (req, res) => {
+server.get('/posts', (req, res) => {
   const { term } = req.query;
   if (term) {
     const filteredPosts = posts.filter(post => {
@@ -34,18 +34,18 @@ server.get("/posts", (req, res) => {
   }
 });
 
-server.post("/posts", (req, res) => {
+server.post('/posts', (req, res) => {
   if (req.body.title && !req.body.contents) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: "You did not provide a title" });
+    res.json({ error: 'You did not provide a title' });
   }
   if (!req.body.title && req.body.contents) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: "You did not provide contents" });
+    res.json({ error: 'You did not provide contents' });
   }
   if (!req.body.title && !req.body.contents) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: "You did not provide both title and contents" });
+    res.json({ error: 'You did not provide both title and contents' });
   }
   let { title, contents } = req.body;
   idCounter++;
@@ -59,7 +59,7 @@ server.post("/posts", (req, res) => {
   res.json(newPost);
 });
 
-server.put("/posts", (req, res) => {
+server.put('/posts', (req, res) => {
   let { title, contents, id } = req.body;
   let updatedPost = {
     title: title,
@@ -70,11 +70,11 @@ server.put("/posts", (req, res) => {
 
   if (!title || !contents || !id) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: "You did not include an ID, Title and Contents" });
+    res.json({ error: 'You did not include an ID, Title and Contents' });
   }
   if (!postsId.includes(id)) {
     res.status(STATUS_USER_ERROR);
-    res.json({ error: "Invalid ID" });
+    res.json({ error: 'Invalid ID' });
   }
   if (title && contents && id) {
     posts = posts.filter(post => {

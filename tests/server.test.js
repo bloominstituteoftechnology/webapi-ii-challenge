@@ -126,7 +126,7 @@ describe('Request', () => {
       ];
 
       return Promise.all(posts.map(p => addPost(p)))
-        .then(() => req(METHOD_GET, STATUS_OK, null, `${PATH}/search?term=title`))
+        .then(() => req(METHOD_GET, STATUS_OK, null, `${PATH}?term=title`))
         .then((found) => {
           expect(found).to.have.length(2);
           expect(found).to.deep.include(posts[0]);
@@ -142,7 +142,7 @@ describe('Request', () => {
       ];
 
       return Promise.all(posts.map(p => addPost(p)))
-        .then(() => req(METHOD_GET, STATUS_OK, null, `${PATH}/search?term=hello`))
+        .then(() => req(METHOD_GET, STATUS_OK, null, `${PATH}?term=hello`))
         .then((found) => {
           expect(found).to.have.length(1);
           expect(found).to.deep.include(posts[1]);
