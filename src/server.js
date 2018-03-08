@@ -19,10 +19,6 @@ const server = express();
 server.use(bodyParser.json());
 
 // TODO: your code to handle requests
-// server.get("/posts", (req, res) => {
-//   res.status(200);
-//   res.json(posts);
-// });
 
 server.get("/posts", (req, res) => {
   const { term } = req.query;
