@@ -63,5 +63,26 @@ server.post("/posts", (req, res) => {
   res.json(newPost);
 })
 
+server.put("/posts", (req, res) => {
+    if (!req.body.title || !req.body.content || !req.body.id){
+        res.status(STATUS_USER_ERROR);
+        res.json(USER_ERROR_OBJECT);
+    }
+
+    //let matchObj;
+
+    posts.forEach(post => {
+        if (post.id === req.body.id){
+            post.title = req.body.title;
+            post.content = req.body.content;
+            res.json(post);
+            res.end();
+        }
+    })
+
+    res.status(STATUS_USER_ERROR);
+        res.json(USER_ERROR_OBJECT);
+})
+
 
 module.exports = { posts, server };
