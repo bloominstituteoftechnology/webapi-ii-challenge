@@ -28,9 +28,8 @@ server.get("/posts", (req, res) => {
     res.end();
   }
 
-  term = term.toLowerCase();
-
   posts.forEach(post => {
+    term = term.toLowerCase();
     let title = post.title.toLowerCase().split(" ");
     let content = post.content.toLowerCase().split(" ");
     if (title.indexOf(term) > -1 || content.indexOf(term) > -1) {
@@ -69,8 +68,6 @@ server.put("/posts", (req, res) => {
         res.json(USER_ERROR_OBJECT);
     }
 
-    //let matchObj;
-
     posts.forEach(post => {
         if (post.id === req.body.id){
             post.title = req.body.title;
@@ -84,5 +81,21 @@ server.put("/posts", (req, res) => {
         res.json(USER_ERROR_OBJECT);
 })
 
+server.delete("/posts/:id", (req, res) => {
+    const delId = parseInt(req.params.id);
+    let currentIndex;
+
+    posts.forEach(post => {
+        if (post.id === delId){
+            currentIndex = posts.indexOf(post);
+            posts.splice(currentIndex, 1);
+            res.json({ success: true });
+            res.end();
+        }
+    })
+
+    res.status(STATUS_USER_ERROR);
+    res.send(USER_ERROR_OBJECT);
+})
 
 module.exports = { posts, server };
