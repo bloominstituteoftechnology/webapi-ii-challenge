@@ -4,6 +4,15 @@
   "description": "LambdaSchool Node.js and Express",
   "private": true,
   "main": "server.js",
-  "scripts": {},
-  "license": "ISC"
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "knex": "^0.14.4",
+    "sqlite3": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
 }
