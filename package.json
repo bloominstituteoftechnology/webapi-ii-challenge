@@ -9,10 +9,13 @@
   },
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.3",
     "knex": "^0.14.4",
     "sqlite3": "^4.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"
-  }
+  },
+  "repository": "https://github.com/kait-schorr/Node-Express-Lab.git",
+  "author": "kait-schorr <kaitlynschorr@gmail.com>"
 }
