@@ -2,24 +2,28 @@
 const express = require('express');
 const db = require('./data/db.js');
 
-// add your server code starting here
-
 const server = express();
+
+const bodyParser = require('body-parser'); server.use(bodyParser.json());
+
+// add your server code starting here
 
 server.get('/', (req, res) => {
   res.json({ api: 'Running...' });
 });
 
-// server.post('/api/posts', (req, res) => { // POST Endpoint
-//   db
-//     .insert(posts)
-//     .then(posts => {
-//       req.json(posts);
-//     })
-//     .catch(error => {
-//       res.status(500).json(error);
-//     });
-// });
+server.post('/api/post', (req, res) => { // POST Endpoint
+  const posts = req.body;
+
+  db
+    .insert(posts)
+    .then(posts => {
+      req.json(posts);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
 
 server.get('/api/posts', (req, res) => { // GET Endpoint
   db
@@ -47,6 +51,18 @@ server.get('/api/posts/:id', (req, res) => { // GET ID Endpoint
       res.status(404).json({ message: "The post with the specified ID does not exist." })
     });
 });
+
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db
+    .remove(id)
+    .then(posts => {
+      res.json(posts);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+}); 
 
 const port = 5000;
 server.listen(port, () => console.log('API Running on port 5000'));
