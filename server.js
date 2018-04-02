@@ -2,8 +2,8 @@
 const express = require('express');
 const db = require('./data/db.js');
 const server = express();
+const bodyParser = require('body-parser');
 
-// add your server code starting here
 server.get('/', function(req, res) {
     res.send({ api: 'Running...' });
 });
@@ -26,20 +26,21 @@ server.get('/api/posts', function(req, res) {
         res.json(posts);
     })
     .catch(error => {
-        res.status(500).json(error);
+        res.send(404).json({ error: 'The posts information could not be retrieved.' });
     });
 });
 
 server.get('/api/posts/:id', (req, res) => {
-    const { id } = req.params;
 
+    const { id } = req.params;
+        
     db
     .findById(id)
     .then(posts => {
         res.json(posts[0]);
     })
     .catch(error => {
-        res.status(500).json(error);
+        res.send(404).send({ message: 'The post with the specified ID does not exist.' });
     });
 });
 
@@ -52,7 +53,7 @@ server.delete('/api/posts/:id', (req, res) => {
         res.json(posts[0]);
     })
     .catch(error => {
-        res.status(500).json(error);
+        res.status(500).json({ error: 'The post could not be removed' });
     });
 });
 
