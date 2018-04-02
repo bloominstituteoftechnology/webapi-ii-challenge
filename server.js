@@ -14,7 +14,9 @@ server.get('/api/posts', (req, res) => {
       res.json(posts);
     })
     .catch(error => {
-      res.status(500).json(error);
+      res
+        .status(500)
+        .json({ error: 'The posts information could not be retrieved.' });
     });
 });
 
@@ -26,13 +28,14 @@ server.get('/api/posts/:id', (req, res) => {
       res.json(posts[0]);
     })
     .catch(error => {
-      res.status(500).json(error);
+      res
+        .status(500)
+        .json({ error: 'The post information could not be retrieved.' });
     });
 });
 
 server.post('/api/posts', (req, res) => {
-  const title = req.body.title;
-  const contents = req.body.contents;
+  const { title, contents } = req.body;
   const newPost = { title, contents };
   if (!title || !contents) {
     res.status(400);
@@ -41,9 +44,18 @@ server.post('/api/posts', (req, res) => {
     });
     return;
   }
-  db.insert(newPost);
-  res.status(201);
-  res.json(newPost);
+  db
+    .insert(newPost)
+    .then(() => {
+      res.status(201);
+      res.json(newPost);
+    })
+    .catch(error => {
+      res.status(500);
+      res.json({
+        error: 'There was an error while saving the post to the database'
+      });
+    });
 });
 
 // add your server code starting here
