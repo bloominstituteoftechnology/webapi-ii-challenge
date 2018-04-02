@@ -48,6 +48,8 @@ Inside the data folder you'll find a file called `db.js` that has the following 
 
 Server.js already has `db.js` required and ready for you to use when building your endpoints.
 
+Please remember to run `yarn` or `npm i` to download all dependencies prior to running the server.
+
 ### `GET /posts`
 
 When the client makes a `GET` request to `/posts`:
