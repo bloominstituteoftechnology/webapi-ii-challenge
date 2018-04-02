@@ -28,7 +28,7 @@ server.get('/api/posts', (req, res) => { // GET Endpoint
       res.json(posts);
     })
     .catch(error => {
-      res.status(500).json(error);
+      res.status(500).json({ error: "The posts information could not be retrieved." });
     });
 });
 
@@ -41,7 +41,7 @@ server.get('/api/posts/:id', (req, res) => { // GET ID Endpoint
       res.json(posts[0]);
     })
     .catch(error => {
-      res.status(500).json(error);
+      res.status(500).json({ message: "The post with the specified ID does not exist." });
     });
 });
 
