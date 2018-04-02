@@ -58,7 +58,7 @@ When the client makes a `GET` request to `/posts`:
 * Otherwise, send down the full array of posts as a JSON response.
 * if there is an error getting the posts, return a status code of 500 and the following object: `{ message: 'Could not retrieve the posts' }`;
 
-### `GET /posts/1`
+### `GET /posts/123`
 
 When the client makes a `GET` request to `/posts/123` where `123` is a post id:
 
@@ -78,7 +78,7 @@ When the client makes a `POST` request to `/posts`:
   the posts array. Return status code 201 (created) and the newly created post object, with its assigned `id` to the client in a JSON response.
   * if there is an error creating the post, return a status code of 500 and the following object: `{ message: 'Could not create the post' }`;
 
-### `PUT /posts`
+### `PUT /posts/123`
 
 When the client makes a `PUT` request to `/posts/123` where `123` is the post id:
 
@@ -87,7 +87,7 @@ When the client makes a `PUT` request to `/posts/123` where `123` is the post id
 * Modify the post with the given `id`, updating its `title` and `contents` as appropriate then return the following object: `{ updated: 1}`
 * if there is an error updating the post, return a status code of 500 and the following object: `{ message: 'Could not update the post' }`;
 
-### `DELETE /posts`
+### `DELETE /posts/123`
 
 When the client makes a `DELETE` request to `/posts/123` where `123` is a post id:
 
@@ -102,6 +102,6 @@ When the client makes a `DELETE` request to `/posts/123` where `123` is a post i
 
 ## Stretch Goals
 
-If you finish up this lab early, take this opportunity to access a public API. Some good ones include Twitter, Facebook, SendGrid, IBM Watson, IMDB, the Star Wars API etc. Choose one that gives you access to data or functionality that you're interested in. Figure out how to get an access token to that API, and how to use that token to authenticate requests from a node server. Use `axios` to request data from your API of choice. Once you successfully grab some data back from your API of choice, maybe render it in a React application.
+If you finish early, take this opportunity to access a public API. Some good ones include Twitter, Facebook, SendGrid, IBM Watson, IMDB, the Star Wars API etc. Choose one that gives you access to data or functionality that you're interested in. Figure out how to get an access token to that API, and how to use that token to authenticate requests from a node server. Use `axios` to request data from your API of choice. Once you successfully grab some data back from your API of choice, maybe render it in a React application.
 
 Be creative here and have fun!
