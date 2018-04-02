@@ -1,5 +1,8 @@
 const express = require('express');
 const server = express();
+const bodyParser = require("body-parser");
+
+server.use(bodyParser.json());
 
 const db = require('./data/db.js');
 
@@ -20,6 +23,7 @@ server.post('/api/posts', (req, res) => {
     .catch(error => {
       res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
     });
+    .update()
     .catch(error => {
     	res.status(500).json({ error: "The posts information could not be retrieved."});
     });
@@ -50,10 +54,10 @@ server.get('/api/posts/:id', (req, res) => {
     .catch(error => {
         res.status(404).json({ message: "The post with the specified ID does not exist." });
     })
+    .find()
     .catch(error => {
     	res.status(500).json({ error: "The post information could not be retrieved." })
-    })
-
+    });
 });
 
 
@@ -66,7 +70,14 @@ server.delete('/api/posts/:id', (req, res) => {
         res.json(posts[0]);
     })
     .catch(error => {
-        res.status(500).json(error);
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
+    })
+    .cancel()
+    .catch(error => {
+        res.status(500).json({ error: "The post information could not be removed" });
+ 	.insert()   
+    .catch(error => {
+      res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
     });
 });
 
@@ -80,7 +91,7 @@ server.put('/api/posts/:id', (req, res) => {
         res.json(posts[0]);
     })
     .catch(error => {
-        res.status(500).json(error);
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
     });
 });
 
