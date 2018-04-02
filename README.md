@@ -33,7 +33,7 @@ Now that we have a way to add, update, remove and retrieve data from the provide
 
 * To start the server, type `yarn start` or `npm start` from the root folder (where the _package.json_ file is). The server is configured to restart automatically as you make changes.
 * Add the code necessary to implement the API requirements.
-* **Test the API using _Postman_ as you work through the exercises.**
+* **Test the API using [Postman](https://www.getpostman.com/) as you work through the exercises.**
 
 ### Post Schema
 
@@ -146,11 +146,6 @@ When the client makes a `PUT` request to `/api/posts/:id`:
   * update the post document in the database using the new information sent in the `reques body`.
   * return HTTP status code `200` (OK).
   * return the newly updated _post document_.
-
-## Running the API
-
-* Use `yarn start` or `npm start` to run the server. It will restart automatically on changes.
-* Test your application with [Postman](https://www.getpostman.com/).
 
 ## Stretch Problems
 
