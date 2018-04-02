@@ -142,7 +142,7 @@ When the client makes a `PUT` request to `/api/posts/:id`:
 
   * update the post document in the database using the new information sent in the `reques body`.
   * return HTTP status code `200` (OK).
-  * return the newly updated _post document_.
+  * return the newly updated _post_.
 
 ## Stretch Problems
 
