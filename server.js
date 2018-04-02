@@ -35,18 +35,42 @@ server.get("/api/posts/:id", (req, res) => {
 });
 
 server.post("/api/post", (req, res) => {
-    const { title, contents } = req.body;
-    const post = {title: title, contents: contents}
+  const { title, contents } = req.body;
+  const post = { title: title, contents: contents };
   db
     .insert(post)
     .then(res.redirect("/api/posts"))
     .catch(error => {
+      res.status(400).json({
+        errorMessage: "Please provide title and contents for the post."
+      });
+    });
+});
+
+server.put("/api/posts/:id", (req, res) => {
+  const { title, contents } = req.body;
+  const { id } = req.params;
+  const usrPost = { title: title, contents: contents };
+  db
+    .update(id, usrPost)
+    .then(res.redirect("/api/posts"))
+    .catch(error => {
       res
         .status(400)
-        .json({
-          errorMessage: "Please provide title and contents for the post."
-        });
+        .json({ message: "The post with the specified ID does not exist." });
     });
+});
+
+server.delete("/api/posts/:id", (req, res) => {
+  const { title, contents } = req.body;
+  const { id } = req.params;
+  db.remove(id)
+  .then(res.redirect('/api/posts'))
+  .catch(error => {
+      res
+        .status(404)
+        .json({message: "The post with the specified ID does not exist."})
+  })
 });
 
 const port = 5000;
