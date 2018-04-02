@@ -1,8 +1,24 @@
 const express = require('express');
-
 const server = express();
 
 const db = require('./data/db.js');
+
+
+server.post('/api/posts', (req, res) => {
+
+  db
+    .insert()
+    .then(posts => {
+      res.json(posts);
+      res.status(201).json({ Created });
+    })
+    .catch(error => {
+      res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+    });
+    .catch(error => {
+    	res.status(500).json({ error: "The posts information could not be retrieved."});
+    });
+});
 
 
 server.get('/', (req, res) => {
