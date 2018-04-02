@@ -58,6 +58,43 @@ server.post('/api/posts', (req, res) => {
     });
 });
 
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db
+    .remove(id)
+    .then(posts => {
+      res.status(200);
+      res.json({ message: 'The post was successfully deleted.' });
+    })
+    .catch(error => {
+      res.status(500);
+      res.json({ error: 'The post could not be removed' });
+    });
+});
+
+server.put('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  const { title, contents } = req.body;
+  const updatedPost = { title, contents };
+  if (!title || !contents) {
+    res.status(400);
+    res.json({
+      errorMessage: 'Please provide title and contents for the post.'
+    });
+    return;
+  }
+  db
+    .update(id, updatedPost)
+    .then(posts => {
+      res.status(200);
+      res.json(updatedPost);
+    })
+    .catch(error => {
+      res.status(500);
+      res.json({ error: 'The post information could not be modified.' });
+    });
+});
+
 // add your server code starting here
 const port = 5010;
 server.listen(port, () => console.log('API running on port 5010'));
