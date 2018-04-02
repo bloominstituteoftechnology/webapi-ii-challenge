@@ -31,6 +31,7 @@ server.get('/api/posts/:id', (req, res) => {
 server.post('/api/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
+  const newPost = { title: title, contents: contents };
   if (!title || !contents) {
     res.status(400);
     res.json({
@@ -38,7 +39,9 @@ server.post('/api/posts', (req, res) => {
     });
     return;
   }
-  db.insert({ title, contents });
+  db.insert(newPost);
+  res.status(201);
+  res.json(newPost);
 });
 
 // add your server code starting here
