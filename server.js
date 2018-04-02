@@ -33,7 +33,7 @@ server.get('/api/posts/:id', (req, res) => {
 server.post('/api/posts', (req, res) => {
   const title = req.body.title;
   const contents = req.body.contents;
-  const newPost = { title: title, contents: contents };
+  const newPost = { title, contents };
   if (!title || !contents) {
     res.status(400);
     res.json({
