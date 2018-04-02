@@ -8,6 +8,19 @@ const db = require('./data/db.js');
 
 // add your server code starting here
 
+server.post('/api/posts', (req, res) => {
+  const post = req.body;
+
+  db
+    .insert(post)
+    .then(newPost => {
+      res.json(newPost);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
 server.get('/api/posts', (req, res) => {
   db
     .find()
