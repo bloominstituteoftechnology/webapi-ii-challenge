@@ -10,7 +10,7 @@ server.get('/', (req, res)=>{
     res.send({ api: 'Running...' })
 })
 
-server.get('/posts', (req, res)=> {
+server.get('/api/posts', (req, res)=> {
     db
         .find()
         .then(users => {
@@ -20,6 +20,19 @@ server.get('/posts', (req, res)=> {
             res.status(500).json(error);
         })
     })
+
+    server.get('/api/posts/:id', (req, res)=>{
+        const{ id } = req.params;
+        db
+            .findById(id)
+            .then(posts => {
+                res.json(posts[0]);
+            })
+            .catch(error => {
+                res.status(500).json(error);
+            })
+    })
+    
 
 const port = 5000;
 server.listen(port, () => console.log('API Running on port 5000'))
