@@ -52,6 +52,10 @@ server.post('/api/posts', function(req, res) {
         "contents": req.body.contents
     }
 
+    if (req.body.title === undefined || req.body.contents === undefined) {
+        res.status(400).json({errorMessage: 'Please provide title and contents for the post'})
+    }
+
     console.log(post);
 
     db
@@ -68,7 +72,7 @@ server.delete('/api/posts/:id', function(req, res) {
     const { id } = req.params;
 
     db
-    .remove({ id })
+    .remove(id)
     .then(users => {
         res.status(201).json(users[id]);
     })
@@ -76,6 +80,8 @@ server.delete('/api/posts/:id', function(req, res) {
         res.status(500).json.error
     })
 })
+
+
 
 
 
