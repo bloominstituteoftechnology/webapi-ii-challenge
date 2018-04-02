@@ -33,6 +33,19 @@ server.get('/api/posts', (req, res) => {
                 res.status(500).json(error);
             })
     })
+    server.delete('/api/posts/:id', (req, res) => {
+        const { id } = req.params;
+    
+        db
+        .remove(id)
+        .then(posts => {
+            res.json(posts[0]);
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        });
+    });
+    
 
 const port = 5000;
 server.listen(port, () => console.log('API Running on port 5000'));
