@@ -49,9 +49,6 @@ Posts in the database conform to the following structure:
 `title` is the title of the post, as a String. `contents` contains the body
 contents of the post, also as a String.
 
-There are five main route handlers that will allow the client to read/modify the
-array.
-
 ### Provided Code
 
 We have provided a `server.js` file and a folder called `data`. Inside the data folder we have added a database with some posts already populated that you can use to test your endpoints as you build them.
