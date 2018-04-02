@@ -21,11 +21,11 @@ server.post('/api/posts', (req, res) => {
       res.status(201).json({ Created });
     })
     .catch(error => {
-      res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+     res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
     });
     .update()
     .catch(error => {
-    	res.status(500).json({ error: "The posts information could not be retrieved."});
+     res.status(500).json({ error: "The posts information could not be retrieved."});
     });
 });
 
@@ -35,10 +35,10 @@ server.get('/api/posts', (req, res) => {
     db
     .find()
     .then(posts => {
-        res.json(posts);
+     res.json(posts);
     })
     .catch(error => {
-        res.status(500).json({ error: "The posts information could not be retrieved." });
+     res.status(500).json({ error: "The posts information could not be retrieved." });
     });
 });
 
@@ -49,14 +49,14 @@ server.get('/api/posts/:id', (req, res) => {
     db
     .findById(id)
     .then(posts => {
-        res.json(posts[0]);
+     res.json(posts[0]);
     })
     .catch(error => {
-        res.status(404).json({ message: "The post with the specified ID does not exist." });
+     res.status(404).json({ message: "The post with the specified ID does not exist." });
     })
     .find()
     .catch(error => {
-    	res.status(500).json({ error: "The post information could not be retrieved." })
+     res.status(500).json({ error: "The post information could not be retrieved." });
     });
 });
 
@@ -75,6 +75,7 @@ server.delete('/api/posts/:id', (req, res) => {
     .cancel()
     .catch(error => {
         res.status(500).json({ error: "The post information could not be removed" });
+    });
  	.insert()   
     .catch(error => {
       res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
@@ -92,6 +93,14 @@ server.put('/api/posts/:id', (req, res) => {
     })
     .catch(error => {
         res.status(404).json({ message: "The post with the specified ID does not exist." });
+    });
+ 	.insert()   
+    .catch(error => {
+      res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+    });
+ 	.update()   
+    .catch(error => {
+      res.status(400).json({ error: "The post information could not be modified." });
     });
 });
 
