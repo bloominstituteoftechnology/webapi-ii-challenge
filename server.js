@@ -1,9 +1,12 @@
 // import your node modules
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const express = require('express');
 
 const db = require('./data/db.js');
 
 const server = express();
+server.use(bodyParser.json());
 
 // add your server code starting here
 
@@ -35,10 +38,12 @@ server.get('/api/posts/:id', (req, res)=> {
 })
 
 server.post('/api/posts', (req, res)=> {
-    const post =  {
-        title: "Something straight from a movie line or a book ",
-        contents: "I don't know who said that"
-      }
+    const post = req.body;
+    if (!post){
+        res.status(STATUS_USER_ERROR);
+        res.json({error:'Must provide a post '});
+        return
+    }
     db
     .insert(post)
     .then (posts=> {
@@ -66,10 +71,8 @@ server.delete('/api/posts/:id', (req,res)=> {
 
 server.put('/api/posts/:id', (req,res)=>{
     const { id } = req.params;
-    const post =  {
-        title: "Something straight from a movie line or a book ",
-        contents: "I don't know who said that"
-    };
+    const post =  req.body;
+        
     db
     .update(id, post)
     .then (posts=> {
