@@ -1,9 +1,11 @@
 // import your node modules
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const server = express();
 server.use(bodyParser.json());
+server.use(cors());
 // server.use(bodyParser.urlencoded({ extended: false }));
 
 const db = require("./data/db.js");
