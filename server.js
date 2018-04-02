@@ -4,6 +4,11 @@ const server = express();
 const db = require('./data/db.js');
 
 
+server.get('/', (req, res) => {
+    res.send({ api: 'Running...' })
+});
+
+
 server.post('/api/posts', (req, res) => {
 
   db
@@ -21,11 +26,6 @@ server.post('/api/posts', (req, res) => {
 });
 
 
-server.get('/', (req, res) => {
-    res.send({ api: 'Running...' })
-});
-
-
 server.get('/api/posts', (req, res) => {
 
     db
@@ -34,7 +34,7 @@ server.get('/api/posts', (req, res) => {
         res.json(posts);
     })
     .catch(error => {
-        res.status(500).json(error);
+        res.status(500).json({ error: "The posts information could not be retrieved." });
     });
 });
 
@@ -48,8 +48,12 @@ server.get('/api/posts/:id', (req, res) => {
         res.json(posts[0]);
     })
     .catch(error => {
-        res.status(500).json(error);
-    });
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
+    })
+    .catch(error => {
+    	res.status(500).json({ error: "The post information could not be retrieved." })
+    })
+
 });
 
 
