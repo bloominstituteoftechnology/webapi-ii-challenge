@@ -13,18 +13,20 @@ server.get(`/api/posts`, (req, res) => {
     db
         .find()
         .then(posts => {
-            if(posts.length){
+            if(posts.length > 0){ // checks if any posts were found
                 res
                     .status(200)
                     .json(posts);
             }else{
-                res.json({ message: "No posts found" })
+                res
+                    .status(404)
+                    .json({ message: `No posts found!` }); // no posts found
             }
         })
-        .catch(error => {
+        .catch(err => {
             res
                 .status(500)
-                .json({ error: "The posts information could not be retrieved." });
+                .json({ error: `The posts could not be retrieved.` }); // database error
         })
     
 });
@@ -35,20 +37,20 @@ server.get(`/api/posts/:id`, (req, res) => {
     db
         .findById(id)
         .then(post => {
-            if(post.length){
+            if(post.length > 0){
                 res
                     .status(200)
-                    .json(post[0]);
+                    .json(post[0]); // result is an array with one result, send it as an object
             }else{
                 res
                     .status(404)
-                    .json({ message: "The post with the specified ID does not exist." });
+                    .json({ message: `The post does not exist.` }); // post doesn't exist
             }
         })
-        .catch(error => {
+        .catch(err => {
             res
             .status(500)
-            .json({ error: "The post information could not be retrieved." });
+            .json({ error: `The post information could not be retrieved. Internal server error!` }); // database error
         });
 });
 
@@ -61,80 +63,73 @@ server.post(`/api/posts`, (req, res) => {
     if(title === undefined || contents === undefined){
         res 
             .status(400)
-            .json({ errorMessage: "Please provide title and contents for the post." })
+            .json({ errorMessage: `Please provide title and contents for the post.` })
             return;
     }
 
     // create new post object
     const newPost = {title, contents};
-    console.log(newPost)
 
     //insert it in the database
     db
         .insert(newPost)
         .then(response => {
-            const post = {...response, title, contents}
-            res
-            .status(201)
-            .json(post);
+            db
+                .findById(response.id)
+                .then(post => {
+                    if(post.length > 0){
+                        res
+                            .status(200)
+                            .json(post[0]); // result is an array with one result, send it as an object
+                    }else{
+                        res
+                            .status(404)
+                            .json({ message: `The post was not created.` }); // post doesn't exist, so was not created
+                    }
+                });
         }).catch(err => {
             res
                 .status(500)
-                .json({error: "There was an error while saving the post to the database"});
+                .json({error: `There was an error while saving the post to the database. Internal server error`});
         });
 });
 
 //put
 server.put(`/api/posts/:id`, (req, res) => {
     const { id } = req.params;
-    // find
+    const postUpdates = req.body;
+
+    // update
     db
-        .findById(id)
-        .then(post => {
-            // continue
+        .update(id, postUpdates)
+        .then(count => {
+            if(count > 0){
+                // update done
+                db
+                .findById(id)
+                .then(updatedPost => {
+                    if(updatedPost.length > 0){
+                        res
+                            .status(200)
+                            .json(updatedPost[0]); // result is an array with one result, send it as an object
+                    }else{
+                        res
+                            .status(400) // check if this is correct?
+                            .json({ message: `Error encountered` }); // update occured but an error happened
+                    }
+                });
+            }else{
+                res
+                    .status(404)
+                    .json({ message: `The post was not updated.` }); // nothing was updated
+            }
         })
-        .catch(err => {
-            res
-                .status(404)
-                .json({ message: "The post with the specified ID does not exist." })
-                return;
-        })
-    
-    // if you reach here
-    const body =  req.body !== undefined ? req.body : {};
-    const {title, contents } = body;
-    const updatedPost = {title, contents};
-
-    // check if title and content are set
-    if(title === undefined || contents === undefined){
-        res 
-            .status(400)
-            .json({ errorMessage: "Please provide title and contents for the post." })
+        .catch(error => {
+            res 
+                .status(500)
+                .json({ error: `The post information could not be modified.` }); // database error
             return;
-    }
-
-    if(updatedPost !== undefined){
-        db
-            .update(id, updatedPost)
-            .then(response => {
-                res 
-                    .status(200)
-                    .json({...updatedPost, id});
-                    return;
-            })
-            .catch(error => {
-                res 
-                    .status(500)
-                    .json({ error: "The post information could not be modified." });
-                return;
-            })
-            return;
-    }
-
-    res
-        .status(500)
-        .json({error: "Post was not updated"})
-        return;
+        });
 });
 
 //delete
@@ -142,24 +137,28 @@ server.delete(`/api/posts/:id`, (req, res) => {
     const { id } = req.params;
     db
         .findById(id)
-        .then(post => {
-            db
-                .remove(id)
-                .then(post =>{
-                    res.json({message: 'post removed'})
-                })
-                .catch(error => {
-                    res
-                        .status(500)
-                        .json({ error: "The post could not be removed" });
-                });
+        .then(response => {
+            if(response.length > 0){
+                // make a copy of the post
+                const post = { ...response[0] };
+                db
+                    .remove(id)
+                    .then(count => {
+                        res
+                            .status(200)
+                            .json(post); // send the post deleted back with the response
+                    })
+            }else{
+                res
+                    .status(404)
+                    .json({ message: `The post was not deleted.` }); // post doesn't exist?? somehow!!
+            }
         })
         .catch(err => {
             res
-                .status(404)
-                .json({ message: "The post with the specified ID does not exist." })
-        });
-        
+                .status(500)
+                .json({ error: `he post could not be removed. Internal server error!` }); // database error
+        });  
 });
 
 const port = 5000;
