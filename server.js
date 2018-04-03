@@ -1,11 +1,16 @@
 // import your node modules
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
+const morgan = require("morgan");
+const helmet = require("helmet");
 
 const server = express();
-server.use(bodyParser.json());
+server.use(express.json());
 server.use(cors());
+
+server.use(morgan("dev"));
+server.use(helmet());
+
 // server.use(bodyParser.urlencoded({ extended: false }));
 
 const db = require("./data/db.js");
@@ -60,35 +65,43 @@ server.post("/api/posts/", (req, res) => {
 });
 
 server.delete("/api/posts/:id", (req, res) => {
-  db
-    .remove(req.params.id)
-    .then(posts => {
-      if (posts < 1) {
-        res
-          .status(404)
-          .json({ message: "The post with the specified ID does not exist." });
-      } else {
-        res.json(posts);
-      }
-    })
-    .catch(error => {
-      res.status(500).json({
-        errorMessage: "The post could not be removed."
+  const { id } = req.params;
+  let user;
+  db.findById(id).then(response => {
+    user = { ...response[0] };
+    db
+      .remove(id)
+      .then(count => {
+        if (count < 1) {
+          res.status(404).json({
+            message: "The post with the specified ID does not exist."
+          });
+        } else {
+          res.json(user);
+        }
+      })
+      .catch(error => {
+        res.status(500).json({
+          errorMessage: "The post could not be removed."
+        });
       });
-    });
+  });
 });
 
 server.put("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
   if (!req.body) {
     res.status(400).json({
       errorMessage: "Please provide title and contents for the post."
     });
   }
   db
-    .update(req.params.id, req.body)
-    .then(posts => {
-      if (posts > 0) {
-        res.status(200).json(req.body);
+    .update(id, req.body)
+    .then(count => {
+      if (count > 0) {
+        db.findById(id).then(response => {
+          res.status(200).json(response[0]);
+        });
       } else {
         res
           .status(404)
