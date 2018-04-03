@@ -1,0 +1,10 @@
+.Menu {
+    margin: 2rem 0 2rem 0;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.Menu__button {
+    width: 10%;
+}
