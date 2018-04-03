@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+
 export default class NewPost extends Component {
     state = {
         posts: [],
@@ -48,8 +49,8 @@ export default class NewPost extends Component {
 render() {
     return (
         <form className="new-form">
-            <input name='newTitle' className='post-input post-input-title' type='text' onChange={(event) => this.handleChange(event)} placeholder='-Put A Post Title Here-' value={this.state.newTitle} />
-            <input name='newContents' className='post-input post-input-text' type='text' onChange={(event) => this.handleChange(event)} placeholder='-Whats On Your Mind?-' value={this.state.newContents} />
+            <input name='newTitle' className='post-input post-input-title' type='text' onChange={(event) => this.handleChange(event)} placeholder='-Put A [B]ost Title Here-' value={this.state.newTitle} />
+            <textarea name='newContents' className='post-input post-input-text' type='text' onChange={(event) => this.handleChange(event)} placeholder='-Whats On Your [B]ind?-' value={this.state.newContents} />
             <button className='post-button' onClick={(event) => this.addPost(event)}>Submit</button>
         </form>
     )

@@ -1,0 +1,54 @@
+.title{
+    color: rgb(57, 57, 255);
+display:flex;
+justify-content: center;
+background: blue;
+}
+
+.title-B{
+    color:red;
+    background: white;
+    font-size: 50px;
+    margin-left: 45%;
+    width: 10%;
+}
+
+.title-rest{
+    font-size: 40px;
+    padding-top: 18px;
+    background: blue;
+    color: white;
+}
+
+.post-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgb(107, 107, 252);
+    color:rgb(107, 107, 252);
+    font-size: 30px;
+}
+
+.post-container{
+    border: 1px solid white;
+    background: white;
+    width: 40%;
+    margin: 15px 0;
+}
+
+.new-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.post-input {
+    margin: 5px 0;
+    width: 30%;
+}
+
+.post-input-title{
+    width: 10%;
+    height: 30px;
+}

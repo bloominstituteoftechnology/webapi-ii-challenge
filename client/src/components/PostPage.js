@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import NewPost from './NewPost';
 
+import './post.css';
+
 export default class PostPage extends React.Component {
     state = {
         posts: [],
@@ -25,17 +27,17 @@ export default class PostPage extends React.Component {
     render() {
         return (
             <div>
-                
+            <h1 className='title title-B'>🅱️<div className='title title-rest'>acefook</div></h1>
+            <NewPost />   
             <div className='post-list'>
                 {this.state.posts.map(post => (
                     <div className='post-container'>
                         <div className='post-title'>{post.title}</div>
                         <div className='post-text'>{post.contents}</div>
                     </div>
-
                     ))}
             </div>
-            <NewPost />
+
             </div>
         )
     }
