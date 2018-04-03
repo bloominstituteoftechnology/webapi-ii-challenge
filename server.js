@@ -68,6 +68,25 @@ server.get('/api/posts/:id', (req, res) => {
     })
 });
 
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    let post;
+
+    db
+            .remove(id)
+            .then(deletes => {
+                if(deletes === 0) {
+                    res.error(404).json({ message: "The post with the specified ID does not exist." })
+                }
+                else{
+                    res.status(200).json({ message: "Post deleted." })
+                }
+            })
+            .catch(error => {
+                res.status(500).json({ error: "The post could not be removed" })
+        })
+});
+
 
 
 const port = 5000;
