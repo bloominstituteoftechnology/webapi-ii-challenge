@@ -5,7 +5,7 @@ const db = require('./data/db.js');
 
 const server = express();
 
-const bodyParser = require('body-parser'); server.use(bodyParser.json());
+server.use(express.json());
 
 // add your server code starting here
 server.get('/', (req, res) => {
