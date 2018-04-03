@@ -30,6 +30,7 @@ class App extends Component {
   }
 
   render() {
+    document.body.style.background = "pink";
     return (
       <Container className="my-5">
         <Row className="App">
