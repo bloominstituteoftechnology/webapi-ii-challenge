@@ -2,5 +2,19 @@
   display: flex;
   flex-direction: column;
   text-align: center;
-  margin-top: 20px;
+  margin: 30px;
+  background: #97f3ff;
+}
+
+.App h3:hover {
+  color: palevioletred;
+}
+
+sub {
+  margin-top: -5px;
+}
+
+sub:hover {
+  color: royalblue;
+  font-weight: 400;
 }

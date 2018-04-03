@@ -7,3 +7,11 @@
     font-weight: 700;
     color: rebeccapurple;
 }
+.postContent:before{
+    content: '';
+}
+
+.postContent:hover:after{
+    content: '?';
+    font-weight: 700;
+}

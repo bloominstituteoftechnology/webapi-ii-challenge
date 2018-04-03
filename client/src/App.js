@@ -25,7 +25,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <h3>Node Nerd Blog</h3>        
+      <h3><strong>Node</strong>Nerd</h3>
+      <sub>Node Express Lab</sub>        
         {this.state.posts.map((post, id) => {
           return (
             <div key={id}>

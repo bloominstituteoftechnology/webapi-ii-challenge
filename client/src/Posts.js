@@ -10,7 +10,7 @@ const BlogPosts = (props) => {
       <div className="postTitle">
       "{post.title}"
       </div>
-      <div>
+      <div className="postContent">
       {post.contents}
       </div>
     </div>
