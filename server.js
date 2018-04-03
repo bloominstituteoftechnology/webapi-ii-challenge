@@ -1,18 +1,20 @@
 // import your node modules
-const bodyParser = require("body-parser");
 const express = require("express");
+const CORS = require('cors');
 
 const db = require("./data/db.js");
 
 const server = express();
-server.use(bodyParser.json());
 
+server.use(express.json());
+server.use(CORS());
 // add your server code starting here
 
 server.get("/api/posts/", (req, res) => {
   db
     .find()
     .then(posts => {
+      console.log('activated get server')
       res.json(posts);
     })
     .catch(error => {

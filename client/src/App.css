@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+
+.App {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px red solid;
+  justify-content: space-evenly;
+}
+
+.card {
+  width: 200px;
+  height: 200px;
+  margin: 20px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.card-title {
+  border-bottom: 1px solid darkgrey;
+  text-align: center;
+  font-weight: bold;
+}
