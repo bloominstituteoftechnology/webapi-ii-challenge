@@ -11,12 +11,19 @@ const server = express();
 server.use(morgan('dev'));
 server.use(helmet());
 server.use(express.json());
-server.use(bodyParser.json());
 
 // add your server code starting here
 
 server.get('/api/posts', (req, res) => {
     res.send({api: 'Running.......'});
+})
+
+server.get('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+
+    db.findById(id)
+    .then(posts => res.json(posts[0]))
+    .catch(error => res.status(500).json(error));
 })
 
 server.get('/api/posts', (req, res) => {
@@ -25,20 +32,14 @@ server.get('/api/posts', (req, res) => {
     .catch(error => res.status(500).json({ error: "The posts information could not be retrieved."}));
 })
 
-server.get('api/posts/:id', (req, res) => {
-    const { id } = req.params;
 
-    db.findById(id)
-    .then(posts => res.json(posts[0]))
-    .catch(error => res.status(500).json(error));
-})
 
 server.post('/api/posts', (req, res) => {
     const post = req.body;
     db
     .insert(post)
     .then(response => {
-        res.status(201).json(resonse);
+        res.status(201).json(post);
     })
     .catch(error => {
         res.status(500).json({
