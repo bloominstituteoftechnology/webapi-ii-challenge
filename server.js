@@ -1,12 +1,18 @@
 // import your node modules
 const express = require('express');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const cors = require('cors');
 
 const db = require('./data/db.js');
 
 const server = express();
 
-server.use(express.json());
-// add your server code starting here
+//middleware
+server.use(morgan('dev')); // logging
+server.use(helmet()); // security
+server.use(express.json()); // parsing
+server.use(cors());
 
 // CREATE
 server.post('/api/posts', (req, res) => {
@@ -55,12 +61,17 @@ server.get('/api/posts/:id', (req, res) => {
   db
     .findById(id)
     .then(posts => {
-      res.json(posts[0]);
+      if (posts[0]) {
+        res.json(posts[0]);
+      } else
+        res
+          .status(404)
+          .json({ message: 'The post with the specified ID does not exist.' });
     })
     .catch(error => {
       res
-        .status(404)
-        .json({ message: 'The post with the specified ID does not exist.' });
+        .status(500)
+        .json({ error: 'The post information could not be retrieved.' });
     });
 });
 
@@ -78,7 +89,7 @@ server.put('/api/posts/:id', (req, res) => {
   db.findById(id).then(posts => {
     if (posts[0]) {
       db
-        .update(id, { title, contents })
+        .update(id, { updatedPost })
         .then(id => {
           res.status(200).json({ updatedPost });
         })
