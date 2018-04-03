@@ -1,0 +1,21 @@
+.Container{
+    display: flex;
+    /* border: 2px solid blue; */
+    flex-direction: column;
+    /* flex-flow: wrap; */
+    margin: 0 auto;
+    
+}
+.titleContent{
+    border: 0.0001px dotted gray;
+    padding: 10px;
+    text-align: center;
+    /* width: 300px;
+    height: 400px; */
+}
+.title{
+    font-family: cursive;
+}
+.Content{
+    font-family: 'Times New Roman', Times, serif;
+}

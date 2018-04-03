@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import './Posts.css';
 
 class Posts extends Component {
     constructor(){
@@ -20,12 +21,12 @@ class Posts extends Component {
     }
     render() {
         return (
-            <div>
+            <div className="Container">
                 {this.state.posts.map(post=>{
                     return (
-                        <div key={post.id}>
-                            <h1>{post.title}</h1>
-                            <h3>{post.content}</h3>
+                        <div className="titleContent" key={post.id}>
+                            <div className="title"><h1>{post.title}</h1></div>
+                            <div className="Content"><h3>{post.contents}</h3></div>
                         </div>
                     );
                 })}
