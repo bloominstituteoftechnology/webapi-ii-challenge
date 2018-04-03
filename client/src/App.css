@@ -1,0 +1,22 @@
+.Header {
+  text-align: center;
+  text-decoration: underline;
+}
+.App {
+  display: flex;
+  justify-content: center;
+  flex-flow: wrap;
+  align-items: center;
+  text-align: center;
+}
+.Post__Wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 300px;
+  height: 200px;
+  border: 3px solid black;
+  margin: 2%;
+  padding: 0 1% 1% 1%;
+}
+

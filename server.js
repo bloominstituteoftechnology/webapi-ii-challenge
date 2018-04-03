@@ -1,6 +1,7 @@
 // IMPORTS
 
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
 
@@ -13,6 +14,7 @@ const server = express();
 server.use(morgan('dev'));
 server.use(helmet());
 server.use(express.json());
+server.use(cors());
 
 // POST REQUEST 
 
