@@ -3,11 +3,9 @@ const express = require('express');
 
 const server = express();
 const bodyParser = require('body-parser');
-server.use(bodyParser.json()); 
-server.use(bodyParser.urlencoded())
 
 const db = require('./data/db.js');
-// server.use(express.json());
+server.use(express.json());
 
 server.get('/', function(req, res){
   res.send({api: 'API running...'});
@@ -20,7 +18,7 @@ server.get('/api/posts', (req, res) => {
     res.json(posts);
   })
   .catch(error => {
-    res.status(500).json({ error: "The posts information could not be retrieved." });
+    res.status(500).json(error);
   });
 });
 
@@ -30,10 +28,14 @@ server.get('/api/posts/:id', (req, res) => {
   db
   .findById(id)
   .then(posts => {
-      res.status(404).json({ message: "The post with the specified ID does not exist." })
-    })
+    if (posts.length > 0) {
+      res.json(posts[0])
+    } else {
+      res.status(404).json({ message: "The user with the specified ID does not exist." })
+    }
+  })
   .catch(error => {
-      res.status(500).json({ error: "The post information could not be retrieved." });
+      res.status(500).json(error);
   });
 });
 
@@ -47,69 +49,63 @@ server.post('/api/posts', (req, res) => {
     db.insert(post)
    
     .then(newId => {
-        console.log('newId', newId)
-        return newId
-    })
-    .then(id => {
-        console.log('id.id', id.id)
-        return db.findById(id.id)
-        // res.json('HELLO')
-    })
-    .then(p => {
-        console.log('p', p)
-        // console.log('p.id', p.id)
-        res.status(201).json(p)
+        console.log('newId', newId);
+        const { id } = newId;
+        db.findById(id)
+        .then(response => {
+          res.status(201).json(response[0]);
+        });
     })
     .catch(error => {
         res.status(500).json(error)
     })
   });
 
-
-server.delete('/api/posts/:id', (req, res) => {
-  const { id } = req.params;
-  let post; 
-
-  db
-    .findById(id)
-    .then(response => {
-    user = { ...response[0] };
-
+  server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    let post; 
+  
     db
-    .remove(id)
-    .then(response => {
-      res.status(200).json(user);
+      .findById(id)
+      .then(response => {
+      post = { ...response[0] };
+  
+      db
+      .remove(id)
+      .then(response => {
+        res.status(200).json(post);
+      })
+      .catch(error => {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+      });
     })
     .catch(error => {
-      res.status(404).json({ message: "The post with the specified ID does not exist." })
+        res.status(500).json({ error: "The post could not be removed" });
     });
-  })
-  .catch(error => {
-      res.status(500).json({ error: "The post could not be removed" });
   });
-});
 
-// server.post('/api/posts', (req, res) => {
-//   let title = req.body.title;
-//   let contents = req.body.contents;
-//   if (title === null || contents == null) {
-//     res.status(400);
-//   }
-
-//   // if either title or contents are empty, do this
-//   // res.status(400);
-
-//   db
-//   .insert(post)
-//   .then(posts => {
-//       res.json(posts[0]);
-//       res.status(201)
-//   })
-//   .catch(error => {
-//       res.status(500).json(error);
-//   });
-// });
-
+  server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const post = req.body;
+  
+    db
+      .update(id, post) 
+      .then(count => {
+        if (count > 0) {
+          db.findById(id).then(updatedPost => {
+            res.status(200).json(updatedPost[0]);
+          });  
+        } else {
+          res
+          .status(404)
+          .json({ message: 'The user with the specific Id does not exist'});
+        }
+    })
+  .catch(error => {
+    res.status(500).json(error);
+      });
+  });
+  
 
 
 // add your server code starting here
