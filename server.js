@@ -10,7 +10,7 @@ const server = express();
 
 // middleware
 server.use(morgan('dev'));
-server.use(hamlet());
+server.use(helmet());
 server.use(express.json());
 
 // add your server code starting here
@@ -73,6 +73,29 @@ server.get('/api/posts', (req, res) => {
                 ({ error: 'There was an error while saving the post to the database.' })
             })
     })
+
+    
+
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const update = req.body;
+
+    db
+        .update(id, update)
+        .then(count => {
+            if (count > 0) {
+                db.findById(id).then(updatePosts => {
+                    res.status(200).json(updatePosts[0]);
+                })
+            } else {
+                res.status(400).json({ message: 'The post with the specified ID does not exist.' })
+            }
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        })
+    })
+
     
 
 const port = 5000;
