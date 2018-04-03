@@ -1,15 +1,12 @@
 // import your node modules
-const express = require('express');
 const bodyParser = require('body-parser');
+const express = require('express');
 const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
+server.use(bodyParser.json());
 
-const post = {
-  title: "The post title",
-  contents: "The post contents"
-}
 
 server.get('/api/posts', (req, res) => {
   db.find()
@@ -19,40 +16,87 @@ server.get('/api/posts', (req, res) => {
   });
 });
 
+
+
 server.post('/api/posts', (req, res) => {
-  db.insert(post)
-  .then(post => res.json(post))
+  const title = req.body.title;
+  const contents = req.body.contents;
+  
+  if (!title || !contents) {
+    res.status(400);
+    res.json({ errorMessage: "Please provide title and contents for the post." })
+    return;
+  }
+  
+  db.insert(req.body)
+  .then(post => {
+    res.status(201).json(post);
+  })
   .catch(error => {
-    res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    res.status(500).json({ error: "There was an error while saving the post to the database" })
   });
 });
+
+
 
 server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   
   db.findById(id)
-  .then(posts => res.json(posts))
+  .then(posts => {
+    // console.log(posts); why I can't log this? 
+    if (posts.length) {
+      res.json(posts[0]);
+    } else {
+      res.status(404).json({ message: "The post with the specified ID does not exist." });
+    }
+  })
   .catch(error => {
-    res.status(404).json({ message: "The post with the specified ID does not exist." })
+    res.status(500).json({ error: "The post information could not be retrieved." });
   });
 });
+
+
 
 server.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   
   db.remove(id)
-  .then(posts => res.json(posts))
+  .then(post => {
+    if (post) {
+      res.json(post);
+    } else {
+      res.status(404).json({ message: "The post with the specified ID does not exist." });
+    }
+  })
   .catch(error => {
-    res.status(404).json({ message: "The post with the specified ID does not exist." })
+    res.status(500).json({ error: "The post could not be removed" });
   });
 });
 
-server.put('api/posts/:id', (req, res) => {
+
+
+server.put('/api/posts/:id', (req, res) => {
   const { id } = req.params;
-  const newPost; 
-  db.update(id)
-  .then(posts => res.json(posts))
-  .catch()
+  const title = req.body.title;
+  const contents = req.body.contents;
+  
+  if (!title || !contents) {
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+  }
+  
+  db.update(id, req.body)
+  .then(post => {
+    if (post) {
+      res.json(post);
+    } else {
+      res.status(404).json({ message: "The post with the specified ID does not exist." })
+    }
+  })
+  .catch(error => {
+    res.status(500).json({ error: "The post information could not be modified." });
+  });
+  
 });
 
 
