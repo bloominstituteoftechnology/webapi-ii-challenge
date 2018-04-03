@@ -1,12 +1,14 @@
 const express = require('express');
-
-const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const helmet = require('helmet');
 
 const db = require('./data/db.js');
 
 const server = express();
 
-server.use(bodyParser.json());
+server.use(morgan('dev'));
+server.use(helmet());
+server.use(express.json());
 
 
 server.post('/api/posts', (req, res) => {
@@ -31,7 +33,7 @@ server.post('/api/posts', (req, res) => {
             res.status(201).json(post);
         })
         .catch(error => {
-            res.status(500).json({error: "The post information could not be modified."});
+            res.status(500).json({ error: "There was an error while saving the post to the database" });
         });
     //res.json({ a: 1});
 });
@@ -43,24 +45,27 @@ server.get('/api/posts', (req, res) => {
             res.json(posts);
         })
         .catch(error => {
-            res.status(500).json({error: "The posts information could not be retrieved."});
+            res.status(500).json({ error: "The posts information could not be retrieved." });
         });
 });
 
 
 server.get('/api/posts/:id', (req, res) => {
-    console.log();
     const { id } = req.params;
     
     db
         .findById(id)
         .then(posts => {
-            res.json(posts[0]);
-        })
+            if(posts.length === 0) {
+            res.status(404).json({ message: "The post with the specified ID does not exist" })
+        }
+        else {
+            res.json(posts);
+        }
+    })
         .catch(error => {
-            res.status(500).json(error);
-        });
-    res.json({ a: 1});
+            res.status(500).json({ error: "The post with the specified ID does not exist." });
+    })
 });
 
 
