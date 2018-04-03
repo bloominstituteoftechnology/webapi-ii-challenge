@@ -1,11 +1,19 @@
 // import your node modules
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const db = require('./data/db.js');
+const corsOptions = {
+  origin: '*',
+  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
 
 const server = express();
 server.use(bodyParser.json());
+server.use(cors(corsOptions));
 
 server.get('/api/posts', (req, res) => {
   db

@@ -34,21 +34,21 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Container>
-          <Row>
-            {this.state.posts.map((post, index) => {
-              return (
-                <Col>
-                  <Card>
-                    <CardBody>
+        <Container className="cardContainer">
+          {this.state.posts.map((post, index) => {
+            return (
+              <Row key={index} className="cardRow">
+                <Col className="cardCol d-flex align-items-stretch">
+                  <Card className="cardCard">
+                    <CardBody className="cardBody">
                       <CardTitle>{post.title}</CardTitle>
                       <CardText>{post.contents}</CardText>
                     </CardBody>
                   </Card>
                 </Col>
-              );
-            })}
-          </Row>
+              </Row>
+            );
+          })}
         </Container>
       </div>
     );
