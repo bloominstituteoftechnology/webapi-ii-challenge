@@ -2,20 +2,40 @@
 const express = require('express');
 const db = require('./data/db.js');
 const server = express();
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const helmet = require('helmet');
+
+// middleware
+server.use(morgan('dev'));
+server.use(helmet());
+server.use(express.json());
 
 server.get('/', function(req, res) {
     res.send({ api: 'Running...' });
 });
 
+// server.post('/api/posts', function(req, res) {
+//     db
+//     .insert()
+//     .then(posts => {
+//         res.json(posts);
+//     })
+//     .catch(error => {
+//         res.status(500).json(error);
+//     });
+// });
+
+//new post
 server.post('/api/posts', function(req, res) {
+    const post = req.body;
     db
-    .insert()
-    .then(posts => {
-        res.json(posts);
+    .insert(post)
+    .then(response => {
+        res.status(201).json(response);
     })
     .catch(error => {
-        res.status(500).json(error);
+        res.status(400).json({ errorMessage: "Please provid title and content for the post" });
     });
 });
 
