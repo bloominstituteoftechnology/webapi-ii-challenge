@@ -60,6 +60,19 @@ server.get('/api/posts', (req, res) => {
                 message: "The post could not be removed" })
         });
     });
+
+    server.post('/api/posts', (req, res) => {
+        const post = req.body;
+        db
+            .insert(post)
+            .then(response => {
+                res.status(201).json(response);
+            })
+            .catch(error => {
+                res.status(500).json
+                ({ error: 'There was an error while saving the post to the database.' })
+            })
+    })
     
 
 const port = 5000;
