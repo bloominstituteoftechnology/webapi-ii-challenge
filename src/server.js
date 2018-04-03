@@ -1,81 +1,55 @@
-const bodyParser = require('body-parser');
 const express = require('express');
 
 const server = express();
 const posts = [];
-const STATUS_USER_ERROR = 422;
 
-server.use(bodyParser.json());
+server.use(express.json());
 
 server.get('/posts', (req, res) => {
-  const term = req.query.term;
+  const { term } = req.query;
   if (term) {
-    const tmp = posts.filter(
-      post => post.title.includes(term) || post.contents.includes(term)
-    );
-    if (tmp.length > 0) {
-      res.json(tmp);
-      return;
-    }
-    res.status(STATUS_USER_ERROR);
-    res.json({ error: `No matching post with "${term}" found.` });
-    return;
+    const tmp = posts.filter(({ contents, title }) => title.includes(term) || contents.includes(term));
+    if (tmp.length > 0) return res.status(200).json(tmp);
+    return res.status(422).json({ error: `No matching post with "${term}" found.` });
   }
-  res.json(posts);
+  res.status(200).json(posts);
 });
 
 server.post('/posts', (req, res) => {
-  const id = Math.floor(Math.random() * ((100 - 1) + 1));
-  const title = req.body.title;
-  const contents = req.body.contents;
-  if (!title || !contents) {
-    res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Please provide title and content.' });
-    return;
-  }
+  const id = posts.length + 1;
+  const { contents, title } = req.body;
+  if (!title || !contents) return res.status(422).json({ error: 'Please provide title and content.' });
   posts.push({ id, title, contents });
-  res.json({ id, title, contents });
+  res.status(200).json({ id, title, contents });
 });
 
 server.put('/posts', (req, res) => {
-  const id = req.body.id;
-  const title = req.body.title;
-  const contents = req.body.contents;
-  if (!id || !title || !contents) {
-    res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Please provide id, title and content to update post.' });
-    return;
-  }
+  const { contents, id, title } = req.body;
+  if (!id || !title || !contents) return res.status(422).json({ error: 'Please provide id, title and content to update post.' });
   if (id) {
     posts.forEach((post) => {
       if (id === post.id) {
         post.title = title;
         post.contents = contents;
-        res.json(post);
+        res.status(200).json(post);
       }
     });
   }
-  res.status(STATUS_USER_ERROR);
-  res.json({ error: 'Please provide a valid post id.' });
+  res.status(422).json({ error: 'Please provide a valid post id.' });
 });
 
-server.delete('/posts', (req, res) => {
-  const id = req.body.id;
-  if (!id) {
-    res.status(STATUS_USER_ERROR);
-    res.json({ error: 'Please provide post id to delete post.' });
-    return;
-  }
+server.delete('/posts/:id', (req, res) => {
+  const { id } = req.params;
+  if (!id) return res.status(422).json({ error: 'Please provide post id to delete post.' });
   if (id) {
     posts.forEach((post, i) => {
-      if (id === post.id) {
+      if (+id === post.id) {
         posts.splice(i, 1);
-        res.json({ success: true });
+        res.status(200).json({ success: true });
       }
     });
   }
-  res.status(STATUS_USER_ERROR);
-  res.json({ error: `Post ${id} not found.` });
+  res.status(422).json({ error: `Post ${id} not found.` });
 });
 
 module.exports = { posts, server };
