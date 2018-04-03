@@ -35,7 +35,7 @@ server.post('/api/posts', function(req, res) {
         res.status(201).json(response);
     })
     .catch(error => {
-        res.status(400).json({ errorMessage: "Please provid title and content for the post" });
+        res.status(400).json({ errorMessage: "Please provide title and content for the post" });
     });
 });
 
@@ -46,7 +46,7 @@ server.get('/api/posts', function(req, res) {
         res.json(posts);
     })
     .catch(error => {
-        res.send(404).json({ error: 'The posts information could not be retrieved.' });
+        res.send(500).json({ error: 'The posts information could not be retrieved.' });
     });
 });
 
@@ -66,29 +66,72 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params;
-
+    let post;
+    db
+    .findById(id)
+    .then(response => {
+        post = { ...response[0] };
     db
     .remove(id)
-    .then(posts => {
-        res.json(posts[0]);
+    .then(response => {
+        res.status(200).json(post);
     })
-    .catch(error => {
-        res.status(500).json({ error: 'The post could not be removed' });
+    .catch(errorMessage => {
+        res.status(404).json({ errorMessage: "The post with the specified ID does not exist." });
     });
+})
+.catch(error => {
+    res.status(500).json({ error: "The post could not be removed" });
+})
 });
+
+
+//     const { id } = req.params;
+
+//     db
+//     .remove(id)
+//     .then(posts => {
+//         res.json(posts[0]);
+//     })
+//     .catch(error => {
+//         res.status(500).json({ error: 'The post could not be removed' });
+//     });
+// });
 
 server.put('/api/posts/:id', (req, res) => {
     const { id } = req.params;
+    const update = req.body;
 
     db
-    .update(id)
-    .then(posts => {
-        res.json(posts[0]);
+    .update(id, update)
+    .then(count => {
+        if (count > 0) {
+            db
+            .findById(id)
+            .then(updatedPosts => {
+                res.status(200).json(updatedPosts[0]);
+            })
+        } else {
+            res.status(404).json({ message: 'The user with the specified ID does not exist' })
+        }        
     })
     .catch(error => {
-        res.status(500).json(error);
+        res.status(500).json({ error: "The post information could not be modified." });
     });
 });
+
+
+//     const { id } = req.params;
+
+//     db
+//     .update(id)
+//     .then(posts => {
+//         res.json(posts[0]);
+//     })
+//     .catch(error => {
+//         res.status(500).json(error);
+//     });
+// });
 
 
 
