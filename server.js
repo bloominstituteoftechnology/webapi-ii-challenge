@@ -1,58 +1,100 @@
 // import your node modules
 const express = require('express');
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 
 const db = require('./data/db.js');
 
+// Middleware
+server.use(morgan('dev'));
+server.use(helmet());
+server.use(express.json());
 
 const server = express();
 server.use(bodyParser.json());
 
 // add your server code starting here
 
-server.post('/api/posts', (req, res) => {
-    const {title, content} = req.body;
-    if (!title || !content) {
-        return res.status(400).json({
-            errorMessage: 'Please provide title and contents for the post.'
-    })}
-    const post = {title, content};
-
-    db 
-    .insert(post)
-    .then(() => {
-        res.json(post);
-    })
-    .catch(error => {res.status(400).json(error);
-    });
-});
+server.get('/api/posts', (req, res) => {
+    res.send({api: 'Running.......'});
+})
 
 server.get('/api/posts', (req, res) => {
+    db.find()
+    .then(users => res.json(users))
+    .catch(error => res.status(500).json({ error: "The posts information could not be retrieved."}));
+})
+
+server.get('api/posts/:id', (req, res) => {
+    const { id } = req.params;
+
+    db.findById(id)
+    .then(posts => res.json(posts[0]))
+    .catch(error => res.status(500).json(error));
+})
+
+server.post('/api/posts', (req, res) => {
+    const post = req.body;
     db
-    .find()
-    .then(posts => {
-        res.json(posts);
+    .insert(post)
+    .then(response => {
+        res.status(201).json(resonse);
     })
     .catch(error => {
-        res
-        .status(500)
-        .json({ error: 'The posts information could not be retrieved.' });
+        res.status(500).json({
+            error: 'There was an error while saving the user to the database',
+        });
     });
 });
 
-server.get('/api/posts/:id', (req, res) => {
+server.delete('/api/users/:id', (req, res) => {
     const { id } = req.params;
-    db
+    let user;
+
+    db 
     .findById(id)
-    .then(posts => {
-        res.json(posts[0]);
+    .then(response => {
+        post = { ...response[0] };
+
+        db
+        .remove(id)
+        .then(response => {
+            res.status(200).json(post);
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        });
     })
     .catch(error => {
-        res
-        .status(404)
-        .json({ message: 'The post with the specified ID does not exist.' });
+        res.status(500).json(error);
     });
 });
+
+server.put('api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const update = req.body;
+
+    db
+    .update(id, update)
+    .then(count => {
+        if (count > 0) {
+            db.findById(id).then(updatedPosts => {
+                res.status(200).json(updatedPosts[0]);
+            });
+        } else {
+            res
+            .status(404)
+            .json({ message: 'The post with the specified ID does not exist'});
+        }
+    })
+    .catch(error => {
+        res.status(500).json(error);
+    });
+});
+
+const port = 5000;
+server.listen(port, () => console.log('API running on port 5000'));
 
 const port = 5000;
 server.listen(port, () => console.log('API running on port 5000'));
