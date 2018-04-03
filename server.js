@@ -9,6 +9,13 @@ const bodyParser = require('body-parser');
 server.use(bodyParser.json());
 
 // add your server code starting here
+server.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+
+    next();
+});
 
 
 server.get('/', (req, res) => {
@@ -16,6 +23,7 @@ server.get('/', (req, res) => {
 });
 
 server.get('/api/posts', (req, res) => {
+    console.log('get request made');
     db
     .find()
     .then(posts => {
@@ -39,7 +47,7 @@ server.get('/api/posts/:id', (req, res) => {
         })
 });
     
-//let posts = [];
+
 server.post('/api/posts', (req, res) => {
     const post = req.body;
     if (post.title && post.contents) {
@@ -72,8 +80,9 @@ server.delete('/api/posts/:id', (req, res) => {
 
 server.put('/api/posts/:id', (req, res) => {
     const post = req.body;
-    console.log(post);
-    if (post.title === '' || post.content === '') {
+    const { title, contents } = req.body;
+
+    if (!title || !contents) {
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
     } else {
         db.update(req.params.id, post)
