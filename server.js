@@ -50,16 +50,15 @@ server.get('/api/posts/:id', (req, res) => {
 })
 
 server.post('/api/posts', (req, res) => {
-    const { title, content } = req.body;
-    const incrementId = 1;
-    const newPost = {};
+    const { title, contents } = req.body;
+
+    
 
     if (!title || !contents) {
         res.status(400).json({ errorMessage: "Please provide name and bio for the user." })
     } else {
-        incrementId++;
+    
         newPost = {
-            incrementId, 
             title,
             contents
         }
@@ -76,22 +75,21 @@ server.post('/api/posts', (req, res) => {
 })
 
 server.put('/api/posts/:id', (req, res) => {
-    const {id} = req.params;
+    const { title, contents } = req.body;
     const newPost = {};
 
-    if(id === null) {
-        res.status(404).json({ message: "The post wit the specified "})
-    } else if (!title || !content) {
-        req.abort();
+
+    if(id === undefined) {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+    } else if (!title || !contents) {
         res.status(400).json({ errorMessage: "Please provide title and contents for the posts." });
     } else {
         db
-            .update(id, newPost)
+            .update(newPost)
             .then(posts => {
                 res.status(200).json(newPost);
             })
             .catch(error => {
-                req.abort();
                 res.status(500).json({ error: "The post information could not be modified." })
             })
     }
