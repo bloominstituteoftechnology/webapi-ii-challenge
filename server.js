@@ -3,13 +3,25 @@ const express = require('express');
 const db = require('./data/db.js');
 const server = express();
 // const bodyParser = require('body-parser');
+const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
 
+
+const corsOptions = {
+  origin: '*',
+  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
+
+
 // middleware
+server.use(cors(corsOptions));
 server.use(morgan('dev'));
 server.use(helmet());
 server.use(express.json());
+
 
 server.get('/', function(req, res) {
     res.send({ api: 'Running...' });

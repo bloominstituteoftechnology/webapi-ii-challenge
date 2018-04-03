@@ -1,0 +1,9 @@
+.App {
+    display: flex;
+    flex-direction: column;
+  }
+
+.postTitle {
+    font-weight: 700;
+    color: rebeccapurple;
+}

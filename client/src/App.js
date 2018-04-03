@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import BlogPosts from './Posts';
+import axios from 'axios';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      posts: []
+    };
+  }
+
+  componentDidMount() {
+    axios
+    .get('http://localhost:5500/api/posts')
+    .then(res => {
+      this.setState({ posts: res.data });
+    })
+    .catch(error => {
+      console.log('There was an error retrieving posts');
+    });
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <h3>Node Nerd Blog</h3>        
+        {this.state.posts.map((post, id) => {
+          return (
+            <div key={id}>
+            <BlogPosts postings={post} />
+            </div>
+          );
+        })}        
       </div>
     );
   }
