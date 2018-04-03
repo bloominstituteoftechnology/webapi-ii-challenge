@@ -1,38 +1,43 @@
-# Node.js and Express
-Topics:
-  * Client and server
-  * Node.js and Express
-  * HTTP requests and responses
-  * HTTP headers and status codes
-  * Request parameters
-  * API design and development
+# Building RESTful APIs with Express
 
-## Description
-You've been focusing on client-side JavaScript thus far, but now you'll make the
-transition to server-side. The goal here is to handle requests from the client
-and deliver back responses. You'll develop an API to allow you to create, read,
-update, and delete posts, as if you were making an application like Facebook or
-Twitter.
+## Topics:
 
-## Running the Project
-- Run `npm install` to download the dependencies.
-- Run `npm test` to run the tests. If you'd like, you can run `npm test:watch`
-  to automatically re-reun the tests when you make modifications.
-- To test your application in your browser, or by using
-  [Postman](https://www.getpostman.com/), make sure you've installed `nodemon`
-  via `npm install -g nodemon` and then run `nodemon src/app.js`. `nodemon` will
-  keep the server running and automatically restart it if you change anything.
-  You can now make requests to `http://localhost:3000` in your browser or
-  Postman!
-- Make modifications to `src/server.js` to make the tests pass.
-- If you'd like, feel free to reference the tests in `tests/server.test.js` as
-  you're developing.
-- Once all tests have passed, you're done! Send us a pull request.
+* Node.js and Express.
+* HTTP methods and status codes.
+* Reading Request data from body, URL parameters and query string parameters.
+* API design and development.
 
-## Instructions
-You'll create an API that allows the client to create, read, update, and delete
-posts. The posts will be maintained in memory as a JavaScript array. Each post
-is an object in the array of the following form:
+## Assignment
+
+Use Node.js and Express to build an API that performs CRUD operations on posts.
+
+### Download Project Files and Install Dependencies
+
+* **Fork** and **Clone** this repository.
+* **CD into the folder** where you cloned the repository.
+* Type `yarn` or `npm install` to download all dependencies listed inside `package.json`.
+
+### Database access
+
+Database access will be done using the `db.js` file included inside the `data` folder. This file publishes the following methods:
+
+* find: calling find returns a promise that resolves to an array of all the posts contained in the database.
+* findById: this method expects an _id_ as it's only parameter and returns the post corresponding to the _id_ provided or an empty array if no post with that _id_ is found.
+* insert: calling insert passing it a post object will add it to the database and return an object with the id of the inserted post. The object looks like this: `{ id: 123 }`.
+* update: accepts two arguments, the first is the id of the post to update and the second is an object with the changes to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
+* remove: the remove method accepts an id as it's first parameter and upon successfully deleting the post from the database it returns the number of records deleted.
+
+Now that we have a way to add, update, remove and retrieve data from the provided databse, it is time to work on the API.
+
+### Start the API and Implement Requirements
+
+* To start the server, type `yarn start` or `npm start` from the root folder (where the _package.json_ file is). The server is configured to restart automatically as you make changes.
+* Add the code necessary to implement the API requirements.
+* **Test the API using [Postman](https://www.getpostman.com/) as you work through the exercises.**
+
+### Post Schema
+
+Posts in the database conform to the following structure:
 
 ```js
 {
@@ -44,52 +49,103 @@ is an object in the array of the following form:
 `title` is the title of the post, as a String. `contents` contains the body
 contents of the post, also as a String.
 
-There are five main route handlers that will allow the client to read/modify the
-array.
+### Provided Code
 
-### `GET /posts`
-When the client makes a `GET` request to `/posts`:
+We have provided a `server.js` file and a folder called `data`. Inside the data folder we have added a database with some posts already populated that you can use to test your endpoints as you build them.
 
-- If the client provides the query-string parameter `term`, filter the posts to
-  those that have the `term` in their `title` or `contents` (or both), and
-  send down those posts in a JSON response.
+Server.js already has `db.js` required and ready for you to use when building your endpoints.
 
-- Otherwise, send down the full array of posts as a JSON response.
+### Write endpoints to perform the following queries.
 
-### `POST /posts`
-When the client makes a `POST` request to `/posts`:
+Configure the API to respond to the following routes:
 
-- Ensure that the client provides both `title` and `contents` in the request
-  body. If any of these don't exist, send an object of the form `{ error: "Error
-  message" }` as a JSON response. Make sure to respond with an appropriate
-  status code.
+| Method | Endpoint       | Description                                                                                                                       |
+| ------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| POST   | /api/posts     | Creates a post using the information sent inside the `request body`.                                                              |
+| GET    | /api/posts     | Returns an array of all the post objects contained in the database.                                                               |
+| GET    | /api/posts/:id | Returns the post object with the specified id.                                                                                    |
+| DELETE | /api/posts/:id | Removes the post with the specified id and returns the deleted post.                                                              |
+| PUT    | /api/posts/:id | Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**. |
 
-- If all fields are provided, create a new post object. Assign the post a
-  unique, numeric `id` property that will act as its identifier, and add it to
-  the posts array. Return the newly created post object, with its assigned `id`,
-  to the client in a JSON response.
+#### Endpoint Specifications
 
-### `PUT /posts`
-When the client makes a `PUT` request to `/posts`:
+When the client makes a `POST` request to `/api/posts`:
 
-- Ensure that the client provides `id`, `title`, and `contents` in the request
-  body. If any of these don't exist, send an object of the form `{ error: "Error
-  message" }` as a JSON response. Make sure to respond with an appropriate
-  status code.
+* If the request body is missing the `title` or `contents` property:
 
-- If the `id` doesn't correspond to a valid post, respond with an error in the
-  same form as above.
+  * cancel the request.
+  * respond with HTTP status code `400` (Bad Request).
+  * return the following JSON response: `{ errorMessage: "Please provide title and contents for the post." }`.
 
-- Modify the post with the given `id`, updating its `title` and `contents`.
-  Respond with the newly updated post object in a JSON response.
+* If the information about the _post_ is valid:
 
-### `DELETE /posts`
-When the client makes a `DELETE` request to `/posts`:
+  * save the new _post_ the the database.
+  * return HTTP status code `201` (Created).
+  * return the newly created _post_.
 
-- Ensure that the client provides an `id` in the request body, and that the `id`
-  corresponds to a valid post. If there's an error, send an object of the form
-  `{ error: "Error message" }` as a JSON response. Make sure to respond with an
-  appropriate status code.
+* If there's an error while saving the _post_:
+  * cancel the request.
+  * respond with HTTP status code `500` (Server Error).
+  * return the following JSON object: `{ error: "There was an error while saving the post to the database" }`.
 
-- Remove the post with the given `id` from the array of posts. Return the
-  object `{ success: true }` in a JSON response.
+When the client makes a `GET` request to `/api/posts`:
+
+* If there's an error in retrieving the _posts_ from the database:
+  * cancel the request.
+  * respond with HTTP status code `500`.
+  * return the following JSON object: `{ error: "The posts information could not be retrieved." }`.
+
+When the client makes a `GET` request to `/api/posts/:id`:
+
+* If the _post_ with the specified `id` is not found:
+
+  * return HTTP status code `404` (Not Found).
+  * return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
+
+* If there's an error in retrieving the _post_ from the database:
+  * cancel the request.
+  * respond with HTTP status code `500`.
+  * return the following JSON object: `{ error: "The post information could not be retrieved." }`.
+
+When the client makes a `DELETE` request to `/api/posts/:id`:
+
+* If the _post_ with the specified `id` is not found:
+
+  * return HTTP status code `404` (Not Found).
+  * return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
+
+* If there's an error in removing the _post_ from the database:
+  * cancel the request.
+  * respond with HTTP status code `500`.
+  * return the following JSON object: `{ error: "The post could not be removed" }`.
+
+When the client makes a `PUT` request to `/api/posts/:id`:
+
+* If the _post_ with the specified `id` is not found:
+
+  * return HTTP status code `404` (Not Found).
+  * return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
+
+* If the request body is missing the `title` or `contents` property:
+
+  * cancel the request.
+  * respond with HTTP status code `400` (Bad Request).
+  * return the following JSON response: `{ errorMessage: "Please provide title and contents for the post." }`.
+
+* If there's an error when updating the _post_:
+
+  * cancel the request.
+  * respond with HTTP status code `500`.
+  * return the following JSON object: `{ error: "The post information could not be modified." }`.
+
+* If the post is found and the new information is valid:
+
+  * update the post document in the database using the new information sent in the `reques body`.
+  * return HTTP status code `200` (OK).
+  * return the newly updated _post_.
+
+## Stretch Problems
+
+* Use `create-react-app` to create an application inside the root folder, name it `client`.
+* From the React application connect to the `/api/posts` endpoint in the API and show the list of posts.
+* Style the list of posts however you see fit.
