@@ -1,10 +1,14 @@
-const bodyParser = require('body-parser');
 const express = require('express');
+const helmet = require('helmet');
+const morgan = require('morgan');
 
 const db = require('./data/db.js');
 
 const server = express();
-server.use(bodyParser.json())
+
+server.use(helmet());
+server.use(morgan(dev));
+server.use(express.json());
 
 server.get('/', (req, res) => {
     res.send({api: 'RUNNING!'});
@@ -40,7 +44,7 @@ server.post('/api/posts', (req, res) => {
 
     else {
     db.insert({ title, contents })
-    .then(id => res.status(200).json({ title, contents, id: id.id}))
+    .then(id => res.status(21).json({ title, contents, id: id.id}))
     .catch(error => res.status(500).json({ error: "There was an error while saving the post to the database" }));
     }
 })
