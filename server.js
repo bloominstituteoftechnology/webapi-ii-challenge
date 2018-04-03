@@ -1,10 +1,17 @@
 // import your node modules
 const express = require('express');
+const morgan = require('morgan');
+const helmet = require('helmet');
 
 
 const db = require('./data/db.js');
 
 const server = express();
+
+// middleware
+server.use(morgan('dev'));
+server.use(hamlet());
+server.use(express.json());
 
 // add your server code starting here
 server.get('/', (req, res)=>{
@@ -35,14 +42,22 @@ server.get('/api/posts', (req, res) => {
     })
     server.delete('/api/posts/:id', (req, res) => {
         const { id } = req.params;
+        let post;
+
+        db
+        .findById(id)
+        .then(response => {
+            post = {...response[0] };
     
         db
         .remove(id)
-        .then(posts => {
-            res.json(posts[0]);
+        .then(response => {
+            res.status(500).json(response);
         })
+    })
         .catch(error => {
-            res.status(500).json(error);
+            res.status(500).json({
+                message: "The post could not be removed" })
         });
     });
     
