@@ -28,13 +28,16 @@ server.get("/api/posts", function(req, res) {
     });
 });
 
-server.get("/api/posts/:id", function(req, res) {
-  const { id } = req.params;
-
+// server.get("/api/posts/:id", function(req, res) {
+//localhost:5000/api/posts/search?userid=  
+server.get("/api/posts/search", (req, res) => {
+  //const { id } = req.params;
+  const { userid } = req.query;
   db
-    .findById(id)
+    //.findById(id)
+    .findById(userid)
     .then(posts => {
-      res.send(posts[0]);
+      res.json(posts[0]);
     })
     .catch(error => {
       res
@@ -77,6 +80,7 @@ server.delete('/api/posts/:id', (req,res) => {
     res.status(500).json(error);
   })
 });
+
 
 server.put('/api/posts/:id', (req, res) => {
   const { id } = req.params;
