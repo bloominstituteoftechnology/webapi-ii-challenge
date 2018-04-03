@@ -80,5 +80,18 @@ server.post('/api/posts', (req, res) => {
     })
   });
 
+  server.delete('/api/posts/:id', (req, res) => {
+    const post = req.body
+    db.remove(post)
+    .then(posts => {
+        res.status(201).json(post);
+    })
+    // send error if there is one
+    .catch(error => {
+        res.status(500).json({ error: "The posts information could not be retrieved." });
+    });
+
+})
+
 const port = 5050;
 server.listen(port, () => console.log('API Running on port 5050'));
