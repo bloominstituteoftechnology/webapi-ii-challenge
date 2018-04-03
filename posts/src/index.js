@@ -1,10 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {
+    BrowserRouter as Router,
+    Route,
+  } from 'react-router-dom'
+
+
 import App from './App';
 
 import { injectGlobal } from 'styled-components';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+
 
 injectGlobal`
 
@@ -13,9 +18,18 @@ html,body {
     margin: 0;
     padding: 0;
     font-family: arial;
+    font-size: 62.5%;
+
+    
 }
 
 `
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+
+  <Router>  
+    <Route to={"/"} component = {App} />
+  </Router>    
+
+, document.getElementById('root'));
 

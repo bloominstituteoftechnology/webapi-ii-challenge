@@ -1,12 +1,25 @@
 // import your node modules
 const express = require('express');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const cors = require('cors');
+
 
 const db = require('./data/db.js');
 
 const server = express();
 
-server.use(express.json());
+// const corsOptions = {
+//   origin: '*',
+//   methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+//   preflightContinue: false,
+//   optionsSuccessStatus: 204
+// };
 
+server.use(express.json());
+server.use(morgan('dev'));
+server.use(helmet());
+server.use(cors());
 // add your server code starting here
 server.get('/', (req, res) => {
   res.send({ api: 'Running...' });
@@ -54,9 +67,7 @@ server.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   db.remove(id)
     .then(post => {
-      if (post === 0) {
-        res.status(404).json({ message: "The post with the specified ID does not exist." });
-      }
+     
       res.json(post);
     })
     .catch(error => {
