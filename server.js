@@ -7,11 +7,10 @@ const helmet = require('helmet');
 const db = require('./data/db.js');
 
 // Middleware
+const server = express();
 server.use(morgan('dev'));
 server.use(helmet());
 server.use(express.json());
-
-const server = express();
 server.use(bodyParser.json());
 
 // add your server code starting here
@@ -43,12 +42,12 @@ server.post('/api/posts', (req, res) => {
     })
     .catch(error => {
         res.status(500).json({
-            error: 'There was an error while saving the user to the database',
+            error: 'There was an error while saving the post to the database',
         });
     });
 });
 
-server.delete('/api/users/:id', (req, res) => {
+server.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     let user;
 
@@ -96,5 +95,3 @@ server.put('api/posts/:id', (req, res) => {
 const port = 5000;
 server.listen(port, () => console.log('API running on port 5000'));
 
-const port = 5000;
-server.listen(port, () => console.log('API running on port 5000'));
