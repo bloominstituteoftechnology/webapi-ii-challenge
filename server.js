@@ -18,8 +18,8 @@ server.get('/api/posts', (req, res) => {
     res.json(posts);
   })
   .catch(error => {
-    res.status(500).json(error);
-  });
+    res.status(500).json({ error: "The posts information could not be retrieved." });
+  }); 
 });
 
 server.get('/api/posts/:id', (req, res) => {
@@ -35,7 +35,7 @@ server.get('/api/posts/:id', (req, res) => {
     }
   })
   .catch(error => {
-      res.status(500).json(error);
+      res.status(500).json({ error: "The posts information could not be retrieved." });
   });
 });
 
@@ -57,7 +57,7 @@ server.post('/api/posts', (req, res) => {
         });
     })
     .catch(error => {
-        res.status(500).json(error)
+        res.status(500).json({ error: "There was an error while saving the post to the database" })
     })
   });
 
@@ -102,7 +102,7 @@ server.post('/api/posts', (req, res) => {
         }
     })
   .catch(error => {
-    res.status(500).json(error);
+    res.status(500).json({ error: "The post information could not be modified." });
       });
   });
   
