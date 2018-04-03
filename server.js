@@ -3,6 +3,9 @@ const express = require('express');
 const db = require('./data/db.js');
 
 const server = express();
+const bodyParser = require('body-parser');
+// to enable parsing of json bodies for post requests
+server.use(bodyParser.json());
 
 // add your server code starting here
 server.get('/api/posts', (req, res) =>{
@@ -40,11 +43,11 @@ server.get('/api/posts/:id', (req, res) =>{
 
 
 server.post(`/api/posts`, (req, res) => {
-    const body =  req.body !== undefined ? req.body : {};
-    const {title, contents } = body;
+    //const body =  req.body !== undefined ? req.body : {};
+    const {title, contents } = req.body;
     // check if title and contents are set
     if(title === undefined || contents === undefined){
-        console.log(title, contents);
+        //console.log(title, contents);
         res 
             .status(400)
             .json({ errorMessage: "Please provide title and contents for the post." })
@@ -119,10 +122,33 @@ server.put(`/api/posts/:id`, (req, res) => {
 });
 
 
-
+server.delete(`/api/posts/:id`, (req, res) => {
+    const { id } = req.params;
+    db
+        .findById(id)
+        .then(post => {
+            if(post.length){
+                db
+                .remove(id)
+                .then(() => {
+                    res
+                    .json({message: `post with id no. ${id} removed successfully`});
+                })
+            } else {
+                res
+                .status(404)
+                .json({ message: "The post with the specified ID does not exist." });
+                }       
+        })
+        .catch(err => {
+            res
+            .status(500)
+            .json({ message: "could not delete the post" })
+        });
+});
 
 
 const port = 5000;
 server.listen(port, () =>{
-    console.log(`Server running on ${port}`);
+    console.log(`Server running on port ${port}`);
 })
