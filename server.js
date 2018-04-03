@@ -88,7 +88,25 @@ server.put("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   const post = req.body;
   if (db.findById(id) === 0) {
+    res
+      .status(404)
+      .json({ message: "The post with the specified ID does not exist" });
   }
+  if (!post) {
+    res
+      .status(400)
+      .json({ errorMsg: "Please provide title and contents for the post!" });
+  }
+  db
+    .update(id, post)
+    .then(response => {
+      res.status(200).json(post);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: "The post information could not be modified!" });
+    });
 });
 
 const port = 5000;
