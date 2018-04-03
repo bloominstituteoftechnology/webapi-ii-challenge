@@ -1,6 +1,6 @@
 // import your node modules
 const express = require('express');
-
+const bodyParser = require('body-parser');
 const db = require('./data/db.js');
 
 // add your server code starting here
@@ -54,6 +54,7 @@ server.put('api/posts/:id', (req, res) => {
   .then(posts => res.json(posts))
   .catch()
 });
+
 
 
 const port = 5000;
