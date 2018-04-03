@@ -63,7 +63,13 @@ server.delete("/api/posts/:id", (req, res) => {
   db
     .remove(req.params.id)
     .then(posts => {
-      res.json(posts);
+      if (posts < 1) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        res.json(posts);
+      }
     })
     .catch(error => {
       res.status(500).json({
@@ -81,7 +87,13 @@ server.put("/api/posts/:id", (req, res) => {
   db
     .update(req.params.id, req.body)
     .then(posts => {
-      res.status(200).json(req.body);
+      if (posts > 0) {
+        res.status(200).json(req.body);
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
     })
     .catch(() =>
       res
