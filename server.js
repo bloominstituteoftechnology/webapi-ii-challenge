@@ -2,10 +2,19 @@
 
 const db = require('./data/db.js');
 
+const bodyParser = require("body-parser");
+
+
 // add your server code starting here
 
 const express = require('express');
 const server = express();
+server.use(bodyParser.json());
+
+let nextId = 7;
+function getNewId() {
+    return nextId++;
+  }
 
 // Endpoints:
 
@@ -34,12 +43,42 @@ server.get('/api/posts/:id', (req, res) => {
         res.status(404).json({ message: "The post with the specified ID does not exist." });
     });
 });
-(
-    
+
+// First Post Solution:
 // server.post('/api/posts', (req, res) => {
+//     const post = req.body;
+//     db.insert(post)
+//     .then(posts => {
+//         res.status(201).json(post)
+//     })
+//     .catch(error => {
+//         res.status(500).json(error)
+//     })
+//   });
 
-// })
-
+// Second Post Solution:
+server.post('/api/posts', (req, res) => {
+    const post = req.body;
+    db.insert(post)
+   
+    .then(newId => {
+        console.log('newId', newId)
+        return newId
+    })
+    .then(id => {
+        console.log('id.id', id.id)
+        return db.findById(id.id)
+        // res.json('HELLO')
+    })
+    .then(p => {
+        console.log('p', p)
+        // console.log('p.id', p.id)
+        res.status(200).json(p)
+    })
+    .catch(error => {
+        res.status(500).json(error)
+    })
+  });
 
 const port = 5050;
 server.listen(port, () => console.log('API Running on port 5050'));
