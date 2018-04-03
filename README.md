@@ -86,7 +86,7 @@ When the client makes a `POST` request to `/api/posts`:
 * If there's an error while saving the _post_:
   * cancel the request.
   * respond with HTTP status code `500` (Server Error).
-  * return the following JSON object: `{ error: "There was an error while saving the post to the database" }`.
+  * return the following JSON object: ``.
 
 When the client makes a `GET` request to `/api/posts`:
 
