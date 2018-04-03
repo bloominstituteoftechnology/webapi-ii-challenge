@@ -1,14 +1,16 @@
 const express = require('express');
 const server = express();
-server.use(express.json());
+const cors = require("cors");
 
+server.use(express.json());
+server.use(cors());
 
 const db = require('./data/db.js');
 
 
-server.get('/', (req, res) => {
-    res.send({ api: 'Running...' })
-});
+// server.get('/', (req, res) => {
+//     res.send({ api: 'Running...' })
+// });
 
 
 server.post('/api/posts', (req, res) => {

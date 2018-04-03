@@ -10,8 +10,9 @@ class App extends Component {
 
   getPosts = (posts) => {
     axios
-      .get("http://localhost:3000/api/posts/")
-      .then(response => this.setState({ posts: response.data }))
+      .get("http://localhost:5000/api/posts/")
+      .then(res => { this.setState({ posts: res.data });
+        })
       .catch(error => console.log(error));
   };
 
@@ -21,29 +22,29 @@ class App extends Component {
 
   getPost = (post) => {
     const id = this.state.posts.match.params.id;
-    const endpoint = `http://localhost:3000/api/posts/${id}`
+    const endpoint = `http://localhost:5000/api/posts/${id}`
     axios
       .get(endpoint)
-      .then(response => this.setState(() => ({ post: response.data })))
+      .then(res => this.setState(() => ({ post: res.data })))
       .catch(error => console.log(error));
   };
 
   // addPost = event => {
   //   event.preventDefault();
-  //   const endpoint = `http://localhost:3000/api/posts/`
+  //   const endpoint = `http://localhost:5000/api/posts/`
   //   const { title, body } = this.state.posts;
   //   const post = { title, body };
   //   axios
   //     .post(endpoint, post)
-  //     .then(response => this.getPosts())
+  //     .then(res => this.getPosts())
   //     .catch(error => console.log(error));
   // };
 
   // deletePost = (id) => {
-  //   const endpoint = `http://localhost:3000/api/posts/${id}`
+  //   const endpoint = `http://localhost:5000/api/posts/${id}`
   //   axios
   //     .delete(endpoint)
-  //     .then(response => this.setState({ posts: response.data }))
+  //     .then(res => this.setState({ posts: res.data }))
   //     .catch(error => console.log(error));
   // };
 
@@ -53,7 +54,7 @@ class App extends Component {
   //   const { title, value } = event.target;
   //   axios
   //     .delete(endpoint)
-  //     .then(response => this.setState({ posts: response.data }))
+  //     .then(res => this.setState({ posts: res.data }))
   //     .catch(error => console.log(error));
   // }
 
