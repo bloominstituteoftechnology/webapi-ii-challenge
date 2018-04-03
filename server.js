@@ -6,6 +6,7 @@ const server = express();
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
+server.use(express.json());
 
 
 const db = require('./data/db.js');
@@ -75,42 +76,53 @@ server.post('/api/posts', (req, res) => {
 })
 
 server.put('/api/posts/:id', (req, res) => {
-    const { title, contents } = req.body;
-    const newPost = {};
+    const {id} = req.params;
+    const update = req.body;
 
+    db 
+        .update(id, update)
+        .then(count => {
 
-    if(id === undefined) {
-        res.status(404).json({ message: "The post with the specified ID does not exist." })
-    } else if (!title || !contents) {
-        res.status(400).json({ errorMessage: "Please provide title and contents for the posts." });
-    } else {
-        db
-            .update(newPost)
-            .then(posts => {
-                res.status(200).json(newPost);
-            })
-            .catch(error => {
-                res.status(500).json({ error: "The post information could not be modified." })
-            })
-    }
-
-})
+            if (count > 0) {
+                db
+                .findById(id)
+                .then(updatedPost => {
+                    res.status(200).json(updatedPost[0]);
+                })
+            } else {
+                res.status(404).json({ message: "The post with the specified ID does not exist" })
+            }
+        })
+        .catch(error => {
+            res.status(500).json({ message: "The post could not be removed." })
+        })
+    })
+      
  
 server.delete('/api/posts/:id', (req, res) => {
     const {id} = req.params;
+    let deletedPost;
 
-    if(id !== id) {
-        res.status(404).json({ message: "The post with the specified ID does not exist." })
-    } else {
-        db
-            .remove(id)
-            .then(posts => {
-                res.json(posts)
-            })
-            .catch(error => {
-                res.status(500).json({ message: "The post could not be removed." })
-            })
-    }   
-})
+    db 
+        .findById(id)
+        .then(post => {
+            deletedPost = {...post[0]};
+
+            db
+                .remove(id)
+                .then(posts => {
+                    res.status(200).json(deletedPost)
+                })
+                .catch(error => {
+                    res.status(500).json({ message: "The post could not be removed." })
+                })   
+        })
+        .catch(error => {
+            res.status(404).json({ message: "The post with the specified ID does not exist" })
+        })
+    })
+        
+
+    
 
 
