@@ -1,11 +1,26 @@
 // import your node modules
 const bodyParser = require('body-parser')
 const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+// const helmet = require('helmet');
 
+const corsOptions = {
+    origin: '*',
+    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+  };
+  
 const db = require('./data/db.js');
 
 const server = express();
+
+// middleware
 server.use(bodyParser.json());
+server.use(morgan('dev'));
+server.use(cors());
+// server.use(helmet());
 
 // add your server code starting here
 
