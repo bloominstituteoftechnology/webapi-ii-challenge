@@ -64,24 +64,26 @@ server.post('/api/posts', (req, res) => {
 server.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params;
 
-  db
-    .findById(id)
-    .then(posts => {
-      if (posts.length < 1) {
-        res
-          .status(404)
-          .json({ message: 'The post with the specified ID does not exist.' });
-        return;
-      }
-    })
-    .remove(id)
-    .then(posts => {
-      console.log(posts);
-      res.status(200).json({ message: 'The post was successfully deleted.' });
-    })
-    .catch(error => {
-      res.status(500).json({ error: 'The post could not be removed' });
-    });
+  db.findById(id).then(posts => {
+    if (posts.length < 1) {
+      res
+        .status(404)
+        .json({ message: 'The post with the specified ID does not exist.' });
+      return;
+    } else {
+      db
+        .remove(id)
+        .then(posts => {
+          console.log(posts);
+          res
+            .status(200)
+            .json({ message: 'The post was successfully deleted.' });
+        })
+        .catch(error => {
+          res.status(500).json({ error: 'The post could not be removed' });
+        });
+    }
+  });
 });
 
 server.put('/api/posts/:id', (req, res) => {
@@ -94,22 +96,25 @@ server.put('/api/posts/:id', (req, res) => {
     });
     return;
   }
-  db
-    .update(id, updatedPost)
-    .then(posts => {
-      if (posts.length < 1) {
-        res
-          .status(404)
-          .json({ message: 'The post with the specified ID does not exist.' });
-      } else {
-        res.status(200).json(updatedPost);
-      }
-    })
-    .catch(error => {
+  db.findById(id).then(posts => {
+    if (posts.length < 1) {
       res
-        .status(500)
-        .json({ error: 'The post information could not be modified.' });
-    });
+        .status(404)
+        .json({ message: 'The post with the specified ID does not exist.' });
+      return;
+    } else {
+      db
+        .update(id, updatedPost)
+        .then(posts => {
+          res.status(200).json(updatedPost);
+        })
+        .catch(error => {
+          res
+            .status(500)
+            .json({ error: 'The post information could not be modified.' });
+        });
+    }
+  });
 });
 
 // add your server code starting here
