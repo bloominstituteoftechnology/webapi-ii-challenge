@@ -3,8 +3,13 @@ const express = require('express');
 
 const server = express();
 const bodyParser = require('body-parser');
+// const morgan = require('morgan');
+// const helmet = require('helmet');
 
 const db = require('./data/db.js');
+
+// server.use(morgan('dev')); 
+// server.use(helmet()); 
 server.use(express.json());
 
 server.get('/', function(req, res){
