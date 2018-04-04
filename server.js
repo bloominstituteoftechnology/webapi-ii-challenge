@@ -3,17 +3,25 @@ const express = require('express');
 // const bodyParser = require('body-parser'); --> not needed now that we have server.use(express.json());
 const morgan = require('morgan');
 const helmet = require('helmet');
-
+const cors = require('cors');
 const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
+
+const corsOptions = {
+  origin: '*',
+  methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
 
 //middleware
 server.use(morgan('dev'));
 server.use(helmet());
 server.use(express.json()); // this replaces the need for bodyParser
 // server.use(bodyParser.json()); --> wave goodbye to bodyParser
+server.use(cors(corsOptions));
 
 // -------- POST -----------
 server.post('/api/posts', (req, res) => {
