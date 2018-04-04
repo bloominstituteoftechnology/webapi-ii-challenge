@@ -67,7 +67,9 @@ server.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   db.remove(id)
     .then(post => {
-     
+      if (post === 0) {
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
+      }
       res.json(post);
     })
     .catch(error => {
