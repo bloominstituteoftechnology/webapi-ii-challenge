@@ -1,0 +1,11 @@
+.App {
+    margin: 0 auto;
+    border: 1px solid gray;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px gray;
+    flex-wrap: wrap;
+    padding: 10px;
+}

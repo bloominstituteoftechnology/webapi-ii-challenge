@@ -1,0 +1,10 @@
+.Post {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px red;
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+}
