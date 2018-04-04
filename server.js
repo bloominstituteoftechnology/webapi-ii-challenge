@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 const server = express();
 server.use(bodyParser.json());
 
+
+
 // server.get('/', function(req, res) {
 //   res.json({ api: 'Running...' });
 // });
@@ -16,12 +18,13 @@ server.use(bodyParser.json());
 server.post('/api/posts', (req, res) => {
   const { title, contents } = req.body;
 
-  if(title === undefined || contents === undefined) {
+  if(!title || !contents) {
       res.status(400).json({errorMessage: 'Please provide title and contents for the post.'})
-  } else {
+  } 
+  if(title && contents === req.body) {
       const newPost = {title, contents}
       db.insert(newPost)
-      .then(newId => {
+      .then (newId => {
           res.status(201).json(newPost)
       })
       .catch(error => {
