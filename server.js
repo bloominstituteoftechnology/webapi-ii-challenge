@@ -15,14 +15,12 @@ const corsOptions = {
     methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204
-  };
+};
 
 server.use(cors(corsOptions));
 server.use(bodyParser.json());
 server.use(morgan('dev'));
 server.use(helmet());
-
-const STATUS_USER_ERROR = 422;
 
 server.get('/api/posts', (req, res) => {
     db.find().then(posts => {
@@ -34,12 +32,12 @@ server.get('/api/posts', (req, res) => {
 
 server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
-    db.findById(id).then(posts => {
-        if(!posts.length) {
+    db.findById(id).then(response => {
+        if(!response[0]) {
             res.status(404).json({ message: "The post with the specified ID does not exist." });
             return;
         }
-        res.json(posts[0]);
+        res.json(response[0]);
     }).catch(error => {
         res.status(500).json({ error: "The post information could not be retrieved." });
     });
@@ -60,7 +58,7 @@ server.post('/api/posts/', (req, res) => {
         
             db.findById(response.id)
                 .then(post => {
-                    res.status(201).json(post)
+                    res.status(201).json(post[0])
                 })
                 .catch(error => {
                     res.status(500).json({ error: "There was an error while saving the post to the database" })

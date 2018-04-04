@@ -22,12 +22,48 @@ export const fetchPosts = () => {
 export const createPost = post => {
     return dispatch => {
         axios
-            .post('http://localhost:5000/api/posts/')
+            .post('http://localhost:5000/api/posts/', {...post})
             .then(result => {
-                dispatch({type: CREATE_POST, post: result})
+                dispatch({
+                    type: CREATE_POST,
+                    id: result.data.id,
+                    title: result.data.title,
+                    contents: result.data.contents,
+                })
             })
             .catch(err => {
-                dispatch({type: ERROR, errorMessage: err.message})
+                console.log(err.message);
+            })
+    }
+}
+
+export const deletePost = id => {
+    return dispatch => {
+        axios
+            .delete(`http://localhost:5000/api/posts/${id}`)
+            .then(result => {
+                dispatch({type: DELETE_POST, id})
+            })
+            .catch(err => {
+                console.log(err.message);
+            })
+    }
+}
+
+export const editPost = post => {
+    return dispatch => {
+        axios
+            .put(`http://localhost:5000/api/posts/${post.id}`, {...post})
+            .then(result => {
+                dispatch({
+                    type: EDIT_POST,
+                    id: result.data.id,
+                    title: result.data.title,
+                    contents: result.data.contents,
+                })
+            })
+            .catch(err => {
+                console.log(err.message);
             })
     }
 }

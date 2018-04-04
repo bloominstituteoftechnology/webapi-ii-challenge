@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 
 import { fetchPosts, createPost } from '../../actions';
 import Post from '../Post/Post';
 import Menu from '../Menu/Menu';
+import Create from '../Create/Create';
+import Edit from '../Edit/Edit';
 import './App.css';
 
 class App extends Component {
@@ -16,15 +19,20 @@ class App extends Component {
       <div className="Container">
         <Menu />
         <div className="Content">
-          {this.props.posts.map(post => {
-            return (
-              <Post 
-                key={post.id} 
-                title={post.title} 
-                contents={post.contents}
-              />
-              )
-          })}
+          <Route exact path='/' render={() => {
+            return this.props.posts.map(post => {
+              return (
+                <Post 
+                  key={post.id} 
+                  id={post.id}
+                  title={post.title} 
+                  contents={post.contents}
+                />
+                )
+              })
+            }}/>
+            <Route path='/create' component={Create}/>
+            <Route path='/edit/:id' component={Edit}/>
         </div>
       </div>
     );
