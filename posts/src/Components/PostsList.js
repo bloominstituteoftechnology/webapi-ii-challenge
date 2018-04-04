@@ -27,7 +27,7 @@ class PostsList extends Component {
         .then((response) => console.log(response.data))
         .catch(error => console.error('Server Error:', error))
 
-        this.getPosts();
+        // this.getPosts();
     }
 
 
@@ -42,13 +42,12 @@ class PostsList extends Component {
             <Fragment>
                 {this.state.posts.map((post, i) => {
                     return (
-                       <Card onMouseUp={(e) => this.deletePost(e)} id={post.id} key={i}>
-                           <Text>{post.title}</Text>
-                           <Text>{post.contents}</Text>
+                       <Card onMouseDown={(e) => this.deletePost(e)} onMouseUp={() => this.getPosts()} id={post.id} key={i}>
+                           <Text id={post.id}>{post.title}</Text>
+                           <Text id={post.id}>{post.contents}</Text>
                         </Card>
                     )
                 })}
-                {console.log(this.state.posts)}
             </Fragment>
         )
     }

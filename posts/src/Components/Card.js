@@ -32,7 +32,7 @@ export default styled.div`
         color: #EF6461;
 
         transform: rotateX(180deg);
-        transition: 1s;
+        transition: 0.6s;
 	    transform-style: preserve-3d;
         position: relative;
 
