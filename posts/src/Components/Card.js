@@ -6,9 +6,14 @@ export default styled.div`
     border: thick solid #E4B363 ;
     background: #313638;
     margin: 10px;
-    border-radius: 5%;
+    border-radius: 50%;
     color: #E4B363 ;
 
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 
     white-space: wrap;
     overflow: hidden;
@@ -27,7 +32,7 @@ export default styled.div`
         color: #EF6461;
 
         transform: rotateX(180deg);
-        transition: 0.4s;
+        transition: 1s;
 	    transform-style: preserve-3d;
         position: relative;
        
