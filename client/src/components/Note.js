@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import DeleteNote from './DeleteNote';
+import { Link } from 'react-router-dom';
 
 class Note extends React.Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class Note extends React.Component {
     return (
       <div>
         <button onClick={() => DeleteNote(this.props.match.params.id)}> one click delete </button>
+        <Link from={this.props.match.url} to={`/editnote/${this.props.match.params.id}`}><button> edit note </button></Link>
         <div className='singleCard' key={this.state.post.id}>
           <p>{this.state.post.title}</p>
           <p>{this.state.post.contents}</p>

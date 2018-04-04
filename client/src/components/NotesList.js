@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 class NotesList extends React.Component {
   constructor() {
@@ -23,11 +24,14 @@ class NotesList extends React.Component {
 
   render() {
     return (
+      // <Link to='/addnote'>Add a new note</Link>
       this.state.posts.map(post => {
         return (
         <div className='noteCard' key={post.id}>
+        <Link to={`viewnote/${post.id}`}>
           <p>{post.title}</p>
           <p>{post.contents}</p>
+        </Link>
         </div>
         )
       })
