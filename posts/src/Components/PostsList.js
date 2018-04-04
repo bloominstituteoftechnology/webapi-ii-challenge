@@ -20,18 +20,18 @@ class PostsList extends Component {
         
     }
 
-    // deletePosts(event) {
+    deletePosts(event) {
        
-    //     const { id } = event.target;
-    //     axios.delete(`http://localhost:5000/api/posts/${id}`)
-    //     .then((response)=> {
-    //             this.setState( {posts: response.data } )
-    //     })
+        const { id } = event.target;
+        axios.delete(`http://localhost:5000/api/posts/${id}`)
+        .then((response)=> {
+                this.setState( {posts: response.data } )
+        })
         
-    //     .catch(error => {
-    //         console.log('Server Error:', error)
-    //     })
-    // }
+        .catch(error => {
+            console.log('Server Error:', error)
+        })
+    }
 
 
     render() {
@@ -40,9 +40,6 @@ class PostsList extends Component {
             margin: 30px;
             font-weight: 900;
             font-size: 1.7rem;
-
-          
-                          
         `
         return (
             <Fragment>   

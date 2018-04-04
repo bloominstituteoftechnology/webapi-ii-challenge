@@ -14,13 +14,12 @@ import { injectGlobal } from 'styled-components';
 injectGlobal`
 
 html,body { 
+    box-sizing: border-box;
     overflow: hidden;
     margin: 0;
     padding: 0;
     font-family: arial;
     font-size: 62.5%;
-
-    
 }
 
 `
