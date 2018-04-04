@@ -15,42 +15,40 @@ class PostsList extends Component {
 
     getPosts() {
         axios.get('http://localhost:5000/api/posts')
-        .then(response  => this.setState({ posts: response.data}))
-        .catch(error =>   console.error('Server Error: ', error))
-        
+        .then(response => this.setState({ posts: response.data}))
+        .catch(error => console.error('Server Error: ', error))
+
     }
 
-    deletePosts(event) {
-       
+    deletePost(event) {
+
         const { id } = event.target;
         axios.delete(`http://localhost:5000/api/posts/${id}`)
-        .then((response)=> {
-                this.setState( {posts: response.data } )
-        })
-        
-        .catch(error => {
-            console.log('Server Error:', error)
-        })
+        .then((response) => console.log(response.data))
+        .catch(error => console.error('Server Error:', error))
+
+        this.getPosts();
     }
 
 
     render() {
         const Text = styled.p`
-           
+
             margin: 30px;
             font-weight: 900;
             font-size: 1.7rem;
         `
         return (
-            <Fragment>   
+            <Fragment>
                 {this.state.posts.map((post, i) => {
                     return (
-                       <Card id={i} key={i}>
+                       <Card onMouseUp={(e) => this.deletePost(e)} id={post.id} key={i}>
                            <Text>{post.title}</Text>
-                           <Text>{post.contents}</Text> 
-                        </Card> 
+                           <Text>{post.contents}</Text>
+                        </Card>
                     )
                 })}
+                {console.log(this.state.posts)}
             </Fragment>
         )
     }
