@@ -16,7 +16,6 @@ class App extends React.Component {
     axios
     .get('http://localhost:5000/api/posts/')
     .then(res => {
-      console.log('activated get client')
       this.setState( {posts: res.data} );
     }).catch(error => {
       console.error(error);
