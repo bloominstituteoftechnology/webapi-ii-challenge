@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
-// import './ListView.css';
+import './ListView.css';
 
 export default class ListView extends Component {
   state = {
@@ -55,13 +55,13 @@ export default class ListView extends Component {
     return (
       <div className="container">
         <div className="d-flex align-items-baseline mb-3">
-          <h4>Your posts:</h4>
+          <h4>Quotes:</h4>
           <nav className="navbar navbar-light">
             <form className="form-inline">
               <input
                 className="form-control mr-sm-2"
                 type="search"
-                placeholder="Search"
+                placeholder="Search Quotes"
                 aria-label="Search"
                 value={this.state.search}
                 onChange={this.updateSearch}

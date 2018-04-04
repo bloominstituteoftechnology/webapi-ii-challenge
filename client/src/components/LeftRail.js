@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
-// import './LeftRail.css';
+import './LeftRail.css';
 
 const LeftRail = () => {
   return (
     <div className="left-rail">
       <div className="title">
         <h1>
-          <strong>Posts!</strong>
+          <strong>Name That Movie!</strong>
         </h1>
       </div>
       <Link to="/posts" className="btn btn-block">
