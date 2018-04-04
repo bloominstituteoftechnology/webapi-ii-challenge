@@ -19,24 +19,25 @@ server.post('/api/posts', (req, res) => {
     res.status(400).json({
       errorMessage: 'Please provide title and contents for the post.'
     });
-  }
-  db
-    .insert(post)
-    .then(newPost => {
-      db
-        .findById(newPost.id)
-        .then(user => {
-          res.json(user[0]);
-        })
-        .catch(error => {
-          res.status(500).json(error);
+  } else {
+    db
+      .insert(post)
+      .then(newPost => {
+        db
+          .findById(newPost.id)
+          .then(user => {
+            res.json(user[0]);
+          })
+          .catch(error => {
+            res.status(500).json(error);
+          });
+      })
+      .catch(error => {
+        res.status(500).json({
+          error: 'There was an error while saving the post to the database'
         });
-    })
-    .catch(error => {
-      res.status(500).json({
-        error: 'There was an error while saving the post to the database'
       });
-    });
+  }
 });
 
 server.get('/api/posts', (req, res) => {
