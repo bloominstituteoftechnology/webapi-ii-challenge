@@ -23,3 +23,5 @@ server.get('/api/posts', (req, res)=> {
     // error event thing here
   });
 });
+
+server.listen(5000, () => console.log("\n== API Running on port 5000 ==\n"));
