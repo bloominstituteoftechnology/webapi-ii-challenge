@@ -1,7 +1,7 @@
 // import your node modules
 import express from 'express';
-import morgan from 'morgan';
-import helmet from 'helmet';
+import morgan from 'morgan'; // logs client requests; a logger
+import helmet from 'helmet'; // header formater
 
 import db from './data/db';
 import { validateBody, respondWithError } from './utils';
@@ -34,9 +34,9 @@ app.get('/api/posts/:id', async (req, res) => {
 
     // async await
     // https://javascript.info/async-await
-    const post = await db.findById(id);
+    const post = await db.findById(id); // returns id array
 
-    if (!post.length) throw NOT_FOUND_ERROR;
+    if (!post.length) throw NOT_FOUND_ERROR; // error for post being an empty array
 
     res.json(post);
   } catch (error) {
