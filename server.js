@@ -48,4 +48,33 @@ server.post("/api/posts", (req, res) => {
     });
 });
 
+server.delete("/api/posts/:id", (req, res) => {
+  const id = req.params.id;
+  db
+    .remove(id)
+    .then(post => {
+      res.json(post);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+server.put("/api/posts/:id", (req, res) => {
+  const id = req.params.id;
+  const testUpdatePost = {
+    id: id,
+    title: "TEST UPDATE POST",
+    contents: "test update contents"
+  };
+  db
+    .update(id, testUpdatePost)
+    .then(post => {
+      res.json(post);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
 server.listen(5000, () => console.log("\nwe doin it my broseph\n"));
