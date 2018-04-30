@@ -84,17 +84,18 @@ server.get('/api/posts', (req, res) => {
 // -. respond with HTTP status code 500.
 // -. return the following JSON object: { error: "The post information could not be retrieved." }.
 
-server.get('/api/posts:id', (req, res) => {
+server.get('/api/posts/:id', (req, res) => {
     const id = req.params.id;
-
-    db.findById(id).then(post => {
+    db
+    .findById(id)
+    .then(post => {
         if (post.length === 0) {
             res.status(404).json({ message: 'The post with the specified ID does not exist.'})
         } else {
-            res.json(posts);
+            res.json(post);
         }
     })
     .catch(err => {
-        res.status(500).json({error: "The post information could not be retrieved."});
+        res.status(500).json({error: 'The post information could not be retrieved.'});
     });
 });
