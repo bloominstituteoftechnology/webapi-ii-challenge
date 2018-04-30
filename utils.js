@@ -2,10 +2,10 @@ const generatePropertyChecker = property => obj => typeof obj[property] !== 'und
 const checkForTitle = body => generatePropertyChecker('title')(body);
 const checkForContents = body => generatePropertyChecker('contents')(body);
 
+const validateBody = body => checkForContents(body) && checkForTitle(body);
 const respondWithError = (response, error) => response.status(error.code).json(error.error);
 
 module.exports = {
-  checkForContents,
-  checkForTitle,
+  validateBody,
   respondWithError,
 };

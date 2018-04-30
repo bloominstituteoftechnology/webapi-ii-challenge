@@ -4,8 +4,8 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 
 const db = require('./data/db.js');
-const { respondWithError } = require('./utils');
-const { DATABASE_RETRIEVAL_ERROR, NOT_FOUND_ERROR } = require('./Errors');
+const { respondWithError, validateBody } = require('./utils');
+const { DATABASE_RETRIEVAL_ERROR, NOT_FOUND_ERROR, INPUT_ERROR } = require('./Errors');
 
 const app = express();
 
@@ -39,6 +39,24 @@ app.get('/api/posts/:id', async (req, res) => {
   } catch (error) {
     switch (error) {
       case NOT_FOUND_ERROR:
+        respondWithError(res, error);
+        break;
+      default:
+        respondWithError(res, DATABASE_RETRIEVAL_ERROR);
+    }
+  }
+});
+
+// post
+app.post('/api/posts', async (req, res) => {
+  const { body } = req;
+  try {
+    if (!validateBody(body)) throw INPUT_ERROR;
+    const response = await db.insert(body);
+    res.status(201).json(response);
+  } catch (error) {
+    switch (error) {
+      case INPUT_ERROR:
         respondWithError(res, error);
         break;
       default:
