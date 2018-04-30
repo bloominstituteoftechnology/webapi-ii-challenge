@@ -20,6 +20,17 @@ server.get('/api/posts', (req, res) => {
   });
 });
 
+server.get('/api/posts/:id', (req, res) => {
+  db
+  .findById(req.params.id)
+  .then(posts => {
+    res.json(posts);
+  })
+  .catch(err => {
+    res.status(500).json({ error: err });
+  });
+});
+
 server.delete('/api/posts/:id', (req, res) => {
   db
     .remove(req.params.id)
