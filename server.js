@@ -38,6 +38,7 @@ server.post('api/posts', (req, res) => {
         }})
         .catch(err => {
             res.status(500).json({ message: 'here was an error while saving the post to the database'});
+            process.abort();
         });
 
 });
@@ -68,6 +69,7 @@ server.get('/api/posts', (req, res) => {
     })
     .catch(err => {
         res.status(500).json({error: 'could not retrieve post information'});
+        process.abort();
     })
 })
 
@@ -97,5 +99,34 @@ server.get('/api/posts/:id', (req, res) => {
     })
     .catch(err => {
         res.status(500).json({error: 'The post information could not be retrieved.'});
+        process.abort();
     });
 });
+
+// When the client makes a DELETE request to /api/posts/:id:
+
+// If the post with the specified id is not found:
+// -. return HTTP status code 404 (Not Found).
+// -. return the following JSON object: { message: "The post with the specified ID does not exist." }.
+
+// If there's an error in removing the post from the database:
+// -. cancel the request.
+// -. respond with HTTP status code 500.
+// -. return the following JSON object: { error: "The post could not be removed" }.
+
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.param.id;
+    db
+    .remove(id)
+    .then (post=> {
+        if (id === 'undefined') {
+            res.status(404).json({ message: 'The post with the specified ID does not exist.'});
+        } else {
+            res.status(200);
+        }
+    })
+    .catch(err => {
+        res.status(500).json({error: 'The post could not be removed.'});
+        process.abort();
+        })
+})
