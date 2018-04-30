@@ -1,11 +1,12 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const db = require('./data/db.js');
 const server = express();
 
+server.use(bodyParser.json());
+
 // route handler
-server.get('/', (req, res) => {
-  res.send("your api is running");
-})
+server.get('/', (req, res) => { res.send("your api is running") })
 
 server.get('/api/posts', (req, res) => {
   db.find()
@@ -22,6 +23,37 @@ server.get('/api/posts/:id', (request, response) => {
         response.json(post[0])
     })
     .catch(error => response.status(500).json({ error: "The post information could not be retrieved." }))
+})
+
+server.post('/api/posts', (request, response) => {
+  const { title, contents } = request.body;
+  const newPost = { title, contents };
+  !title || !contents ? 
+    response.status(400).json({ error: "Please provide title and contents for the post." }) :
+    db.insert(newPost)
+      .then(post => { response.status(201).json(post) })
+      .catch(error => { response.status(500).json({ error: "There was an error while saving the post to the database." }) })
+})
+
+server.delete('/api/posts/:id', (request, response) => {
+  const { id } = request.params;
+  !db.findById(id) ? 
+    response.status(404).json({ message: "The post with the specified ID does not exist." }) :
+    db.remove(id)
+      .then(posts => { response.json(posts) }) // returns 0 or 1
+      .catch(err => { response.status(500).json({ error: "The post could not be removed." }) })
+})
+
+server.put('/api/posts/:id', (request, response) => {
+  const { id } = request.params;
+  const { title, contents } = request.body;
+  !db.findById(id) ? 
+    response.status(404).json({ message: "The post with the specified ID does not exist." }) :
+    !title || !contents ?
+      response.status(400).json({ errorMessage: "Please provide title and contents for the post." }) :
+      db.update(id, { title, contents })
+        .then(updated => response.status(200).json(updated)) // returns 0 or 1
+        .catch(err => response.status(500).json({ error: "The post information could not be modified." }))
 })
 
 server.listen(5000);
