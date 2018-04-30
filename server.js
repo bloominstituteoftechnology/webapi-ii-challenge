@@ -1,6 +1,8 @@
 // import your node modules
+const bodyParser = require("body-parser");
 const express = require("express");
 const server = express();
+server.use(bodyParser.json());
 const db = require("./data/db");
 
 // home
@@ -27,6 +29,8 @@ server.get("/api/posts", (req, res) => {
 // GET /api/posts/:id
 server.get("/api/posts/:id", (req, res) => {
 	const id = req.params.id;
+	console.log(id);
+	console.log(typeof id);
 	db
 		.findById(id)
 		.then(posts => {
@@ -44,6 +48,28 @@ server.get("/api/posts/:id", (req, res) => {
 				.status(500)
 				.json({ error: "The posts information could not be retrieved." });
 		});
+});
+
+// POST /api/posts
+server.post("/api/posts", (req, res) => {
+	const post = req.body.post;
+	// console.log(req.body.post);
+	// console.log(post.title);
+	// console.log(post.title.length);
+	if (post.title.length === 0 || post.contents.length === 0) {
+		res
+			.status(400)
+			.json({ error: "Please provide title and contents for the post." });
+	} else {
+		db
+			.insert(post)
+			.then(res.status(201).json(post))
+			.catch(err => {
+				res.status(500).json({
+					error: "There was an error while saving the post to the database"
+				});
+			});
+	}
 });
 
 server.listen(5000, () => {
