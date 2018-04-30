@@ -18,6 +18,7 @@ server.post('/api/posts', (req, res) => {
         .insert(post)
         .then(post => {
             res.json(post);
+            res.status(201);
         })
         .catch(err => { 
             res.status(500).json({ error: err });
@@ -53,6 +54,22 @@ server.get('/api/posts/:id', (req, res) => {
         })
         .catch(err => { 
             res.status(500).json({ error: "The post information could not be retrieved." });
+        });
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+    db
+        .remove(id)
+        .then(posts => {
+            if (posts.length === 0) {
+                res.status(404).json({ message: 'The post with the specified ID does not exist.' })
+            } else {
+                res.json(posts);
+            }
+        })
+        .catch(err => { 
+            res.status(500).json({ error: "The post could not be removed." });
         });
 })
 
