@@ -42,7 +42,7 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.post('/api/posts', (req, res) => {
 const {title, contents} = req.body;
-const postNew = { title, contents}
+const postNew = { title, contents };
     if (title.length === 0 || contents.length === 0) {
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
     } else
