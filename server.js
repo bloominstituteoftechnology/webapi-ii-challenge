@@ -29,6 +29,8 @@ server.get('/api/posts', (req, res) => {
     })
     .catch(err => {
         res.status(500).json({error: 'could not retrieve post information'});
+        process.abort();
+
     })
 })
 
@@ -45,5 +47,6 @@ server.get('/api/posts/:id', (req, res) => {
     })
     .catch(err => {
         res.status(500).json({error: 'The post information could not be retrieved.'});
+        process.abort();
     });
 });
