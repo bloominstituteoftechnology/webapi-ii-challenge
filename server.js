@@ -7,6 +7,8 @@ const server = express();
 
 const db = require('./data/db.js');
 
+server.use(express.json());
+
 server.get('/', (req, res) => {
     res.send('API Running');
 });
@@ -37,6 +39,24 @@ server.get('/api/posts/:id', (req, res) => {
     })
     .catch(err => {
         res.status(500).json({ message: "The post with the specified ID does not exist." });
+    })
+})
+
+server.post('/api/posts', (req, res) => {
+    const post = req.body;
+    console.log(req.body);
+    //console.log(req);
+    db
+    .insert(post)
+    .then(post => {
+        res.json(post);
+        }
+    )
+    .catch(err => {
+        //if (!('title' in req.body) || !('contents' in req.body)) {
+            res.status(400).json({ message: "Please provide title and contents for the post." })
+            console.log(err);
+         //}
     })
 })
 
