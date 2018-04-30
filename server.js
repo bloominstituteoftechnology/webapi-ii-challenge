@@ -52,19 +52,23 @@ server.get('/api/posts/:id', (req, res) => {
 // POST new posts to database
 
 server.post('/api/posts', (req, res) => {
-    const post = req.body;
+    const { title, contents } = req.body;
+    const newPost = { title, contents };
 
     db
-    .insert(post)
+    .insert(req.body)
     .then(post => {
         if (req.body) {
-            res.status(201)
+            res.status(201);
         }
         res.json(post);
     })
     .catch(err => {
+        if (!title || !contents) {
+            res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+        }
         res.status(500).json({ error: "There was an error while saving the post to the database" });
-    })
+    });
 })
 
 server.listen(3000);
