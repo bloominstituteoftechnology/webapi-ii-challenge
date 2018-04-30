@@ -8,7 +8,12 @@ server.use(express.json());
 
 // add new post
 server.post('/api/posts', (req, res) => {
-  console.log(req.body);
+  if (!req.body.title || !req.body.contents) {
+    throw res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    })
+  }
+
   db
   .insert(req.body)
   .then(posts => {
@@ -57,7 +62,6 @@ server.delete('/api/posts/:id', (req, res) => {
 
 // update post by id
 server.put('/api/posts/:id', (req, res) => {
-  console.log(req.body);
   db
   .update(req.params.id, req.body)
   .then(posts => {
