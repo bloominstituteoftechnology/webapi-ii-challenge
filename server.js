@@ -1,9 +1,11 @@
 // import your node modules
+const bodyParser = require('body-parser');
 const express = require('express');
 
 const db = require('./data/db.js');
 
 const server = express();
+server.use(bodyParser.json());
 
 // add your server code starting here
 //GET
@@ -28,5 +30,9 @@ server.get('/api/posts/:id', (req,res) => {
         res.status(500).json({error: "The post information could not be retrieved."})
     })
 });
+
+//POST
+
+
 
 server.listen(8000, () => console.log('\n== API Running on port 8000 ==\n'));
