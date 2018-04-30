@@ -1,7 +1,10 @@
 const express = require('express');
 const db = require('./data/db');
 
+let bodyParser = require("body-parser");
 const server = express();
+
+server.use(bodyParser.json());
 
 // add your server code starting here
 
@@ -32,4 +35,28 @@ server.get('/api/posts/:id', (req, res) => {
         });
 });
 
+
+
+server.post('/api/posts', (req, res) => {
+    const title = req.body.title;
+    const contents = req.body.contents;
+
+    if (!title || !contents) {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+        return;
+    }
+
+    db.insert(req.body)
+        .then(post => {
+            console.log(post);
+            res.status(201).json(req.body);
+        })
+        .catch(error => {
+            res.status(500).json({ error: "There was an error while saving the post to the database" })
+        });
+});
+
+server.delete('api/posts/:id', (req, res) => {
+
+});
 server.listen(5000,() => console.log(`API Running on port 5000`));
