@@ -9,10 +9,12 @@
   },
   "license": "ISC",
   "dependencies": {
-    "knex": "^0.14.4",
+    "body-parser": "^1.18.2",
     "sqlite3": "^4.0.0"
   },
   "devDependencies": {
+    "express": "^4.16.3",
+    "knex": "^0.14.6",
     "nodemon": "^1.17.3"
   }
 }

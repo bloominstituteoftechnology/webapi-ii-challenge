@@ -68,7 +68,7 @@ Configure the API to respond to the following routes:
 | PUT    | /api/posts/:id | Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**. |
 
 #### Endpoint Specifications
-
+# POST POST
 When the client makes a `POST` request to `/api/posts`:
 
 * If the request body is missing the `title` or `contents` property:
@@ -95,6 +95,7 @@ When the client makes a `GET` request to `/api/posts`:
   * respond with HTTP status code `500`.
   * return the following JSON object: `{ error: "The posts information could not be retrieved." }`.
 
+# GET GET
 When the client makes a `GET` request to `/api/posts/:id`:
 
 * If the _post_ with the specified `id` is not found:
@@ -106,6 +107,8 @@ When the client makes a `GET` request to `/api/posts/:id`:
   * cancel the request.
   * respond with HTTP status code `500`.
   * return the following JSON object: `{ error: "The post information could not be retrieved." }`.
+
+  #DELETE DELETE
 
 When the client makes a `DELETE` request to `/api/posts/:id`:
 
@@ -119,6 +122,7 @@ When the client makes a `DELETE` request to `/api/posts/:id`:
   * respond with HTTP status code `500`.
   * return the following JSON object: `{ error: "The post could not be removed" }`.
 
+#PUT PUT
 When the client makes a `PUT` request to `/api/posts/:id`:
 
 * If the _post_ with the specified `id` is not found:
