@@ -72,6 +72,48 @@ server.post("/api/posts", (req, res) => {
 	}
 });
 
+// DELETE /api/posts/:id
+server.delete("/api/posts/:id", (req, res) => {
+	// id not found - error 404
+	// error removing post - error 500
+});
+
+// PUT /api/posts/:id
+server.put("/api/posts/:id", (req, res) => {
+	// define id and object params for PUT request
+	const id = req.params.id;
+	console.log(id);
+	// const post = req.body.update;
+	// console.log(post);
+
+	// request body missing title or contents - error 400
+	if (update.title.length || update.contents.length === 0) {
+		res.status(400).json({
+			errorMessage: "Please provide title and contents for the post."
+		});
+	}
+
+	db
+		.findById(id)
+		.then(posts => {
+			// id not found - error 404
+			if (posts.length === 0) {
+				res
+					.status(404)
+					.json({ message: "The post with the specified ID does not exist." });
+			} else {
+				// post found and new info is valid - code 200 return updated post
+				res.status(200).json(posts[0]);
+			}
+		})
+		.catch(err => {
+			// could not update post - error 500
+			res
+				.status(500)
+				.json({ error: "The post information could not be modified." });
+		});
+});
+
 server.listen(5000, () => {
 	console.log("\n== API Running on port 5000 ==\n");
 });
