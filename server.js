@@ -4,39 +4,56 @@ const db = require('./data/db');
 
 const server = express();
 
+// resolve '/'
 server.get('/', (req, res) => {
   res.send('Api running');
 })
 
-// get users
-server.get('/api/users', (req, res) => {
-  // get the users
-  db.find().then(users => {
-    res.json(users);
+// get posts
+server.get('/api/posts', (req, res) => {
+  db.find().then(posts => {
+    res.json(posts);
   }).catch(err => { 
-    res.status(500).json({ error: err });
+    res.end(500).json({ error: 'The posts information could not be retrieved.' });
   });
 });
 
-// /api/users/3 (by ID)
-server.get('/api/users/:id', (req, res) => {
-  // grab id from url params
+// get posts by ID
+server.get('/api/posts/:id', (req, res) => {
  const id = req.params.id;
 
 db
   .findById(id)
-  .then(users => {
-    if (users.length === 0) {
-      res.status(404).json({ message: 'user not found' });
+  .then(posts => {
+    if (posts.length === 0) {
+      res.status(404).json({ message: 'The post with the specified ID does not exist.' });
     } else {
-    res.json(users[0]);
+    res.json(posts[0]);
     }
   })
   .catch(err => { 
-    res.status(500).json({ error: err });
-    // do something with err 
+    res.status(500).json({ error: "The post information could not be retrieved." });
   });
 });
+
+// Delete posts by ID
+server.delete('/api/posts/:id', (req, res) => {
+  const id = req.params.id;
+
+  db
+  .findById(id)
+  .then(posts => {
+    if (posts.length === 0) {
+      res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+    } else {
+    res.json(posts[0]);
+    }
+  })
+  .catch(err => { 
+    res.status(500).json({ error: "The post could not be removed" });
+  });
+
+})
 
 server.listen(5000, () => console.log('\n== API Running on port 5000 ==\n'));
 
