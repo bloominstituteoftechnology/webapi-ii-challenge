@@ -16,8 +16,8 @@ server.post('/api/posts', (req, res) => {
 
   db
   .insert(req.body)
-  .then(posts => {
-    res.json(posts);
+  .then(data => {
+    res.status(201).json(req.body);
   })
   .catch(err => {
     res.status(500).json({ error: err });
