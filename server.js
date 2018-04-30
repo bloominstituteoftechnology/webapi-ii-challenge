@@ -1,10 +1,20 @@
 // import your node modules
 const express = require("express")
-
+const bodyParser = require("body-parser")
 const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
+server.use(bodyParser.urlencoded({ extended: false }))
+server.use(bodyParser.json())
+
+// server.use(function (req, res) {
+//   res.setHeader('Content-Type', 'text/plain')
+//   res.write('you posted:\n')
+//   res.end(JSON.stringify(req.body, null, 2))
+// })
+
+
 
 server.get("/", (req, res) => {
     res.send("It works, moving on")
@@ -24,17 +34,22 @@ server.post("/api/posts", (req, res) => {
     })
 })
 
-server.put("/api/posts/:id", (req, res) => {
-    const id = req.params.id;
-    db.update(id, ({
-        title: "We changed",
-        contents: "did we though?"
-    })).then(post => {
-        console.log('success put');
-    }).catch(err => {
-        console.log(err)
+server.put('/api/posts/:id', (req, res) => {
+    const id = req.params.id
+    const newPost = req.body;
+    db.update(id, newPost)
+    .then(post => {
+        console.log('idk')
+        res.json(post);
+
     })
-})
+    .catch(err => {
+        console.log('failed')
+        res.status(500).json({error: err});
+    });
+});
+
+
 server.get("/api/posts", (req, res) => {
     db.find().then(posts => {
         res.json(posts);
