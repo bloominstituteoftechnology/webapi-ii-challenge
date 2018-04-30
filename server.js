@@ -82,13 +82,27 @@ server.delete('/api/posts/:id', (req, res) => {
 
 // update post by id
 server.put('/api/posts/:id', (req, res) => {
+  if (!req.body.title || !req.body.contents) {
+    throw res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
+
   db
   .update(req.params.id, req.body)
-  .then(posts => {
-    res.json(posts);
+  .then(found => {
+    if (found) {
+      res.json(found);
+    } else {
+      res.status(404).json({
+        err: "The post with the specified ID does not exist."
+      });
+    }
   })
   .catch(err => {
-    res.status(500).json({ error: err });
+    res.status(500).json({
+      error: "The post information could not be modified."
+    });
   });
 });
 
