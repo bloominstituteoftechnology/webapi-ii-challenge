@@ -3,7 +3,10 @@ const express = require("express");
 
 const db = require("./data/db.js");
 
+let bodyParser = require("body-parser");
 const server = express();
+
+server.use(bodyParser.json());
 
 // add your server code starting here
 
@@ -19,7 +22,9 @@ server.get("/api/posts", (req, res) => {
       res.json(posts);
     })
     .catch(err => {
-      res.status(500).json({ error: "The posts information could not be retrieved." });
+      res
+        .status(500)
+        .json({ error: "The posts information could not be retrieved." });
       // do something with the error
     });
 });
@@ -45,13 +50,24 @@ server.get("/api/posts/:id", (req, res) => {
 });
 
 server.post("/api/posts", (req, res) => {
-    const id = req.params.id;
+  const post = req.body;
 
+  if (post.title === "" || post.contents === "") {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  } else {
     db
-        .findById(id)
-        .then(posts => {
-            
-        })
-})
+      .insert(post)
+      .then(response => {
+        res.status(201).json({ post });
+      })
+      .throw(() => {
+        res.status(500).send({
+          error: "There was an error while saving the post to the database"
+        });
+      });
+  }
+});
 
 server.listen(5000, () => console.log("\n== API Running on port 5000 ==\n"));
