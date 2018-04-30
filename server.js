@@ -5,7 +5,7 @@ import helmet from 'helmet';
 
 import db from './data/db';
 import { validateBody, respondWithError } from './utils';
-import { DATABASE_RETRIEVAL_ERROR, NOT_FOUND_ERROR, INPUT_ERROR, REMOVE_ERROR, PUT_ERROR } from './Errors';
+import { NOT_FOUND_ERROR, INPUT_ERROR, REMOVE_ERROR, PUT_ERROR } from './Errors';
 
 // add your server code starting here
 const app = express();
@@ -20,29 +20,29 @@ app.get('/api/posts', async (req, res) => {
     const posts = await db.find();
     res.json(posts);
   } catch (error) {
-    respondWithError(res, DATABASE_RETRIEVAL_ERROR);
+    respondWithError(res);
   }
 });
 
 app.get('/api/posts/:id', async (req, res) => {
   try {
+    // nested object destructuring
+    // https://medium.com/@pyrolistical/destructuring-nested-objects-9dabdd01a3b8
     const {
       params: { id },
     } = req;
 
+    // async await
+    // https://javascript.info/async-await
     const post = await db.findById(id);
 
     if (!post.length) throw NOT_FOUND_ERROR;
 
     res.json(post);
   } catch (error) {
-    switch (error) {
-      case NOT_FOUND_ERROR:
-        respondWithError(res, error);
-        break;
-      default:
-        respondWithError(res, DATABASE_RETRIEVAL_ERROR);
-    }
+    if (error === NOT_FOUND_ERROR) {
+      respondWithError(res, error);
+    } else respondWithError(res);
   }
 });
 
@@ -51,16 +51,14 @@ app.post('/api/posts', async (req, res) => {
   const { body } = req;
   try {
     if (!validateBody(body)) throw INPUT_ERROR;
+
     const response = await db.insert(body);
+
     res.status(201).json(response);
   } catch (error) {
-    switch (error) {
-      case INPUT_ERROR:
-        respondWithError(res, error);
-        break;
-      default:
-        respondWithError(res, DATABASE_RETRIEVAL_ERROR);
-    }
+    if (error === INPUT_ERROR) {
+      respondWithError(res, error);
+    } else respondWithError(res);
   }
 });
 
@@ -74,12 +72,10 @@ app.delete('/api/posts/:id', async (req, res) => {
     if (response === 0) throw NOT_FOUND_ERROR;
     res.json(response);
   } catch (error) {
-    switch (error) {
-      case NOT_FOUND_ERROR:
-        respondWithError(res, error);
-        break;
-      default:
-        respondWithError(res, REMOVE_ERROR);
+    if (error === NOT_FOUND_ERROR) {
+      respondWithError(res, error);
+    } else {
+      respondWithError(res, REMOVE_ERROR);
     }
   }
 });
@@ -91,7 +87,9 @@ app.put('/api/posts/:id', async (req, res) => {
       params: { id },
       body,
     } = req;
+
     if (!validateBody(body)) throw INPUT_ERROR;
+
     const response = await db.update(id, body);
 
     if (Number(response) === 0) throw NOT_FOUND_ERROR;
@@ -100,19 +98,15 @@ app.put('/api/posts/:id', async (req, res) => {
 
     res.json(updatedPost);
   } catch (error) {
-    switch (error) {
-      case INPUT_ERROR:
-        respondWithError(res, error);
-        break;
-      case NOT_FOUND_ERROR:
-        respondWithError(res, error);
-        break;
-      default:
-        respondWithError(res, PUT_ERROR);
+    if (error === INPUT_ERROR) {
+      respondWithError(res, error);
+    } else if (error === NOT_FOUND_ERROR) {
+      respondWithError(res, error);
+    } else {
+      respondWithError(res, PUT_ERROR);
     }
   }
 });
 
 const port = 5000;
 app.listen(port, () => console.log(`server running on http://localhost:${port}`));
-
