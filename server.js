@@ -41,6 +41,7 @@ server.get("/api/posts/:id", (req, res) => {
     });
 });
 
+//duplicate check missing
 server.post("/api/posts", (req, res) => {
   const newPost = req.body;
   if (!newPost.title || !newPost.contents) {
@@ -57,6 +58,27 @@ server.post("/api/posts", (req, res) => {
       res.status(500).json({
         error: "There was an error while saving the post to the database"
       });
+    });
+});
+
+server.delete("/api/posts/:id", (req, res) => {
+  const id = req.params.id;
+
+  db
+    .findById(id)
+    .then(post => {
+      if (post.length === 0) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        db.remove(id).then(res.status(200));
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: "The post information could not be retrieved." });
     });
 });
 
