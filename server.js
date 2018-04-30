@@ -45,10 +45,18 @@ server.get('/api/posts/:id', (req, res) => {
   db
   .findById(req.params.id)
   .then(post => {
-    res.json(post);
+    if (post.length) {
+      res.json(post);
+    } else {
+      res.status(404).json({
+        err: "The post with the specified ID does not exist."
+      })
+    }
   })
   .catch(err => {
-    res.status(500).json({ error: err });
+    res.status(500).json({
+      error: "The post information could not be retrieved."
+    });
   });
 });
 
