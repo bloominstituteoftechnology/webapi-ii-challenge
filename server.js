@@ -7,9 +7,13 @@ const server = express();
 
 const db = require('./data/db.js');
 
+// GET for localhost running
+
 server.get('/', (req, res) => {
     res.send('API running');    
 })
+
+// GET for entire array
 
 server.get('/api/posts', (req, res) => {
     db
@@ -21,6 +25,8 @@ server.get('/api/posts', (req, res) => {
         res.status(500).json({ error: "The posts information could not be retrieved." })
     });
 });
+
+// GET for individual post
 
 server.get('/api/posts/:id', (req, res) => {
     const id = req.params.id;
@@ -36,6 +42,21 @@ server.get('/api/posts/:id', (req, res) => {
     })
     .catch(err => {
         res.status(500).json({ message: "The post with the specified ID does not exist." })
+    });
+});
+
+// POST new posts to database
+
+server.post('/api/posts', (req, res) => {
+    // const { title, content } = req.body;
+    // const newPost = { title, content };
+    // console.log(req.body);
+
+    db
+    .insert(req.body)
+    .then()
+    .catch(err => {
+        res.status(500).json({ errorMessage: "Please provide title and contents for the post." })
     })
 })
 
