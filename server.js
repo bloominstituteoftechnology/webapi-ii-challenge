@@ -37,11 +37,12 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts', (req, res) => {
-    const post = req.body
+    const { title, contents } = req.body;
+    const post = { title, contents}
     db
     .insert(post)
-    .then(response => {
-        res.status(201).json(response)
+    .then(post => {
+        res.status(201).json(post)
     })
     .catch(error => {
         res
@@ -50,7 +51,15 @@ server.post('/api/posts', (req, res) => {
             error:
               'There was an error while saving the post to the database',
           });
-    })
+    });
+    if(!title || !contents) {
+        res
+          .status(400)
+          .json({
+            errorMessage:
+              'Please provide title and contents for the post.',
+          });
+    }
 });
 
 server.delete('/api/posts/:id', (req, res) => {
@@ -79,9 +88,36 @@ server.delete('/api/posts/:id', (req, res) => {
   })
   .catch(err => {
       res.status(500).json(err);
-  })
-  
-  
+  }); 
+});
+
+server.put('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  const update = req.body;
+
+  db
+    .update(id, update)
+    .then(count => {
+        if(count > 0) {
+            db.findById(id).then(updatedPosts => {
+              res.status(200).json(updatedPosts[0]);
+            });
+        } else {
+            res
+              .status(404)
+              .json({
+                message:
+                  'The post with the specified ID does not exist.',
+              });
+        }
+    })
+    .catch(err => {
+        res
+          .status(500)
+          .json({
+            error: 'The post information could not be modified.',
+          });
+    })
 });
 
 
