@@ -11,13 +11,15 @@ server.get("/", (req, res) => {
 })
 
 server.post("/api/posts", (req, res) => {
-    db.insert(req.params).then(post => {
+    db.insert({
+        title: "",
+        contents: "",
+    }).then(posts => {
         console.log(post)
     }).catch(err => {
-        console.log(err)
+        res.statusCode === 400;
     })
 })
-
 
 server.get("/api/posts", (req, res) => {
     db.find().then(posts => {
