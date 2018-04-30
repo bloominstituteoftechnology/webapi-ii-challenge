@@ -22,3 +22,12 @@ server.post('/api/users', (req, res) => {
         })
 
 })
+
+server.get('/api/posts', (req, res) => {
+    db.find().then(posts => {
+        res.json(posts);
+    })
+    .catch(err => {
+        res.status(500).json({error: 'could not retrieve post information'});
+    })
+})
