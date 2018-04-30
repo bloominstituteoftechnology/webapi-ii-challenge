@@ -9,3 +9,5 @@ server.get('/api/posts', (req, res) => {
 
 });
 
+
+server.listen(5000, console.log('\n== API Running on port 500 ==\n'));
