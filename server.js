@@ -20,5 +20,15 @@ server.get('/api/posts', (req, res) => {
   });
 });
 
+server.delete('/api/posts/:id', (req, res) => {
+  db
+    .remove(req.params.id)
+    .then(posts => {
+      res.json(posts);
+    })
+    .catch(err => {
+      res.status(500).json({ error: err });
+    })
+})
 
 server.listen(5000, console.log('\n== API Running on port 500 ==\n'));
