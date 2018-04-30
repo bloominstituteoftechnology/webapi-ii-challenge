@@ -7,6 +7,8 @@ const server = express();
 
 const db = require('./data/db.js');
 
+server.use(express.json());
+
 // GET for localhost running
 
 server.get('/', (req, res) => {
@@ -48,15 +50,15 @@ server.get('/api/posts/:id', (req, res) => {
 // POST new posts to database
 
 server.post('/api/posts', (req, res) => {
-    // const { title, content } = req.body;
-    // const newPost = { title, content };
-    // console.log(req.body);
+    const post = req.body;
 
     db
-    .insert(req.body)
-    .then()
+    .insert(post)
+    .then(post => {
+        res.json(post);
+    })
     .catch(err => {
-        res.status(500).json({ errorMessage: "Please provide title and contents for the post." })
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
     })
 })
 
