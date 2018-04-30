@@ -20,7 +20,9 @@ server.post('/api/posts', (req, res) => {
     res.status(201).json(req.body);
   })
   .catch(err => {
-    res.status(500).json({ error: err });
+    res.status(500).json({ 
+      error: "There was an error while saving the post to the database"
+    });
   });
 });
 
