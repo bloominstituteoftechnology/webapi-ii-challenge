@@ -1,21 +1,23 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import PostList from './PostList'
+
 
 class App extends Component {
+  state = {
+    posts: []
+  }
+
+  componentDidMount() {
+    this.props.post$.subscribe(posts => this.setState({ posts }))
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <PostList posts={this.state.posts} />
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
