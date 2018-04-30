@@ -8,6 +8,8 @@ const server = express();
 server.use(bodyParser.json());
 
 //Function to get new ID
+let nextId = 10;
+
 function getNewId() {
     return nextId++;
 }
@@ -38,13 +40,18 @@ server.get('/api/posts/:id', (req,res) => {
 
 //POST
 server.post('/api/posts', (req, res) => {
-    
+    const post = { id: getNewId(), ...req.body};
+    posts = [...posts, post];
     db.find().then(posts => {
-        res.json(posts);
-    }).catch(err => {
-        res.status(500).json({error:"There was an error while saving the post to the database"});
-    });
-})
+    if(!title || !contents) {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    } else {
+        res.status(201).json(posts);
+    }
+    }) .catch(err => {
+        res.status(500).json({ error:"There was an error while saving the post to the database" })
+    })
+});
 
 
 server.listen(8000, () => console.log('\n== API Running on port 8000 ==\n'));
