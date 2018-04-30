@@ -1,25 +1,31 @@
 const INPUT_ERROR = {
-  errorMessage: 'Please provide title and contents for the post.',
+  message: 'Please provide title and contents for the post.',
+  code: 400,
 };
 
 const SAVE_ERROR = {
-  error: 'There was an error while saving the post to the database',
+  message: 'There was an error while saving the post to the database',
+  code: 500,
 };
 
 const GET_ERROR = {
-  error: 'The posts information could not be retrieved.',
+  message: 'The posts information could not be retrieved.',
+  code: 500,
 };
 
 const NOT_FOUND_ERROR = {
   message: 'The post with the specified ID does not exist.',
+  code: 404,
 };
 
 const DATABASE_RETRIEVAL_ERROR = {
-  error: 'The post information could not be retrieved.',
+  message: 'The post information could not be retrieved.',
+  code: 500,
 };
 
 const PUT_ERROR = {
-  error: 'The post information could not be modified',
+  message: 'The post information could not be modified',
+  code: 500,
 };
 
 module.exports = {
