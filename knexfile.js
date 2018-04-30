@@ -5,8 +5,8 @@ module.exports = {
     useNullAsDefault: true,
     migrations: {
       directory: './data/migrations',
-      tableName: 'dbmigrations',
+      tableName: 'dbmigrations'
     },
-    seeds: { directory: './data/seeds' },
-  },
+    seeds: { directory: './data/seeds' }
+  }
 };

@@ -1,0 +1,13 @@
+{
+  "exclude": ["node_modules", "data"],
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "strict": true,
+    "module": "commonjs",
+    "target": "es6"
+  },
+  "typeAcquisition": {
+    "enable": true,
+    "include": ["express", "morgan", "helmet", "knex"]
+  }
+}
