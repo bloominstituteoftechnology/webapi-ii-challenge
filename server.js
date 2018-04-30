@@ -51,8 +51,7 @@ server.post("/api/posts", (req, res) => {
   db
     .insert(post)
     .then(response => {
-      console.log("response", response);
-      res.status(201).json;
+      res.status(201).json(response);
     })
     .catch(err => {
       res.status(500).json({ error: "Error; could not save post to database" });
