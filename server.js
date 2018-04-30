@@ -10,12 +10,13 @@ const {
   NOT_FOUND_ERROR,
   INPUT_ERROR,
   REMOVE_ERROR,
+  PUT_ERROR,
 } = require('./Errors');
 
 const app = express();
 
 app.use(helmet());
-app.use(morgan('development'));
+app.use(morgan('dev'));
 app.use(express.json());
 
 // add your server code starting here
@@ -86,6 +87,35 @@ app.delete('/api/posts/:id', async (req, res) => {
         break;
       default:
         respondWithError(res, REMOVE_ERROR);
+    }
+  }
+});
+
+// put
+app.put('/api/posts/:id', async (req, res) => {
+  try {
+    const {
+      params: { id },
+      body,
+    } = req;
+    if (!validateBody(body)) throw INPUT_ERROR;
+    const response = await db.update(id, body);
+
+    if (Number(response) === 0) throw NOT_FOUND_ERROR;
+
+    const updatedPost = await db.findById(id);
+
+    res.json(updatedPost);
+  } catch (error) {
+    switch (error) {
+      case INPUT_ERROR:
+        respondWithError(res, error);
+        break;
+      case NOT_FOUND_ERROR:
+        respondWithError(res, error);
+        break;
+      default:
+        respondWithError(res, PUT_ERROR);
     }
   }
 });
