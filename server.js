@@ -5,7 +5,12 @@ const helmet = require('helmet');
 
 const db = require('./data/db.js');
 const { respondWithError, validateBody } = require('./utils');
-const { DATABASE_RETRIEVAL_ERROR, NOT_FOUND_ERROR, INPUT_ERROR } = require('./Errors');
+const {
+  DATABASE_RETRIEVAL_ERROR,
+  NOT_FOUND_ERROR,
+  INPUT_ERROR,
+  REMOVE_ERROR,
+} = require('./Errors');
 
 const app = express();
 
@@ -61,6 +66,26 @@ app.post('/api/posts', async (req, res) => {
         break;
       default:
         respondWithError(res, DATABASE_RETRIEVAL_ERROR);
+    }
+  }
+});
+
+// delete
+app.delete('/api/posts/:id', async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    const response = await db.remove(id);
+    if (response === 0) throw NOT_FOUND_ERROR;
+    res.json(response);
+  } catch (error) {
+    switch (error) {
+      case NOT_FOUND_ERROR:
+        respondWithError(res, error);
+        break;
+      default:
+        respondWithError(res, REMOVE_ERROR);
     }
   }
 });

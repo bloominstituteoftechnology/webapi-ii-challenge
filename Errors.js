@@ -28,6 +28,11 @@ const PUT_ERROR = {
   code: 500,
 };
 
+const REMOVE_ERROR = {
+  error: { message: 'The post could not be removed.' },
+  code: 500,
+};
+
 module.exports = {
   INPUT_ERROR,
   SAVE_ERROR,
@@ -35,4 +40,5 @@ module.exports = {
   NOT_FOUND_ERROR,
   DATABASE_RETRIEVAL_ERROR,
   PUT_ERROR,
+  REMOVE_ERROR,
 };
