@@ -56,7 +56,17 @@ server.post('/api/posts', (req, res) => {
         });
 });
 
-server.delete('api/posts/:id', (req, res) => {
-
+server.delete('/api/posts/:id', (req, res) => {
+    var id = req.params.id
+    db.remove(id)
+        .then(response => {
+            if (response == 0) {
+                res.status(404).send({ message: "The post with the specified ID does not exist." })
+            } else {
+                res.status(200).send({ message: `User with id ${id} deleted` })
+            }
+        })
+        .catch(error => res.status(500).send({ error: "The post could not be removed" }))
 });
+
 server.listen(5000,() => console.log(`API Running on port 5000`));
