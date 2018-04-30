@@ -6,10 +6,6 @@ const db = require('./data/db.js');
 const server = express();
 server.use(express.json());
 
-server.get('/', (req, res) => {
-  res.send('Api running');
-});
-
 // add new post
 server.post('/api/posts', (req, res) => {
   console.log(req.body);
