@@ -57,7 +57,7 @@ server.post('/api/posts', (req, res) => {
 });
 
 server.delete('/api/posts/:id', (req, res) => {
-    var id = req.params.id
+    let id = req.params.id
     db.remove(id)
         .then(response => {
             if (response == 0) {
