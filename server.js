@@ -50,3 +50,21 @@ server.get('/api/posts/:id', (req, res) => {
         process.abort();
     });
 });
+
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.param.id;
+    db
+    .remove(id)
+    .then (post=> {
+        if (id === 'undefined') {
+            res.status(404).json({ message: 'The post with the specified ID does not exist.'})
+        } else {
+            res.status(200)
+        }
+    })
+    .catch(err => {
+        res.status(500).json({error: 'The post could not be removed.'});
+        process.abort();
+        })
+
+    })
