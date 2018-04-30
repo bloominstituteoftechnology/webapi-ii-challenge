@@ -18,7 +18,7 @@ server.get('/api/posts', (req, res)=>{
 
     })
     .catch(err=>{
-        res.status(500).json({error: err});
+        res.status(500).json({error: "geting fail"});
     });
 });
 server.get('/posts/:Id', (req, res)=>{
@@ -30,7 +30,7 @@ const {id} = req.params;
 
     })
     .catch(err=>{
-        res.status(400).json({error: err});
+        res.status(400).json({error: "getting by id fail"});
     });
 });
 server.post('/posts', (req, res)=>{
@@ -43,7 +43,7 @@ server.post('/posts', (req, res)=>{
     })
 
     .catch(err=>{
-        res.status(400).json({error: "Post hella failed bruh"});
+        res.status(400).json({error: "Please provide name and bio for the user."});
     });
 });
 server.put('/posts/:id', (req, res)=>{
@@ -56,7 +56,7 @@ server.put('/posts/:id', (req, res)=>{
 
     })
     .catch(err=>{
-        res.status(400).json({error: err});
+        res.status(400).json({error: "There was an error while saving the user to the database"});
     });
 });
 server.delete('/posts/:id', (req, res)=>{
@@ -68,7 +68,7 @@ server.delete('/posts/:id', (req, res)=>{
 
     })
     .catch(err=>{
-        res.status(500).json({error: err});
+        res.status(500).json({error: "failed to delete"});
     });
 });
 
