@@ -61,10 +61,12 @@ server.post("/api/posts", (req, res) => {
       res.status(500).json({ error: "Error; could not save post to database" });
     });
 });
-server.listen(5000, () => console.log("\n== API Running on port 5000 ==\n"));
+
+/* TWO ways to use delete */
 
 // server DELETE, find post by id, then all details of the post (content + title) is defined as 'post'.
 // delete the 'post' then return the title and content of post deleted.
+
 server.delete("/api/posts/:id", (req, res) => {
   const id = req.params.id;
 
@@ -83,3 +85,21 @@ server.delete("/api/posts/:id", (req, res) => {
   });
   db;
 });
+
+// server DELETE, find post by id, delete post.
+// Give boolean respons of 1 or 0 for successful deletion.
+
+// server.delete("/api/posts/:id", (req, res) => {
+//   const id = req.params.id;
+
+//   db
+//     .remove(id)
+//     .then(response => {
+//       res.status(201).json(response);
+//     })
+//     .catch(err => {
+//       res.status(500).json({ error: "Nothing to delete" });
+//     });
+// });
+
+// server.listen(5000, () => console.log("\n== API Running on port 5000 ==\n"));
