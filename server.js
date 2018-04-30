@@ -26,8 +26,9 @@ server.listen(5000, () => console.log('\n==API running on port 5000 ==\n'));
 // -. return the following JSON object: { error: "There was an error while saving the post to the database" }.
 
 server.post('api/posts', (req, res) => {
+    const ob = req.body;
     db
-        .insert()
+        .insert(ob)
         .then(response => {
             if (typeof req.body.title !== 'undefined' || typeof req.body.contents !== 'undefined') {
                 res.status(400).json({ message: 'Please provide title and contents for the post.'});
@@ -75,11 +76,25 @@ server.get('/api/posts', (req, res) => {
 // When the client makes a GET request to /api/posts/:id:
 
 // If the post with the specified id is not found:
+// -. return HTTP status code 404 (Not Found).
+// -. return the following JSON object: { message: "The post with the specified ID does not exist." }.
 
-// return HTTP status code 404 (Not Found).
-// return the following JSON object: { message: "The post with the specified ID does not exist." }.
 // If there's an error in retrieving the post from the database:
+// -. cancel the request.
+// -. respond with HTTP status code 500.
+// -. return the following JSON object: { error: "The post information could not be retrieved." }.
 
-// cancel the request.
-// respond with HTTP status code 500.
-// return the following JSON object: { error: "The post information could not be retrieved." }.
+server.get('/api/posts:id', (req, res) => {
+    const id = req.params.id;
+
+    db.findById(id).then(post => {
+        if (post.length === 0) {
+            res.status(404).json({ message: 'The post with the specified ID does not exist.'})
+        } else {
+            res.json(posts);
+        }
+    })
+    .catch(err => {
+        res.status(500).json({error: "The post information could not be retrieved."});
+    });
+});
