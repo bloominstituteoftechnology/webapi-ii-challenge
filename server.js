@@ -11,7 +11,7 @@ server.use(bodyParser.json());
 // add your server code starting here
 
 server.get("/", (req, res) => {
-  res.send("Api running");
+  res.send("Api running, do you mean /api/posts?");
 });
 
 server.get("/api/posts", (req, res) => {
@@ -62,12 +62,33 @@ server.post("/api/posts", (req, res) => {
       .then(response => {
         res.status(201).json({ post });
       })
-      .throw(() => {
+      .catch(() => {
         res.status(500).send({
           error: "There was an error while saving the post to the database"
         });
       });
   }
+});
+
+server.delete("/api/posts/:id", (req, res) => {
+  const id = req.params.id;
+  let tempPost;
+  db
+    .findById(id)
+    .then(response => {
+      tempPost = response[0];
+    })
+    .catch(() => {
+      res
+        .status(500)
+        .send({ message: "The post with the specified ID does not exist." });
+    });
+  db
+    .remove(id)
+    .then()
+    .catch(() => {
+      error: "The post could not be removed";
+    });
 });
 
 server.listen(5000, () => console.log("\n== API Running on port 5000 ==\n"));
