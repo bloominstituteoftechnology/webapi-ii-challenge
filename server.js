@@ -43,7 +43,6 @@ server.get('/api/posts/:id', (req, res) => {
 server.post('/api/posts', (req, res) => {
 const {title, contents} = req.body;
 const postNew = { title, contents}
-    console.log(req);
     if (title.length === 0 || contents.length === 0) {
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
     } else
@@ -57,6 +56,38 @@ const postNew = { title, contents}
     });
 });
 
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+    if (!db.findById(id)) {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+    } else 
+    
+    db.remove(id)
+    .then(remove => {
+        res.status(201).json(remove);
+    })
+    .catch(err => {
+        res.status(500).json({ error: "The post could not be removed"})
+    });
+});
+
+server.put('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+    const { title, contents } = req.body;
+    if (!db.findById(id)) {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+    }
+    if (req.body.length === 0) {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    } else
+    db.update(id, req.body)
+    .then(improve => {
+        res.status(200).json(improve);
+    })
+    .catch(err => {
+        res.status(500).json({  error: "The post information could not be modified." })
+    });
+});
 
 server.listen(5000, () => {
     console.log('server listening on port 5000');
