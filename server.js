@@ -39,6 +39,13 @@ server.get('/api/posts/:id', (req, res) => {
 server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body;
     const post = { title, contents}
+    if (!title || !contents) {
+      res
+        .status(400)
+        .json({
+          errorMessage: 'Please provide title and contents for the post.',
+        });
+    }
     db
     .insert(post)
     .then(post => {
@@ -52,14 +59,6 @@ server.post('/api/posts', (req, res) => {
               'There was an error while saving the post to the database',
           });
     });
-    if(!title || !contents) {
-        res
-          .status(400)
-          .json({
-            errorMessage:
-              'Please provide title and contents for the post.',
-          });
-    }
 });
 
 server.delete('/api/posts/:id', (req, res) => {
@@ -100,9 +99,18 @@ server.put('/api/posts/:id', (req, res) => {
     .update(id, update)
     .then(count => {
         if(count > 0) {
-            db.findById(id).then(updatedPosts => {
-              res.status(200).json(updatedPosts[0]);
-            });
+            if (!title || !contents) {
+              res
+                .status(400)
+                .json({
+                  errorMessage:
+                    'Please provide title and contents for the post.',
+                });
+            } else {
+                db.findById(id).then(updatedPosts => {
+                res.status(200).json(updatedPosts[0]);
+                });
+            }
         } else {
             res
               .status(404)
@@ -119,13 +127,6 @@ server.put('/api/posts/:id', (req, res) => {
             error: 'The post information could not be modified.',
           });
     });
-    if (!title || !contents) {
-      res
-        .status(400)
-        .json({
-          errorMessage: 'Please provide title and contents for the post.',
-        });
-    }
 });
 
 
