@@ -7,9 +7,11 @@ const server = express();
 
 const db = require('./data/db.js');
 
+server.use(express.json());
+
 server.get('/', (req, res) => {
-    res.send('API running');
-})
+    res.send('API Running');
+});
 
 server.get('/api/posts', (req, res) => {
     db
@@ -18,9 +20,10 @@ server.get('/api/posts', (req, res) => {
         res.json(posts);
     })
     .catch(err => {
-        res.status(500).json({ error: "The posts information could not be retrieved." })
-    });
-});
+        res.status(500).json({ error: "The posts information could not be retrieved" });
+    })
+
+})
 
 server.get('/api/posts/:id', (req, res) => {
     const id = req.params.id;
@@ -29,33 +32,31 @@ server.get('/api/posts/:id', (req, res) => {
     .findById(id)
     .then(post => {
         if(post.length === 0) {
-            res.status(404).json({ message: "Not found" })
+            res.status(404).json({ message: "Not Found" })
         } else {
-            res.json(post);
+        res.json(post);
         }
     })
     .catch(err => {
-        res.status(500).json({ message: "The post with the specified ID does not exist." })
+        res.status(500).json({ message: "The post with the specified ID does not exist." });
     })
-});
+})
 
-
-
-server.post('api/posts', function(req, res) {
-    const  { body } = req.body;
-    console.log(req.body)
-    const post = {body};
-    // if (!title || !content) {
-    //     res.status(400).json({ errorMessage: "Enter Title and Content"})
-    // }
-
+server.post('/api/posts', (req, res) => {
+    const post = req.body;
+    console.log(req.body);
+    //console.log(req);
     db
-    .insert({body})
-    .then(posts => {
-        res.status(201).json(posts);
-    })
-    .catch(error => {
-        res.status(500).json({error: error})
+    .insert(post)
+    .then(post => {
+        res.json(post);
+        }
+    )
+    .catch(err => {
+        //if (!('title' in req.body) || !('contents' in req.body)) {
+            res.status(400).json({ message: "Please provide title and contents for the post." })
+            console.log(err);
+         //}
     })
 })
 
