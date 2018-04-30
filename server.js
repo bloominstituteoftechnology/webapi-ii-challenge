@@ -11,7 +11,7 @@ server.get('/', (req, res) => {
 });
 
 server.get('/api/posts', (req, res) => {
-//  //get the posts
+//get the posts
  db
  .find()
  .then(posts => {
@@ -19,28 +19,28 @@ server.get('/api/posts', (req, res) => {
  })
  .catch(err => {
    res.status(500).json({ error: err });
-//    // do something with the error
+// do something with the error
  });
 });
 
-// // /api/users/123
-// server.get('/api/users/:id', (req, res) => {
-// // grab the id from URL parameters
-// const id = req.params.id;
+// /api/posts/123
+server.get('/api/posts/:id', (req, res) => {
+// grab the id from URL parameters
+const id = req.params.id;
 
-// db
-//  .findById(id)
-//  .then(users => {
-//    if (users.length === 0) {
-//      res.status(404).json({ message: 'user not found' });
-//    } else {
-//      res.json(users[0]);
-//    }
-//  })
-//  .catch(err => {
-//    // do something with the error
-//    res.status(500).json({ error: err });
-//  });
-// });
+db
+ .findById(id)
+ .then(posts => {
+    if (posts.length === 0) {
+     res.status(404).json({ message: 'post not found' });
+   } else {
+     res.json(posts[0]);
+   }
+ })
+ .catch(err => {
+// do something with the error
+   res.status(500).json({ error: err });
+ });
+});
 
 server.listen(5000, () => console.log('\n== API Running on port 5000 ==\n'));
