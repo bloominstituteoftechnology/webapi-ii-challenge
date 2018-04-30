@@ -21,8 +21,8 @@ server.get('/api/posts', (req, res)=>{
         res.status(500).json({error: err});
     });
 });
-server.get('/api/posts/:Id', (req, res)=>{
-    const id = req.params.id
+server.get('/posts/:Id', (req, res)=>{
+const {id} = req.params;
     db
     .fndById(id)
     .then(posts =>{
@@ -33,14 +33,12 @@ server.get('/api/posts/:Id', (req, res)=>{
         res.status(400).json({error: err});
     });
 });
-server.post('/api/posts', (req, res)=>{
-    const title = ""
-    const contents =""
-    const post= {title,content}
+server.post('/posts', (req, res)=>{
+  const post = req.body;
     db
     .insert(post)
     .then(post =>{
-        res.json(post);
+       res.status(201).res.json(post);
 
     })
 
@@ -48,10 +46,11 @@ server.post('/api/posts', (req, res)=>{
         res.status(400).json({error: "Post hella failed bruh"});
     });
 });
-server.put('/api/posts/:id', (req, res)=>{
+server.put('/posts/:id', (req, res)=>{
     const id = req.params.id
+    const newPost = req.body;
     db
-    .update(id, posts)
+    .update(id, newPost)
     .then(posts =>{
         res.json(posts);
 
@@ -60,8 +59,8 @@ server.put('/api/posts/:id', (req, res)=>{
         res.status(400).json({error: err});
     });
 });
-server.delete('/api/posts', (req, res)=>{
-    const id = req.params.id
+server.delete('/posts/:id', (req, res)=>{
+    const {id} = req.params.id
     db
     .remove(id)
     .then(posts =>{
