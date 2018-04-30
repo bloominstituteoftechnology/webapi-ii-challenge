@@ -30,18 +30,17 @@ server.post('api/posts', (req, res) => {
     db
         .insert(ob)
         .then(response => {
-            if (typeof req.body.title !== 'undefined' || typeof req.body.contents !== 'undefined') {
-                res.status(400).json({ message: 'Please provide title and contents for the post.'});
+            if (req.body.title !== 'undefined' && req.body.contents !== 'undefined') {
+                res.status(400).json({ message: 'Please provide title and contents for the post.' });
             }
-         else {
-            res.status(201).json({ messege: 'Post Successful.' });
-        }})
+            else {
+                res.status(201).json({ messege: 'Post Successful.' });
+            }
+        })
         .catch(err => {
-            res.status(500).json({ message: 'here was an error while saving the post to the database'});
-            process.abort();
-        });
-
-});
+            res.status(500).json({ message: 'here was an error while saving the post to the database' });
+        })
+})
 
 // When the client makes a GET request to /api/posts:
 
@@ -67,10 +66,10 @@ server.get('/api/posts', (req, res) => {
     db.find().then(posts => {
         res.json(posts);
     })
-    .catch(err => {
-        res.status(500).json({error: 'could not retrieve post information'});
-        process.abort();
-    })
+        .catch(err => {
+            res.status(500).json({ error: 'could not retrieve post information' });
+            process.abort();
+        })
 })
 
 
@@ -89,19 +88,20 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req, res) => {
     const id = req.params.id;
     db
-    .findById(id)
-    .then(post => {
-        if (post.length === 0) {
-            res.status(404).json({ message: 'The post with the specified ID does not exist.'})
-        } else {
-            res.json(post);
-        }
-    })
-    .catch(err => {
-        res.status(500).json({error: 'The post information could not be retrieved.'});
-        process.abort();
-    });
-});
+        .findById(id)
+        .then(post => {
+            if (post.length === 0) {
+                res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+            } else {
+
+                res.json(post);
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'The post information could not be retrieved.' });
+            process.abort();
+        })
+})
 
 // When the client makes a DELETE request to /api/posts/:id:
 
@@ -117,16 +117,61 @@ server.get('/api/posts/:id', (req, res) => {
 server.delete('/api/posts/:id', (req, res) => {
     const id = req.param.id;
     db
-    .remove(id)
-    .then (post=> {
-        if (id === 'undefined') {
-            res.status(404).json({ message: 'The post with the specified ID does not exist.'});
-        } else {
-            res.status(200);
-        }
-    })
-    .catch(err => {
-        res.status(500).json({error: 'The post could not be removed.'});
-        process.abort();
+        .remove(id)
+        .then(post => {
+            if (id === 'undefined') {
+                res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+            } else {
+                res.status(200);
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'The post could not be removed.' });
+            process.abort();
+        })
+})
+
+
+
+// When the client makes a PUT request to /api/posts/:id:
+
+// If the post with the specified id is not found:
+// -. return HTTP status code 404 (Not Found).
+// -. return the following JSON object: { message: "The post with the specified ID does not exist." }.
+
+// If the request body is missing the title or contents property:
+// -. cancel the request.
+// -. respond with HTTP status code 400 (Bad Request).
+// -. return the following JSON response: { errorMessage: "Please provide title and contents for the post." }.
+
+// If there's an error when updating the post:
+// -. cancel the request.
+// -. respond with HTTP status code 500.
+// -. return the following JSON object: { error: "The post information could not be modified." }.
+
+// If the post is found and the new information is valid:
+// -. update the post document in the database using the new information sent in the reques body.
+// -. return HTTP status code 200 (OK).
+// -. return the newly updated post.
+
+server.put('/api/posts/:id', (req, res) => {
+    const id = req.param.id;
+    const ob = req.body;
+    db
+        .update(ob)
+        .then(response => {
+            if (id === 'undefined') {
+                res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+            } else if (req.body.title !== 'undefined' && req.body.contents !== 'undefined') {
+                res.status(400).json({ message: 'Please provide title and contents for the post.' });
+            } else {
+                res.status(200);
+                return res.id;
+            }
+            
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'The post information could not be modified.' });
+            process.abort();
         })
 })
