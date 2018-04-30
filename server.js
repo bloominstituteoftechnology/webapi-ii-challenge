@@ -7,6 +7,8 @@ const server = express();
 
 const db = require('./data/db.js');
 
+// JSON body parser
+
 server.use(express.json());
 
 // GET for localhost running
@@ -55,10 +57,13 @@ server.post('/api/posts', (req, res) => {
     db
     .insert(post)
     .then(post => {
+        if (req.body) {
+            res.status(201)
+        }
         res.json(post);
     })
     .catch(err => {
-        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+        res.status(500).json({ error: "There was an error while saving the post to the database" });
     })
 })
 
