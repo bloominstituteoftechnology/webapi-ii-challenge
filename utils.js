@@ -5,6 +5,7 @@ const checkForTitle = body => generatePropertyChecker('title')(body);
 const checkForContents = body => generatePropertyChecker('contents')(body);
 
 const validateBody = body => checkForContents(body) && checkForTitle(body);
+
 const respondWithError = (response, error = DATABASE_RETRIEVAL_ERROR) =>
   response.status(error.code).json(error.error);
 

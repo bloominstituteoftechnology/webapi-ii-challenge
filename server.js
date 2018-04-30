@@ -15,11 +15,13 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // get
+// async await
+// https://javascript.info/async-await
 app.get('/api/posts', async (req, res) => {
   try {
     const posts = await db.find();
     res.json(posts);
-  } catch (error) {
+  } catch (e) {
     respondWithError(res);
   }
 });
@@ -32,8 +34,6 @@ app.get('/api/posts/:id', async (req, res) => {
       params: { id },
     } = req;
 
-    // async await
-    // https://javascript.info/async-await
     const post = await db.findById(id);
 
     if (!post.length) throw NOT_FOUND_ERROR;
