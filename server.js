@@ -8,7 +8,6 @@ const server = express();
 server.use(bodyParser.json());
 
 server.post('/api/posts', (req, res) => {
-  console.log(req.body);
   if (!('title' in req.body) || !('contents' in req.body)) {
     res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
   }
@@ -38,19 +37,30 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.delete('/api/posts/:id', (req, res) => {
-  db.remove(req.params.id).then(response => {
-    res.json(response);
+  db.findById(req.params.id).then(x => {
+    db.remove(req.params.id).then(response => {
+      res.json(response);
+    }).catch(err => {
+      res.status(500).json({ error: "The post could not be removed" });
+    });
   }).catch(err => {
-    res.status(500).json({ error: err });
-  });
+    res.status(404).json({ message: "The post with the specified ID does not exist." });
+  })
 });
 
 server.put('/api/posts/:id', (req, res) => {
-  db.update(req.params.id, req.body).then(response => {
-    res.json(response);
+  if (!('title' in req.body) || !('contents' in req.body)) {
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+  }
+  db.findById(req.params.id).then(x => {
+    db.update(req.params.id, req.body).then(response => {
+      res.json(response);
+    }).catch(err => {
+      res.status(500).json({ error: "The post information could not be modified." });
+    });
   }).catch(err => {
-    res.status(500).json({ error: err });
-  });
+    res.status(404).json({ message: "The post with the specified ID does not exist." });
+  })
 });
 
 server.listen(3000);
