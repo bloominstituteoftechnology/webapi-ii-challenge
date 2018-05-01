@@ -1,4 +1,6 @@
 import React from "react";
+// components
+import Post from "./Post";
 
 const Posts = props => {
 	// console.log("POST PROPS: ", props);
