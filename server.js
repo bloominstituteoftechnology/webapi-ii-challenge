@@ -64,3 +64,19 @@ server.post('/api.posts', (req, res) => {
     res.status(500).json({ error: 'There was an error while saving the post to the database.'})
   })
 });
+
+// DELETE request to /api/posts/:id
+server.delete('/api/posts/:id', (req, res) => {
+  const id = req.params.id;
+  if (!db.findById(id)) {
+    res.status(404).json({ message: 'The post with the specified ID does not exist.' })
+  } else
+  db.remove(id)
+  .then(remove => {
+    res.status(201).json(remove);
+  })
+  // If retrieval error from database
+  .catch(err => {
+    res.status(500).json({ error: 'The post could not be removed.' })
+  })
+});
