@@ -18,17 +18,15 @@ server.get('/api/posts', (req, res) => {
     .then(posts => {
         res.json(posts);
     })
-    // do something with the error
+    //If there's an error in retrieving the post from the database
     .catch(err => {
     res.status(500).json({ error: 'The posts information could not be retrieved.' });
     });
 });
 
-//--------------------------------------------------------------------------------
-
-//PART 2 - GET request to /api/posts/:id
+// - GET request to /api/posts/:id
 server.get('/api/posts/:id', (req, res) => {
-// grab the id from URL parameters
+    // grab the id from URL parameters
     const id = req.params.id;
 
     db
@@ -40,7 +38,7 @@ server.get('/api/posts/:id', (req, res) => {
         res.json(posts[0]);
     }
 })
-//If there's an error in retrieving the post from the database
+    //If there's an error in retrieving the post from the database
     .catch(err => {
     res.status(500).json({ error: 'The posts information could not be retrieved.' });
     });
@@ -48,11 +46,11 @@ server.get('/api/posts/:id', (req, res) => {
 
 //--------------------------------------------------------------------------------
 
-//PART 3 - POST request to /api/posts
+//PART 2 - POST request to /api/posts
 server.post('/api.posts', (req, res) => {
     const{title, contents} = req.body;
     const postNew = {title, contents}
-        console.log(req);
+        // console.log(req);
         if (title.length === 0 || contents.length === 0) {
             res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' })
         } else
@@ -61,10 +59,33 @@ server.post('/api.posts', (req, res) => {
         .then(post => {
             res.status(201).json(post);
         })
+        //If there's an error in retrieving the post from the database
         .catch(err => {
             res.status(500).json({ error: 'There was an error while saving the post to the database.'})
         });
 });
+
+//---------------------------------------------------------------------------------
+
+//PART 3 - DELETE request to /api/posts/:id
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+    if (!db.findById(id)) {
+        res.status(404).json({ message: 'The post with the specified ID does not exist.' })
+    } else
+    db.remove(id)
+    .then(remove => {
+        res.status(201).json(remove);
+    })
+    //If there's an error in retrieving the post from the database
+    .catch(err => {
+        res.status(500).json({ error: 'The post could not be removed.' })
+    });
+});
+
+//---------------------------------------------------------------------------------
+
+//PART 4 - PUT request to /api/posts/:id
 
 
 //---------------------------------------------------------------------------------
