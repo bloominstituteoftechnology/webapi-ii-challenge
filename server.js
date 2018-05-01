@@ -121,8 +121,16 @@ server.delete('/api/posts/:id', (req, res) => {
             db
                 .remove(id)
                 .then(response => {
-                    res.status(200)
-                    res.json(response)
+                    db
+                        .find()
+                        .then(response => {
+                            res.status(200)
+                            res.json(response)
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            res.status(500).json({ error: "The posts information could not be retrieved." })
+                        })
                 })
                 .catch(err => {
                     console.error(err)

@@ -11,7 +11,7 @@ class Post extends React.Component {
     render() {
         return (
             <div>
-                <div>
+                <div onClick={()=> this.props.remove(this.props.id)} >
                     <strong>{`${this.props.id}. ${this.props.title}`}</strong>
                     <p>{this.props.contents}</p>
                 </div>

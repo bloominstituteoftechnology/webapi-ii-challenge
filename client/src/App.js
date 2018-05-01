@@ -47,6 +47,17 @@ class App extends Component {
     });
   }
 
+  removePost = (id) => {
+    axios.delete(`http://localhost:5000/api/posts/${id}`)
+    .then(response => {
+      // console.log(response);
+      this.setState({ posts: response.data })      
+    })
+    .catch(err => {
+      console.error(err)
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -79,6 +90,7 @@ class App extends Component {
             key={post.id}
             title={post.title}
             contents={post.contents}
+            remove={this.removePost}
           />
         })}
       </div>
