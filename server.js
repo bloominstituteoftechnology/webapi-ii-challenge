@@ -43,23 +43,27 @@ app.get('/api/posts/:id', (req, res) => {
       if (response.length === 0) {
         res.status(404).send({ message: "The post with the specified ID does not exist" })
       } else {
-        res.status(200).send(response)
+        res.status(200).send(response[0])
       }
     })
     .catch(error => res.status(500).send({ error: "The post information could not be retrieved" }))
 })
 
 app.delete('/api/posts/:id', (req, res) => {
-  var id = req.params.id
-  db.remove(id)
-    .then(response => {
-      if (response == 0) {
-        res.status(404).send({ message: "The user with the specified ID does not exist" })
+  const id = req.params.id
+  let tempPost
+  db.findById(id)
+    .then((response) => {
+      if (response.length === 0) {
+        res.status(404).send({ message: 'The post with the specified ID does not exist' })
       } else {
-        res.status(200).send({ message: `User with id ${id} deleted` })
+        tempPost = response[0]
       }
     })
-    .catch(error => res.status(500).send({ error: "The post could not be removed" }))
+    .catch((error) => res.status(500).send({ error: 'The post with the specified ID does not exist.' }))
+  db.remove(id)
+    .then((response) => res.status(201).send(tempPost))
+    .catch((error) => { error: 'The post could not be removed' })
 })
 
 app.put('/api/posts/:id', (req, res) => {
