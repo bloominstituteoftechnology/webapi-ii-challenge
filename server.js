@@ -53,12 +53,35 @@ server.post('/api/posts', (req, res) => {
         }
     )
     .catch(err => {
-        //if (!('title' in req.body) || !('contents' in req.body)) {
-            res.status(400).json({ message: "Please provide title and contents for the post." })
+        //if (!("title" in req.body) || !("contents" in req.body)) {
+            res.status(201).json({ message: "Please provide title and contents for the post." })
             console.log(err);
          //}
     })
 })
+
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    let post;
+    
+    db.findById(id)
+    .then(response => {
+      post = { ... response[0] }
+      
+      db.remove(id)
+      .then(response => {
+        if (response) {
+          res.json(post);
+        } else {
+          res.status(404).json({ message: "The post with the specified ID does not exist." });
+        }
+      })
+      .catch(error => {
+        res.status(500).json({ error: "The post could not be removed" });
+      });
+      
+    })
+  });
 
 
 
