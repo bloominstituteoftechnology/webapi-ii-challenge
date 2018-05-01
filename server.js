@@ -16,7 +16,9 @@ server.get("/api/posts", (req, res) => {
       res.json(posts);
     })
     .catch(err => {
-      console.log(err);
+      res
+        .status(500)
+        .json({ error: "The posts information could not be retrieved." });
     });
 });
 
@@ -36,10 +38,21 @@ server.post("/api/posts", (req, res) => {
   db
     .insert(req.body)
     .then(post => {
-      res.json(post);
+      res.status(201).json(post);
     })
     .catch(err => {
-      console.log(err);
+      if (
+        !req.body.hasOwnProperty("title") ||
+        !req.body.hasOwnProperty("contents")
+      ) {
+        res.status(400).json({
+          errorMessage: "Please provide title and contents for the post."
+        });
+      } else {
+        res.status(500).json({
+          error: "There was an error while saving the post to the database."
+        });
+      }
     });
 });
 
