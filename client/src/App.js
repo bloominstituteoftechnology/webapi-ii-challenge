@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
-// material components
-import RaisedButton from "material-ui/RaisedButton";
-import Paper from "material-ui/Paper";
 // components
+import SearchBar from "./components/SearchBar";
 import Posts from "./components/Posts";
 // styles
-import logo from "./logo.svg";
 import "./styles/App.css";
 
 class App extends Component {
@@ -36,6 +33,7 @@ class App extends Component {
     console.log("state: ", this.state);
     return (
       <div className="App">
+        <SearchBar />
         {/* render Posts here */}
         <Posts posts={this.state.posts} />
       </div>

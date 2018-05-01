@@ -1,15 +1,6 @@
 import React, { Component } from "react";
-import uuid from "uuid-v4";
 // material components
-import {
-	Card,
-	CardActions,
-	CardHeader,
-	CardMedia,
-	CardTitle,
-	CardText
-} from "material-ui/Card";
-import FlatButton from "material-ui/FlatButton";
+import { Card, CardHeader, CardTitle, CardText } from "material-ui/Card";
 // styles
 import "../styles/Post.css";
 
