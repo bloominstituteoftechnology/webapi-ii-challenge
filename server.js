@@ -1,11 +1,15 @@
 // import your node modules
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
+const helmet = require('helmet'); // 1 yarn add helment || npm i helmet // 2
 
 const db = require('./data/db.js');
 
 const server = express();
-server.use(bodyParser.json());
+server.use(express.json());
+server.use(helmet()); // 3
+
+// server.use(bodyParser.json());
 
 
 // GET GET
@@ -35,15 +39,13 @@ server.post('/api/posts/', (req,res) => {
         if (posts.title === "" || posts.content === "") {
             res.status(400).json({errorMessage: "Please provide title and contents for the post."});
         } else {
-            res.status(201).json(posts[0]);
+            res.status(201).json(posts);
 
         }
-        // res.json(posts);
-        // {console.log("hey, inside of post, posts: ", posts)}
+        
     }).catch(err => {
         res.status(500).json({error: "There was an error while saving the post to the database"});
     })
-    // {console.log("hey, inside of post, post: ", post)}
     
 });
 
@@ -60,11 +62,9 @@ server.get('/api/posts/:id',(req,res) => {
 
         }
     }).catch(err => {
-        //do something with the error
         res.status(500).json({error: "The post information could not be retrieved."});
 
     })
-    //return the posts
 });
 
 
@@ -72,13 +72,15 @@ server.get('/api/posts/:id',(req,res) => {
 server.put('/api/posts/:id', (req,res) => {
     const id = req.params.id;
     const post = req.body;
+    console.log("id: ", id);
+    console.log('post: ', post);
     db.update(id, post).then(posts => {
-        if (posts[0].id === undefined) {
+        if (id === undefined) {
             res.status(404).json({message: "The post with the specified ID does not exist." });
-        } else if (posts[0].title === "" || posts.content === "") {
+        } else if (posts.title === "" || posts.content === "") {
             res.status(400).json({ errorMessage: "Please provide title and contents for the post."})
         } else {
-            res.status(200).json(posts[0]);
+            res.status(200).json(posts);
 
         }
     }).catch(err => {
@@ -88,19 +90,31 @@ server.put('/api/posts/:id', (req,res) => {
     })
 });
 
-//DELETE DELETE
+
+
 server.delete('/api/posts/:id', (req,res) => {
+    // const {id} = req.query;
+    console.log('req.body: ', req.body);
+
+    // const title = req.body.title;
     const id = req.params.id;
-    db.remove(id).then(posts => {
-        if (posts[0].id === undefined) {
+    let user;
+    
+    db
+        .findById(id)
+        .then(foundUser => {
+            user = { ...foundUser[0] };
+        })
+            db.remove(id).then(posts => {
+        if (user.id === undefined) {
             res.status(404).json({message: "The post with the specified ID does not exist."});
         } else {
-            res.json(posts[0]);
+            console.log('user: ', user);
+            res.json(user);
 
-        }
+        };
     }).catch(err => {
-        //do something with the error
-        res.status(500).json({error: "The post could not be removed" });
+        // res.status(500).json({error: "The post could not be removed" });
 
     })
 });
