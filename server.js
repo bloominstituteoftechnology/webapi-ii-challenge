@@ -67,7 +67,7 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 // PUT Request - Update
-server.put('/api/posts/:id', function(req, res) {
+server.put('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     const update = req.body;
 
@@ -91,25 +91,43 @@ server.put('/api/posts/:id', function(req, res) {
         });
 });
 
+// DELETE Request - Delete - Return Error could not Delete
+// server.delete('/api/posts/:id', (req, res) => {
+//     const id = req.params.id;
+//     let user
+//     db
+//         .findById(id)
+//         .then((response) => {
+//             if (response.length === 0) {
+//                 res.status(404).json({ msg: 'The post with the specified ID does not exist.' });
+//             } else {
+//                 user = response[0]
+//             }
+//         })
+//         .catch(err => {
+//             res.status(500).json({ error: 'The post could not be removed' });
+//         });
+// });
+
 // DELETE Request - Delete
-server.delete('/api/posts', function(req, res) {
-    const { id } = req.query;
-    let user;
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
     db
         .findById(id)
-        .then(foundUser => {
-            user = { ...foundUser[0] };
-
-            db.remove(id).then(response => {
-                res.status(200).json(user);
-            });
-        // } else {
-        //     res.status(404).json({ msg: 'The post with the specified ID does not exist.' });
-        // }
+        .then(response => {
+            if (response.length > 0) {
+                const post = { ...response[0] };
+        
+                db.remove(id).then(resp => {
+                    res.status(200).json(post);
+                });
+            } else {
+                res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+            }
         })
         .catch(err => {
             res.status(500).json({ error: 'The post could not be removed' });
         });
 });
 
-server.listen(8000, () => console.log('\n== API Running on port 8000 ==\n'));
+server.listen(5000, () => console.log('\n== API Running on port 5000 ==\n'));
