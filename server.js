@@ -94,11 +94,31 @@ server.delete("/api/posts/:id", (req, res) => {
     const id = req.params.id;
     // const {id} = req.query
 
-    db.remove(id).then(response => {
-        res.status(204).jsom(response);
-    }).catch(err => {
-        res.status(500).json({err})
+    db.findById(id).then(user => {
+        if(user.length>0) {
+            db.remove(id).then(response => {
+                res.status(200).json({
+                    sucess: "post deleted"
+                })
+            })
+        } else {
+            res.status(404).json({
+                message: "The post with the specified ID does not exist." 
+            })
+        }
     })
+    .catch(err => {
+        res.status(500).json({
+            error: "The post could not be removed"
+        })
+    })
+
+
+    // db.remove(id).then(response => {
+    //     res.status(204).jsom(response);
+    // }).catch(err => {
+    //     res.status(500).json({err})
+    // })
 })
 
 
