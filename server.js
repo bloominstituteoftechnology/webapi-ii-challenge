@@ -37,7 +37,7 @@ server.get("/api/posts/:id", (req, res) => {
     });
 });
 
-// POST; insert()
+// POST new post; insert()
 server.post("/api/posts", (req, res) => {
   const post = req.body;
   db
@@ -49,5 +49,26 @@ server.post("/api/posts", (req, res) => {
       res.status(500).json({
         error: "Error adding new post."
       });
+    });
+});
+
+//UPDATE post; update()
+server.put("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const update = req.body;
+
+  db
+    .update(id, update)
+    .then(count => {
+      if (count > 0) {
+        db.findById(id).then(updatePost => {
+          res.status(200).json(updatePost[0]);
+        });
+      } else {
+        res.status(400).json({ error: "The specified post does not" });
+      }
+    })
+    .catch(error => {
+      res.status(500).json(error);
     });
 });
