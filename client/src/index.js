@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import { Observable } from 'rxjs/Rx'
 import 'rxjs/ajax'
 import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/do'
 import App from './App'
 
 const post$ = Observable
