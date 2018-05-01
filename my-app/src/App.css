@@ -10,6 +10,11 @@
   padding: 2%;
   text-align: center;
 }
+
+.card:hover {
+  cursor: pointer;
+  background-color: rgba(230, 240, 240, .6)
+}
 ul {
   display: flex;
   flex-wrap: wrap;
