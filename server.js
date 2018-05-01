@@ -1,5 +1,5 @@
 const express = require('express');
-let cors = require('cors')
+const cors = require('cors');
 const db = require('./data/db');
 
 let bodyParser = require("body-parser");
