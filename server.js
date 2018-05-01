@@ -41,7 +41,8 @@ server.get("/api/posts/:id", (req, res) => {
       }
     })
     .catch(error => {
-      res.status(500).json({ // 500 Server Error
+      res.status(500).json({
+        // 500 Server Error
         error: "The post information could not be retrieved."
       });
     });
@@ -50,16 +51,26 @@ server.get("/api/posts/:id", (req, res) => {
 // POST new post; insert()
 server.post("/api/posts", (req, res) => {
   const post = req.body;
-  db
-    .insert(post)
-    .then(response => {
-      res.status(201).json(response); // 201 Created
-    })
-    .catch(error => {
-      res.status(500).json({
-        error: "There was an error while saving the post to the database."
+
+  // Make sure title AND content provided
+  if (post.title && post.contents) {
+    db
+      .insert(post)
+      .then(response => {
+        res.status(201).json(response); // 201 Created
+      })
+      .catch(error => {
+        res.status(500).json({
+          // 500 Server Error
+          error: "There was an error while saving the post to the database."
+        });
       });
+  } else {
+    res.status(400).json({
+      // 400 Bad Request - include title AND contents
+      error: "Please provide title and contents for the post."
     });
+  }
 });
 
 //PUT new post; update()
