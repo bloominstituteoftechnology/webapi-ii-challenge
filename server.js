@@ -19,32 +19,28 @@ app.use(express.json());
 // https://javascript.info/async-await
 app.get('/api/posts', async (req, res) => {
   try {
+    // db.find().then(posts=>res.json(posts))
     const posts = await db.find();
     res.json(posts);
   } catch (e) {
+    // .catch(()=>respondWithError(res))
     respondWithError(res);
   }
 });
 
 app.get('/api/posts/:id', async (req, res) => {
   try {
-    // nested object destructuring
-    // https://medium.com/@pyrolistical/destructuring-nested-objects-9dabdd01a3b8
-    const {
-      params: { id },
-    } = req;
+    const { id } = req.params;
 
     // async await
     // https://javascript.info/async-await
     const post = await db.findById(id); // returns id array
 
-    if (!post.length) throw NOT_FOUND_ERROR; // error for post being an empty array
+    if (!post.length) respondWithError(res, NOT_FOUND_ERROR); // error for post being an empty array
 
     res.json(post);
   } catch (error) {
-    if (error === NOT_FOUND_ERROR) {
-      respondWithError(res, error);
-    } else respondWithError(res);
+    respondWithError(res);
   }
 });
 
@@ -52,15 +48,19 @@ app.get('/api/posts/:id', async (req, res) => {
 app.post('/api/posts', async (req, res) => {
   const { body } = req;
   try {
-    if (!validateBody(body)) throw INPUT_ERROR;
+    if (!validateBody(body)) {
+      respondWithError(INPUT_ERROR);
+      return;
+    }
 
+    // db.insert(body)
     const response = await db.insert(body);
 
+    // .then(response=>res.status(201).json(response))
     res.status(201).json(response);
   } catch (error) {
-    if (error === INPUT_ERROR) {
-      respondWithError(res, error);
-    } else respondWithError(res);
+    // .catch(()=>respondWithError(res))
+    respondWithError(res);
   }
 });
 
@@ -71,14 +71,13 @@ app.delete('/api/posts/:id', async (req, res) => {
   } = req;
   try {
     const response = await db.remove(id);
-    if (response === 0) throw NOT_FOUND_ERROR;
+    if (response === 0) {
+      respondWithError(res, NOT_FOUND_ERROR);
+      return;
+    }
     res.json(response);
   } catch (error) {
-    if (error === NOT_FOUND_ERROR) {
-      respondWithError(res, error);
-    } else {
-      respondWithError(res, REMOVE_ERROR);
-    }
+    respondWithError(res, REMOVE_ERROR);
   }
 });
 
@@ -90,25 +89,27 @@ app.put('/api/posts/:id', async (req, res) => {
       body,
     } = req;
 
-    if (!validateBody(body)) throw INPUT_ERROR;
+    if (!validateBody(body)) {
+      respondWithError(res, INPUT_ERROR);
+      return;
+    }
 
     const response = await db.update(id, body);
 
-    if (Number(response) === 0) throw NOT_FOUND_ERROR;
+    if (Number(response) === 0) {
+      respondWithError(res, NOT_FOUND_ERROR);
+      return;
+    }
 
     const updatedPost = await db.findById(id);
 
     res.json(updatedPost);
   } catch (error) {
-    if (error === INPUT_ERROR) {
-      respondWithError(res, error);
-    } else if (error === NOT_FOUND_ERROR) {
-      respondWithError(res, error);
-    } else {
-      respondWithError(res, PUT_ERROR);
-    }
+    respondWithError(res, PUT_ERROR);
   }
 });
 
 const port = 5000;
+
+/*eslint-disable */
 app.listen(port, () => console.log(`server running on http://localhost:${port}`));
