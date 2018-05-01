@@ -1,9 +1,12 @@
 // import your node modules
-const bodyParser = require("body-parser");
 const express = require("express");
+const helmet = require("helmet");
 const server = express();
-server.use(bodyParser.json());
 const db = require("./data/db");
+
+// middleware
+server.use(helmet()); // 3rd party pkg
+server.use(express.json()); // opting in to using json
 
 // home
 server.get("/", (req, res) => {
@@ -52,7 +55,7 @@ server.get("/api/posts/:id", (req, res) => {
 
 // POST /api/posts
 server.post("/api/posts", (req, res) => {
-	const post = req.body.post;
+	const post = req.body;
 	// console.log(req.body.post);
 	// console.log(post.title);
 	// console.log(post.title.length);
@@ -79,31 +82,27 @@ server.delete("/api/posts/:id", (req, res) => {
 });
 
 // PUT /api/posts/:id
+
 server.put("/api/posts/:id", (req, res) => {
 	// define id and object params for PUT request
 	const id = req.params.id;
 	console.log(id);
-	// const post = req.body.update;
-	// console.log(post);
-
-	// request body missing title or contents - error 400
-	if (update.title.length || update.contents.length === 0) {
-		res.status(400).json({
-			errorMessage: "Please provide title and contents for the post."
-		});
-	}
+	const update = req.body;
+	console.log(update);
 
 	db
-		.findById(id)
-		.then(posts => {
-			// id not found - error 404
-			if (posts.length === 0) {
+		.update(id, update)
+		.then(count => {
+			// post found and new info is valid - code 200 return updated post
+			if (count > 0) {
+				db.findById(id).then(users => {
+					res.status(200).json(users[0]);
+				});
+			} else {
+				// id not found - error 404
 				res
 					.status(404)
 					.json({ message: "The post with the specified ID does not exist." });
-			} else {
-				// post found and new info is valid - code 200 return updated post
-				res.status(200).json(posts[0]);
 			}
 		})
 		.catch(err => {
