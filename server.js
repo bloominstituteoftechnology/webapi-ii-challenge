@@ -1,5 +1,3 @@
-import { WSAEUSERS } from "constants";
-
 // import your node modules
 
 const db = require("./data/db.js");
@@ -16,10 +14,25 @@ server.get("/", (req, res) => {
 server.get("/api/posts", (req, res) => {
   db
     .find()
-    .then(users => {
-      res.json(users);
+    .then(posts => {
+      res.json(posts);
     })
     .catch(error => {
       res.status(500).json({ error: "Can't get posts!" });
+    });
+});
+
+// Get posts by ID
+server.get("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  db
+    .findById(id)
+    .then(post => {
+      res.json(post[0]); // ??? [id] ???
+    })
+    .catch(error => {
+      res.status(404).json({
+        error: "Unable to find specified post."
+      });
     });
 });
