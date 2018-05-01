@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const db = require('./data/db.js');
 const server = express();
 
 server.use(bodyParser.json());
+server.use(cors());
 
-// route handler
 server.get('/', (req, res) => { res.send("your api is running") })
 
 server.get('/api/posts', (req, res) => {
