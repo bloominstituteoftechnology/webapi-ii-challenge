@@ -5,15 +5,16 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 
 const db = require("./data/db.js");
-
 const server = express();
+const cors = require('cors');
+
 
 // middleware
 // server.use(morgan("dev"));
 server.use(bodyParser.json());
 server.use(express.json());
 server.use(helmet());
-
+server.use(cors());
 // add your server code starting here
 
 // server GET, return 'API is running'

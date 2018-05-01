@@ -1,8 +1,8 @@
 import axios from "axios";
 import * as Action from "./ActionTypes";
 
-const fetctPost = () => {
-  const posts = axios.get(`http://localhost:3000/api/notes`);
+const fetchPost = () => {
+  const posts = axios.get(`http://localhost:5000/api/posts`);
   return dispatch => {
     dispatch({ type: Action.FETCHING_POSTS });
     posts
@@ -12,7 +12,6 @@ const fetctPost = () => {
           payload: response.data
         });
       })
-
       .catch(err => {
         dispatch({
           type: Action.ERROR_POSTS,
@@ -20,4 +19,6 @@ const fetctPost = () => {
         });
       });
   };
-}
+};
+
+export { fetchPost };
