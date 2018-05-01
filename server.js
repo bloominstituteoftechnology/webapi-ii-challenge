@@ -1,5 +1,7 @@
 // import your node modules
 const express = require('express');
+// yarn add helmet -> npm i helmet
+const helmet = require('helmet');
 
 const db = require('./data/db.js');
 
@@ -38,5 +40,7 @@ server.get('/api/posts/:id', (req, res) => {
       res.status(500).json({ error: 'The post information could not be retrieved.' });
     });
 });
+
+
 
 server.listen(8000, () => console.log('\n== API Running on port 8000 ==\n'));
