@@ -57,27 +57,31 @@ server.post('/posts', function(req, res) {
       .json({   errorMessage: "Please provide title and contents for the post."});
   }
 });
-server.put('/posts/:id',(req, res) => {
-  const { id } = req.params;
-  const post = req.body;
+server.put('/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const update = req.body;
+    const { title, contents } = req.body;
 
-    db
-      .update(id, post)
-      .then(count => {
+if (!title || !contents) {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
+    db.update(id, update)
+    .then(count => {
         if (count > 0) {
-          db.findById(id).then(posts => {
-            res.status(200).json(posts[0]);
-          });
+            res.status(200).json({ msg: 'updated successfully' })
         } else {
-          res.status(404).json({ msg: 'post not found' });
+            res.status(404).json({ msg: 'post not found'});
         }
-      })
-      .catch(err => {
-        res.status(500).json(err);
-      });
-});
+    })
+    .catch(err => {
+        res.status(500).json(err)
+    })
+})
 
-server.delete(`/posts/:id`, (req, res) => {
+
+server.delete('/posts/:id', (req, res) => {
   const id = req.params.id;
   db
     .findById(id)
