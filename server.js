@@ -29,7 +29,7 @@ server.listen(5000, () => console.log('\n==API running on port 5000 ==\n'));
 server.post('api/posts', (req, res) => {
     const ob = req.body;
     if (!ob.title || !ob.contents) {
-        res.status(400).json({ message: 'Please provide title and contents for the post.' });
+        res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
     }
     db
         .insert(ob)
@@ -156,7 +156,7 @@ server.delete('/api/posts/:id', (req, res) => {
 
 server.put('/api/posts/:id', (req, res) => {
     const { id } = req.param
-    const ob = req.body;
+    const update = req.body;
 
     if (!update.title || !update.contents) {
         res.status(400).json({
