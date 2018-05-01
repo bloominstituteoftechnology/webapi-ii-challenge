@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 // material components
 import RaisedButton from "material-ui/RaisedButton";
+// components
+import Posts from "./components/Posts";
+// styles
 import logo from "./logo.svg";
 import "./App.css";
 
@@ -39,7 +42,8 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <RaisedButton label="Primary" primary={true} />
+        {/* render Posts here */}
+        <Posts posts={this.state.posts} />
       </div>
     );
   }
