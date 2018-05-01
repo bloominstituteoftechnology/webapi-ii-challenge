@@ -3,10 +3,10 @@
   background-image: url(https://i.imgur.com/8yXO6hn.gif)
 }
 .App-logo {
-  animation: App-logo-spin infinite 0.00001s linear;
+  animation: App-logo-spin infinite 1s linear;
 }
 .App-content {
-  animation: color-me-in infinite 0.2s linear;
+  animation: color-me-in infinite 1s linear;
 }
 
 .App-header {
@@ -17,8 +17,6 @@
 }
 
 .post-card {
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: pink;
   background-color: #fff;
   border: 0;
   box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0, 0, 0, 0.12),
@@ -44,20 +42,29 @@
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to { transform: rotate(180deg); }
 }
 
 @keyframes color-me-in {
        0%, 100% {
-            background: -webkit-linear-gradient(-75deg, yellow, red 60%, rgb(0,255,555) 69%, blue 85%);
+           color: red;
         }
-        25% {
-            background: -webkit-linear-gradient(-75deg, blue, yellow 60%, red 69%, rgb(0,255,555) 85%);
+        14%{
+          color: orange;
         }
-        50% {
-            background: -webkit-linear-gradient(-75deg, rgb(0,255,555), blue 60%, yellow 69%, red 85%);
+        28%{
+          color: yellow;
         }
-        75% {
-            background: -webkit-linear-gradient(-75deg, red, rgb(0,255,555) 60%, blue 69%, yellow 85%);
+        42%{
+          color: green;
+        }
+        56%{
+          color: blue;
+        }
+        70%{
+          color: indigo;
+        }
+        84%{
+          color: violet;
         }
 }
