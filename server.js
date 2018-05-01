@@ -8,6 +8,29 @@ const db = require('./data/db.js');
 const server = express();
 // add your server code starting here
 
+// Add Middleware
+server.use(express.json());
+server.use(helmet());
+
+// POST Request - Create
+server.post('/api/posts', (req, res) => {
+    const userInformation = req.body;
+    console.log('user Information', userInformation)
+
+    db
+        .insert(userInformation)
+        .then(response => {
+            res.status(201).json(response);
+        })
+        .catch(err => {
+            if (err.errno === 19) {
+                res.status(400).json({ msg: 'Please provide title and contents for the post.'});
+            } else {
+                res.status(500).json({ error: 'There was an error while saving the post to the database' });
+            }
+        });
+});
+
 server.get('/', (req, res) => {
     res.send('This is 8K');
   });
