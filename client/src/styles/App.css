@@ -22,6 +22,19 @@
   font-size: large;
 }
 
+.PostsList {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.PostCard {
+  border: 1px solid grey;
+  margin: 5px;
+  width: 300px;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
