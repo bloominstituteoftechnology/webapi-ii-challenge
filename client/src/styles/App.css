@@ -26,18 +26,36 @@
 }
 
 .PostCard {
-  border: 1px solid grey;
-  box-shadow: 5px 5px 5px grey;
+  border: 2px solid rgb(55, 55, 55);
   margin-top: 15px;
-  padding: 5px 10px;
   width: 50%;
 }
 
-.PostCard_id {
-  display: block;
+.PostCard_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.PostCard_header * {
+  border-top: none;
+  color: white;
+  width: 18px;
   margin: 0;
-  text-align: left;
-  text-decoration: underline;
+}
+
+.PostCard_id {
+  background: black;
+  border-left: none;
+}
+
+.PostCard_delete {
+  background: red;
+  border-right: none;
+  line-height: 16px;
+}
+
+.PostCard_body {
+  padding: 0 20px;
 }
 
 @keyframes App-logo-spin {
