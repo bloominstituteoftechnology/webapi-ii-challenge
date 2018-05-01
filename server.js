@@ -57,7 +57,7 @@ server.post("/api/posts", (req, res) => {
     })
     .catch(error => {
       res.status(500).json({
-        error: "Error adding new post."
+        error: "There was an error while saving the post to the database."
       });
     });
 });
