@@ -32,8 +32,7 @@ server.get("/api/posts", (req, res) => {
 // GET /api/posts/:id
 server.get("/api/posts/:id", (req, res) => {
 	const id = req.params.id;
-	console.log(id);
-	console.log(typeof id);
+
 	db
 		.findById(id)
 		.then(posts => {
@@ -56,9 +55,7 @@ server.get("/api/posts/:id", (req, res) => {
 // POST /api/posts
 server.post("/api/posts", (req, res) => {
 	const post = req.body;
-	// console.log(req.body.post);
-	// console.log(post.title);
-	// console.log(post.title.length);
+
 	if (post.title.length === 0 || post.contents.length === 0) {
 		res
 			.status(400)
@@ -77,8 +74,27 @@ server.post("/api/posts", (req, res) => {
 
 // DELETE /api/posts/:id
 server.delete("/api/posts/:id", (req, res) => {
-	// id not found - error 404
-	// error removing post - error 500
+	const { id } = req.params;
+	let user;
+
+	db
+		.findById(id)
+		.then(users => {
+			user = { ...users[0] };
+			db.remove(id).then(response => {
+				if (response === 0) {
+					res.status(404).json({
+						message: "The post with the specified ID does not exist."
+					});
+				} else {
+					res.status(200).json(user); // user that was deleted;
+				}
+			});
+		})
+		.catch(err => {
+			// error removing post - error 500
+			res.status(500).json({ error: "The post could not be removed" });
+		});
 });
 
 // PUT /api/posts/:id
@@ -86,9 +102,7 @@ server.delete("/api/posts/:id", (req, res) => {
 server.put("/api/posts/:id", (req, res) => {
 	// define id and object params for PUT request
 	const id = req.params.id;
-	console.log(id);
 	const update = req.body;
-	console.log(update);
 
 	db
 		.update(id, update)
