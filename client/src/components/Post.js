@@ -1,5 +1,15 @@
 import React, { Component } from "react";
 import uuid from "uuid-v4";
+// material components
+import {
+	Card,
+	CardActions,
+	CardHeader,
+	CardMedia,
+	CardTitle,
+	CardText
+} from "material-ui/Card";
+import FlatButton from "material-ui/FlatButton";
 
 class Post extends Component {
 	constructor(props) {
@@ -10,12 +20,17 @@ class Post extends Component {
 	}
 
 	render() {
+		const { title, contents } = this.state.post;
 		// console.log("POST PROPS: ", this.props);
 		// console.log("POST STATE: ", this.state);
-		return [
-			<h3 key={uuid()}>{this.state.post.title}</h3>,
-			<h3 key={uuid()}>{this.state.post.contents}</h3>
-		];
+		return (
+			<Card>
+				<CardHeader>
+					<CardTitle title={contents} />
+				</CardHeader>
+				<CardText>{title}</CardText>
+			</Card>
+		);
 	}
 }
 
