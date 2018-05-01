@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/PostCard.css';
 
 const PostCard = props => {
   return (

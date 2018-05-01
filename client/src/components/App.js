@@ -22,6 +22,16 @@ class App extends Component {
       })
   }
 
+  deletePost = id => {
+    axios.delete(`http://localhost:5000/api/posts/${id}`)
+      .then(() => {
+        this.getPosts();
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
   render() {
     return (
       <div className="App">
@@ -29,7 +39,10 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <PostsList posts={this.state.posts}/>
+        <PostsList
+          posts={this.state.posts}
+          delete={this.deletePost}
+        />
       </div>
     );
   }
