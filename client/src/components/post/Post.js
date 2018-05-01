@@ -10,7 +10,6 @@ class Post extends React.Component {
         axios.delete(`http://localhost:5000/api/posts/${event.target.id}`)
             .then(response => {
                 console.log(response);
-                this.props.getPosts();
             })
             .catch(error =>{
                 console.log(error.error);

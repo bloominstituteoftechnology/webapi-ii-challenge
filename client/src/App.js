@@ -34,7 +34,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
           <h1>PostList-Title</h1>
-          <Postlist posts={this.state.posts} getPosts={this.getPosts}/>
+          <Postlist posts={this.state.posts}/>
       </div>
     );
   }

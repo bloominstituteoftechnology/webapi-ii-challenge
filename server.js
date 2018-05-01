@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const db = require('./data/db');
 
 let bodyParser = require("body-parser");
@@ -7,6 +8,7 @@ const server = express();
 
 server.use(bodyParser.json());
 server.use(cors());
+server.use(helmet());
 
 // add your server code starting here
 
