@@ -18,21 +18,26 @@
   font-size: 1.5em;
 }
 
-.App-intro {
-  font-size: large;
-}
-
 .PostsList {
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  margin: 0 auto 50px;
 }
 
 .PostCard {
   border: 1px solid grey;
-  margin: 5px;
-  width: 300px;
+  box-shadow: 5px 5px 5px grey;
+  margin-top: 15px;
+  padding: 5px 10px;
+  width: 50%;
+}
+
+.PostCard_id {
+  display: block;
+  margin: 0;
+  text-align: left;
+  text-decoration: underline;
 }
 
 @keyframes App-logo-spin {
