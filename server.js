@@ -7,6 +7,9 @@ const server = express();
 server.listen('5000', () => console.log('server listening on port 5000'));
 const db = require('./data/db.js');
 
+const knex = require('knex');
+const knexConfig = require('./knexfile.js');
+const dborm = knex(knexConfig.development);
 // add your server code starting here
 
 server.post('/api/posts', (req, res) => {
@@ -16,9 +19,11 @@ server.post('/api/posts', (req, res) => {
     db
       .insert({ title: req.query.title, contents: req.query.contents })
       .then((response) => {
-        let newPost = db.findById(response.id) 
-        debugger
-        return res.status(201).json(newPost);
+        db.findById(response.id) 
+          .then (newPost => {
+            return res.status(201).json(newPost);
+          })
+          .catch(err => res.status(500).json({ error: err }));
       }); 
   }
 });
