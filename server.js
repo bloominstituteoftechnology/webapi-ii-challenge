@@ -42,16 +42,19 @@ server.get('/posts/:id', (req, res) => {
 
 
 server.post('/posts', function(req, res) {
-  let post = req.body;
+  const { title, contents } = req.body;
+  const post = req.body;
 
   if ( title && contents) {
-
-
-    res.status(200).json(post);
+    db
+      .insert(post)
+      .then(response => {
+      res.status(201).json(response);
+    })
   } else {
     res
       .status(400)
-      .json({  errorMessage: "Title and Content missing."});
+      .json({   errorMessage: "Please provide title and contents for the post."});
   }
 });
 server.listen(5000, () => console.log('\n== API running on port 5000 ==\n'))
