@@ -28,3 +28,50 @@ p{
   font-size: 1.3rem;
   color: rgb(110, 110, 110)
 }
+
+button {
+  cursor: pointer;
+  background-color: rgb(228, 207, 190);
+  color: rgb(255, 249, 245);
+  border: none;
+  font-size: 1.1rem;
+  width: 8vw;
+  height: 4vh;
+  margin-top: 3%;
+}
+
+button:hover {
+  width: 8.3vw;
+  height: 4.3vh;
+  font-size: 1.2rem;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+}
+
+input {
+  font-size: 1.6rem;
+  display: block;
+  margin-top: 4%;
+
+}
+
+.form button {
+  display: block;
+  width: 15vw;
+  height: 6vh;
+  margin: 4% auto;
+}
+
+.banner {
+  background-color: rgb(216, 176, 176);
+  height: 17vh;
+  color: rgb(255, 246, 246);
+  text-align: center;
+  font-size: 2.5rem;
+  padding-top: 2%;
+  text-decoration: underline;
+}
+
