@@ -78,6 +78,13 @@ server.put("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   const update = req.body;
 
+  // Check for both title AND contents
+  if(!(data.title && data.contents)) {
+      res.status(400).json({
+          error: "Please provide title and contents for the post."
+      })
+  }
+
   db
     .update(id, update)
     .then(count => {
