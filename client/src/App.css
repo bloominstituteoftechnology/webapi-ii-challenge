@@ -6,7 +6,7 @@
   animation: App-logo-spin infinite 0.00001s linear;
 }
 .App-content {
-  animation: color-me-in infinite 0.00001s linear;
+  animation: color-me-in infinite 0.2s linear;
 }
 
 .App-header {
