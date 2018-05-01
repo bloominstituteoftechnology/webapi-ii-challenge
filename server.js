@@ -130,4 +130,4 @@ server.delete('/api/posts/:id', (req, res) => {
         });
 });
 
-server.listen(8000, () => console.log('\n== API Running on port 8000 ==\n'));
+server.listen(5000, () => console.log('\n== API Running on port 5000 ==\n'));
