@@ -8,9 +8,7 @@ const Posts = props => {
 				return (
 					<div key={index}>
 						{/* single post rendered here */}
-						{/* <Post post={post} index={index} /> */}
-						<h3>{post.title}</h3>
-						<p>{post.contents}</p>
+						<Post post={post} index={index} />
 					</div>
 				);
 			})}
