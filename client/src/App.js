@@ -16,9 +16,12 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.updatePosts();
+  }
+
+  updatePosts = () => {
     axios.get('http://localhost:5000/api/posts')
       .then(response => {
-        console.log('cdm', response)
         this.setState({ posts: response.data })
       })
       .catch(err => {
@@ -66,7 +69,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <form onSubmit={this.handleSubmit} >
-        <input 
+          <input 
             type="text" 
             name="title" 
             className="input"
@@ -82,15 +85,16 @@ class App extends Component {
             placeholder="Add contents"
             onChange={this.handleInputChange}
           />
-          <button>Add New Post</button>
+          <button type="submit" >Add New Post</button>
         </form>
         {this.state.posts.map((post, index) => {
           return <Post 
             id={post.id}
             key={post.id}
             title={post.title}
-            contents={post.contents}
+            update={this.updatePosts}
             remove={this.removePost}
+            contents={post.contents}
           />
         })}
       </div>
