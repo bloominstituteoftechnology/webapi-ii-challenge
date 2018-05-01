@@ -32,7 +32,7 @@ class App extends Component {
   handleInputChange = event => {
     this.setState({ [event.target.name]: event.target.value })
   }
-  
+
   handleSubmit = event => {
     event.preventDefault();
     const { title, contents } = this.state;
@@ -42,61 +42,63 @@ class App extends Component {
     }
 
     axios.post('http://localhost:5000/api/posts', newPost)
-    .then(response => {
-      this.setState({ posts: response.data, title: '', contents: '' })      
-    })
-    .catch(err => {
-      console.error(err)
-    });
+      .then(response => {
+        this.setState({ posts: response.data, title: '', contents: '' })
+      })
+      .catch(err => {
+        console.error(err)
+      });
   }
 
   removePost = (id) => {
     axios.delete(`http://localhost:5000/api/posts/${id}`)
-    .then(response => {
-      // console.log(response);
-      this.setState({ posts: response.data })      
-    })
-    .catch(err => {
-      console.error(err)
-    });
+      .then(response => {
+        // console.log(response);
+        this.setState({ posts: response.data })
+      })
+      .catch(err => {
+        console.error(err)
+      });
   }
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
+        {/* <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <form onSubmit={this.handleSubmit} >
-          <input 
-            type="text" 
-            name="title" 
+        </header> */}
+        <form className="smurfForm" onSubmit={this.handleSubmit} >
+          <input
+            type="text"
+            name="title"
             className="input"
-            value={this.state.title} 
+            value={this.state.title}
             placeholder="Add title"
             onChange={this.handleInputChange}
           />
-          <input 
-            type="text" 
-            name="contents" 
+          <input
+            type="text"
+            name="contents"
             className="input"
-            value={this.state.contents} 
+            value={this.state.contents}
             placeholder="Add contents"
             onChange={this.handleInputChange}
           />
-          <button type="submit" >Add New Post</button>
+          <button className="button button-add" type="submit" >Add New Post</button>
         </form>
-        {this.state.posts.map((post, index) => {
-          return <Post 
-            id={post.id}
-            key={post.id}
-            title={post.title}
-            update={this.updatePosts}
-            remove={this.removePost}
-            contents={post.contents}
-          />
-        })}
+        <div className="list">
+          {this.state.posts.map((post, index) => {
+            return <Post
+              id={post.id}
+              key={post.id}
+              title={post.title}
+              update={this.updatePosts}
+              remove={this.removePost}
+              contents={post.contents}
+            />
+          })}
+        </div>
       </div>
     );
   }
