@@ -30,11 +30,11 @@ export default class nodeVR extends React.Component {
         </Text>
         
         <View style={{ backgroundColor: "green", layoutOrigin: [0.5, 0.5], transform: [{translate: [0, 1, 4]}] }}>
-        <Text style={{
-          color: "black", 
-          fontWeight: "400", 
-          fontSize: 0.5
-          }}>down</Text>
+          <Text style={{
+            color: "black", 
+            fontWeight: "400", 
+            fontSize: 0.5
+            }}>down</Text>
         </View>
         {/* <VrButton style={{ opacity: 1, width: 1, color: "teal" }} onClick={() => console.log('clicked')}>
           <Text style={{
