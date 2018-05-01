@@ -114,15 +114,21 @@ server.delete("/api/posts/:id", (req, res) => {
   db
     .findById(id)
     .then(response => {
-      post = { ...response[0] };
+      if (response.length > 0) {
+        post = { ...response[0] };
 
-      db.remove(id).then(response => {
-        res.status(200).json(response);
-      });
+        db.remove(id).then(response => {
+          res.status(200).json(response); // 200 OK
+        });
+      } else {
+        res
+          .status(404)
+          .json({ error: "The post with the specified ID does not exist." });
+      }
     })
     .catch(error => {
       res.status(500).json({
-        error: "The post could not be deleted."
+        error: "The post could not be removed."
       });
     });
 });
