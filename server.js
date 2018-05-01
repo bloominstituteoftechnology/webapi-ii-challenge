@@ -55,23 +55,29 @@ server.delete('/api/posts/:id', (req, res) => {
   db
     .findById(req.params.id)
     .then(post => {
-      if (post.length > 0) {
+      if (post.length === 0) {
         return res.status(404).json({ message: "The post with the specified ID does not exist."});
+      } else {
+        db
+          .remove(req.params.id)
+          .then(x => res.status(200).json({ message: "post deleted"}))
+          .catch(err => res.status(500).json({ error: 'The post could not be removed' }));
       }
     });
       
-  db
-    .remove(req.params.id)
-    .then(x => console.log(x))
-    .catch(err => res.status(500).json({ error: 'The posts information could not be retrieved.' }));
 });
 
 server.put('/api/post/:id', (req, res) => {
   db
     .findById(req.params.id)
     .then(post => {
-      if (post.length > 0) {
+      if (post.length === 0) {
         return res.status(404).json({ message: "The post with the specified ID does not exist."});
+      } else {
+        db
+          .update(req.params.id, req.body)
+          .then(x => res.status(200).json({ message: "post updated"}))
+          .catch(err => res.status(500).json({ error: 'The post could not be updated' }));
       }
     });
 

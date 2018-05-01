@@ -56,3 +56,31 @@ test('I can search for a post', done => {
     })
     .catch(err => console.log(err));
 });
+
+test('I can update a post', done => {
+  let updatedPost = { title: 'An updated Test post', contents: 'this post has been updated'};
+  axios.put(`http://localhost:5000/api/posts/${newPostId}`, updatedPost)
+    .then(response => {
+      db('posts')
+        .then(posts => {
+          let foundPost = getPostById(newPostId, posts);
+          expect(foundPost.contents).toBe(response.updatedPost.contents); 
+          done();
+        });
+    })
+    .catch(err => console.log(err));
+});
+
+test('I can delete a post', done => {
+  axios.delete(`http://localhost:5000/api/posts/${newPostId}`)
+    .then(response => {
+      db('posts')
+        .then(posts => {
+          let foundPost = getPostById(newPostId, posts);
+          expect(foundPost).toBe(false); 
+          done();
+        });
+    })
+    .catch(err => console.log(err));
+});
+
