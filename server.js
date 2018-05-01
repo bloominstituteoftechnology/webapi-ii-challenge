@@ -23,7 +23,7 @@ server.post('/api/posts', (req, res) => {
       .then((response) => {
         db.findById(response.id) 
           .then (newPost => {
-            return res.status(201).json(newPost[0]);
+            res.status(201).json(newPost[0]);
           })
           .catch(err => res.status(500).json({ error: "There was an error while saving the post to the database" }));
       }); 
@@ -43,9 +43,9 @@ server.get('/api/posts/:id', (req, res) => {
     .findById(req.params.id)
     .then(post => {
       if (post.length > 0) {
-        return res.status(200).json(post[0]);
+        res.status(200).json(post[0]);
       } else {
-        return res.status(404).json({ message: "The post with the specified ID does not exist."});
+        res.status(404).json({ message: "The post with the specified ID does not exist."});
       }
     })
     .catch(err => res.status(500).json({ error: 'The posts information could not be retrieved.' }));
@@ -56,7 +56,7 @@ server.delete('/api/posts/:id', (req, res) => {
     .findById(req.params.id)
     .then(post => {
       if (post.length === 0) {
-        return res.status(404).json({ message: "The post with the specified ID does not exist."});
+        res.status(404).json({ message: "The post with the specified ID does not exist."});
       } else {
         db
           .remove(req.params.id)
@@ -67,7 +67,7 @@ server.delete('/api/posts/:id', (req, res) => {
       
 });
 
-server.put('/api/post/:id', (req, res) => {
+server.put('/api/posts/:id', (req, res) => {
   db
     .findById(req.params.id)
     .then(post => {
@@ -76,11 +76,11 @@ server.put('/api/post/:id', (req, res) => {
       } else {
         db
           .update(req.params.id, req.body)
-          .then(x => res.status(200).json({ message: "post updated"}))
+          .then(x => {
+            console.log("PUT", x);
+            res.status(200).json({ message: "post updated"});
+          })
           .catch(err => res.status(500).json({ error: 'The post could not be updated' }));
       }
     });
-
-
-  
 });

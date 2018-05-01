@@ -30,8 +30,8 @@ let newPostId;
 
 
 test('I can add a new post', done => {
-  let newPost = { title: 'A new Test post', contents: 'content of new test post'};
-  axios.post('http://localhost:5000/api/posts', newPost)
+  let newPostData = { title: 'A new Test post', contents: 'content of new test post'};
+  axios.post('http://localhost:5000/api/posts', newPostData)
     .then(response => {
       newPostId = response.data.id;
       db('posts')
@@ -58,13 +58,13 @@ test('I can search for a post', done => {
 });
 
 test('I can update a post', done => {
-  let updatedPost = { title: 'An updated Test post', contents: 'this post has been updated'};
-  axios.put(`http://localhost:5000/api/posts/${newPostId}`, updatedPost)
+  let updatedPostData = { title: 'An updated Test post', contents: 'this post has been updated'};
+  axios.put(`http://localhost:5000/api/posts/${newPostId}`, updatedPostData)
     .then(response => {
       db('posts')
         .then(posts => {
           let foundPost = getPostById(newPostId, posts);
-          expect(foundPost.contents).toBe(response.updatedPost.contents); 
+          expect(foundPost.contents).toBe(updatedPostData.contents); 
           done();
         });
     })
