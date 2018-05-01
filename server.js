@@ -2,15 +2,18 @@
 const express = require("express");
 // const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const helmet = require("helmet");
 
 const db = require("./data/db.js");
 
 const server = express();
-server.use(bodyParser.json());
+
 
 // middleware
 // server.use(morgan("dev"));
+server.use(bodyParser.json());
 server.use(express.json());
+server.use(helmet());
 
 // add your server code starting here
 
