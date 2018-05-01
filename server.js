@@ -66,9 +66,7 @@ app.post('/api/posts', async (req, res) => {
 
 // delete
 app.delete('/api/posts/:id', async (req, res) => {
-  const {
-    params: { id },
-  } = req;
+  const { id } = req.params;
   try {
     const response = await db.remove(id);
     if (response === 0) {
