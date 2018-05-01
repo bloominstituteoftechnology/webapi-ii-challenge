@@ -1,12 +1,15 @@
 import React from 'react'
-
+import Post from './Post';
+import './Post.css'
 const postlist = props => {
 
     return(
-        <div>
+        <div className='Post'>
+            <ul>
             {props.posts.map((post) => {
-                return <h5>{post.title}</h5>
+                return <Post post={post}/>
             })}
+            </ul>
         </div>
     );
 };

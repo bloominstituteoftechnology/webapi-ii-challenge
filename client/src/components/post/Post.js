@@ -4,7 +4,12 @@ const post = props => {
 
     return (
         <div>
-            {props.title}
+            <li>
+                <a href="#">
+                    <h2>{props.post.title}</h2>
+                    <p>{props.post.contents}</p>
+                </a>
+            </li>
         </div>
     );
 };
