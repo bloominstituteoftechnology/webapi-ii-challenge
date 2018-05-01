@@ -15,7 +15,7 @@ server.post('/api/users', (req, res) => {
                 res.status(400).json({ message: 'Please provide title and contents for the post.'})
             }
          else {
-            res.status(201).json({ messege: 'Post Successful.' })
+            res.status(201).json({ message: 'Post Successful.' })
         }})
         .catch(err => {
             res.status(500).json({ message: 'here was an error while saving the post to the database'})
@@ -51,20 +51,23 @@ server.get('/api/posts/:id', (req, res) => {
     });
 });
 
+
 server.delete('/api/posts/:id', (req, res) => {
     const id = req.param.id;
     db
-    .remove(id)
-    .then (post=> {
-        if (id === 'undefined') {
-            res.status(404).json({ message: 'The post with the specified ID does not exist.'})
-        } else {
-            res.status(200)
-        }
-    })
-    .catch(err => {
-        res.status(500).json({error: 'The post could not be removed.'});
-        process.abort();
+        .remove(id)
+        .then(post => {
+            if (id === 'undefined') {
+                res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+            } else {
+                res.status(200);
+            }
         })
+        .catch(err => {
+            res.status(500).json({ error: 'The post could not be removed.' });
+            process.abort();
+        })
+})
 
-    })
+
+
