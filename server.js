@@ -1,26 +1,30 @@
 // import your node modules
 const express = require('express')
 const server = express()
+const bodyParser = require('body-parser');
 const db = require('./data/db.js');
+server.use(express.json());
 
 // add your server code starting here
-server.get('/', (req,res) => {
-    res.send('API RUNNING');
-});
+
 
 server.post('/api/posts', (req,res) => {
-    const post = req.body;
-    if (!post ) {
-        res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' })
-    }
+    const postData = req.body;
+    console.log('post data', postData)
     db
-    .insert(post)
-    then(posts =>
-    res.status(201).json(posts))
+    .insert(postData)
+    .then(response => {
+    res.status(201).json(response)
+    })
     .catch(err =>{
+        if (err.errno === 19){
+            res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' })
+        } else {
         res.status(500).json({ error: "There was an error while saving the post to the database" })
+        }
     })
 })
+
 server.get('/api/posts', (req, res) => {
     db
     .find()
@@ -46,16 +50,39 @@ server.get('/api/posts/:id', (req, res) => {
     })
 })
 
+server.get('/', (req,res) => {
+    res.send('API RUNNING');
+});
+
 server.delete('/api/posts/:id', (req, res) => {
-    const id = req.params.id;
+    const { id } = req.params;
+    let post;
     db
+    .findById(id)
+    .then(foundPost => {
+        post = { ...foundPost[0] };
+        db
     .remove(id)
+    .then(response => {
     res.status(404).json({ message: 'The post with the specified ID does not exist'});
-    res.json()
+    });
+})
     .catch(err =>{
         res.status(500).json({ error:'The post could not be removed.' })
     })
 })
 
+// server.put('/api/posts/:id', (req, res) => {
+//     const { id } = req.params;
+//     const update = req.body;
+//     db
+//     .update(id, update)
+//     .then(posts => {
+//         if (posts.length == 0)
+//         res.status(404).json({ error: 'The post with the specified ID does not exist.'})
+//         if (!title || !contents)
+//     })
+
+// })
 
 server.listen(5000, () => console.log('\n== API RUNNING ON PORT 5000==\n'));
