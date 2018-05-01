@@ -23,7 +23,7 @@ server.get('/api/posts', (req, res) => {
             res.json(response)
         })
         .catch(err => {
-            console.err(err)
+            console.error(err)
             res.status(500).json({ error: "The posts information could not be retrieved." })
         })
 
@@ -41,7 +41,7 @@ server.get('/api/posts/:id', (req, res) => {
             res.json(response)
         })
         .catch(err => {
-            console.err(err)
+            console.error(err)
             res.status(500).json({ error: "The post information could not be retrieved." })
         })
 })
@@ -56,11 +56,19 @@ server.post('/api/posts', (req, res) => {
     db
         .insert(newPost)
         .then(response => {
-            res.status(201)
-            res.json(response)
+            db
+                .find()
+                .then(response => {
+                    res.status(200)
+                    res.json(response)
+                })
+                .catch(err => {
+                    console.error(err)
+                    res.status(500).json({ error: "The posts information could not be retrieved." })
+                })
         })
         .catch(err => {
-            console.err(err)
+            console.error(err)
             res.status(500).json({ error: "There was an error while saving the post to the database" })
         })
 })
@@ -86,12 +94,12 @@ server.put('/api/posts/:id', (req, res) => {
                     res.json(response)
                 })
                 .catch(err => {
-                    console.err(err)
+                    console.error(err)
                     res.status(500).json({ error: "The post information could not be retrieved." })
                 })
         })
         .catch(err => {
-            console.err(err)
+            console.error(err)
             res.status(500).json({ error: "The post information could not be retrieved." })
         })
 
@@ -117,12 +125,12 @@ server.delete('/api/posts/:id', (req, res) => {
                     res.json(response)
                 })
                 .catch(err => {
-                    console.err(err)
+                    console.error(err)
                     res.status(500).json({ error: "The post could not be removed" })
                 })
         })
         .catch(err => {
-            console.err(err)
+            console.error(err)
             res.status(500).json({ error: "The post information could not be retrieved." })
         })
 })

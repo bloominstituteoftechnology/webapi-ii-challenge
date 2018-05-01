@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Post from './Post'
 
 import logo from './logo.svg';
 import './App.css';
@@ -8,7 +9,9 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      posts: []
+      posts: [],
+      title: '',
+      contents: ''
     }
   }
 
@@ -23,6 +26,27 @@ class App extends Component {
       });
   }
 
+  handleInputChange = event => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
+  
+  handleSubmit = event => {
+    event.preventDefault();
+    const { title, contents } = this.state;
+    const newPost = {
+      title,
+      contents
+    }
+
+    axios.post('http://localhost:5000/api/posts', newPost)
+    .then(response => {
+      this.setState({ posts: response.data, title: '', contents: '' })      
+    })
+    .catch(err => {
+      console.error(err)
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -30,11 +54,32 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
+        <form onSubmit={this.handleSubmit} >
+        <input 
+            type="text" 
+            name="title" 
+            className="input"
+            value={this.state.title} 
+            placeholder="Add title"
+            onChange={this.handleInputChange}
+          />
+          <input 
+            type="text" 
+            name="contents" 
+            className="input"
+            value={this.state.contents} 
+            placeholder="Add contents"
+            onChange={this.handleInputChange}
+          />
+          <button>Add New Post</button>
+        </form>
         {this.state.posts.map((post, index) => {
-          return (<div key={post.id + index}>
-            <strong>{`${post.id}. ${post.title}`}</strong>
-            <p>{post.contents}</p>
-          </div>)
+          return <Post 
+            id={post.id}
+            key={post.id}
+            title={post.title}
+            contents={post.contents}
+          />
         })}
       </div>
     );
