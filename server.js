@@ -1,7 +1,5 @@
 const express = require('express');
 const helmet = require('helmet');
-
-// import db 
 const db = require('./data/db');
 
 const server = express();
@@ -13,25 +11,25 @@ server.use(helmet());
 // route handlers 
 
 
-
 // POST post
 server.post('/api/posts', (req, res) => {
   const postBody = req.body;
   console.log('post body', postBody);
 
-  db
+  if(post.title === " " || post.contents === " "){
+    res.status(400).json({ error: "Please provide title and contents for the post." });
+  } else {
+    db
     .insert(postBody)
     .then(response => {
-      res.status(201).json(response);
+      res.status(201).json({ Message: "Created." });
     })
-    .catch(error => { 
-      if (err.errno === 19) {
-        res.status(400).json({ Message: "Please provide title and contents for the post."  });
-      } else {
-        res.status(500).json({ error: err });
-      }
+    .catch(error => {
+      res.status(500).json({ error: "There was an error while saving the post to the database" 
+      });
     });
-  });
+  }
+    });
 
 
 // GET posts
@@ -87,7 +85,7 @@ server.delete('/api/users', function(req, res) {
 });
 
 // PUT 
-server.put('/api/post/:id', function(req, res) {
+server.put('/api/posts/:id', function(req, res) {
   const { id } = req.params;
   const update = req.body;
 
