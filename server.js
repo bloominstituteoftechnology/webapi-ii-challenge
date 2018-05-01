@@ -39,20 +39,6 @@ server.post("/api/posts", (req, res) => {
     }
 })
 
-server.put('/api/posts/:id', (req, res) => {
-    const id = req.params.id
-    const newPost = req.body;
-    db.update(id, newPost)
-    .then(response => {
-        res.status(201).json({msg: "data updated successfully"});
-    })
-    .catch(err => {
-        console.log('failed')
-        res.status(500).json({error: err});
-    });
-});
-
-
 server.get("/api/posts", (req, res) => {
     db.find().then(posts => {
         res.json(posts);
@@ -65,9 +51,6 @@ server.get("/api/posts", (req, res) => {
 
 server.get("/api/posts/:id", (req, res) => {
     const id = req.params.id;
-
-
-
     db.findById(id).then(user => {
         if(user.length>0) {
             res.json(user)
@@ -82,10 +65,6 @@ server.get("/api/posts/:id", (req, res) => {
         })
     })
 })
-
-
-
-
 
 // query ex:
 // req.query === {search: "bar", sort: "asc"}
@@ -112,14 +91,39 @@ server.delete("/api/posts/:id", (req, res) => {
             error: "The post could not be removed"
         })
     })
-
-
-    // db.remove(id).then(response => {
-    //     res.status(204).jsom(response);
-    // }).catch(err => {
-    //     res.status(500).json({err})
-    // })
 })
+
+server.put('/api/posts/:id', (req, res) => {
+    const id = req.params.id
+    const newPost = req.body;
+
+
+    db.findById(id).then(user => {
+        if(user.length>0) {
+            if(newPost.title.length === 0 || newPost.contents.length === 0) {
+                res.status(400).json({
+                    errorMessage: "Please provide title and contents for the post."
+                })
+            }
+            else {
+                db.update(id, newPost)
+                .then(response => {
+                    res.status(200).json({msg: "data updated successfully"});
+                }) 
+            }
+        } else {
+            res.status(404).json({
+                message: "The post with the specified ID does not exist." 
+            })
+        }
+    })
+    .catch(err => {
+        res.status(500).json({
+            error: "The post information could not be modified." 
+        });
+    });
+});
+
 
 
 server.listen(5000, () => console.log("listening on port 5000"));
