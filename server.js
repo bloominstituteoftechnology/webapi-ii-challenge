@@ -4,7 +4,7 @@ const cors = require('cors');
 const db = require('./data/db.js');
 const server = express();
 
-server.use(bodyParser.json());
+server.use(bodyParser.json()); // middleware ... server.us(express.json())
 server.use(cors());
 
 server.get('/', (req, res) => { res.send("your api is running") })
@@ -37,7 +37,7 @@ server.post('/api/posts', (request, response) => {
 })
 
 server.delete('/api/posts/:id', (request, response) => {
-  const { id } = request.params;
+  const { id } = request.params; // const { id } = request.query;
   !db.findById(id) ? 
     response.status(404).json({ message: "The post with the specified ID does not exist." }) :
     db.remove(id)
@@ -46,7 +46,7 @@ server.delete('/api/posts/:id', (request, response) => {
 })
 
 server.put('/api/posts/:id', (request, response) => {
-  const { id } = request.params;
+  const { id } = request.params; // const { id } = request.query;
   const { title, contents } = request.body;
   !db.findById(id) ? 
     response.status(404).json({ message: "The post with the specified ID does not exist." }) :
