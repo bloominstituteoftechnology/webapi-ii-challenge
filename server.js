@@ -1,12 +1,13 @@
 const express = require('express');
 const helmet = require('helmet');
-
+const cors = require('cors');
 const db = require('./data/db.js');
 
 const server = express();
 
 server.use(express.json());
 server.use(helmet());
+server.use(cors());
 
 server.get('/', (req, res) => {
     res.send('API running');
@@ -87,7 +88,7 @@ server.put('/api/posts/:id', (req, res) => {
             } else {
                 res.status(404).json({ message: 'The post with specified ID does not exist' })
             }
-        })
+            })
             .catch(err => { 
                 res.status(500).json({ error: "The post information could not be modified." });
             })
