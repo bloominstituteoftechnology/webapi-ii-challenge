@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import PostList from './PostList'
 
-
 class App extends Component {
   state = {
     posts: []
+  }
+
+  style = {
+    display: 'flex',
+    justifyContent: 'center'
   }
 
   componentDidMount() {
@@ -13,7 +17,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div style={this.style}>
         <PostList posts={this.state.posts} />
       </div>
     )

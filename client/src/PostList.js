@@ -1,7 +1,20 @@
 import React from 'react'
 
+const listStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  border: '1px solid black',
+  width: 500,
+  padding: 20
+}
+
+const postStyle = {
+  marginBottom: '10',
+  padding: '20'
+}
+
 const PostList = ({ posts }) => (
-  <div>
+  <div style={listStyle}>
     {posts.map((post, key) => (
       <Post {...post} key={key} />
     ))}
@@ -9,7 +22,9 @@ const PostList = ({ posts }) => (
 )
 
 const Post = ({ title, contents }) => (
-  <h1>{title} <em>{contents}</em></h1>
+  <div style={postStyle}>
+    <h1>{title} <em>{contents}</em></h1>
+  </div>  
 )
 
 export default PostList
