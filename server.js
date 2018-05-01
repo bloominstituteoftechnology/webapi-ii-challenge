@@ -5,14 +5,14 @@ const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
-server.use(bodyParser.urlencoded({ extended: false }))
-server.use(bodyParser.json())
 
-// server.use(function (req, res) {
-//   res.setHeader('Content-Type', 'text/plain')
-//   res.write('you posted:\n')
-//   res.end(JSON.stringify(req.body, null, 2))
-// })
+
+//Middleware
+server.use(express.json());
+
+
+
+//Route Handlers
 
 
 
@@ -21,14 +21,11 @@ server.get("/", (req, res) => {
 })
 
 server.post("/api/posts", (req, res) => {
-    db.insert({
-        title: "",
-        contents: "",
-    }).then(posts => {
-        console.log('posted')
+    const newPost = req.body;
+    db.insert(newPost).then(response => {
+        res.status(201).json(response);
     }).catch(err => {
-        res.statusCode === 400;
-        return res.json({
+        res.status(500).json({
             error: "The posts information could not be retrieved."
         })
     })
@@ -38,10 +35,8 @@ server.put('/api/posts/:id', (req, res) => {
     const id = req.params.id
     const newPost = req.body;
     db.update(id, newPost)
-    .then(post => {
-        console.log('idk')
-        res.json(post);
-
+    .then(response => {
+        res.status(201).json({msg: "data updated successfully"});
     })
     .catch(err => {
         console.log('failed')
@@ -71,13 +66,21 @@ server.get("/api/posts/:id", (req, res) => {
     })
 })
 
+
+
+
+
+// query ex:
+// req.query === {search: "bar", sort: "asc"}
+//http://localhost:5000/api/posts?id=1
 server.delete("/api/posts/:id", (req, res) => {
     const id = req.params.id;
+    // const {id} = req.query
 
-    db.remove(id).then(post => {
-        console.log('deleted')
+    db.remove(id).then(response => {
+        res.status(204).jsom(response);
     }).catch(err => {
-        res.statusCode = 500;
+        res.status(500).json({err})
     })
 })
 
