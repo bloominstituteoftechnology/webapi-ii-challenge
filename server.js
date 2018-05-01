@@ -27,10 +27,18 @@ server.get("/api/posts/:id", (req, res) => {
   db
     .findById(id)
     .then(post => {
-      res.json(post);
+      if (post.length !== 0) {
+        res.json(post);
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
     })
     .catch(err => {
-      console.log(err);
+      res
+        .status(500)
+        .json({ error: "The post information could not be retrieved." });
     });
 });
 
@@ -59,24 +67,59 @@ server.post("/api/posts", (req, res) => {
 server.delete("/api/posts/:id", (req, res) => {
   const id = req.params.id;
   db
-    .remove(id)
+    .findById(id)
     .then(post => {
-      res.json(post);
+      if (post.length !== 0) {
+        db
+          .remove(id)
+          .then(post => res.json(post))
+          .catch(err =>
+            res.status(500).json({ error: "The post could not be removed" })
+          );
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
     })
     .catch(err => {
-      console.log(err);
+      res
+        .status(500)
+        .json({ error: "The post information could not be retrieved." });
     });
 });
 
 server.put("/api/posts/:id", (req, res) => {
   const id = req.params.id;
   db
-    .update(id, req.body)
+    .findById(id)
     .then(post => {
-      res.json(post);
+      if (
+        !req.body.hasOwnProperty("title") ||
+        !req.body.hasOwnProperty("contents")
+      ) {
+        res.status(400).json({
+          errorMessage: "Please provide title and contents for the post."
+        });
+      } else if (post.length !== 0) {
+        db
+          .update(id, req.body)
+          .then(post => res.status(200).json(post))
+          .catch(err =>
+            res
+              .status(500)
+              .json({ error: "The post information could not be modified." })
+          );
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
     })
     .catch(err => {
-      console.log(err);
+      res
+        .status(500)
+        .json({ error: "The post information could not be retrieved." });
     });
 });
 
