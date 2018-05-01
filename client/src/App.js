@@ -37,9 +37,7 @@ class App extends Component {
     return (
       <div className="App">
         {/* render Posts here */}
-        <Paper>
-          <Posts posts={this.state.posts} />
-        </Paper>
+        <Posts posts={this.state.posts} />
       </div>
     );
   }

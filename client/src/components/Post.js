@@ -10,6 +10,8 @@ import {
 	CardText
 } from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
+// styles
+import "../styles/Post.css";
 
 class Post extends Component {
 	constructor(props) {
@@ -24,7 +26,7 @@ class Post extends Component {
 		// console.log("POST PROPS: ", this.props);
 		// console.log("POST STATE: ", this.state);
 		return (
-			<Card>
+			<Card className="Post">
 				<CardHeader>
 					<CardTitle title={contents} />
 				</CardHeader>
