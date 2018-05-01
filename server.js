@@ -57,4 +57,42 @@ server.post('/posts', function(req, res) {
       .json({   errorMessage: "Please provide title and contents for the post."});
   }
 });
+server.put('/posts/:id',(req, res) => {
+  const { id } = req.params;
+  const post = req.body;
+
+    db
+      .update(id, post)
+      .then(count => {
+        if (count > 0) {
+          db.findById(id).then(posts => {
+            res.status(200).json(posts[0]);
+          });
+        } else {
+          res.status(404).json({ msg: 'post not found' });
+        }
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
+});
+
+server.delete(`/posts/:id`, (req, res) => {
+  const id = req.params.id;
+  db
+    .findById(id)
+    .then(response => {
+      if (response.length > 0) {
+        const post = { ...response[0] };
+        db.remove(id).then(resp => {
+          res.status(200).json(post);
+        });
+      } else {
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({error: "The post could not be removed"});
+    });
+});
 server.listen(5000, () => console.log('\n== API running on port 5000 ==\n'))
