@@ -76,7 +76,7 @@ if (!title || !contents) {
         }
     })
     .catch(err => {
-        res.status(500).json(err)
+        res.status(500).json({error: "The post information could not be modified."} )
     })
 })
 
