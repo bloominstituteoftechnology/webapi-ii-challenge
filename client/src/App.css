@@ -1,0 +1,46 @@
+.App {
+  text-align: center;
+  background-image: url(https://i.imgur.com/8yXO6hn.gif)
+}
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.post-card {
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: pink;
+  background-color: #fff;
+  border: 0;
+  box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0, 0, 0, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.24);
+  padding: 1rem;
+  cursor: pointer;
+  position: relative;
+  margin: 1rem auto;
+  font-size: 1.5rem;
+  width: 35%;
+  color: navy;
+  background-image: url(https://i.imgur.com/9W0cstM.gif)
+
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
