@@ -1,12 +1,14 @@
 .App {
   text-align: center;
-  background-image: url(https://i.imgur.com/8yXO6hn.gif)
+  background-image: url(https://i.imgur.com/8yXO6hn.gif);
 }
-.App-logo {
-  animation: App-logo-spin infinite 1s linear;
+
+.App-logo:hover {
+  animation: App-logo-spin infinite 0.001s linear;
+
 }
 .App-content {
-  animation: color-me-in infinite 1s linear;
+  text-align: center;
 }
 
 .App-header {
@@ -17,6 +19,7 @@
 }
 
 .post-card {
+  animation: color-me-in infinite .5s linear;
   background-color: #fff;
   border: 0;
   box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0, 0, 0, 0.12),
@@ -26,8 +29,6 @@
   position: relative;
   margin: 1rem auto;
   font-size: 1.5rem;
-  width: 35%;
-  color: navy;
   background-image: url(https://i.imgur.com/9W0cstM.gif)
 
 }
@@ -48,23 +49,37 @@
 @keyframes color-me-in {
        0%, 100% {
            color: red;
+           width: 35%;
+           font-size: 1.5rem;
         }
         14%{
           color: orange;
+          width: 42%;
+          font-size: 2rem;
         }
         28%{
           color: yellow;
+          width: 49%;
+          font-size: 2.5rem;
         }
         42%{
           color: green;
+          width: 56%;
+          font-size: 3rem;
         }
         56%{
           color: blue;
+          width: 63%;
+          font-size: 3.5rem
         }
         70%{
           color: indigo;
+          width: 70%;
+          font-size: 2.5rem;
         }
         84%{
           color: violet;
+          width: 77%;
+          font-size: 2rem;
         }
 }
