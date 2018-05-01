@@ -91,5 +91,25 @@ server.put('/api/posts/:id', function(req, res) {
         });
 });
 
+// DELETE Request - Delete
+server.delete('/api/posts', function(req, res) {
+    const { id } = req.query;
+    let user;
+    db
+        .findById(id)
+        .then(foundUser => {
+            user = { ...foundUser[0] };
+
+            db.remove(id).then(response => {
+                res.status(200).json(user);
+            });
+        // } else {
+        //     res.status(404).json({ msg: 'The post with the specified ID does not exist.' });
+        // }
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'The post could not be removed' });
+        });
+});
 
 server.listen(8000, () => console.log('\n== API Running on port 8000 ==\n'));
