@@ -3,8 +3,10 @@
   background-image: url(https://i.imgur.com/8yXO6hn.gif)
 }
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  animation: App-logo-spin infinite 0.00001s linear;
+}
+.App-content {
+  animation: color-me-in infinite 0.00001s linear;
 }
 
 .App-header {
@@ -43,4 +45,19 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes color-me-in {
+       0%, 100% {
+            background: -webkit-linear-gradient(-75deg, yellow, red 60%, rgb(0,255,555) 69%, blue 85%);
+        }
+        25% {
+            background: -webkit-linear-gradient(-75deg, blue, yellow 60%, red 69%, rgb(0,255,555) 85%);
+        }
+        50% {
+            background: -webkit-linear-gradient(-75deg, rgb(0,255,555), blue 60%, yellow 69%, red 85%);
+        }
+        75% {
+            background: -webkit-linear-gradient(-75deg, red, rgb(0,255,555) 60%, blue 69%, yellow 85%);
+        }
 }

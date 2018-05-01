@@ -30,9 +30,9 @@ class App extends Component {
       <div className="App">
        {this.state.posts.map(stuff => {
          return (
-           <div className="post-card">
-            <h2> {stuff.title}</h2>
-            <h4>{stuff.contents}</h4>
+           <div className="post-card App-logo">
+            <h2 className="App-content"> {stuff.title}</h2>
+            <h4 className="App-content">{stuff.contents}</h4>
              </div>
          )
        })}
