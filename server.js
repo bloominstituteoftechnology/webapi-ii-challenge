@@ -18,7 +18,9 @@ server.get("/api/posts", (req, res) => {
       res.json(posts);
     })
     .catch(error => {
-      res.status(500).json({ error: "Can't get posts!" });
+      res
+        .status(500) // 500 Server Error
+        .json({ error: "The posts information could not be retrieved." });
     });
 });
 
@@ -28,11 +30,17 @@ server.get("/api/posts/:id", (req, res) => {
   db
     .findById(id)
     .then(post => {
-      res.json(post[0]); // ??? [id] ???
+      if (posts.length === 0) {
+        res
+          .status(404) // 404 Not Found
+          .json({ error: "The post with the specified ID does not exist." });
+      } else {
+        res.json(post[0]); // Returns first element of array
+      }
     })
     .catch(error => {
-      res.status(404).json({
-        error: "Unable to find specified post."
+      res.status(500).json({ // 500 Server Error
+        error: "The post information could not be retrieved."
       });
     });
 });
@@ -43,7 +51,7 @@ server.post("/api/posts", (req, res) => {
   db
     .insert(post)
     .then(response => {
-      res.status(201).json(response);
+      res.status(201).json(response); // 201 Created
     })
     .catch(error => {
       res.status(500).json({
@@ -52,7 +60,7 @@ server.post("/api/posts", (req, res) => {
     });
 });
 
-//UPDATE post; update()
+//PUT new post; update()
 server.put("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   const update = req.body;
@@ -62,10 +70,12 @@ server.put("/api/posts/:id", (req, res) => {
     .then(count => {
       if (count > 0) {
         db.findById(id).then(updatePost => {
-          res.status(200).json(updatePost[0]);
+          res.status(201).json(updatePost[0]); // 201 Created
         });
       } else {
-        res.status(400).json({ error: "The specified post does not" });
+        res
+          .status(400) // 400 Bad Request
+          .json({ error: "Bad request. Please fill out required fields" });
       }
     })
     .catch(error => {
@@ -84,7 +94,7 @@ server.delete("/api/posts/:id", (req, res) => {
       post = { ...response[0] };
 
       db.remove(id).then(response => {
-        res.status(500).json(response);
+        res.status(200).json(response);
       });
     })
     .catch(error => {
@@ -93,3 +103,5 @@ server.delete("/api/posts/:id", (req, res) => {
       });
     });
 });
+
+server.listen(5000, () => console.log("\n== Server running on port 5000 ==\n"));
