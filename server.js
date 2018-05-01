@@ -51,7 +51,15 @@ server.put('/posts/:id', (req, res)=>{
     const newPost = req.body;
     db
     .update(id, newPost)
-    .then(posts =>{
+    .then(count =>{
+        if(count > 0){
+            db.findById(id).then(update =>{
+                res.status(200).json(update[0]);
+            })
+        } else{
+            res.status(400)
+            .json({message:"this post does not exist"})
+        }
         res.json(posts);
 
     })
@@ -59,17 +67,22 @@ server.put('/posts/:id', (req, res)=>{
         res.status(400).json({error: "There was an error while saving the user to the database"});
     });
 });
+
 server.delete('/posts/:id', (req, res)=>{
     const {id} = req.params.id
+    let post;
     db
-    .remove(id)
-    .then(posts =>{
-        res.json(posts);
-
-    })
-    .catch(err=>{
-        res.status(500).json({error: "failed to delete"});
-    });
+        .findById(id)
+        .then(foundPost =>{
+            post ={...foundPost}
+        
+      db.remove(id).then(post => {
+            res.status(204).json(post);
+        })
+          })
+         .catch(err =>{
+           res.status(500).json({error:"this darn error"});    
+         }); 
 });
 
 server.listen(5000, () => console.log('\n== API Running on port 5000 ==\n'));
