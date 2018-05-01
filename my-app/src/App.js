@@ -22,7 +22,10 @@ class App extends Component {
   fetchData = () => {
     axios.get("http://localhost:5000/api/posts")
     .then(response => {
-      console.log(response)
+      this.setState({
+        posts: response.data
+      })
+      console.log(this.state.posts)
     })
     .catch(err => {
       console.log("There was an error fetching posts")
@@ -34,7 +37,20 @@ class App extends Component {
   render() {
     return (
       <div>
-      lolh
+      {this.state.mounted === false ? (
+        <div>Fetching....</div>
+      ) : (
+        <ul>
+          {this.state.posts.map(post => {
+            return(
+              <li key={post.id}>
+                <h3>{post.title}</h3>
+                <p>{post.contents}</p>
+              </li>
+            )
+          })}
+        </ul>
+      )}
       </div>
     );
   }
