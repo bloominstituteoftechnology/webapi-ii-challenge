@@ -10,7 +10,7 @@ server.get("/", (req, res) => {
   res.send("API is running");
 });
 
-// Get posts
+// GET posts; find()
 server.get("/api/posts", (req, res) => {
   db
     .find()
@@ -22,7 +22,7 @@ server.get("/api/posts", (req, res) => {
     });
 });
 
-// Get posts by ID
+// GET posts by ID; findById()
 server.get("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   db
@@ -33,6 +33,21 @@ server.get("/api/posts/:id", (req, res) => {
     .catch(error => {
       res.status(404).json({
         error: "Unable to find specified post."
+      });
+    });
+});
+
+// POST; insert()
+server.post("/api/posts", (req, res) => {
+  const post = req.body;
+  db
+    .insert(post)
+    .then(response => {
+      res.status(201).json(response);
+    })
+    .catch(error => {
+      res.status(500).json({
+        error: "Error adding new post."
       });
     });
 });
