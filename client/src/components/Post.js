@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import uuid from "uuid-v4";
 
 class Post extends Component {
 	constructor(props) {
@@ -12,8 +13,8 @@ class Post extends Component {
 		// console.log("POST PROPS: ", this.props);
 		// console.log("POST STATE: ", this.state);
 		return [
-			<h3>{this.state.post.title}</h3>,
-			<h3>{this.state.post.contents}</h3>
+			<h3 key={uuid()}>{this.state.post.title}</h3>,
+			<h3 key={uuid()}>{this.state.post.contents}</h3>
 		];
 	}
 }
