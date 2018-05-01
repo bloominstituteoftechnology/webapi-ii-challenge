@@ -1,19 +1,22 @@
-
 const express = require('express');
 const db = require('./data/db.js');
 
+
+
 const server = express();
 server.use(express.json());
+
+
 
 server.listen(5000, () => console.log('\n== API Running on port 5000 ==\n'));
 
 
 //Home
 server.get('/', (req, res) => {
-    res.send('Blank Page');
+    res.send('This is the homepage');
 });
 
-//.post --> insert --------------------------------------------------------------------
+//when client uses .post --> db.insert --------------------------------------------------------------------
 server.post("/api/posts", (req, res) => {
     const newPost = req.body;
     if (!newPost.title || !newPost.contents) {
@@ -33,7 +36,7 @@ server.post("/api/posts", (req, res) => {
       });
   });
 
-//.get --> find -----------------------------------------------------------------------
+//when client uses .get --> db.find -----------------------------------------------------------------------
 server.get('/api/posts', (req, res) => {
     db.find().then(posts => {
         res.json(posts);
@@ -44,7 +47,7 @@ server.get('/api/posts', (req, res) => {
     })
 })
 
-//.get findbyid ----------------------------------------------------------------------
+//when client uses .get --> db.findbyid ----------------------------------------------------------------------
 server.get('/api/posts/:id', (req, res) => {
     const id = req.params.id;
     db
@@ -62,7 +65,7 @@ server.get('/api/posts/:id', (req, res) => {
     });
 });
 
-//delete ------------------------------------------------------------------------------------------
+//when client uses .delete --> db.remove ------------------------------------------------------------------------------------------
 server.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     let post;
@@ -84,7 +87,7 @@ server.delete('/api/posts/:id', (req, res) => {
         })
 })
 
-//update ------------------------------------------------------------
+//when client uses .put --> db.update ------------------------------------------------------------
 server.put('/api/posts/:id', function(req, res) {
     const { id } = req.params;
     const update = req.body;
@@ -108,6 +111,8 @@ if (!update.title || !update.contents) {
     })
 })
 
+
+//below is code from node-express-mini
 //---------------------------------------------------------------------------------
 // const express = require('express');
 
