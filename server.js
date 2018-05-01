@@ -1,9 +1,8 @@
 const express = require("express");
 const db = require("./data/db.js");
 const server = express();
-const bodyParser = require("body-parser");
 
-server.use(bodyParser.json());
+server.use(express.json());
 
 server.get("/", (req, res) => {
   res.send("Api running");
@@ -71,8 +70,13 @@ server.delete("/api/posts/:id", (req, res) => {
     .then(post => {
       if (post.length !== 0) {
         db
-          .remove(id)
-          .then(post => res.json(post))
+          .findById(id)
+          .then(posts => {
+            post = { ...posts[0] };
+            db.remove(id).then(response => {
+              res.status(200).json(post);
+            });
+          })
           .catch(err =>
             res.status(500).json({ error: "The post could not be removed" })
           );
@@ -104,7 +108,11 @@ server.put("/api/posts/:id", (req, res) => {
       } else if (post.length !== 0) {
         db
           .update(id, req.body)
-          .then(post => res.status(200).json(post))
+          .then(post => {
+            db.findById(id).then(posts => {
+              res.status(200).json(posts[0]);
+            });
+          })
           .catch(err =>
             res
               .status(500)
