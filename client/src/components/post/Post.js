@@ -5,16 +5,16 @@ class Post extends React.Component {
         super(props)
     }
 
-    removePost = (event) => {
-
-        axios.delete(`http://localhost:5000/api/posts/${event.target.id}`)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error =>{
-                console.log(error.error);
-            })
-    };
+    // removePost = (event) => {
+    //
+    //     axios.delete(`http://localhost:5000/api/posts/${event.target.id}`)
+    //         .then(response => {
+    //             console.log(response);
+    //         })
+    //         .catch(error =>{
+    //             console.log(error.error);
+    //         })
+    // };
 
     render() {
         return (
@@ -25,7 +25,7 @@ class Post extends React.Component {
                         <h2>{this.props.post.title}</h2>
                         <br/>
                         <p>{this.props.post.contents}</p>
-                        <button id={this.props.post.id} onClick={this.removePost}>Delete</button>
+                        <button id={this.props.post.id} onClick={this.props.click}>Delete</button>
                     </a>
                 </li>
             </div>

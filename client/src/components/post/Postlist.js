@@ -7,7 +7,7 @@ const postlist = props => {
         <div className='Post'>
             <ul>
             {props.posts.map((post) => {
-                return <Post post={post}/>
+                return <Post post={post} click={props.click}/>
             })}
             </ul>
         </div>

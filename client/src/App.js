@@ -26,7 +26,20 @@ class App extends Component {
             console.log(error);
         })
     }
-  render() {
+
+    removePost = (event) => {
+
+        axios.delete(`http://localhost:5000/api/posts/${event.target.id}`)
+            .then(response => {
+                console.log(response);
+                this.getPosts();
+            })
+            .catch(error =>{
+                console.log(error.error);
+            })
+    };
+
+    render() {
     return (
       <div className="App">
         <header className="App-header">
@@ -34,7 +47,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
           <h1>PostList-Title</h1>
-          <Postlist posts={this.state.posts}/>
+          <Postlist posts={this.state.posts} click={this.removePost}/>
       </div>
     );
   }
