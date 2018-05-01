@@ -45,7 +45,16 @@ server.post("/api/posts", (req, res) => {
   db
     .insert(req.body)
     .then(post => {
-      res.status(201).json(post);
+      db
+        .findById(post.id)
+        .then(newPost => {
+          res.status(200).json(newPost);
+        })
+        .catch(err =>
+          res
+            .status(500)
+            .json({ error: "The post with the specified ID does not exist." })
+        );
     })
     .catch(err => {
       if (
