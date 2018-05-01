@@ -72,3 +72,24 @@ server.put("/api/posts/:id", (req, res) => {
       res.status(500).json(error);
     });
 });
+
+// DELETE post; remove()
+server.delete("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  let post;
+
+  db
+    .findById(id)
+    .then(response => {
+      post = { ...response[0] };
+
+      db.remove(id).then(response => {
+        res.status(500).json(response);
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        error: "The post could not be deleted."
+      });
+    });
+});
