@@ -33,7 +33,7 @@ class App extends Component {
         {this.state.posts.map((post, index) => {
           return (<div key={post.id + index}>
             <strong>{`${post.id}. ${post.title}`}</strong>
-            <p>{post.content}</p>
+            <p>{post.contents}</p>
           </div>)
         })}
       </div>
