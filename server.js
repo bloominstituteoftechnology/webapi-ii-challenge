@@ -4,6 +4,8 @@ const db = require("./data/db.js");
 const express = require("express");
 const server = express();
 
+server.use(express.json());
+
 // add your server code starting here
 
 server.get("/", (req, res) => {
@@ -30,7 +32,7 @@ server.get("/api/posts/:id", (req, res) => {
   db
     .findById(id)
     .then(post => {
-      if (posts.length === 0) {
+      if (post.length === 0) {
         res
           .status(404) // 404 Not Found
           .json({ error: "The post with the specified ID does not exist." });
@@ -69,8 +71,8 @@ server.put("/api/posts/:id", (req, res) => {
     .update(id, update)
     .then(count => {
       if (count > 0) {
-        db.findById(id).then(updatePost => {
-          res.status(201).json(updatePost[0]); // 201 Created
+        db.findById(id).then(posts => {
+          res.status(200).json(posts[0]); // 200 OK
         });
       } else {
         res
@@ -79,7 +81,7 @@ server.put("/api/posts/:id", (req, res) => {
       }
     })
     .catch(error => {
-      res.status(500).json(error);
+      res.status(500).json(error); // 500 Server Error
     });
 });
 
