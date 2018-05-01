@@ -1,20 +1,32 @@
 // import your node modules
-const bodyParser = require('body-parser');
 const express = require('express');
 
 const db = require('./data/db.js');
 
 const server = express();
-server.use(bodyParser.json());
 
-//Function to get new ID
-let nextId = 10;
-
-function getNewId() {
-    return nextId++;
-}
+//Middleware
+server.use(express.json());
 
 // add your server code starting here
+
+//POST
+server.post('/api/posts', (req, res) => {
+    const post = req.body;
+    db
+    .insert(post)
+    .then(posts => {
+        res.status(201).json(posts);
+    })
+    .catch(err => {
+        if(err.errno === 19) {
+            res.status(404).json({ errorMessage: "Please provide title and contents for the post." })
+        } else {
+        res.status(500).json({ error:"There was an error while saving the post to the database" })
+    }
+    })
+});
+
 //GET
 server.get('/api/posts', (req, res) => {
     db.find().then(posts => {
@@ -38,20 +50,6 @@ server.get('/api/posts/:id', (req,res) => {
     })
 });
 
-//POST
-server.post('/api/posts', (req, res) => {
-    const post = { id: getNewId(), ...req.body};
-    posts = [...posts, post];
-    db.find().then(posts => {
-    if(!title || !contents) {
-        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
-    } else {
-        res.status(201).json(posts);
-    }
-    }) .catch(err => {
-        res.status(500).json({ error:"There was an error while saving the post to the database" })
-    })
-});
 
 
 server.listen(8000, () => console.log('\n== API Running on port 8000 ==\n'));
