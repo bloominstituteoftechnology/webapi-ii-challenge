@@ -13,12 +13,16 @@ class App extends Component {
     }
 
     componentDidMount() {
+        this.getPosts();
 
+    }
+
+    getPosts() {
         axios.get('http://localhost:5000/api/posts')
             .then(response => {
                 console.log(response);
                 this.setState({posts: response.data});
-        }).catch(error => {
+            }).catch(error => {
             console.log(error);
         })
     }
@@ -30,7 +34,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
           <h1>PostList-Title</h1>
-          <Postlist posts={this.state.posts}/>
+          <Postlist posts={this.state.posts} getPosts={this.getPosts}/>
       </div>
     );
   }

@@ -1,18 +1,36 @@
 import React from 'react';
+import axios from 'axios';
+class Post extends React.Component {
+    constructor(props){
+        super(props)
+    }
 
-const post = props => {
+    removePost = (event) => {
 
-    return (
-        <div>
-            <li>
-                <a href="#">
+        axios.delete(`http://localhost:5000/api/posts/${event.target.id}`)
+            .then(response => {
+                console.log(response);
+                this.props.getPosts();
+            })
+            .catch(error =>{
+                console.log(error.error);
+            })
+    };
 
-                    <h2>{props.post.title}</h2>
-                    <br/>
-                    <p>{props.post.contents}</p>
-                </a>
-            </li>
-        </div>
-    );
-};
-export default post;
+    render() {
+        return (
+            <div>
+                <li key={this.props.post.id}>
+                    <a href="#">
+
+                        <h2>{this.props.post.title}</h2>
+                        <br/>
+                        <p>{this.props.post.contents}</p>
+                        <button id={this.props.post.id} onClick={this.removePost}>Delete</button>
+                    </a>
+                </li>
+            </div>
+        );
+    }
+}
+export default Post;
