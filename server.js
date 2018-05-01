@@ -38,6 +38,9 @@ server.get('/api/posts/:id', (req, res) => {
       res.json(posts[0]);
     }
   })
-})
+  .catch(err => {
+    res.status(500).json({error: 'The post infomation could not be retrieved'})
+  })
+});
 
 server.listen(5000, () => console.log("\n== API Running on port 5000 ==\n"));
