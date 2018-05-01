@@ -70,4 +70,23 @@ server.delete('/api/posts/:id', (req, res) => {
 })
 
 
-
+server.put('/api/posts/:id', function(req, res) {
+    const { id } = req.params;
+    const update = req.body;
+if (!Update.title || !Update.contents) {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
+    db.update(id, update)
+    .then(count => {
+        if (count > 0) {
+            res.status(200).json({ msg: 'updated successfully' })
+        } else {
+            res.status(404).json({ msg: 'post not found'});
+        }
+    })
+    .catch(err => {
+        res.status(500).json(err)
+    })
+})
