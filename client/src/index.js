@@ -6,10 +6,8 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/do'
 import App from './App'
 
-const post$ = Observable.ajax({
-  url: 'http://localhost:5000/api/posts',
-  crossDomain: true,
-  createXHR: () => new XMLHttpRequest()
-}).map((xhr) => xhr.response)
+const post$ = Observable
+  .ajax('http://localhost:5000/api/posts')
+  .map((xhr) => xhr.response)
 
 ReactDOM.render(<App post$={post$} />, document.getElementById('root'))
