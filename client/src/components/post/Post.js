@@ -6,7 +6,9 @@ const post = props => {
         <div>
             <li>
                 <a href="#">
+
                     <h2>{props.post.title}</h2>
+                    <br/>
                     <p>{props.post.contents}</p>
                 </a>
             </li>

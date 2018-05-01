@@ -1,6 +1,13 @@
-.Post h2,p{
-    font-size:100%;
+.Post h2{
+    font-size:115%;
     font-weight:normal;
+    font-family: 'Reenie Beanie';
+}
+
+.Post p{
+    font-size:180%;
+    font-weight:normal;
+    font-family: 'Reenie Beanie';
 }
 .Post ul,li{
     list-style:none;
@@ -14,8 +21,8 @@
     color:#000;
     background:#ffc;
     display:block;
-    height:15em;
-    width:15em;
+    height:25em;
+    width:30em;
     padding:1em;
 }
 .Post ul li{
