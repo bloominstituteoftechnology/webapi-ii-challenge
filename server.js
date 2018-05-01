@@ -43,4 +43,10 @@ server.get('/api/posts/:id', (req, res) => {
   })
 });
 
+server.post('/api.posts', (req, res) =>  {
+  const {title, contents} = req.body;
+  const postNew = {title, contents}
+  
+})
+
 server.listen(5000, () => console.log("\n== API Running on port 5000 ==\n"));
