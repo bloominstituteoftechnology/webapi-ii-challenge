@@ -1,6 +1,7 @@
 // import your node modules
-const express = require("express")
-const bodyParser = require("body-parser")
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 const db = require('./data/db.js');
 
 // add your server code starting here
@@ -8,6 +9,7 @@ const server = express();
 
 
 //Middleware
+server.use(cors())
 server.use(express.json());
 
 
