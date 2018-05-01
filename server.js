@@ -24,14 +24,15 @@ server.post("/api/posts", (req, res) => {
     const newPost = req.body;
 
     if(newPost.title.length === 0 || newPost.contents.length === 0) {
-        res.status(400).json({errorMessage: "Please provide title and contents for the post." })
+        res.status(400).json({
+            errorMessage: "Please provide title and contents for the post." })
     }
     else {
         db.insert(newPost).then(response => {
             res.status(201).json(response);
         }).catch(err => {
             res.status(500).json({
-                error: "The posts information could not be retrieved."
+                error: "There was an error while saving the post to the database" 
             })
         })
 
