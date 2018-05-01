@@ -90,6 +90,11 @@ server.put('/api/posts/:id', function(req, res) {
     const update = req.body;
 //below 200 is the default status you don't need to write it
 // if count = 0 then it doesn't fail, it just doesn't find the correct ID
+if (!newPost.title || !newPost.contents) {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
     db.update(id, update)
     .then(count => {
         if (count > 0) {
