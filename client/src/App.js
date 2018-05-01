@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+import styled from 'styled-components';
 
 class App extends Component {
   constructor(props) {
@@ -28,7 +29,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="app-container">{this.state.posts.map(post => <p>{post.title}</p>)}</div>
+        <div className="app-container">{this.state.posts.map(post => <div><h3>{post.title} </h3>
+        <p>{post.contents} </p></div>)}</div>
       </div>
     );
   }
