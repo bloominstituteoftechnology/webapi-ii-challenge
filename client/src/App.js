@@ -1,8 +1,27 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
+import Postlist from './components/post/Postlist';
 class App extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            posts: []
+        }
+    }
+
+    componentDidMount() {
+
+        axios.get('http://localhost:5000/api/posts')
+            .then(response => {
+                console.log(response);
+                this.setState({posts: response.data});
+        }).catch(error => {
+            console.log(error);
+        })
+    }
   render() {
     return (
       <div className="App">
@@ -10,9 +29,8 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+          <h1>PostList-Title</h1>
+          <Postlist posts={this.state.posts}/>
       </div>
     );
   }

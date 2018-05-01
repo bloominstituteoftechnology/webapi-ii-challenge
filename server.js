@@ -1,10 +1,12 @@
 const express = require('express');
+let cors = require('cors')
 const db = require('./data/db');
 
 let bodyParser = require("body-parser");
 const server = express();
 
 server.use(bodyParser.json());
+server.use(cors());
 
 // add your server code starting here
 
