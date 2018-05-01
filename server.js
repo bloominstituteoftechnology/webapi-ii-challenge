@@ -79,10 +79,11 @@ server.put("/api/posts/:id", (req, res) => {
   const update = req.body;
 
   // Check for both title AND contents
-  if(!(data.title && data.contents)) {
-      res.status(400).json({
-          error: "Please provide title and contents for the post."
-      })
+  if (!(update.title && update.contents)) {
+    res.status(400).json({
+      //400 Bad Request
+      error: "Please provide title and contents for the post."
+    });
   }
 
   db
@@ -94,12 +95,14 @@ server.put("/api/posts/:id", (req, res) => {
         });
       } else {
         res
-          .status(400) // 400 Bad Request
-          .json({ error: "Bad request. Please fill out required fields" });
+          .status(404) // 400 Bad Request
+          .json({ error: "The post with the specified ID does not exist." });
       }
     })
     .catch(error => {
-      res.status(500).json(error); // 500 Server Error
+      res
+        .status(500) // 500 Server Error
+        .json({ error: "The post information could not be modified." });
     });
 });
 
