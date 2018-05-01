@@ -3,6 +3,7 @@ const express = require('express');
 const db = require('./data/db');
 
 const server = express();
+server.use(express.json);
 
 server.listen(5000, () => console.log('\n==API running on port 5000 ==\n'));
 // add your server code starting here
@@ -27,19 +28,18 @@ server.listen(5000, () => console.log('\n==API running on port 5000 ==\n'));
 
 server.post('api/posts', (req, res) => {
     const ob = req.body;
+    if (!ob.title || !ob.contents) {
+        res.status(400).json({ message: 'Please provide title and contents for the post.' });
+    }
     db
         .insert(ob)
-        .then(response => {
-            if (req.body.title !== 'undefined' && req.body.contents !== 'undefined') {
-                res.status(400).json({ message: 'Please provide title and contents for the post.' });
-            }
-            else {
-                res.status(201).json({ messege: 'Post Successful.' });
-            }
+        .then(post => {
+            res.status(201).json({ messege: 'Post Successful.' });
+        }
         })
-        .catch(err => {
-            res.status(500).json({ message: 'here was an error while saving the post to the database' });
-        })
+    .catch(err => {
+        res.status(500).json({ message: 'here was an error while saving the post to the database' });
+    })
 })
 
 // When the client makes a GET request to /api/posts:
@@ -155,20 +155,23 @@ server.delete('/api/posts/:id', (req, res) => {
 // -. return the newly updated post.
 
 server.put('/api/posts/:id', (req, res) => {
-    const id = req.param.id;
+    const { id } = req.param
     const ob = req.body;
+
+    if (!update.title || !update.contents) {
+        res.status(400).json({
+            errorMessage: "Please provide title and contents for the post."
+        });
+    }
+
     db
         .update(ob)
-        .then(response => {
-            if (id === 'undefined') {
-                res.status(404).json({ message: 'The post with the specified ID does not exist.' });
-            } else if (req.body.title !== 'undefined' && req.body.contents !== 'undefined') {
-                res.status(400).json({ message: 'Please provide title and contents for the post.' });
+        .then(count => {
+            if (count > 0) {
+                res.status(200).json({ msg: 'updated successfully' })
             } else {
-                res.status(200);
-                return res.id;
+                res.status(404).json({ msg: 'post not found'});
             }
-            
         })
         .catch(err => {
             res.status(500).json({ error: 'The post information could not be modified.' });
