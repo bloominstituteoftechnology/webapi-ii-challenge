@@ -82,14 +82,15 @@ server.delete('/api/posts/:id', (req, res) => {
     .then(post => {
         posts = { ...post[0] }
     })
-    .catch(err => {
-        res.status(404).json(err);
-    })
 
     db
     .remove(id)
     .then(response => {
-        res.status(200).json(posts);
+        if (response) {
+            res.status(200).json(posts);
+        } else {
+            res.status(404).json({ message: "The post with the specified ID does not exist." });
+        }
     })
     .catch(err => {
         res.status(500).json({ error: "The post could not be removed" });
