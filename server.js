@@ -1,29 +1,31 @@
 // import your node modules
 
 const express = require('express');
-
 const server = express();
+const helmet = require('helmet');
 
 server.listen('5000', () => console.log('server listening on port 5000'));
 const db = require('./data/db.js');
 
 const knex = require('knex');
 const knexConfig = require('./knexfile.js');
-const dborm = knex(knexConfig.development);
-// add your server code starting here
+knex(knexConfig.development);
+
+server.use(helmet()); // 3
+server.use(express.json());
 
 server.post('/api/posts', (req, res) => {
-  if (!req.query.title || !req.query.contents) {
-    res.status(400).json({ errorMessage: "Please doit provide title and contents for the post." });
+  if (!req.body.title || !req.body.contents) {
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
   } else {
     db
-      .insert({ title: req.query.title, contents: req.query.contents })
+      .insert(req.body)
       .then((response) => {
         db.findById(response.id) 
           .then (newPost => {
-            return res.status(201).json(newPost);
+            return res.status(201).json(newPost[0]);
           })
-          .catch(err => res.status(500).json({ error: err }));
+          .catch(err => res.status(500).json({ error: "There was an error while saving the post to the database" }));
       }); 
   }
 });
@@ -32,5 +34,47 @@ server.get('/api/posts', (req, res) => {
   db
     .find()
     .then(posts => res.status(200).json(posts))
-    .catch(err => res.status(500).json({ error: err }));
+    .catch(err => res.status(500).json({ error: 'The posts information could not be retrieved.' }));
+});
+
+
+server.get('/api/posts/:id', (req, res) => {
+  db
+    .findById(req.params.id)
+    .then(post => {
+      if (post.length > 0) {
+        return res.status(200).json(post[0]);
+      } else {
+        return res.status(404).json({ message: "The post with the specified ID does not exist."});
+      }
+    })
+    .catch(err => res.status(500).json({ error: 'The posts information could not be retrieved.' }));
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+  db
+    .findById(req.params.id)
+    .then(post => {
+      if (post.length > 0) {
+        return res.status(404).json({ message: "The post with the specified ID does not exist."});
+      }
+    });
+      
+  db
+    .remove(req.params.id)
+    .then(x => console.log(x))
+    .catch(err => res.status(500).json({ error: 'The posts information could not be retrieved.' }));
+});
+
+server.put('/api/post/:id', (req, res) => {
+  db
+    .findById(req.params.id)
+    .then(post => {
+      if (post.length > 0) {
+        return res.status(404).json({ message: "The post with the specified ID does not exist."});
+      }
+    });
+
+
+  
 });
