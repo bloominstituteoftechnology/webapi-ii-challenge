@@ -6,11 +6,13 @@ const db = require('./data/db.js');
 
 const server = express();
 
+server.use(express.json());
+
 server.get('/', (req,res)=>{
 res.send('API IS APIE')
 })
 
-server.get('/api/posts', (req, res)=>{
+server.get('/posts', (req, res)=>{
     db
     .find()
     .then(posts =>{
@@ -35,33 +37,40 @@ const {id} = req.params;
 });
 server.post('/posts', (req, res)=>{
   const post = req.body;
+  console.log(req.body)
     db
     .insert(post)
-    .then(post =>{
-       res.status(201).res.json(post);
-
+    .then(response =>{
+        db.findById(response.id)
+        .then(post =>{
+            res.json(post)
+        }     
+        )
     })
-
     .catch(err=>{
         res.status(400).json({error: "Please provide name and bio for the user."});
     });
 });
 server.put('/posts/:id', (req, res)=>{
-    const id = req.params.id
-    const newPost = req.body;
+    const { id } = req.params
+    const update = req.body;
     db
-    .update(id, newPost)
+    .update(id, update)
     .then(count =>{
+
         if(count > 0){
-            db.findById(id).then(update =>{
-                res.status(200).json(update[0]);
+            db
+            .findById(id)
+            .then(posts =>{
+            
+                res
+                .status(200)
+                .json(posts[0]);
             })
         } else{
             res.status(400)
             .json({message:"this post does not exist"})
         }
-        res.json(posts);
-
     })
     .catch(err=>{
         res.status(400).json({error: "There was an error while saving the user to the database"});
@@ -69,15 +78,17 @@ server.put('/posts/:id', (req, res)=>{
 });
 
 server.delete('/posts/:id', (req, res)=>{
-    const {id} = req.params.id
+    const { id } = req.params
     let post;
     db
         .findById(id)
         .then(foundPost =>{
-            post ={...foundPost}
-        
-      db.remove(id).then(post => {
-            res.status(204).json(post);
+           
+            post ={ ...foundPost[0] }
+      db
+      .remove(id)
+      .then(response => {
+            res.status(200).json(post);
         })
           })
          .catch(err =>{
