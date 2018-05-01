@@ -4,6 +4,9 @@ import './App.css';
 import axios from 'axios';
 import styled from 'styled-components';
 
+const StyledDiv = styled.div``;
+const StyledH3 = styled.h3``;
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -29,8 +32,14 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="app-container">{this.state.posts.map(post => <div><h3>{post.title} </h3>
-        <p>{post.contents} </p></div>)}</div>
+        <div className="app-container">
+          {this.state.posts.map(post => (
+            <StyledDiv>
+              <StyledH3>{post.title} </StyledH3>
+              <p>{post.contents} </p>
+            </StyledDiv>
+          ))}
+        </div>
       </div>
     );
   }
