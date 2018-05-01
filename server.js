@@ -8,7 +8,6 @@ const db = require("./data/db.js");
 
 const server = express();
 
-
 // middleware
 // server.use(morgan("dev"));
 server.use(bodyParser.json());
@@ -137,14 +136,18 @@ server.put("/api/posts/:id", (req, res) => {
   db
     .update(id, updatedPost)
     .then(response => {
-      db
-        .findById(id)
-        .then(response => {
-          res.status(200).json(response[0]);
-        })
-        .catch(error => {
-          res.status(500).json({ error: "Cannot update the post" });
-        });
+      if (response > 0) {
+        db
+          .findById(id)
+          .then(post => {
+            res.status(200).json(post[0]);
+          })
+          .catch(error => {
+            res.status(500).json({ error: "Cannot update the post" });
+          });
+      } else {
+        res.status(404).json({ msg: "post is not found" });
+      }
     })
     .catch(error => {
       res.status(500).json({ error: "Cannot update the post" });
