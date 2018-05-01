@@ -16,8 +16,9 @@ server.post('/api/posts', (req, res) => {
   const postBody = req.body;
   console.log('post body', postBody);
 
-  if(post.title === " " || post.contents === " "){
+  if(postBody.title === "" || postBody.contents === ""){
     res.status(400).json({ error: "Please provide title and contents for the post." });
+    console.log(req.title);
   } else {
     db
     .insert(postBody)
@@ -67,16 +68,16 @@ db
 });
 
 // DELETE posts by ID
-server.delete('/api/users', function(req, res) {
+server.delete('/api/posts', function(req, res) {
   const { id } = req.query;
   let user;
   db
     .findById(id)
-    .then(foundUser => {
-      user = { ...foundUser[0] };
+    .then(foundPost => {
+      user = { ...foundPost[0] };
 
       db.remove(id).then(response => {
-        res.status(200).json(user);
+        res.status(200).json(post);
       });
     })   
     .catch(err => {
