@@ -1,8 +1,10 @@
 const express = require("express");
 const db = require("./data/db.js");
 const server = express();
+const CORS = require("cors");
 
 server.use(express.json());
+server.use(CORS());
 
 server.get("/", (req, res) => {
   res.send("Api running");

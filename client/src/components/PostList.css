@@ -1,0 +1,11 @@
+.post-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.post {
+  text-align: center;
+  width: 100%;
+  border: 1px solid red;
+}
