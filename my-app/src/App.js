@@ -32,6 +32,16 @@ class App extends Component {
     })
   }
 
+  delete = id => {
+    axios.delete(`http://localhost:5000/api/posts/${id}`)
+    .then(response => {
+      alert(`Post ${id} was successfully deleted`)
+    })
+    .catch(err => {
+      console.log("Error while deleting")
+    })
+  }
+
 
 
   render() {
@@ -43,9 +53,12 @@ class App extends Component {
         <ul>
           {this.state.posts.map(post => {
             return(
-              <li key={post.id}>
-                <h3>{post.title}</h3>
-                <p>{post.contents}</p>
+              <li key={post.id} className="card">
+                <h2>{post.title}</h2>
+                <p>- {post.contents}</p>
+                <button onClick={() => {
+                  this.delete(post.id)
+                }}>Delete</button>
               </li>
             )
           })}

@@ -1,28 +1,30 @@
-.App {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.card {
+  background-color: rgba(241, 245, 245, .6);
+  width: 45%;
+  margin: 1% 1.5%;
+  padding: 2%;
   text-align: center;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+li {
+  list-style: none;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+h2 {
+  color: rgb(114, 54, 54);
 }
 
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+p{
+  margin-top: 5%;
+  font-size: 1.3rem;
+  color: rgb(110, 110, 110)
 }
