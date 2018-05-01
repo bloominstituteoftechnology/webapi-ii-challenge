@@ -1,6 +1,7 @@
 // import your node modules
 const express = require("express");
 const helmet = require("helmet");
+const cors = require("cors");
 const server = express();
 const db = require("./data/db");
 
@@ -9,12 +10,12 @@ server.use(helmet()); // 3rd party pkg
 server.use(express.json()); // opting in to using json
 
 // home
-server.get("/", (req, res) => {
+server.get("/", cors(), (req, res) => {
 	res.send("API running");
 });
 
 // GET api/posts
-server.get("/api/posts", (req, res) => {
+server.get("/api/posts", cors(), (req, res) => {
 	// make a request for list of posts
 	// resolve by returning posts or throw an error
 	db
@@ -23,14 +24,14 @@ server.get("/api/posts", (req, res) => {
 			res.json(posts);
 		})
 		.catch(err => {
-			res
-				.status(500)
-				.json({ error: "The posts information could not be retrieved." });
+			res.status(500).json({
+				error: "The posts information could not be retrieved."
+			});
 		});
 });
 
 // GET /api/posts/:id
-server.get("/api/posts/:id", (req, res) => {
+server.get("/api/posts/:id", cors(), (req, res) => {
 	const id = req.params.id;
 
 	db
@@ -38,22 +39,22 @@ server.get("/api/posts/:id", (req, res) => {
 		.then(posts => {
 			// validate
 			if (posts.length === 0) {
-				res
-					.status(404)
-					.json({ error: "The posts information could not be retrieved." });
+				res.status(404).json({
+					error: "The posts information could not be retrieved."
+				});
 			} else {
 				res.json(posts[0]);
 			}
 		})
 		.catch(err => {
-			res
-				.status(500)
-				.json({ error: "The posts information could not be retrieved." });
+			res.status(500).json({
+				error: "The posts information could not be retrieved."
+			});
 		});
 });
 
 // POST /api/posts
-server.post("/api/posts", (req, res) => {
+server.post("/api/posts", cors(), (req, res) => {
 	const post = req.body;
 
 	if (post.title.length === 0 || post.contents.length === 0) {
@@ -73,7 +74,7 @@ server.post("/api/posts", (req, res) => {
 });
 
 // DELETE /api/posts/:id
-server.delete("/api/posts/:id", (req, res) => {
+server.delete("/api/posts/:id", cors(), (req, res) => {
 	const { id } = req.params;
 	let user;
 
@@ -99,7 +100,7 @@ server.delete("/api/posts/:id", (req, res) => {
 
 // PUT /api/posts/:id
 
-server.put("/api/posts/:id", (req, res) => {
+server.put("/api/posts/:id", cors(), (req, res) => {
 	// define id and object params for PUT request
 	const id = req.params.id;
 	const update = req.body;
@@ -114,9 +115,9 @@ server.put("/api/posts/:id", (req, res) => {
 				});
 			} else {
 				// id not found - error 404
-				res
-					.status(404)
-					.json({ message: "The post with the specified ID does not exist." });
+				res.status(404).json({
+					message: "The post with the specified ID does not exist."
+				});
 			}
 		})
 		.catch(err => {
