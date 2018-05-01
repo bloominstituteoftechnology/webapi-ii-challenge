@@ -2,7 +2,6 @@ const express = require('express');
 const db = require('./data/db.js');
 
 
-
 const server = express();
 server.use(express.json());
 
@@ -71,14 +70,14 @@ server.delete('/api/posts/:id', (req, res) => {
     let post;
     db
         .findById(id)
-        .then(foundUser => {
-            user = { ...foundUser[0] };
+        .then(foundpost => {
+            post = { ...foundpost[0] };
             })
         db.remove(id).then (response => {
         if (id === 'undefined') {
             res.status(404).json({ message: 'The post with the specified ID does not exist.'})
         } else {
-            res.status(200).json(user);
+            res.status(200).json(post);
         }
     })
     .catch(err => {
