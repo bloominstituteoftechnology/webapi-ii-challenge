@@ -78,15 +78,15 @@ server.delete("/api/posts/:id", (req, res) => {
     .then(response => {
       tempPost = response[0];
     })
-    .catch(() => {
+    .catch(error => {
       res
         .status(500)
-        .send({ message: "The post with the specified ID does not exist." });
+        .send({ error: "The post with the specified ID does not exist." });
     });
   db
     .remove(id)
-    .then()
-    .catch(() => {
+    .then(response => res.status(201).send({ tempPost }))
+    .catch(error => {
       error: "The post could not be removed";
     });
 });
