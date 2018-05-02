@@ -1,0 +1,16 @@
+.postsHeader {
+    margin-top: 25px;
+}
+
+.postsRow {
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.postCard {
+    text-decoration: none;
+    color: #000;
+    font-size: 15px;
+    width: 33%;
+    margin-bottom: 20px;
+}
