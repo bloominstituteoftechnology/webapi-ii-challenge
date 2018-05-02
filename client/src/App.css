@@ -1,28 +1,45 @@
 .App {
   text-align: center;
+  font-family: 'IM Fell English SC', serif;
+  background-image: url(https://i.pinimg.com/originals/a1/5d/c4/a15dc4bd657ca042b6da16e6cba11dff.jpg);
+  background-repeat: repeat;
+  background-size: contain;
+  width: 100%;
+  padding: 15px;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+h1 {
+  color: #C6A024;
+  font-size: 65px;
+  text-shadow:
+		-10px -3px 0 #000,
+		1px -1px 0 #000,
+		-10px 3px 0 #000,
+    1px 1px 0 #000;
+    text-shadow: 3px 3px 4px linen;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.frotocard {
+  border: 0;
+  padding: 55px;
+  width: 35%;
+  background-image: url(http://sfwallpaper.com/images/lord-of-the-rings-wallpaper-download-8.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 2rem auto;
+  font-size: 25px;
+  border: 5px solid darkolivegreen;
+  cursor: pointer;
+  color: #151D0E;
+  box-shadow: 8px 6px 9px #E3EB99;
 }
 
-.App-title {
-  font-size: 1.5em;
+.title {
+  margin-top: 25px;
+  font-weight: bold;
 }
 
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.contents {
+  font-size: 20px;
+  margin-top: 5px;
 }

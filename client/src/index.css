@@ -2,4 +2,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  /* background-image: url(https://i.pinimg.com/originals/a1/5d/c4/a15dc4bd657ca042b6da16e6cba11dff.jpg);
+  background-repeat: no-repeat;
+  background-size: cover; */
+  max-width: 100;
 }

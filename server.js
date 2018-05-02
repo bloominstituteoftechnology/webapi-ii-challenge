@@ -3,12 +3,14 @@ const express = require('express');
 // const bodyParser = require('body-parser');
 const helmet = require('helmet'); //extra security for FREE
 const db = require('./data/db.js');
+const cors = require('cors');
 
 const server = express();
 
 //add middleware
 server.use(helmet());
 server.use(express.json());
+server.use(cors());
 // server.use(bodyParser.json());
 
 // add your server code starting here
