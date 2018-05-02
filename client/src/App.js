@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 
@@ -15,8 +15,8 @@ class App extends Component {
     return (
       <div className="App">
         <Route exact path="/" component={Home} />
-        <Route exact path="/api/posts" render={props => <List {...props} propsList={this.props} />} />
-        <Route path="/api/posts/:id" render={props => <PostCard {...props} propsPC={this.props} />} />
+        <Route path="/api/posts" render={props => <List {...props} propsList={this.props} />} />
+        {/* <Route path="/api/posts/:id" render={props => <PostCard {...props} propsPC={this.props} />} /> */}
       </div>
     );
   }
@@ -29,6 +29,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
   fetchPost
-})(App);
+})(App));

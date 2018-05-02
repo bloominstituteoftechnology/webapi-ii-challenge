@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-
-
 class List extends Component {
   constructor(props) {
     super(props);
@@ -19,8 +17,10 @@ class List extends Component {
           <div key={index}>
             <Link to={`/api/posts/${index}`}>
               <div className="EachNote">
-                <h1>{eachPost.title}</h1>
-                <p>{eachPost.contents}</p>
+                <div>
+                  <h1>{eachPost.title}</h1>
+                  <p>{eachPost.contents}</p>
+                </div>
               </div>
             </Link>
           </div>
@@ -30,4 +30,4 @@ class List extends Component {
   }
 }
 
-export default List
+export default List;

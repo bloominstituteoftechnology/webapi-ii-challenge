@@ -12,13 +12,19 @@ class PostCard extends Component {
   render() {
     const postsArray = this.props.propsPC.posts;
     const index = this.props.match.params.id;
-
+    console.log(postsArray[index])
     return (
       <div>
         hello
         <div className="EachNote">
-          <h1>{postsArray[index].title}</h1>
-          <p>{postsArray[index].contents}</p>
+          {postsArray[index].map((eachPost) => (
+            <div key={index}>
+              <div className="EachNote">
+                <h1>{eachPost.title}</h1>
+                <p>{eachPost.contents}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );
