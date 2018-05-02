@@ -1,31 +1,19 @@
 import React,{Component} from "react";
-import { find } from '../data/db.js';
 
-class PostList extends Component {
-  //console.log("Props", props);
-  // map over peopleProp return a dom elment for each person name in list
 
-  constructor(props){
-    super(props);
-    this.state = {
-      posts: [],
-    }
-  }
+const PostList = ({ posts }) => (
+  <div >
+    {posts.map((post) => (
+      <Post {...post} />
+    ))}
+  </div>
+)
 
-  componentDidMount(){ // lifecycle method defacto.
-  console.log('CDM--find', find)
-  this.setState({ posts: find() });// everything on state is mutable.
-  }
-
-render(){
-console.log('from peopleList', this.state.posts)
-  return (
-
-    <div>
-      {this.state.posts.map(p => <div>{p.index} {p.contents}</div>)}
-    </div>
-  )
-}
-};
+const Post = ({ title, contents }) => (
+  <div>
+    <h1>{title} </h1>
+    <h2>{contents} </h2>
+  </div>
+)
 
 export default PostList;

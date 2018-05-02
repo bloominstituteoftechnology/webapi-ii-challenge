@@ -1,12 +1,15 @@
-// import your node modules
-const express = require('express');
-
-// add your server code starting here
-
-const server = express();
-server.use(express.json());
-
 const db = require('./data/db.js');
+const helmet = require('helmet');
+const express = require('express');
+const server = express();
+const cors = require('cors')
+server.use(express.json());
+server.use(helmet());
+server.use(cors());
+
+/*
+https://www.npmjs.com/package/cors
+*/
 
 server.get('/', (req, res) => {
   res.send('API Running');
@@ -79,7 +82,12 @@ server.put('/api/posts/:id', (req, res) => {
     res.status(500).json({ error: "The post information could not be modified." });
   });
 });
-server.listen(3000);
+
+const port = 5000;
+
+/*eslint-disable */
+server.listen(port, () => console.log(`server running on http://localhost:${port}`));
+
 
 
 
