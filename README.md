@@ -119,7 +119,7 @@ When the client makes a `GET` request to `/api/posts/:id`:
   * respond with HTTP status code `500`.
   * return the following JSON object: `{ error: "The post could not be removed" }`. -->
 
-When the client makes a `PUT` request to `/api/posts/:id`:
+<!-- When the client makes a `PUT` request to `/api/posts/:id`:
 
 * If the _post_ with the specified `id` is not found:
 
@@ -142,7 +142,7 @@ When the client makes a `PUT` request to `/api/posts/:id`:
 
   * update the post document in the database using the new information sent in the `reques body`.
   * return HTTP status code `200` (OK).
-  * return the newly updated _post_.
+  * return the newly updated _post_. -->
 
 ## Stretch Problems
 
