@@ -33,7 +33,7 @@ const REMOVE_ERROR = {
   code: 500,
 };
 
-module.exports = {
+export {
   INPUT_ERROR,
   SAVE_ERROR,
   GET_ERROR,

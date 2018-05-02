@@ -58,7 +58,14 @@ typings/
 .env
 
 # Mac files
-.DS_Store 
+.DS_Store
 
-# Sqlite
-*.sqlite3
+# built files
+dist
+.cache
+
+# vscode
+jsconfig.json
+
+# Node
+.nvmrc
