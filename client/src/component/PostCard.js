@@ -1,13 +1,28 @@
 import React, { Component } from "react";
 
-const PostCard = (props) => {
-  console.log(props);
-  return (
-    <div className="EachNote" key={index}>
-      <h1>{eachPost.title}</h1>
-      <p>{eachPost.contents}</p>
-    </div>
-  );
-};
+class PostCard extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.propsPC.fetchPost();
+  }
+
+  render() {
+    const postsArray = this.props.propsPC.posts;
+    const index = this.props.match.params.id;
+
+    return (
+      <div>
+        hello
+        <div className="EachNote">
+          <h1>{postsArray[index].title}</h1>
+          <p>{postsArray[index].contents}</p>
+        </div>
+      </div>
+    );
+  }
+}
 
 export default PostCard;
