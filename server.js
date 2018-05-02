@@ -67,21 +67,26 @@ db
   });
 });
 
-// DELETE posts by ID
-server.delete('/api/posts', function(req, res) {
-  const { id } = req.query;
-  let user;
-  db
-    .findById(id)
-    .then(foundPost => {
-      user = { ...foundPost[0] };
+// DELETE post
+server.delete('/api/posts/:id', function(req, res) {
+  const { id } = req.params;
+  let post;
 
-      db.remove(id).then(response => {
-        res.status(200).json(post);
-      });
-    })   
-    .catch(err => {
-      res.status(500).json({ error: err });
+  db.findById(id)
+    .then(response => {
+      post = {...response[0]}; // making a copy of the post so that when post is deleted, the copy is intact and can be returned.
+      
+      db
+        .remove(id)  // deleting the actual post from the database
+        .then(response => {
+          res.status(200).json(post); // returning the copy of the post we made here, to confirm to the user that this is the record they deleted.
+        })
+        .catch(error => {
+          res.status(500).json({error: "The post could not be removed."});
+        });
+    })
+    .catch(error => {
+      res.status(500).json(error);
     });
 });
 
