@@ -5,35 +5,32 @@ const db = require('./data/db');
 const server = express();
 
 // middleware
-server.use(express.json());
 server.use(helmet());
+server.use(express.json());
 
 // route handlers 
 
 
 // POST post
 server.post('/api/posts', (req, res) => {
-  const postBody = req.body;
-  console.log('post body', postBody);
+  const post = req.body;
 
-  if(postBody.title === "" || postBody.contents === ""){
+  if(post.title === "" || post.contents === "") {
     res.status(400).json({ error: "Please provide title and contents for the post." });
-    console.log(req.title);
   } else {
-    db
-    .insert(postBody)
-    .then(response => {
-      res.status(201).json({ Message: "Created." });
-    })
-    .catch(error => {
-      res.status(500).json({ error: "There was an error while saving the post to the database" 
-      });
-    });
-  }
-    });
+        db
+        .insert(post)
+        .then(response => {
+          res.status(201).json({ post });
+        })
+        .catch(error => {
+          res.status(500).json({ error: "There was an error while saving the post to the database" });
+        });
+    };
+});
 
 
-// GET posts
+    // GET posts
 
 // resolve '/'
 server.get('/', (req, res) => {
@@ -98,20 +95,19 @@ server.put('/api/posts/:id', function(req, res) {
   db
     .update(id, update)
     .then(count => {
-      if (count > 0) {
-        db.findById(id).then(users => {
-          res.status(200).json(users[0]);
-      });
-    } else {
-      res.status(404).json({ msg: 'user not found' });
-    }
-  })
-  .catch(err => {
-    res.status(500).json(err);
-  });
+      if(count > 0) {
+        db.findById(id).then(updatedPost => {
+          res.status(200).json(updatedPost);
+        });
+      } else {
+        res.status(404)
+        .json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error: "The post could not be removed." });
+    });
 });
 
+
 server.listen(5000, () => console.log('\n== API Running on port 5000 ==\n'));
-
-
-
