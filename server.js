@@ -67,39 +67,41 @@ server.get('/api/posts/:id', (request, response) => {
             response.status(500);
             response.json({ error: 'the Post information could not be found' })
         })
-    
+
 });
 
 // Delete a Post by Id
 // MAke the response go when id doesnt exist
-server.delete('/api/posts/:id', (request, response) => {
-    const id = request.params.id;
+server.delete('/api/posts', (request, response) => {
+    const { id } = request.query;
+    let user = '';
 
     db
-        .remove(id)
-        .then(post => {
-            if (id === 0 ) {
-                response.status(404);
-                response.json({ message: 'The post with specified ID does not exist' })
-            }
-            response.json(post)
+        .findById(id)
+        .then(foundPost => {
+            user = { ...foundPost };
+            db.remove(id)
+                .then(post => {
+                    response.status(200).json(user);
+                })
         })
         .catch(error => {
             response.status(500);
             response.json({ error: 'the Post could not be removed.' })
         })
-    
+
 });
 
 // Update a Post by Id
+//// MAke the response go when id doesnt exist
+//doesnt show the post, shows numbeR?
+
 server.put('/api/posts/:id', (request, response) => {
-    const id = request.params.id;
-    let title = request.body.title;
-    let contents = request.body.contents;
-    let post = { title, contents };
+    const { id } = request.params;
+    const update = request.body;
 
     db
-        .update(id, post)
+        .update(id, update)
         .then(post => {
             if (!title || !contents) {
                 response.status(400);
@@ -108,12 +110,11 @@ server.put('/api/posts/:id', (request, response) => {
             response.status(200);
             response.json(post)
         })
-        .catch(error => {            
-            response.status(500);
-            response.json({ error: 'the Post with the specified Id could not be modified.' })
+        .catch(error => {
+            response.status(500).json({ error: 'the Post with the specified Id could not be modified.' })
         })
-    
-    
+
+
 });
 
 
