@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background: rgb(173, 128, 76);
 }
 
 .App-logo {
@@ -25,4 +26,12 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.card{
+  width: 450px;
+  margin: 0 auto;
+margin-bottom: 10px;
+background: rgb(240, 240, 198)
+
 }
