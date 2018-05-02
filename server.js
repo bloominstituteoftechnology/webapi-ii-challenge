@@ -3,21 +3,28 @@ const server = express();
 const db = require('./data/db.js');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const cors = require('cors');
+server.use(cors());
 server.use(helmet());
+
 server.use(bodyParser.json());
-server.get('/', (req,res)=>{
-    //  res.send("api is running")
+
+
+
+
+server.get('/', (req,res)=>{  
      res.send('<div> hello </div>')
 }
 )
 server.get('/posts' , (req,res)=>{
+    console.log('hittititit')
       db 
       .find()
       .then(posts =>{
         res.json(posts)
       })
       .catch(err =>{
-          res.json({error: err})
+          res.status(500).json({error: err})
       }
     )
    
@@ -31,7 +38,7 @@ server.get('/posts/:id', (req,res)=>{
        .then((posts)  => {
         
                       if ( posts.length === 0){
-                                 res.status(404).json({ warning:"user not found "})
+                        res.status(404).json({ warning:"users not found "})
                        }
                       else{
                               res.json(posts[0])
@@ -50,22 +57,32 @@ server.post('/posts', (req, res)=>{
         db
             .insert({title:req.body.title, contents: req.body.contents})
             .then(post => {
+
                 res.json(post);
             })
             .catch(err => {
-                console.log(err);
+                 res.status(500).json({ error: err})
             });
 
 })
 server.delete('/posts/:id', (req, res) => {
- const id = req.params.id
-        db
+    const id = req.params.id
+    let postDeleted
+        
+    db 
+        .findById(id)
+        .then( foundPost =>{
+         postDeleted = { ...foundPost[0]}
+        
+        })
+ 
+     db
         .remove(id)
         .then(post => {
-            res.json(post);
+            res.json(postDeleted);
         })
         .catch(err => {
-            console.log(err);
+           
             res.status(500).json({ error: err})
         });
 
@@ -79,7 +96,7 @@ server.delete('/posts', (req, res) => {
             res.json(posts);
         })
         .catch(err => {
-            console.log(err);
+           
             res.status(500).json({ error: err })
         });
 
@@ -87,21 +104,24 @@ server.delete('/posts', (req, res) => {
 
 server.put('/posts/:id', (req, res) => {
     const id = req.params.id
-   
-    console.log(req.body);
+    let updatedPost;
+    
+ 
     db
         .update(id, { title: req.body.title, contents:req.body.contents})
-        .then(posts => {
-            res.json(posts);
+        .then(response => {
+    db
+        .findById(id)
+        .then(postsById => {
+            updatedPost = { ...postsById[0] };
+        res.status(200).json(updatedPost);
+
+        })         
         })
         .catch(err => {
            
-            res.status(500).json({ error: err })
+            res.status(404).json({ error: 'post not found' })
         });
 
 })
-
-
-
-
 server.listen(5001);

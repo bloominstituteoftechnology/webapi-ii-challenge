@@ -1,0 +1,31 @@
+.App {
+  text-align: start;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  
+}
+
+
+.PostsSection{
+  border: 2px solid red;
+  width: 60%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column ;
+  align-items: center;
+  
+}
+.Post{
+  border: 2px solid blue;
+  padding:10px;
+  width: 70%;
+  background: lightgreen;
+  height: 40%;
+}
+span{
+ font-size: 20px;
+ font-weight: bold ;
+}
+
+
