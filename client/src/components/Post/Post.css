@@ -1,0 +1,12 @@
+.postContainer {
+    max-width: 600px;
+}
+
+.editPost {
+    display: flex;
+    justify-content: center;
+}
+
+.editPostButton {
+    margin-left: 10px;
+}
