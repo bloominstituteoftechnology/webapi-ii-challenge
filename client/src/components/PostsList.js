@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { getPosts } from '../actions';
 import { connect } from 'react-redux';
 import './PostsList.css';
+import { Link } from 'react-router-dom';
 
 class PostsList extends Component {
   state = {
@@ -16,10 +17,12 @@ class PostsList extends Component {
   render() {
     return (
         <div className="mainList"><h3 className="headerposts">Posts:</h3>
-          {this.props.posts.map(post => <div className="overall"><div key={post.id} className="postList">
-                                            <div className="postContent">{post.contents}:</div>
-                                            <div className="postTitle">{post.title}</div>
-                                            </div></div>)}
+          {this.props.posts.map(post => <Link to={`/posts/${post.id}`} key={post.id} className="overall">
+                                            <div key={post.id} className="postList">
+                                                <div className="postContent">{post.contents}:</div>
+                                                <div className="postTitle">{post.title}</div>
+                                            </div>
+                                        </Link>)}
         </div>
     );
   }

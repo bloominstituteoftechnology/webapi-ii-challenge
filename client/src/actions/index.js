@@ -2,6 +2,7 @@ import axios from 'axios';
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCHED_POSTS = 'FETCHED_POSTS';
 export const ERROR_FETCHING = 'ERROR_FETCHING';
+export const FETCH_POST = 'FETCH_POST';
 
 export const getPosts = () => {
     const posts = axios.get(`http://localhost:5000/api/posts/`);
@@ -22,3 +23,20 @@ export const getPosts = () => {
         });
     };
   };
+
+export const getPost = id => {
+  const post = axios.get(`http://localhost:5000/api/posts/${id}`);
+  return dispatch => {
+    post
+      .then(response => {
+        console.log(response)
+        dispatch({ 
+          type: FETCH_POST, 
+          payload: response.data[0]
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+}
