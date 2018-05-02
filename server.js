@@ -6,18 +6,38 @@ const helmet = require('helmet');
 const cors = require('cors');
 server.use(cors());
 server.use(helmet());
-
 server.use(bodyParser.json());
 
+//--------middleware-----//
 
 
+
+ function logger(x){
+ return function(req,res,next){
+ console.log('aissani')
+
+    next();
+}
+}
+
+function greeting(){
+   return function( req, res, next ){
+  console.log('hilal')
+  next();
+}
+}
+
+server.use(logger());
+server.use( greeting())
+
+//----------middleware------//
 
 server.get('/', (req,res)=>{  
      res.send('<div> hello </div>')
 }
 )
 server.get('/posts' , (req,res)=>{
-    console.log('hittititit')
+    
       db 
       .find()
       .then(posts =>{
