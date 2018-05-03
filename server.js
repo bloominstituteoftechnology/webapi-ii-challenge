@@ -7,16 +7,20 @@
 
  const server = express();
 
-//  server.post('/api/posts', (req, res) => {
-//     db
-//        .find() // this returns a promise.
-//        .then(posts => {
-//            res.json(posts);
-//        })
-//        .catch(err => {
-//            res.status(500).json({err: err});
-//        })
-// })
+ // add middleware
+ server.use(express.json);
+
+ server.post('/api/users/', (req, res) => {
+     const user = req.body;
+
+    user.insert(obj)
+       .then(response => {
+           res.status(201).json(response);
+       })
+       .catch(err => {
+           res.status(500).json({err: err});
+       })
+})
 
  server.get('/api/posts', (req, res) => {
      db
@@ -66,7 +70,7 @@ server.delete('/api/posts/:id', (req, res) => {
 
 // server.put('/api/posts/:id', (req, res) => {
 //     db
-//        .find() // this returns a promise.
+//        .findById(id) // this returns a promise.
 //        .then(posts => {
 //            res.json(posts);
 //        })
