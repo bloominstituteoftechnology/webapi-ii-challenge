@@ -28,12 +28,31 @@ class App extends Component {
         console.error(error);
       });
   }
+  // filter list of posts when a search is performed
+  filterPostsList = searchQuery => {
+    // title refers to the title of the post the user enters in the search bar
+    // default search is search by title
+    const searchResult = this.state.posts.filter(post => {
+      return post.title === searchQuery;
+    });
+    console.log("SEARCHRESULT: ", searchResult);
+    // search by content
+    if (searchResult.length === 0) {
+      const searchByContents = this.state.posts.filter(post => {
+        return post.contents === searchQuery;
+      });
+      console.log("SEARCHBYCONTENTS: ", searchByContents);
+      this.setState({ posts: searchByContents });
+    } else {
+      this.setState({ posts: searchResult });
+    }
+  };
 
   render() {
     console.log("state: ", this.state);
     return (
       <div className="App">
-        <SearchBar />
+        <SearchBar filterPostsList={this.filterPostsList} />
         {/* render Posts here */}
         <Posts posts={this.state.posts} />
       </div>
