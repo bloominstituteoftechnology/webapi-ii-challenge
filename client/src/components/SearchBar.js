@@ -24,14 +24,15 @@ class SearchBar extends Component {
 	render() {
 		return (
 			<Paper className="SearchBar" zDepth={2}>
+				<i class="material-icons md-24 SearchBar__Icon">search</i>
 				<form
+					className="SearchBar__Input"
 					onSubmit={event => {
 						event.preventDefault();
 						this.props.filterPostsList(this.state.searchText);
 					}}
 				>
 					<TextField
-						className="SearchBar__Input"
 						hintText="Search here..."
 						underlineStyle={{ display: "none" }}
 					>
