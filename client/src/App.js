@@ -21,7 +21,6 @@ class App extends Component {
     axios
       .get("http://localhost:5000/api/posts")
       .then(response => {
-        // console.log("response: ", response.data);
         this.setState({ posts: response.data });
       })
       .catch(error => {
@@ -35,13 +34,11 @@ class App extends Component {
     const searchResult = this.state.posts.filter(post => {
       return post.title === searchQuery;
     });
-    console.log("SEARCHRESULT: ", searchResult);
     // search by content
     if (searchResult.length === 0) {
       const searchByContents = this.state.posts.filter(post => {
         return post.contents === searchQuery;
       });
-      console.log("SEARCHBYCONTENTS: ", searchByContents);
       this.setState({ posts: searchByContents });
     } else {
       this.setState({ posts: searchResult });
@@ -49,7 +46,6 @@ class App extends Component {
   };
 
   render() {
-    console.log("state: ", this.state);
     return (
       <div className="App">
         <SearchBar filterPostsList={this.filterPostsList} />
