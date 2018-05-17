@@ -43,10 +43,10 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params;
-    let user;
+    let post;
     db.findById(id) 
-      .then( foundUser => {
-          user = Object.assign({}, foundUser);
+      .then( foundPost => {
+          user = Object.assign({}, foundPost);
           return db.remove(id);
       })
       .then( () => {
