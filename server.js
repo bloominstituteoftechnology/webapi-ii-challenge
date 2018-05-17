@@ -28,3 +28,16 @@ server.get('/api/posts', (req, res) => {
             res.status(500).json({ error: "The posts informations could not be retrieved." })
         })
 })
+
+server.get('/api/posts/:id', (req, res) => {
+    const postId = req.params.id;
+
+    db.findById(postId)
+      .then( post => {
+          res.json({ post });
+      })
+      .catch( err => {
+          res.status(404).json({ error: "The post with the specified ID does not exist." })
+      })
+})
+
