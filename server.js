@@ -15,7 +15,10 @@ server.use(express.json());
 
 // okay now, just like in the lecture video, let's make our server routes:
 
-server.get('/', () => {
-    console.log('<h2>GET REQUEST RECEIVED</h2>');
+server.get('/', (req, res) => {
+    res.send('<h2>GET REQUEST RECEIVED</h2>');
 })
 
+server.get('/api/posts', (req, res) => {
+
+})
