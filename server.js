@@ -41,3 +41,6 @@ server.get('/api/posts/:id', (req, res) => {
       })
 })
 
+server.delete('/api/users/posts/:id', (req, res) => {
+    
+})
