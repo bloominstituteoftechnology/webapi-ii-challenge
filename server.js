@@ -41,6 +41,16 @@ server.get('/api/posts/:id', (req, res) => {
       })
 })
 
-server.delete('/api/users/posts/:id', (req, res) => {
-    
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    let user;
+    db.findById(id) 
+      .then( foundUser => {
+          user = Object.assign({}, foundUser);
+          return db.remove(id);
+      })
+      .then( () => {
+          res.status(200).json(user);
+      })
+      .catch(err => response.status(500).json({ err }))
 })
