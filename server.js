@@ -9,5 +9,5 @@ server.listen(5000, () => {
 
 
 server.get('/', (req, res) => {
-    
+    res.send('<h1>===GET REQUEST RECIEVED===</h1>');
 })
