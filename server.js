@@ -2,7 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const db = require('./data/db');
-
+// anything that is served data is a client
 const server = express();
 
 server.listen(5000, () => {

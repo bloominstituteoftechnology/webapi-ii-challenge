@@ -1,3 +1,5 @@
+// when I add posts will I physically see them here?
+
 exports.seed = function(knex, Promise) {
   return knex('posts')
     .del() // delete existing posts
