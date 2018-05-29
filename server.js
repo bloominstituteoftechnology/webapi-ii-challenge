@@ -34,5 +34,28 @@ server.get('/api/posts', (req, res) => {
         })
 })
 
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+    db
+        .remove(id)
+        .then(posts => {
+            res.json({ posts })
+        })
+        .catch({ message: "The post with the specified ID does not exist." })
+})
+
+server.put('/api/posts/:id', (req, res) => {
+    const { title, contents } = req.body;
+    const id = req.params.id;
+    db
+        .update(id, { title, contents })
+        .then(count => {
+            res.json({ count })
+        })
+        .catch(error => {
+            res.json({ message: "The post with the specified ID does not exist." })
+        })
+
+})
 
 server.listen(port, () => console.log(`Server is running on port ${port}`));
