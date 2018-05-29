@@ -2,13 +2,37 @@
 const express = require('express');
 const db = require('./data/db.js');
 
-// add your server code starting here
 const port = 5000;
 const server = express();
 server.use(express.json());
 
+// add your server code starting here
 server.get('/', (req, res) => {
     res.send('Test Test :)');
 });
+
+server.post('/api/posts', (req, res) => {
+    const { title, contents } = req.body;
+    db
+        .insert({ title, contents })
+        .then(response => {
+            res.json(response);
+        })
+        .catch(error => {
+            res.json({ error: "The posts information could not be retrieved." })
+        })
+})
+
+server.get('/api/posts', (req, res) => {
+    db
+        .find()
+        .then(posts => {
+            res.json({ posts });
+        })
+        .catch(error => {
+            res.json({ errorMessage: "Please provide title and contents for the post." })
+        })
+})
+
 
 server.listen(port, () => console.log(`Server is running on port ${port}`));
