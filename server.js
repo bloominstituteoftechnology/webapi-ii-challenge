@@ -66,13 +66,43 @@ server.delete("/api/posts/:id", (req, res) => {
         res.status(200).json({ response: "Post Deleted" });
       } else {
         res.status(404).json({
-          errorMessage: "The post does not exist."
+          message: "The post does not exist."
         });
       }
     })
     .catch(error => {
       res.status(500).json({ message: "The post could not be deleted" });
     });
+});
+
+server.put("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const { title, contents } = req.body;
+  if (title && contents) {
+    const obj = db
+      .update(id, { title, contents })
+      .then(response => {
+        const updatedPost = db
+          .findById(id)
+          .then(updatedPost => {
+            res.status(200).json(updatedPost);
+          })
+          .catch(error => {
+            res.status.json({
+              message: "The post wasnt updated."
+            });
+          });
+      })
+      .catch(error => {
+        res.status(500).json({
+          message: "The post information couldnt be change."
+        });
+      });
+  } else {
+    res.status(400).json({
+      message: "Post needs a title and content"
+    });
+  }
 });
 
 server.listen(port, () => console.log(`Server is running on port ${port}`));
