@@ -52,6 +52,16 @@ server.delete('/api/posts/:id', (req, res) => {
         })
 });
 
-
+server.put('/api/posts/:id', (req, res) => {
+    const { title, content } = req.body;
+    const id = req.params.id;
+    db.update(id, { title, content })
+        .then(num => {
+            res.json({ num })
+        })
+        .catch(err => {
+            res.json({ err })
+        })
+});
 
 server.listen(port, () => console.log(`Server running on port ${port}`));
