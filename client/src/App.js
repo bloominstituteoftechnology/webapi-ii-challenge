@@ -21,6 +21,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <div className="header"><h1>Got Posts?!</h1></div>
         {this.state.posts.map((e, i) => {
           return (
             <Card key={i}>

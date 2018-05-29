@@ -14,4 +14,19 @@ body {
 .App {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+}
+
+.header {
+  width: 100%;
+  background: rgb(46, 42, 42);
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  color: white;
+  align-self: center;
 }
