@@ -40,7 +40,17 @@ server.get('/api/posts/:id', (req, res) => {
         .catch(err => {
             res.json({ err })
         })
-})
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+    db.remove(req.params.id)
+        .then(num => {
+            res.json({ num })
+        })
+        .catch(err => {
+            res.json({ err })
+        })
+});
 
 
 
