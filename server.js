@@ -32,4 +32,16 @@ server.get('/api/posts', (req, res) => {
         })
 });
 
+server.get('/api/posts/:id', (req, res) => {
+    db.findById(req.params.id)
+        .then(user => {
+            res.json({ user })
+        })
+        .catch(err => {
+            res.json({ err })
+        })
+})
+
+
+
 server.listen(port, () => console.log(`Server running on port ${port}`));
