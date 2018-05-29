@@ -71,9 +71,10 @@ server.get('/api/posts/:id', (req, res) => {
 })
 
 server.put('/api/posts/:id', (req, res) => {
-    const { title, content } = req.body
+    const { title, contents } = req.body
+    const id = req.params.id
     db
-        .update(params.id, { title, content })
+        .update(id, { title, contents })
         .then(result => {
             db
                 .findById(id)
