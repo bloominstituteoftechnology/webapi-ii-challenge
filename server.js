@@ -7,7 +7,27 @@ const port = 5000;
 server.use(express.json());
 
 server.post('/api/posts', (req, res) => {
+  const { title, contents } = req.body;
 
+  if(title === undefined || contents === undefined){
+    res.status(400).json({ error: 'Please provide title and contents for the post.' });
+  } else {
+    db
+      .insert({ title, contents })
+      .then(postId => {
+        db
+          .findById(postId.id)
+          .then(post => {
+            res.status(201).json(post);
+          })
+          .catch(error => {
+            res.status(500).json({ error: 'There was an error returning the saved post.' });
+          });
+      })
+      .catch(error => {
+        res.status(500).json({ error: 'There was an error while saving the post to the database.' });
+      });
+  }
 });
 
 server.get('/api/posts', (req, res) => {
