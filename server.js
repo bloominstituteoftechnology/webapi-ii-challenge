@@ -15,26 +15,30 @@ server.get('/api/posts', (req, res) => {
             res.json(response)
         })
         .catch(error => {
-            res.json(error)
+            res.status(500).json({ error: "The posts information could not be retrieved." })
         })
 })
 
 server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body
-    db
-        .insert({ title, contents })
-        .then(response => {
-            db.findById(response.id)
-                .then(post => {
-                    res.json(post)
-                })
-                .catch(error => {
-                    res.json(error)
-                })
-        })
-        .catch(error => {
-            res.json(error)
-        })
+    if (title === undefined || contents === undefined) {
+        res.status(400).json("BAD REQUEST")
+    } else {
+        db
+            .insert({ title, contents })
+            .then(response => {
+                db.findById(response.id)
+                    .then(post => {
+                        res.json(post)
+                    })
+                    .catch(error => {
+                        res.json(error)
+                    })
+            })
+            .catch(error => {
+                res.json({ error: "There was an error while saving the post to the database" })
+            })
+    }
 })
 
 server.delete('/api/posts/:id', (req, res) => {
@@ -49,12 +53,12 @@ server.delete('/api/posts/:id', (req, res) => {
                         res.json(result)
                     })
                     .catch(error => {
-                        res.json(error)
+                        res.stats(500).json({ error: "The post could not be removed" })
                     })
             }
         })
         .catch(error => {
-            res.json(error)
+            res.stats(500).json({ error: "The post information could not be retrieved." })
         })
 })
 
@@ -63,10 +67,14 @@ server.get('/api/posts/:id', (req, res) => {
     db
         .findById(id)
         .then(result => {
-            res.json(result)
+            if (result.length === 1) {
+                res.json(result)
+            } else {
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
+            }
         })
         .catch(error => {
-            res.json(error)
+            res.status(500).json({ error: "The post information could not be retrieved." })
         })
 })
 
@@ -76,17 +84,21 @@ server.put('/api/posts/:id', (req, res) => {
     db
         .update(id, { title, contents })
         .then(result => {
-            db
-                .findById(id)
-                .then(result => {
-                    res.json(result)
-                })
-                .catch(error => {
-                    res.json(error)
-                })
+            if (result.length === 1) {
+                db
+                    .findById(id)
+                    .then(result => {
+                        res.json(result)
+                    })
+                    .catch(error => {
+                        res.json(error)
+                    })
+            } else {
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
+            }
         })
         .catch(error => {
-            res.json(error)
+            res.status(500).json({ error: "The post information could not be modified." })
         })
 })
 
