@@ -1,5 +1,9 @@
-// import your node modules
-
+const express = require('express');
 const db = require('./data/db.js');
 
-// add your server code starting here
+const server = express();
+const port = 5000;
+
+server.use(express.json());
+
+server.listen(port, () => console.log(`Server running on port ${port}`));
