@@ -10,20 +10,20 @@ server.post('/api/posts', (req, res) => {
 
 });
 
-server.get('/api/posts', (res, req) => {
+server.get('/api/posts', (req, res) => {
 
 });
 
-server.get('/api/posts/:id', (res, req) => {
+server.get('/api/posts/:id', (req, res) => {
 
 });
 
-server.delete('/api/posts/:id', (res, req) => {
+server.delete('/api/posts/:id', (req, res) => {
 
 });
 
-server.put('/api/posts/:id', (res, req) => {
-  
+server.put('/api/posts/:id', (req, res) => {
+
 });
 
 server.listen(port, () => console.log(`Server running on port ${port}`));
