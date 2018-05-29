@@ -9,7 +9,7 @@ server.use(express.json());
 // add your server code starting here
 server.get('/', (req, res) => {
     res.send('Hello from express');
-})
+});
 
 server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body;
@@ -20,6 +20,16 @@ server.post('/api/posts', (req, res) => {
         .catch(err => {
             res.json(err);
         })
-})
+});
+
+server.get('/api/posts', (req, res) => {
+    db.find()
+        .then(users => {
+            res.json({ users })
+        })
+        .catch(err => {
+            res.json({ err })
+        })
+});
 
 server.listen(port, () => console.log(`Server running on port ${port}`));
