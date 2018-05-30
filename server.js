@@ -38,7 +38,10 @@ server.post('/api/posts', (req, res) => {
     };
     db.insert({ title, contents })
         .then(response => {
-            res.status(201).send(response);
+            db.findById(response.id)
+                .then(post => {
+                    res.json({ post });
+                })
         })
         .catch(error => {
             sendError(500, "There was an error while saving the post to the database.", res);
