@@ -1,4 +1,4 @@
-// import your node modules
+// import your node modules.
 
 const db = require('./data/db.js');
 
