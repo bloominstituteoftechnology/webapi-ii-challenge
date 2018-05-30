@@ -63,7 +63,7 @@ server.get("/api/posts/:id", (req, res) => {
     .findById(id) // invoke proper db.method(id) passing it the id.
     .then(post => {
       if (post.length === 0) {
-        sendError(404, `post with that id could not found`, res);
+        sendError(404, `Post with that id could not found`, res);
         return;
       }
       res.json({ post });
@@ -80,7 +80,7 @@ server.delete("/api/posts/:id", (req, res) => {
     .remove(id)
     .then(post => {
       if (post === 0) {
-        sendError(404, `post with that id could not found`, res);
+        sendError(404, `Post with that id could not found`, res);
         return;
       }
       res.json({ post });
@@ -103,13 +103,13 @@ server.put("/api/posts/:id", (req, res) => {
     .update(id, { title, contents })
     .then(response => {
       if (response == 0) {
-        sendError(404, `post with that id could not found`, res);
+        sendError(404, `Post with that id could not found`, res);
         return;
       }
       db.findById(id).then(post => {
         console.log(post);
         if (post.length === 0) {
-          sendError(404, "post with that id not found", res);
+          sendError(404, "Post with that id not found", res);
           return;
         }
         res.json({ post });
