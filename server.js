@@ -84,11 +84,17 @@ server.put('/api/posts/:id', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
   const id = req.params.id;
+
+  let deletedPost;
+
+  db.findById(id)
+    .then((post) => deletedPost = post);
+
   db
     .remove(id)
     .then(success => {
       if (success) {
-        res.json({ success });
+        res.json({ deletedPost });
       }
       else {
         res.status(404).json({ errorMessage: "The post with the specified ID does not exist." });
