@@ -21,14 +21,17 @@ server.get('/', (req, res) => {
 })
 
 server.post('/api/posts', (req, res) => {
-    const { title, contents, id } = req.body; 
+    const { title, contents } = req.body; 
     if(!title || !contents) { 
         res.status(400).json({message: "Please provide title and contents for the post."});
         return;
     }
    db.insert({ title, contents})
    .then(response => {
-       res.status(201).json(response);     
+      db.findById(response.id)
+       .then(response => {
+           res.status(201).json(response);
+       })    
    })
    .catch(error => {
        res.status(500).json({message: `There was an error while saving the user to the database/n Error message: ${error}`});
@@ -42,7 +45,7 @@ server.get('/api/posts', (req, res) => {
      res.json({users});
     })
     .catch(error => {
-        res.json({error});
+        res.status(500).json({error: `The posts information could not be retrieved. Error: ${error}`});
     });
 });
 
@@ -52,29 +55,29 @@ server.get('/api/posts/:id', (req, res) => {
      .findById(id)
      .then(response => {
          if(response.length <= 0) {
-             res.status(404).json({message: `The user with the specified ID ${id} does not exist.`})
+             res.status(404).json({message: `The post with the specified ID ${id} does not exist.`})
          }
          else {
          res.json({response});
          }
      })
      .catch(error => {
-         res.status(500).json({message: `The user information could not be retrieved/n Error message: ${error}`});
+         res.status(500).json({message: `The post information could not be retrieved./n Error message: ${error}`});
      });
 });
 
 server.put('/api/posts/:id', (req, res) => {
     const id = req.params.id;
     const {title, contents } = req.body;
+    if(!title || !contents) {
+        res.status(400).json({errorMessage: "Please provide title and contents for the post."})             
+    }
      db
      .update(id, {title, contents})
      .then(response => {
          if(response === 0 ) { 
-         res.status(404).json({ message: "The user with the specified ID does not exist." });
+         res.status(404).json({ message: "The post with the specified ID does not exist." });
          } 
-         if(!title || !contents) {
-             res.status(400).json({errorMessage: "Please provide title and contents for the user."})             
-         }
          db
          .findById(id)
          .then(response => {
@@ -82,7 +85,7 @@ server.put('/api/posts/:id', (req, res) => {
          })
      })
      .catch(error => {
-         res.status(500).json({message: `The user information could not be modified/n Error message: ${error}`});
+         res.status(500).json({message: `The post information could not be modified/n Error message: ${error}`});
      });
 });
 
@@ -92,13 +95,13 @@ server.delete('/api/posts/:id', (req, res) => {
     .remove(id)
     .then( response => {
      if(response === 1) {
-        res.json({message: `user with id ${id} was removed from database`});
+        res.json({message: `post with id ${id} was removed from database`});
      } else if(response === 0) {
-         res.status(404).json({message: "The user with the specified ID does not exist."})
+         res.status(404).json({message: "The post with the specified ID does not exist."})
      }
     })
     .catch( error => {
-        res.status(500).json({message: `The user could not be removed/n Error message: ${error}`});
+        res.status(500).json({message: `The post could not be removed/n Error message: ${error}`});
     });
 });
 
