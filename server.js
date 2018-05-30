@@ -59,4 +59,26 @@ server.get(`/api/posts/:id`, (req, res) => {
         })
 })
 
+server.delete(`/api/posts/:id`, (req, res) => {
+    const { id } = req.params;
+    db.remove(id)
+        .then( response => {
+            if( response === 0 ) {
+                sendUserError(404, "The post with the specified ID does not exist.");
+                return;
+            } else {
+                db.find()
+                    .then( users => {
+                        res.json({ users })
+                    })
+                    .catch( error => {
+                        sendError(500, "The posts information could not be retrieved.", res);
+                    })
+            }
+        })
+        .catch( error => {
+            sendError(500, "The post could not be removed", res);
+        })
+})
+
 server.listen(port, () => console.log(`Server running on port ${port}`));
