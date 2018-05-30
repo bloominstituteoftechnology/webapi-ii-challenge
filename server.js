@@ -13,7 +13,7 @@ server.get('/api/posts', (req, res) => {
     db
     .find()
     .then(response => {
-        console.log(response)
+        // console.log(response)
         res.json(response)
     })
     .catch(error => {
@@ -35,13 +35,13 @@ server.get('/api/posts/:id', (req, res) => {
     })
 })
 
-server.post('api/posts', (req, res) => {
-    const { title, content } = req.body;
-    if (!title && !content) {
+server.post('/api/posts/', (req, res) => {
+    const { title, contents } = req.body;
+    if (title && contents) {
         db
-        .insert({ title, content })
+        .insert({ title, contents })
         .then(response => {
-            res.status(201).json({ id: response.id, title, bio })
+            res.status(201).json({ id: response.id, title, contents })
         })
         .catch(error => {
             res.status(500).json({ error: "There was an error while saving the post to the database" })
@@ -49,6 +49,20 @@ server.post('api/posts', (req, res) => {
     } else {
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
     }
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+    db.remove(req.params.id)
+    .then(response => {
+        if (response === 1) {
+            res.status(200).json({ message: "Deletion Success"})
+        } else {
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
+        }
+    })
+    .catch(error => {
+        res.status(500).json({ error: "The post could not be removed" })
+    })
 })
 
 server.listen(port, () => console.log(`Server running on ${port}`));
