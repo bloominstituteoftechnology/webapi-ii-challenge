@@ -51,7 +51,7 @@ server.get('/api/posts', (req, res) => {
       });
     })
     .catch(error => {
-      errorMessage(500, 'The post could not be found!', res)
+      errorMessage(500, 'The posts could not be found!', res)
     });
 });
 
