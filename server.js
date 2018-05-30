@@ -16,9 +16,9 @@ server.use(express.json());
 /* --- Endpoints --- */
 // POST
 server.post('/api/posts', (req, res) => {
-  const post = req.body;
+  const { title, contents } = req.body;
 
-  db.insert(post)
+  db.insert({ title, contents })
     .then(result => res.json(result))
     .catch(err => {
       console.log(`'/api/posts' POST error: ${err}`);
@@ -85,10 +85,10 @@ server.delete('/api/posts/:id', (req, res) => {
 server.put('/api/posts/:id', (req, res) => {
   // Variables
   const { id } = req.params;
-  const postInfo = req.body;
-  console.log("'/api/users/:id' PUT postInfo:",postInfo,"id:",id);
+  const { title, contents } = req.body;
+  console.log("'/api/users/:id' PUT postInfo:",title,contents,"id:",id);
   // Operation
-  db.update(id, postInfo)
+  db.update(id, { title, contents })
     .then(count => {
       console.log("'/api/users/:id' PUT count",count);
       if (count === 1) {
