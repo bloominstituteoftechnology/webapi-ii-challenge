@@ -19,12 +19,14 @@ server.post('/api/posts', (req, res) => {
     db.insert({ title, contents })
         .then(response => {
             res.status(201)
+            return;
         })
 
         db.findById(id)
         .then(post => {
             if (post.length === 0) { 
                 res.status(404).json({ message: "The post with the specified ID does not exist." })
+                return;
             }
             res.json(post[0])
         })
@@ -33,6 +35,7 @@ server.post('/api/posts', (req, res) => {
         })
     .catch(error => {
         res.status(500).json({ error: "There was an error while saving the post to the database" });
+        return;
     })
 });
 
