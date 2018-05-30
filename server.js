@@ -36,6 +36,26 @@ server.get('/api/posts', (req, res) => {
         })
 });
 
+// GET REQUEST BY ID
+server.get('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+
+    db  
+        .findById(id)
+        .then(post => {
+            // console.log(post);
+
+            if (post.length === 0) { // if requested ID doesn't exist, an empty array is returned, unless error is handled
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
+            }
+
+            res.status(201).json(post[0])
+        })
+        .catch(error => {
+            res.status(500).json({ error: "The post information could not be retrieved." })
+        })
+})
+
 
 
 
