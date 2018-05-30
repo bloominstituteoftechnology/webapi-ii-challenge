@@ -1,8 +1,11 @@
 // import your node modules
 const express = require('express');
 const db = require('./data/db.js');
+const cors = require('cors');
 const app = express();
 const port = 5000;
+app.use(express.json());
+app.use(cors({ origin: "http://localhost:3000"}));
 
 const errorHandler = (status, message, res) => {
   return res.status(status).json({ error: message});
