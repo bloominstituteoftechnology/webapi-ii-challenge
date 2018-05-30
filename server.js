@@ -1,24 +1,29 @@
 // import your node modules
 const express = require('express');
+const cors = require('cors');
 const db = require('./data/db.js');
 
 const port = 5000;
 const server = express();
 server.use(express.json());
+server.use(cors({ origin: `http://localhost:${port}`}));
+
+const sendUserError = (status, message, res) => {
+    res.status(status).json({ errorMessage: message });
+    return;
+}
 
 // add your server code starting here
-server.get('/', (req, res) => {
-    res.send('Hello from express');
-});
-
 server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body;
+    if (!title || !contents) sendUserError(400, 'Please provide title and contents for the post.', res);
     db.insert({ title, contents })
         .then(response => {
-            res.json(response);
+            res.status(201).json( response );
         })
         .catch(err => {
-            res.json(err);
+            console.log(err);
+            sendUserError(500, "There was an error while saving the post to the database", res);
         })
 });
 
@@ -33,7 +38,8 @@ server.get('/api/posts', (req, res) => {
 });
 
 server.get('/api/posts/:id', (req, res) => {
-    db.findById(req.params.id)
+    const id = req.params.id;
+    db.findById(id)
         .then(user => {
             res.json({ user })
         })
@@ -43,7 +49,8 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.delete('/api/posts/:id', (req, res) => {
-    db.remove(req.params.id)
+    const id = req.params.id;
+    db.remove(id)
         .then(num => {
             res.json({ num })
         })
