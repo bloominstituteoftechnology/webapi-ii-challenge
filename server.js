@@ -13,6 +13,13 @@ const sendUserError = (status, message, res) => {
     return;
 }
 
+const returnPost = (id, res) => {
+    db.findById(id)
+    .then(user => {
+        res.json({ user })
+    })
+}
+
 // add your server code starting here
 server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body;
@@ -22,7 +29,8 @@ server.post('/api/posts', (req, res) => {
     }
     db.insert({ title, contents })
         .then(response => {
-            res.status(201).json( response );
+            console.log(returnPost(response.id, res))
+            returnPost(response.id, res);
         })
         .catch(err => {
             console.log(err);
@@ -54,6 +62,7 @@ server.get('/api/posts/:id', (req, res) => {
             res.json({ user })
         })
         .catch(err => {
+            console.log(err);
             sendUserError(500, "The post information could not be retrieved.", res);
             return;
         })
@@ -70,6 +79,7 @@ server.delete('/api/posts/:id', (req, res) => {
             res.json({ num })
         })
         .catch(err => {
+            console.log(err);
             sendUserError(500, "The post could not be removed.", res);
             return;
         })
@@ -82,7 +92,7 @@ server.put('/api/posts/:id', (req, res) => {
         sendUserError(400, "Please provide title and contents for the post.", res);
         return;
     }
-    db.update(id, { title, content })
+    db.update(id, { title, contents })
         .then(num => {
             if (num === 0) {
                 sendUserError(404, "The post with the specified ID does not exist.", res);
@@ -91,6 +101,7 @@ server.put('/api/posts/:id', (req, res) => {
             res.status(200).json({ num });
         })
         .catch(err => {
+            console.log(err);
             sendUserError(500, "The post information could not be modified.", res);
             return;
         })
