@@ -1,5 +1,22 @@
+.post-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+}
+
+.post-card{
+  margin: 25px;
+  width: 300px;
+  border: 1px solid black;
+  background-color: white;
+}
+
 .App {
   text-align: center;
+  background-image: url('http://lotrscenerybuilder.org/images/Barad-dur_large/Barad-dur_Dark_Tower_Sauron_I_large.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 .App-logo {

@@ -1,18 +1,41 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { 
+      posts: []
+     }
+  }
+
+  componentDidMount() {
+    axios 
+      .get(`http://localhost:5555/api/posts`)
+      .then(response => {
+        this.setState(() => ({ posts: response.data}));
+      })
+      .catch(error => {
+        console.error('Server error', error);
+      })
+  }
+
   render() {
+    console.log(this.state.posts.posts);
+    const { posts } = this.state.posts;
+    console.log('Posts:', posts);
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div className="post-container">
+          {posts && posts.map(post => 
+              <div className="post-card">
+                <h2>{post.title}</h2>
+                <p>{post.contents}</p>
+              </div>
+          )}
+        </div>
       </div>
     );
   }
