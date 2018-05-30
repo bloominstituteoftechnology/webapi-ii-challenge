@@ -1,12 +1,14 @@
 // import your node modules
 
 const db = require('./data/db.js');
+var cors = require('cors');
 
 // add your server code starting here
 
 const express = require('express');
 const server = express();
 server.use(express.json());
+server.use(cors({origin: 'http://localhost:3000'}));
 
 const sendUserError = (status, message, res) => {
     res.status(status).json({ errorMessage: message });
