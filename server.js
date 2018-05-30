@@ -1,10 +1,10 @@
 // import your node modules
 // importing express
 const express = require('express');
-const db      = require('./data/db.js');
+const db = require('./data/db.js');
 
 // add your server code starting here
-const port   = 5001;
+const port   = 5000;
 const server = express();
 server.use(express.json());
 
@@ -16,15 +16,19 @@ server.get('/', (req, res) => {
 // POST REQUEST
 server.post('/api/posts', (req, res) => {
     // declaring const for body
-    const { title, content } = req.body;
+    const { title, contents } = req.body;
+    if(!title || !contents) {
+        res.status(400).json(`{error: "Please provide title and contents for the post"}`).end();
+    } else {
         db
-        .insert({ title, content})
+        .insert({ title, contents})
         .then(response => {
            res.status(201).json(response)
         })
         .catch(error => {
             res.json(error)
         });
+    }
 });
 
 // GET REQUEST
@@ -36,8 +40,23 @@ server.get('/api/posts', (req, res) => {
     })
     .catch(error => {
         res.status(500).json(error)
+    });
+});
+// GET request by id
+server.get('/api/posts/:id', (req, res) =>{
+    const id = req.params.id
+    db
+    .findById(id)
+    .then(posts => {
+        if(posts.length === 0){
+            return res.status(404).json({ message: "The post with the specified ID does not exist." })
+        }
+        res.status(200).json( posts );
     })
-})
+    .catch(error => {
+        res.status(500).json({ error: "The post information could not be retrieved."});
+    })
+});
 
 
 // calling serving to listen to traffic 
