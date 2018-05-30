@@ -26,3 +26,36 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.posts-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.post {
+  border: 1px dashed black;
+  background: lightgray;
+  flex-basis: 22%;
+  height: 150px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.container {
+  max-width: 900px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+@media(max-width: 800px) {
+  .post {
+    flex-basis: 45%;
+  }
+}
+
+@media(max-width: 500px) {
+  .post {
+    flex-basis: 100%;
+  }
+} 
