@@ -14,18 +14,20 @@ server.post('/api/posts', (req, res) => {
     
     if (!title || !contents) {
         res.status(400).json({errorMessage: "Please provide title and contents for the post."})
-        return;
+        return; //need this return other if title or contents are missing, it will display error but when you do get request you will still see the newly created post w/o the title or contents
     }
 
     db
         .insert({ title, contents })
             .then(response => {
-                res.status(201).json(response)
-                return;
+                db.findById(response.id) //returns newly created post
+                .then(post => {
+                    res.status(201).json({post});
+                })
+                // res.status(201).json(response) //returns id of newly created post
             })
         .catch(error => {
             res.status(500).json({ error: "There was an error while saving the post to the database" });
-            return;
         })
 });
 
@@ -35,7 +37,7 @@ server.get('/api/posts', (req, res) => {
     db
         .find()
         .then(posts => {
-            res.status(201).json(posts);
+            res.json(posts);
         })
         .catch(error => {
             res.status(500).json({ error: "The posts information could not be retrieved." });
@@ -56,7 +58,7 @@ server.get('/api/posts/:id', (req, res) => {
                 res.status(404).json({ message: "The post with the specified ID does not exist." })
             }
 
-            res.status(201).json(post[0])
+            res.json(post[0])
         })
         .catch(error => {
             res.status(500).json({ error: "The post information could not be retrieved." })
@@ -75,7 +77,6 @@ server.delete('/api/posts/:id', (req, res) => {
             if(response === 0) {
                 res.status(404).json({ message: "The post with the specified ID does not exist." })
             }
-            res.status(201).json(response);
         })
         .catch(error => {
             res.status(500).json({ error: "The post could not be removed." });
@@ -98,9 +99,10 @@ server.put('/api/posts/:id', (req, res) => {
 
             if (!title || !contents) {
                 res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+                return;
             }
 
-            // res.status(200).json(response)
+            //return newly updated post
             db  
             .findById(id)
             .then(post => {
@@ -110,7 +112,7 @@ server.put('/api/posts/:id', (req, res) => {
                     res.status(404).json({ message: "The post with the specified ID does not exist." })
                 }
     
-                res.status(201).json(post[0])
+                res.json(post[0])
             })
             .catch(error => {
                 res.status(500).json({ error: "The post information could not be retrieved." })
