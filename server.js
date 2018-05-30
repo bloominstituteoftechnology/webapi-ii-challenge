@@ -60,27 +60,41 @@ server.get(`${url}/:id`, (req, res) => {
 });
 
 // Midlewear for POST endpoint
-function contentValid (req, res, next) {
+function contentValid(req, res, next) {
   const { title, contents } = req.body;
   if (!title || !contents) {
-    res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
   } else {
     next();
   }
 }
-server.post(url, contentValid, (req, res) => {
+function insertPost(req, res, next) {
   const { title, contents } = req.body;
-  console.log("next",title, contents);
-
-
   db
     .insert({ title, contents })
     .then(response => {
-      console.log("response", response);
+      const { id } = response;
+      id && next();
     })
     .catch(e => {
-      console.log("error", e);
-      res.status(500).json( { error: "There was an error while saving the post to the database" });
+      res.status(500).json({
+        error: "There was an error while saving the post to the database"
+      });
+    });
+}
+server.post(url, contentValid, insertPost, (req, res) => {
+  console.log(req.body);
+  db
+    .find()
+    .then(response => {
+      res.status(201).json(response.slice(-1));
+    })
+    .catch(e => {
+      res.status(500).json({
+        error: "There was an error while saving the post to the database"
+      });
     });
 });
 
