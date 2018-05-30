@@ -19,8 +19,6 @@ const sendError = (status, message, res) => {
 
 server.post(`/api/posts`, (req, res) => {
     const { title, contents } = req.body;
-    console.log(req.body)
-    console.log(title)
     if (!title || !contents) {
         sendUserError(400, "Please provide title and contents for the post.", res);
         return;
@@ -42,6 +40,22 @@ server.get(`/api/posts`, (req, res) => {
         })
         .catch( error => {
             sendError(500, "The posts information could not be retrieved.", res);
+        })
+})
+
+server.get(`/api/posts/:id`, (req, res) => {
+    const { id } = req.params;
+    db.findById(id)
+        .then( response => {
+            if (response.length === 0) {
+                sendUserError(404, "The post with the specified ID does not exist.", res)
+                return;
+            } else {
+                res.json(response);
+            }
+        })
+        .catch( error => {
+            sendError(500, "The post information could not be retrieved.", res);
         })
 })
 
