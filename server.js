@@ -81,4 +81,36 @@ server.delete(`/api/posts/:id`, (req, res) => {
         })
 })
 
+server.put(`/api/posts/:id`, (req, res) => {
+    const { id } = req.params;
+    const { title, contents } = req.body;
+    if (!title || !contents) {
+        sendUserError(400, "Please provide title and contents for the post.", res);
+        return;
+    }
+    db.update(id, { title, contents })
+        .then( response => {
+            if (response === 0) {
+                sendUserError(404, "The post with the specified ID does not exist.", res);
+                return;
+            } else {
+                db.findById(id)
+                    .then( response => {
+                        if (response.length === 0) {
+                            sendUserError(404, "The post with the specified ID does not exist.", res)
+                            return;
+                        } else {
+                            res.json(response);
+                        }
+                    })
+                    .catch( error => {
+                        sendError(500, "The post information could not be retrieved.", res);
+                    })
+            }
+        })
+        .catch( error => {
+            sendError(500, "The post information could not be modified.", res);
+        })
+})
+
 server.listen(port, () => console.log(`Server running on port ${port}`));
