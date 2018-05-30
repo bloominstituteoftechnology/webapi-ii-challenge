@@ -14,7 +14,6 @@ server.use(function (req, res, next) {
 
 const sendUserError = (status, message, res) => {
     res.status(status).json({ errorMessage: message });
-    return;
 }
 
 
