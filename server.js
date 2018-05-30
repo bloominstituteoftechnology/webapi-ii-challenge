@@ -60,16 +60,7 @@ server.get(`${url}/:id`, (req, res) => {
 });
 
 // Middlewears for POST endpoint
-function contentValid(req, res, next) {
-  const { title, contents } = req.body;
-  if (!title || !contents) {
-    res.status(400).json({
-      errorMessage: "Please provide title and contents for the post."
-    });
-  } else {
-    next();
-  }
-}
+
 function insertPost(req, res, next) {
   const { title, contents } = req.body;
   db
@@ -108,7 +99,6 @@ server.post(url, contentValid, insertPost, (req, res) => {
     });
 });
 
-
 server.delete(`${url}/:id`, isIdValid, (req, res) => {
   const { id } = req.params;
   db
@@ -128,9 +118,28 @@ server.delete(`${url}/:id`, isIdValid, (req, res) => {
     });
 });
 
+server.put(`${url}/:id`, isIdValid, contentValid, (req, res) => {
+  const { id } = req.params;
+  const { title, contents } = req.body;
+  db
+    .update(id, { title, contents })
+    .then(response => {
+      /**
+       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a failure in the server fetching the data with 'db.find()' method.
+       * */
+      // return new Promise.reject();
+
+      console.log("response", response);
+    })
+    .catch(e => {
+      res.status(500).json({ error: "The post information could not be modified." });
+    });
+});
+
 // GENERAL Middlewears
 function isIdValid(req, res, next) {
   const { id } = req.params;
+  console.log(req.method);
   db
     .findById(id)
     .then(response => {
@@ -148,8 +157,25 @@ function isIdValid(req, res, next) {
       }
     })
     .catch(e => {
-      res.status(500).json({ error: "The post could not be removed" });
+      switch (req.method) {
+        case "DELETE":
+          res.status(500).json({ error: "The post could not be removed" });
+        case "PUT":
+          res
+            .status(500)
+            .json({ error: "The post information could not be modified." });
+      }
     });
+}
+function contentValid(req, res, next) {
+  const { title, contents } = req.body;
+  if (!title || !contents) {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  } else {
+    next();
+  }
 }
 
 server.listen(port, () => console.log("Server running on port %s ", port));
