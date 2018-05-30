@@ -7,7 +7,7 @@ const db = require('./data/db.js');
 const port = 5555;
 const server = express();
 server.use(express.json());
-server.use(cors());
+server.use(cors({ origin: 'http://localhost:3000' }));
 
 server.get('/', (req, res) => {
 	res.send('Hello, Kelly');
