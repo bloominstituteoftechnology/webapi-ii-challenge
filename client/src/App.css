@@ -33,3 +33,15 @@
   max-width: 960px;
   margin: 0 auto;
 }
+
+@media (max-width: 959px) {
+  .post-list {
+    max-width: 640px;
+  }
+}
+
+@media (max-width: 639px) {
+  .post-list {
+    justify-content: center;
+  }
+}
