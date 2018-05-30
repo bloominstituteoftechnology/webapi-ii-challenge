@@ -69,7 +69,13 @@ server.get("/api/posts/:id", (req, res) => {
         .findById(id)
         .then(post => {
             console.log(post);
+            if(post.length === 0) {
+                sendUserError(404,"The post with the specified ID does not exist.", res);
+                return;
+            }
             res.json(post);
         })
-    res.json("Working on ...");
+        .catch(error => {
+            sendUserError(500, "The post information could not be retrieved.", res)
+        })
 })
