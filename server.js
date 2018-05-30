@@ -79,6 +79,8 @@ server.get("/api/posts/:id", (req, res) => {
 
 server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params;
+//   const deletedPost = db.findById(id).then(post => res.json({post}))
+//   console.log(deletedPost)
   db
     .remove(id)
     .then(post => {
@@ -86,7 +88,16 @@ server.delete("/api/posts/:id", (req, res) => {
         sendError(404, `Post with that id could not found`, res);
         return;
       }
-      res.json({ post });
+        res.json({ post });
+
+    //   db.findById(id).then(user => {
+        // console.log(user);
+        // if (user.length === 0) {
+        //   sendError(404, "User with that id not found", res);
+        //   return;
+        // }
+        // res.json( {deletedPost} );
+      
     })
     .catch(error => {
       console.log(error);
