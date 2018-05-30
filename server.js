@@ -40,7 +40,7 @@ server.post('/api/posts', (req, res) => {
         .then(response => {
             db.findById(response.id)
                 .then(post => {
-                    res.json({ post });
+                    res.status(201).json({ post });
                 })
         })
         .catch(error => {
