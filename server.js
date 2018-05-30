@@ -51,3 +51,25 @@ server.post('/api/posts', (req, res) => {
 })
 
 server.listen(port, () => console.log(`Server running on port ${port}`));
+
+server.get("/api/posts", (req, res) => {
+    db
+        .find()
+        .then(posts => {
+            res.json(posts);
+        })
+        .catch(error => {
+            sendUserError(500, "The posts information could not be retrieved.", res)
+        })
+})
+
+server.get("/api/posts/:id", (req, res) => {
+    const { id } = req.params;
+    db
+        .findById(id)
+        .then(post => {
+            console.log(post);
+            res.json(post);
+        })
+    res.json("Working on ...");
+})
