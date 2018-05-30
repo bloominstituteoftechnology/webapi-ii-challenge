@@ -28,11 +28,12 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to some LOTR stuff:</h1>
         </header>
-        <p className="App-intro">
+        <p className="body">
           {this.state.posts.map(post => {
             return (
               <div>
-                {post.title}
+                <h3 className="lotr-quote">{post.title}</h3>
+                <p className="who-said-it">{post.contents}</p>
               </div>
             )
           })}
