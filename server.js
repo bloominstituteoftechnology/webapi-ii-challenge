@@ -10,7 +10,6 @@ server.use(cors({ origin: 'http://localhost:3333' }));
 
 const sendError = (status, message, res) => {
     res.status(status).json({ errorMessage: message });
-    return;
 };
 
 const customLogger = (req, res, next) => {
@@ -35,6 +34,7 @@ server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body;
     if (!title || !contents) {
         sendError(400, "Please provide title and contents for the post.", res);
+        return;
     };
     db.insert({ title, contents })
         .then(response => {
@@ -45,6 +45,7 @@ server.post('/api/posts', (req, res) => {
         })
         .catch(error => {
             sendError(500, "There was an error while saving the post to the database.", res);
+            return;
         });
 });
 
@@ -55,6 +56,7 @@ server.get('/api/posts', (req, res) => {
         })
         .catch(error => {
             sendError(500, "The posts information could not be retrieved.", res);
+            return;
         });
 });
 
@@ -64,6 +66,7 @@ server.get('/api/posts/:id', (req, res) => {
         .then(post => { // handle the promise like
             if (post == 0) {
                 sendError(404, "The post with the specified ID does not exist.", res);
+                return;
             } else {
                 res.json({ post });
             }
@@ -79,6 +82,7 @@ server.delete('/api/posts/:id', (req, res) => {
         .then(post => {
             if (post == 0) {
                 sendError(404, "The post with the specified ID does not exist.", res);
+                return;
             } else {
                 res.json({ post });
             }
@@ -93,16 +97,19 @@ server.put("/api/posts/:id", (req, res) => {
     const { title, contents } = req.body;
     if (!title || !contents) {
         sendError(400, "Please provide title and contents for the post.", res);
+        return;
     }
     db.update(id, { title, contents })
         .then(post => {
             if (post == 0) {
                 sendError(404, "The post with the specified ID does not exist.", res);
+                return;
             };
             db.findById(id)
                 .then(post => {
                     if (post.length === 0) {
                         sendError(404, 'Post with that id not found.', res);
+                        return;
                     }
                     res.json({ post });
                 })
