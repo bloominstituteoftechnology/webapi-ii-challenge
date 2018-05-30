@@ -59,7 +59,7 @@ server.get(`${url}/:id`, (req, res) => {
     });
 });
 
-// Midlewears for POST endpoint
+// Middlewears for POST endpoint
 function contentValid(req, res, next) {
   const { title, contents } = req.body;
   if (!title || !contents) {
@@ -108,7 +108,27 @@ server.post(url, contentValid, insertPost, (req, res) => {
     });
 });
 
-// Midlewears for DELETE endpoint
+
+server.delete(`${url}/:id`, isIdValid, (req, res) => {
+  const { id } = req.params;
+  db
+    .remove(id)
+    .then(response => {
+      /**
+       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a failure in the server fetching the data with 'db.find()' method.
+       * */
+      // return new Promise.reject();
+
+      res
+        .status(200)
+        .json({ message: "The post with the specified ID was deleted." });
+    })
+    .catch(e => {
+      res.status(500).json({ error: "The post could not be removed" });
+    });
+});
+
+// GENERAL Middlewears
 function isIdValid(req, res, next) {
   const { id } = req.params;
   db
@@ -131,22 +151,5 @@ function isIdValid(req, res, next) {
       res.status(500).json({ error: "The post could not be removed" });
     });
 }
-server.delete(`${url}/:id`, isIdValid, (req, res) => {
-  const { id } = req.params;
-  db
-    .remove(id)
-    .then(response => {
-      /**
-       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a failure in the server fetching the data with 'db.find()' method.
-       * */
-      // return new Promise.reject();
-
-      res.status(200).json({ message: "The post with the specified ID was deleted." });
-      
-    })
-    .catch(e => {
-      res.status(500).json({ error: "The post could not be removed" });
-    });
-});
 
 server.listen(port, () => console.log("Server running on port %s ", port));
