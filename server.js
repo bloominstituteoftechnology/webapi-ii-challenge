@@ -16,7 +16,7 @@ server.get(url, (req, res) => {
       console.log("response", response);
 
       /**
-       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a fail in the server fetching the data with 'db.find()' method.
+       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a failure in the server fetching the data with 'db.find()' method.
        * */
       // return new Promise.reject();
 
@@ -44,7 +44,7 @@ server.get(`${url}/:id`, (req, res) => {
       // If ID is found --> Get user and return it whitin the response
       return db.find().then(response => {
         /**
-         * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a fail in the server fetching the data with 'db.find()' method.
+         * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a failure in the server fetching the data with 'db.find()' method.
          * */
         // return new Promise.reject();
 
@@ -59,7 +59,7 @@ server.get(`${url}/:id`, (req, res) => {
     });
 });
 
-// Midlewear for POST endpoint
+// Midlewears for POST endpoint
 function contentValid(req, res, next) {
   const { title, contents } = req.body;
   if (!title || !contents) {
@@ -76,7 +76,7 @@ function insertPost(req, res, next) {
     .insert({ title, contents })
     .then(response => {
       /**
-       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a fail in the server fetching the data with 'db.find()' method.
+       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a failure in the server fetching the data with 'db.find()' method.
        * */
       // return new Promise.reject();
 
@@ -95,7 +95,7 @@ server.post(url, contentValid, insertPost, (req, res) => {
     .find()
     .then(response => {
       /**
-       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a fail in the server fetching the data with 'db.find()' method.
+       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a failure in the server fetching the data with 'db.find()' method.
        * */
       // return new Promise.reject();
 
@@ -105,6 +105,47 @@ server.post(url, contentValid, insertPost, (req, res) => {
       res.status(500).json({
         error: "There was an error while saving the post to the database"
       });
+    });
+});
+
+// Midlewears for DELETE endpoint
+function isIdValid(req, res, next) {
+  const { id } = req.params;
+  db
+    .findById(id)
+    .then(response => {
+      /**
+       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a failure in the server fetching the data with 'db.find()' method.
+       * */
+      // return new Promise.reject();
+
+      if (response.length > 0) {
+        next();
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(e => {
+      res.status(500).json({ error: "The post could not be removed" });
+    });
+}
+server.delete(`${url}/:id`, isIdValid, (req, res) => {
+  const { id } = req.params;
+  db
+    .remove(id)
+    .then(response => {
+      /**
+       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a failure in the server fetching the data with 'db.find()' method.
+       * */
+      // return new Promise.reject();
+
+      res.status(200).json({ message: "The post with the specified ID was deleted." });
+      
+    })
+    .catch(e => {
+      res.status(500).json({ error: "The post could not be removed" });
     });
 });
 
