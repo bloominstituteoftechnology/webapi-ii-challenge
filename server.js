@@ -9,8 +9,15 @@ server.use(express.json())
 // middleware
 const cors = require('cors')
 
+//set up cors for port 3000 which is for react-redux
+server.use(cors({
+  origin: 'http://localhost:3000'
+}));
+
+//port variable
 const port = 5000
-// add your server code starting here
+
+
 
 // methods
 const errorMessage = (status, message, res) => {
@@ -20,6 +27,7 @@ const errorMessage = (status, message, res) => {
   return;
 }
 
+// add your server code starting here
 server.get('/', (req, res) => {
   res.send('server is running...')
 })
