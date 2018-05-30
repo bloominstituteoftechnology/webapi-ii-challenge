@@ -45,11 +45,14 @@ server.post("/api/posts", (req, res) => {
     sendError(400, "Must provide title and contents", res);
     return;
   }
-  db
-    .insert({ title, contents })
+  db.insert({ title, contents })
     .then(response => {
-      res.status(201).send(response);
-      console.log(response);
+    //   res.status(201).send(response);
+    //   console.log(response);
+        db.findById(response.id)
+            .then(post => {
+          res.json({ post });
+        });
     })
     .catch(error => {
       sendError(400, error, res);
