@@ -34,7 +34,7 @@
 
 .postCard {
   width: 400px;
-  height: 300px;
+  min-height: 300px;
   border-radius: 8px;
   box-shadow: 3px 3px 5px 3px gray;
   margin: 30px;
@@ -50,4 +50,24 @@
   border-bottom: 1px solid gray;
   width: 90%;
   padding-bottom: 15px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  width: 150px;
+  height: 50px;
+  color: white;
+  background-color: #222;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.delete {
+  background-color: tomato;
 }
