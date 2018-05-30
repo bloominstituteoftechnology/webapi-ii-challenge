@@ -9,34 +9,24 @@ server.use(express.json());
 
 //POST REQUEST
 server.post('/api/posts', (req, res) => {
-
+    
     const { title, contents } = req.body
     
     if (!title || !contents) {
         res.status(400).json({errorMessage: "Please provide title and contents for the post."})
+        return;
     }
 
-    db.insert({ title, contents })
-        .then(response => {
-            res.status(201)
+    db
+        .insert({ title, contents })
+            .then(response => {
+                res.status(201).json(response)
+                return;
+            })
+        .catch(error => {
+            res.status(500).json({ error: "There was an error while saving the post to the database" });
             return;
         })
-
-        db.findById(id)
-        .then(post => {
-            if (post.length === 0) { 
-                res.status(404).json({ message: "The post with the specified ID does not exist." })
-                return;
-            }
-            res.json(post[0])
-        })
-        .catch(error => {
-            res.status(500).json({ error: "The post information could not be retrieved." })
-        })
-    .catch(error => {
-        res.status(500).json({ error: "There was an error while saving the post to the database" });
-        return;
-    })
 });
 
 // GET REQUEST
@@ -110,7 +100,22 @@ server.put('/api/posts/:id', (req, res) => {
                 res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
             }
 
-            res.status(200).json(response)
+            // res.status(200).json(response)
+            db  
+            .findById(id)
+            .then(post => {
+                // console.log(post);
+    
+                if (post.length === 0) { // if requested ID doesn't exist, an empty array is returned, unless error is handled
+                    res.status(404).json({ message: "The post with the specified ID does not exist." })
+                }
+    
+                res.status(201).json(post[0])
+            })
+            .catch(error => {
+                res.status(500).json({ error: "The post information could not be retrieved." })
+            })
+
         })
         .catch(error => {
             res.status(500).json({ error: "The post information could not be modified." })
