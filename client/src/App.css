@@ -68,6 +68,28 @@
   cursor: pointer;
 }
 
-.delete {
+.danger {
   background-color: tomato;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+input {
+  height: 50px;
+  font-size: 1em;
+  width: 100%;
+  margin: 15px;
+}
+
+textarea {
+  height: 150px;
+  font-size: 1em;
+  width: 100%;
 }

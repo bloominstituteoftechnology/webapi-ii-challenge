@@ -2,21 +2,37 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import NoteCard from './components/NoteCard'
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      posts: []
+      posts: [],
+      title: '',
+      contents: ''
     };
   }
 
   componentDidMount() {
     axios.get('http://localhost:5555/api/posts')
-      .then(res => {
-        console.log(res.data)
+      .then( res => {
         this.setState({posts: res.data.users});
-        console.log(this.state)
+      })
+  }
+
+  handleChange = (e) => {
+    this.setState({[e.target.name]: e.target.value});
+  }
+
+  addPost = () => {
+    const newPost = {
+      title: this.state.title,
+      contents: this.state.contents
+    }
+    axios.post('http://localhost:5555/api/posts', newPost)
+      .then( res => {
+        this.setState({title: '', contents: ''})
       })
   }
 
@@ -32,22 +48,22 @@ class App extends Component {
         </h2>
         {this.state.posts.map(post => {
           return(
-            <div className="postCard" key={post.id}>
-              <h2 className="postTitle">{`"${post.title}"`}</h2>
-              <p>{`- ${post.contents}`}</p>
-              <div className="buttons">
-                <button 
-                  className="btn">
-                  Update
-                </button>
-                <button 
-                  className="btn delete">
-                  Delete
-                </button>
-              </div>
-            </div>
+            <NoteCard  
+              key={post.id} 
+              post={post}/>
           )
         })}
+        <form onSubmit={this.addPost} className="postCard">
+          <textarea 
+            placeholder="Enter Quote"
+            name="title"
+            onChange={this.handleChange}/>
+          <input
+            placeholder="Enter Author"
+            name="contents"
+            onChange={this.handleChange}/>
+          <button className="btn">+ New Post</button>
+        </form>
       </div>
     );
   }
