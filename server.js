@@ -41,7 +41,7 @@ server.post('/api/posts', (req, res) => {
             res.status(201).send(response);
         })
         .catch(error => {
-            sendError(500, "Something went wrong.", res);
+            sendError(500, "There was an error while saving the post to the database.", res);
         });
 });
 
@@ -66,7 +66,7 @@ server.get('/api/posts/:id', (req, res) => {
             }
         })
         .catch(error => {
-            sendError(500, "Could not access posts data", res);
+            sendError(500, "The post information could not be retrieved.", res);
         });
 });
 
@@ -81,7 +81,7 @@ server.delete('/api/posts/:id', (req, res) => {
             }
         })
         .catch(error => {
-            sendError(500, "The post could not be removed", res);
+            sendError(500, "The post could not be removed.", res);
         });
 });
 
@@ -99,7 +99,7 @@ server.put("/api/posts/:id", (req, res) => {
             db.findById(id)
                 .then(post => {
                     if (post.length === 0) {
-                        sendError(404, 'post with that id not found', res);
+                        sendError(404, 'Post with that id not found.', res);
                     }
                     res.json({ post });
                 })
