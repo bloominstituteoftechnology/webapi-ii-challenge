@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: rgb(78, 47, 47);
 }
 
 .App-logo {
@@ -8,14 +9,17 @@
 }
 
 .App-header {
-  background-color: #222;
   height: 150px;
   padding: 20px;
-  color: white;
+  color: rgb(189, 170, 67);
+  background-image: url("https://images-na.ssl-images-amazon.com/images/I/81%2B9QP8nLXL._SL1500_.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 2em;
 }
 
 .App-intro {
@@ -25,4 +29,10 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.body {
+  background-color: rgb(78, 47, 47);
+  color: rgb(189, 170, 67);
+  text-shadow: 1px 1px 5px black;
 }

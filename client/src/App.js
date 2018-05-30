@@ -25,7 +25,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={"https://pre00.deviantart.net/18a2/th/pre/f/2017/269/0/b/one_ring_inscription_circle_vector_by_vanyanie-dbomoch.png"} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to some LOTR stuff:</h1>
         </header>
         <p className="body">
