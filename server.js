@@ -75,6 +75,11 @@ function insertPost(req, res, next) {
   db
     .insert({ title, contents })
     .then(response => {
+      /**
+       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a fail in the server fetching the data with 'db.find()' method.
+       * */
+      // return new Promise.reject();
+
       const { id } = response;
       id && next();
     })
@@ -89,6 +94,11 @@ server.post(url, contentValid, insertPost, (req, res) => {
   db
     .find()
     .then(response => {
+      /**
+       * SOLLELY FOR TESTING PURPOSE: Uncomment the line below to test a fail in the server fetching the data with 'db.find()' method.
+       * */
+      // return new Promise.reject();
+
       res.status(201).json(response.slice(-1));
     })
     .catch(e => {
