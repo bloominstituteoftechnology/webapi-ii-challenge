@@ -35,4 +35,14 @@ server.post(`/api/posts`, (req, res) => {
         })
 })
 
+server.get(`/api/posts`, (req, res) => {
+    db.find()
+        .then( users => {
+            res.json({ users })
+        })
+        .catch( error => {
+            sendError(500, "The posts information could not be retrieved.", res);
+        })
+})
+
 server.listen(port, () => console.log(`Server running on port ${port}`));
