@@ -5,7 +5,7 @@ const port = 5555;
 const server = express();
 
 server.use(express.json());
-server.use(cors({ origin: "http://localhost:5555" }));
+server.use(cors());
 
 const sendError = (statusCode, message, res) => {
   res.status(statusCode).json({ errorMessage: message });
