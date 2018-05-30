@@ -9,9 +9,11 @@
   },
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "knex": "^0.14.4",
+    "react-strap": "^0.0.1",
     "sqlite3": "^4.0.0"
   },
   "devDependencies": {
