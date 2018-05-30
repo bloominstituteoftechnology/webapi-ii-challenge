@@ -42,6 +42,7 @@ server.get('/api/posts', (req, res) => {
         res.status(500).json(error)
     });
 });
+
 // GET request by id
 server.get('/api/posts/:id', (req, res) =>{
     const id = req.params.id
@@ -58,6 +59,21 @@ server.get('/api/posts/:id', (req, res) =>{
     })
 });
 
+// DELETE by id
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id
+    db
+    .findById(id)
+    .then(posts => {
+        if(posts.length === 0){
+            return res.status(404).json({message: "The post with the specified ID does not exist."})
+        }
+        res.status(200).json( posts )  
+    })
+    .catch(error => {
+        res.status(500).json({error: "The post could not be removed"})
+    })
+})
 
 // calling serving to listen to traffic 
 server.listen(port, () => console.log(`Server running on port ${port}`));
