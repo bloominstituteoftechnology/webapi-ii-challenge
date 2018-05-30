@@ -57,6 +57,7 @@ server.post('/api/posts', (req, res) => {
     })
     .then(response => {
         res.status(201).json(response);
+        
     })
     .catch(error => {
         sendUserError(500, 'There was an error while saving the post to the database.', res);
