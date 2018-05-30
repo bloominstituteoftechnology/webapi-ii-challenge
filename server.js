@@ -42,4 +42,27 @@ server.get('/api/posts/:id', (req, res) => {
     });
 });
 
+server.post('/api/posts', (req, res) => {
+    const { title, contents, created_at, updated_at } = req.body;
+    if (!title || !contents) {
+        sendUserError(400, "Please provide title and contents for the post.", res);
+        return;
+    } 
+    db
+    .insert({
+        title,
+        contents,
+        created_at,
+        updated_at
+    })
+    .then(response => {
+        res.status(201).json(response);
+    })
+    .catch(error => {
+        sendUserError(500, 'There was an error while saving the post to the database.', res);
+        return;
+    });
+});
+
+
 server.listen(port, () => console.log(`Server running on port ${port}`));
