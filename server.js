@@ -1,18 +1,16 @@
 // import your node modules
 const express = require('express');
+ const cors = require('cors');
 
 const db = require('./data/db.js');
-
 // add your server code starting here
-
-
-const cors = require('cors');
 
 const port = 5000;
 
 const server = express();
 server.use(express.json());
-// server.use(cors({origin: 'http://localhost:3000'}));
+
+server.use(cors({origin: 'http://localhost:3000'}));
 
 server.get('/', (req, res) => {
     //1st arg: route where a resource can be interacted with
