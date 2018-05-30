@@ -63,20 +63,15 @@ server.delete('/api/posts/:id', (req, res) => {
 
   db
     .findById(id)
-    .then(response => {
-      post = { ...response[0]
-      };
-
-      db.remove(id)
-        .then(response => {
-          res.status(200).json(post);
-        })
-        .catch(error => {
-          res.status(500).json(error);
-        });
+    .then(post => {
+      if (post.length === 0) {
+        errorMessage(404, 'The post with this ID does not exist. Could not delete.', res);
+        return;
+      }
+      res.json(post);
     })
     .catch(error => {
-      res.status(500).json(error);
+      errorMessage(500, 'something went wrong!', res);
     });
 })
 
@@ -87,16 +82,19 @@ server.get('/api/posts/:id', (req, res) => {
 
   db
     .findById(id)
-    .then(posts => {
-      res.json(posts[0]);
+    .then(post => {
+      if (post.length === 0) {
+        errorMessage(404, 'The post with this ID does not exist.', res);
+        return;
+      }
+      res.json(post);
     })
     .catch(error => {
-      res.status(500).json(error);
+      errorMessage(500, 'something went wrong!', res);
     });
 });
 
 server.put('/api/posts/:id', (req, res) => {
-
   const {
     id
   } = req.params;
@@ -104,8 +102,8 @@ server.put('/api/posts/:id', (req, res) => {
 
   db
     .update(id, update)
-    .then(count => {
-      if (count > 0) {
+    .then(post => {
+      if (post > 0) {
         db.findById(id).then(updatedPosts => {
           res.status(200).json(updatedPosts[0]);
         });
