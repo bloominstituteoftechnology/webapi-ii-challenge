@@ -68,7 +68,6 @@ server.get("/api/posts/:id", (req, res) => {
     db
         .findById(id)
         .then(post => {
-            console.log(post);
             if(post.length === 0) {
                 sendUserError(404,"The post with the specified ID does not exist.", res);
                 return;
@@ -78,4 +77,32 @@ server.get("/api/posts/:id", (req, res) => {
         .catch(error => {
             sendUserError(500, "The post information could not be retrieved.", res)
         })
+})
+
+server.delete("/api/posts/:id", (req, res) => {
+    const { id } = req.params;
+    db
+        .findById(id)
+        .then(post => {
+            if(post.length === 0) {
+                sendUserError(404,"The post with the specified ID does not exist.", res);
+                return;
+            }
+            const postRemoved = post;
+            db
+                .remove(id)
+                .then(isRemoved => {
+                    if(isRemoved === 0) {
+                        sendUserError(404, "Delete: The post with the specified ID does not exist.", res);
+                        return;
+                    }
+                    res.json(post);
+                })
+                .catch(error => {
+                    sendUserError(500, "The post could not be removed", res);
+                })
+        .catch(error => {
+            sendUserError(500, "The post information could not be retrieved.", res)
+        }) 
+    })   
 })
