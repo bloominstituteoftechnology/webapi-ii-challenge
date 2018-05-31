@@ -37,7 +37,7 @@ server.post('/api/posts', (req, res) => {
         })
     });
 
-
+//Returns the post object with the specified id. 
 server.get('/api/posts/:id', (req, res) => {
     // const id = req.params.id; //ES5
     const { id } = req.params; //ES6 Deconstruction 
@@ -52,6 +52,7 @@ server.get('/api/posts/:id', (req, res) => {
         })
 });
 
+// Removes the post with the specified id and returns the deleted post.
 server.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     db
@@ -67,6 +68,57 @@ server.delete('/api/posts/:id', (req, res) => {
         })
 });
 
+// Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
+server.put(`/api/posts/:id`, (req, res) => {
+    const { id } = req.params;
+    const { title, contents } = req.body;
+    // update: accepts two arguments, the first is the id of the user to update and the second is an object with the changes to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
+    db.update(id, { title, contents })
+        .then(count => {
+            if (count > 0) {
+                res.status(200).json({message: 'Updated Successfully'})
+            } else {
+                res.status(404).json({messageError: 'The user with the specified ID does not exist'})
+            }
+        }).catch(err => {
+            res.status(500).json({messageError: 'The user information could not be modified.'});
+        })
+})
+
+
+// server.put('api/posts/:id', (req, res) => {
+//     const { id } = req.params; 
+//     const { title, contents } = req.body;
+
+//     if (!title || !contents) {
+//         res.status(400).json({errorMessage: 'Must provide title and content.'});
+//         // return;
+//     }
+//     db
+//     .update(id, { title, contents })
+//     .then(response => {
+//         if(response == 0) {
+//             res.status(404).json({errorMessage: 'The post with the specified Id does not exist.'});
+//             // return;
+//         }
+//         db
+//         .findById(id)
+//         .then(post => {
+//             if(post.length === 0) {
+//                 res.status(404).json({errorMessage: 'Post with that Id not found.'})
+//                 // return;
+//             }
+//             res.json(post);
+//         })
+//         .catch(error => {
+//             res.status(500).json({errorMessage: 'Error looking up post.'})
+//         })
+//     })
+//     .catch(error => {
+//         req.status(500).json({errorMessage: 'Something bad happened in the database'});
+//         // return;
+//     })
+// })
 
 // add your server code starting here
 server.listen(port, () => console.log('Server is running on port ${port}'));
