@@ -5,6 +5,7 @@ const db = require('./data/db.js');
 // add your server code starting here
 const port = 5000;
 const server = express();
+server.use(({ origin: 'http://localhost:3000'}));
 
 const sendUserError = (status, message, res) => {
     res.status(status).json({ errorMessage: message });
