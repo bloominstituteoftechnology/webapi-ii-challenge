@@ -19,7 +19,7 @@ class App extends Component {
       
       .then(response => {
         // console.log(response)
-        setTimeout(() => { this.setState({posts: response.data})},0)
+        setTimeout(() => { this.setState({posts: response.data})},2000)
       })
       .catch(error => {
         console.log(error)
@@ -27,7 +27,7 @@ class App extends Component {
   }
 
   render() {
-   
+
     return (
       <div className="App">
 
@@ -38,12 +38,12 @@ class App extends Component {
         {!this.state.posts ? (<img src={logo} className="App-logo" alt="logo" />) : 
           (this.state.posts.map((post, index) => 
               (<div className="postStyles" key={index + post.title}>
-                <div>
-                  <button className="btnStyles">edit</button>
-                  <button className="btnStyles">delete</button>
-                </div>
-                <h4>{post.title}</h4>
-                <p>{post.contents}</p>
+                  <div>
+                    <button className="btnStyles">edit</button>
+                    <button className="btnStyles">delete</button>
+                  </div>
+                  <h4>{post.title}</h4>
+                  <p>{post.contents}</p>
                 
               </div>)
           ))
