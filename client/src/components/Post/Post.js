@@ -16,7 +16,7 @@ class Post extends Component {
 
     render() { 
         return (
-            <div>
+            <div className={this.props.className}>
                 <h2>{this.state.title}</h2>
                 <p>{this.state.contents}</p>
             </div>

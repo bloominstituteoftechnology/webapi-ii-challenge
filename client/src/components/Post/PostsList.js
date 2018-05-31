@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Post from "./Post"
+import Post from "./Post";
+import "./Post.css";
 
 // pull in actions from action/index
 import { fetchPosts } from '../../actions';
@@ -23,9 +24,7 @@ class PostsList extends Component {
             <div>
             {this.props.posts.map(post => {
               return (
-                <Link to={`/post/${post.id}`} key={post.id} >
-                  <Post post={post} />
-                </Link>
+                <Post className="Post-card" key={post.id} post={post} />
               );
             })}
           </div>
