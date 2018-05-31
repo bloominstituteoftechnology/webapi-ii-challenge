@@ -1,18 +1,43 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import Post from "./Post"
+
+// pull in actions from action/index
+import { fetchPosts } from '../../actions';
 
 class PostsList extends Component {
     constructor(props) {
         super(props);
         this.state = {  }
     }
-    render() { 
+
+    componentDidMount() {
+        this.props.fetchPosts();
+    }
+
+    render() {
+        console.log("state " ,this.props);
         return (
             <div>
-                <Post post={{title: "Hi I'm a title", contents: "And here is my contents"}}/>
-            </div>
+            {this.props.posts.map(post => {
+              return (
+                <Link to={`/post/${post.id}`} key={post.id} >
+                  <Post post={post} />
+                </Link>
+              );
+            })}
+          </div>
         )
     }
 }
- 
-export default PostsList;
+
+
+const mapDispatchToProps = state => {
+    console.log(state.postsReducer);
+    const  postsReducer  = state.postsReducer;
+    return postsReducer;
+  };
+  
+export default connect(mapDispatchToProps, { fetchPosts })(PostsList);

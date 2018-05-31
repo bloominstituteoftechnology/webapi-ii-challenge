@@ -1,7 +1,21 @@
 // we'll need axios
 import axios from 'axios';
 
-import { FETCHING_POSTS, POSTS_FETCHED } from "./types";
+import { 
+  FETCHING_POSTS,
+  POSTS_FETCHED, 
+
+  FETCHING_POST, 
+  POST_FETCHED,
+
+  SAVING_POST, 
+  POST_SAVED,
+
+  DELETING_POST,
+  POST_DELETED,
+  
+  ERROR
+} from "./types";
 
 export const fetchPosts = () => {
   const getData = axios.get('http://localhost:5000/api/posts/');
