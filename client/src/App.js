@@ -16,9 +16,10 @@ class App extends Component {
   componentDidMount() {
     axios
       .get('http://localhost:5000/api/posts')
+      
       .then(response => {
         // console.log(response)
-        this.setState({posts: response.data})
+        setTimeout(() => { this.setState({posts: response.data})}, 3000)
       })
       .catch(error => {
         console.log(error)
@@ -29,17 +30,18 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">User Posts</h1>
         </header>
-        {this.state.posts.map((post, index) => 
-    
-            (<div key={index + post.title}>
-              <h3>{post.title}</h3>
-              <p>{post.contents}</p>
-            </div>)
-          
-        )}
+        {!this.state.posts ? ( <img src={logo} className="App-logo" alt="logo" />) : 
+        
+          (this.state.posts.map((post, index) => 
+              (<div key={index + post.title}>
+                <h3>{post.title}</h3>
+                <p>{post.contents}</p>
+              </div>)
+          ))
+       
+        }
       
       </div>
     );
