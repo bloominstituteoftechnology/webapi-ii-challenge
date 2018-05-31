@@ -12,9 +12,7 @@
   height: 150px;
   padding: 20px;
   color: rgb(189, 170, 67);
-  /* background-image: url("https://images-na.ssl-images-amazon.com/images/I/81%2B9QP8nLXL._SL1500_.jpg");
-  background-color: rgba(0, 0, 0, 0.7); */
-  background: radial-gradient(rgba(38, 41, 51, 0.6), rgba(38, 41, 51, 0.6)), url("https://images-na.ssl-images-amazon.com/images/I/81%2B9QP8nLXL._SL1500_.jpg")no-repeat center;
+  background: radial-gradient(rgba(38, 41, 51, 0.6), rgba(38, 41, 51, 0.6)), url("https://images-na.ssl-images-amazon.com/images/I/81%2B9QP8nLXL._SL1500_.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -29,13 +27,13 @@
   font-size: large;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .body {
   background-color: rgb(78, 47, 47);
   color: rgb(189, 170, 67);
   text-shadow: 1px 1px 5px black;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import ring from './oneringGIF.gif';
 import './App.css';
 import axios from 'axios';

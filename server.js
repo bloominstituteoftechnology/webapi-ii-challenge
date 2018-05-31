@@ -13,7 +13,6 @@ server.get('/api/posts', (req, res) => {
     db
     .find()
     .then(response => {
-        // console.log(response)
         res.json(response)
     })
     .catch(error => {
