@@ -35,13 +35,13 @@ server.post('/api/posts', (req, res) => {
             console.log(error);
             res.status(500).json({errorMessage: 'There was an error while saving the user to the database'});
         })
-    })
+    });
 
 
 server.get('/api/posts/:id', (req, res) => {
     // const id = req.params.id; //ES5
     const { id } = req.params; //ES6 Deconstruction 
-    console.log('Params:', req.params.id);
+    console.log('Params:', id);
     db
     .findById(id)
         .then(post => {
@@ -50,8 +50,22 @@ server.get('/api/posts/:id', (req, res) => {
         .catch(error => {
             res.status(500).json({errorMessage: error});
         })
+});
 
-})
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    db
+    .remove(id)
+        .then(response => {
+            if (response === 0 ) {
+                res.status(500).json({errorMessage: 'User with specified ID does not exisit.'});
+            } 
+            res.json({message: 'User with id ${id} has been removed from the system.'});
+        })
+        .catch(error => {
+            res.status(500).json({errorMessage: 'The user could not be removed.'});
+        })
+});
 
 
 // add your server code starting here
