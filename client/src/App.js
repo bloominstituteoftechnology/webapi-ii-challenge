@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import ring from './oneringGIF.gif';
 import './App.css';
 import axios from 'axios';
 
@@ -25,8 +26,8 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={"https://pre00.deviantart.net/18a2/th/pre/f/2017/269/0/b/one_ring_inscription_circle_vector_by_vanyanie-dbomoch.png"} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to some LOTR stuff:</h1>
+          <img src={ring} className="App-logo" alt="logo" />
+          <h1 className="App-title">LOTR Quotes:</h1>
         </header>
         <p className="body">
           {this.state.posts.map(post => {

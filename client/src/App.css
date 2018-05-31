@@ -12,10 +12,13 @@
   height: 150px;
   padding: 20px;
   color: rgb(189, 170, 67);
-  background-image: url("https://images-na.ssl-images-amazon.com/images/I/81%2B9QP8nLXL._SL1500_.jpg");
+  /* background-image: url("https://images-na.ssl-images-amazon.com/images/I/81%2B9QP8nLXL._SL1500_.jpg");
+  background-color: rgba(0, 0, 0, 0.7); */
+  background: radial-gradient(rgba(38, 41, 51, 0.6), rgba(38, 41, 51, 0.6)), url("https://images-na.ssl-images-amazon.com/images/I/81%2B9QP8nLXL._SL1500_.jpg")no-repeat center;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  box-shadow: 2px 2px 8px black;
 }
 
 .App-title {
