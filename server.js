@@ -7,11 +7,10 @@ const port = 5001;
 const server = express();
 server.use(express.json());
 
-
+// 1st arg: route where a resource can be interacted with
+// 2nd arg: callback to deal with sending responses, and handling incoming data
 server.get('/api/posts', (req, res) => {
-    // 1st arg: route where a resource can be interacted with
-    // 2nd arg: callback to deal with sending responses, and handling incoming
-    db
+     db
         .find()
         .then(posts => {
             res.json({ posts });
@@ -21,6 +20,20 @@ server.get('/api/posts', (req, res) => {
          
         })
 });
+
+server.post('/api/posts', (req, res) => {
+    const { title, contents } = req.body;
+    db
+    .insert({ title, contents })
+        .then(response => {
+            console.log(response);
+            res.status(201).send(response) //201 === created
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({errorMessage: 'There was an error while saving the user to the database'});
+        })
+    })
 
 
 
