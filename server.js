@@ -9,6 +9,7 @@ server.use(express.json());
 
 // 1st arg: route where a resource can be interacted with
 // 2nd arg: callback to deal with sending responses, and handling incoming data
+// Returns an array of all the post objects contained in the database.
 server.get('/api/posts', (req, res) => {
      db
         .find()
@@ -21,6 +22,7 @@ server.get('/api/posts', (req, res) => {
         })
 });
 
+//Creates a post using the information sent inside the request body.
 server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body;
     db
@@ -35,6 +37,21 @@ server.post('/api/posts', (req, res) => {
         })
     })
 
+
+server.get('/api/posts/:id', (req, res) => {
+    // const id = req.params.id; //ES5
+    const { id } = req.params; //ES6 Deconstruction 
+    console.log('Params:', req.params.id);
+    db
+    .findById(id)
+        .then(post => {
+            res.json(post);
+        })
+        .catch(error => {
+            res.status(500).json({errorMessage: error});
+        })
+
+})
 
 
 // add your server code starting here
