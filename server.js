@@ -5,7 +5,7 @@ const port = 5000;
 
 const server = express();
 server.use(express.json());
-server.use(cors({origin: 'http://localhost:3000'}));
+server.use(cors({origin: 'http://localhost:3000'})); //pass in origin if needing to lock API down for a specific origin or if you dont want requests from certain unwanted urls. Otherwise, can make it open access for any client. 
 
 // server code here
 

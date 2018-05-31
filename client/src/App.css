@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  background-color: lightgray;
 }
 
 .App-logo {
@@ -8,10 +12,13 @@
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  width: 100%;
+  background-color: #545159;
+  height: 120px;
   padding: 20px;
   color: white;
+  font-size: 30px;
+  text-shadow: 3px 3px 3px black;
 }
 
 .App-title {
@@ -20,6 +27,28 @@
 
 .App-intro {
   font-size: large;
+}
+
+
+.postStyles {
+  width: 200px;
+  height: 250px;
+  border: 2px solid gray;
+  padding: 10px;
+  margin: 10px;
+  margin-top: 30px;
+  box-shadow: 4px 4px 4px gray;
+  background-color: #5F4B80;
+  color: white;
+}
+
+.btnStyles {
+  width: 80px;
+  background-color: lightgray;
+  border: 1px solid black;
+  margin: 3px; 
+  border-radius: 3px;
+  box-shadow: 2px 2px 2px black; 
 }
 
 @keyframes App-logo-spin {
