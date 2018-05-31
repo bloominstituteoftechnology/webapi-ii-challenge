@@ -10,12 +10,11 @@ class App extends Component {
       posts: []
     }
   }
-
    componentDidMount() {
     axios.get('http://localhost:5000/api/posts')
     .then ( post => {
       this.setState({posts: post.data.users})
-      console.log("This state",this.state.posts);
+      console.log("This state",this.state);
     })
     .catch(error => {
       console.log(error)
@@ -27,9 +26,10 @@ class App extends Component {
       <div className="App">
       
       { this.state.posts.map(post => {
-        return (
-        <div key={post.id}> 
-        <h3>{ post.title} </h3>
+        return ( 
+
+        <div className="posts" key={post.id}> 
+        <p>{ post.title} </p>
          <p>{post.contents} </p>
          </div> 
       )      
