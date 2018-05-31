@@ -110,12 +110,12 @@ server.put('/api/user/:id', (req, res) => {
               return;
             }
             res.json(user);
-        });
+        })
         .catch(error => {
             sendUserError(500, 'Error looking up user', res);
             return;
                  });
-             });
+             })
         .catch(error => {
             sendUserError(500, 'Error occured in teh database', res);
             return;
