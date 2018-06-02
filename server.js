@@ -9,7 +9,7 @@ const server = express();
 server.use(express.json());
 // server.use(cors({origin: 'http://localhost:3000'}));  Use for react app later
 server.get('/', (req, res) => {
-    res.send('Whaddup from express');
+    res.send('Hi from express');
 })
 
 
@@ -63,6 +63,7 @@ server.get('/api/posts/:id', (req, res) => {
                 res.json({message: "The post with the specified ID does not exist"});
                 return;
             }
+            res.status(200);
             res.json(user);
         })
         .catch(error => {
@@ -71,10 +72,59 @@ server.get('/api/posts/:id', (req, res) => {
         })
 });
 
+//DELETE
 
-server.delete('/api/posts/:id')
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+
+    db
+    .remove(id)
+        .then(response => {
+            if (response === 0) {
+                res.status(404); 
+                res.json({message: "The post with the specified ID does not exist."});
+                return;
+            }
+            
+            res.json({message: "post deleted"});
+        })
+        .catch(error => {
+            res.status(500);
+            res.json({error: "The post could not be removed"});
+        })
+
+    });
 
 
+//PUT 
+
+
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const { title, contents} = req.body;
+    if( !title || !contents ){
+        res.status(400);
+        res.json({ errorMessage: "Please provide title and contents"});
+    }
+
+    db
+    .update(id, {title, contents})
+    .then(response => {
+        if(response === 0) {
+            res.status(404)
+            res.json({ errorMessage: "The ID does not exist"});
+            
+        }
+
+        res.json(response);
+    })
+    
+    .catch(error => {
+        res.status(500);
+        res.json({ errorMessage: "The post information could not be modified."});
+    })
+
+})
 
 
 server.listen(port, () => console.log(`Server running on port ${port}`));
