@@ -16,6 +16,13 @@ const sendUserError = (status, message, res) => {
   return;
 };
 
+const checkIfIdIsValid = postArray => {
+  if (!postArray.length) {
+    sendUserError(404, "The post with the specified ID does not exist.", res);
+  }
+  return;
+};
+
 server.get("/", (req, res) => {
   // 1st arg: route where a resource can be interacted with
   // 2nd arg: callback to deal with sending responses and handle incoming data
@@ -25,7 +32,7 @@ server.get("/", (req, res) => {
 server.post("/api/posts", (req, res) => {
   const { title, contents } = req.body;
   if (!title || !contents) {
-    res.status(400);
+    res.status(400); //400 === bad request
     res.json({
       errorMessage: "Please provide title and contents for the post."
     });
@@ -44,6 +51,65 @@ server.post("/api/posts", (req, res) => {
         "There was an error while saving the post to the database.",
         res
       );
+    });
+});
+
+server.get("/api/posts", (req, res) => {
+  db
+    .find()
+    .then(postsArray => {
+      res.status(200);
+      res.json(postsArray);
+    })
+    .catch(error => {
+      sendUserError(500, "The posts information could not be retrieved.", res);
+    });
+});
+
+server.get("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  db
+    .findById(id)
+    .then(postArray => {
+      checkIfIdIsValid(postArray);
+      res.json({ postArray });
+    })
+    .catch(error => {
+      sendUserError(500, "The post information could not be retrieved.", res);
+    });
+});
+
+// server.delete("/api/posts/:id", (req, res) => {
+//   const { id } = req.params;
+//   db
+//     .findById(id)
+//     .then(postArray => {
+//       checkIfIdIsValid(postArray);
+//       db.remove(id);
+//       res.json(postArray);
+//     })
+//     .catch(error => sendUserError(500, "The post could not be removed", res));
+// });
+
+server.delete("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  let deletedPost;
+  db.findById(id).then(post => (deletedPost = post));
+  db
+    .remove(id)
+    .then(posts => {
+      if (posts === 0) {
+        sendUserError(
+          404,
+          "The post with the specified ID does not exist.",
+          res
+        );
+      } else {
+        res.json({ deletedPost });
+      }
+    })
+    .catch(error => {
+      sendUserError(500, "The post could not be removed.", res);
     });
 });
 
