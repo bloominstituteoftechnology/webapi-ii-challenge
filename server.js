@@ -39,8 +39,7 @@ server.post("/api/posts", (req, res) => {
     //I did it without the custome middleware just to remember how to do it
     return;
   }
-  db
-    .insert({ title, contents })
+  db.insert({ title, contents })
     .then(response => {
       res.status(201); //201=== sucessfully created
       db.findById(response.id).then(post => res.json({ post }));
@@ -55,8 +54,7 @@ server.post("/api/posts", (req, res) => {
 });
 
 server.get("/api/posts", (req, res) => {
-  db
-    .find()
+  db.find()
     .then(postsArray => {
       res.status(200);
       res.json(postsArray);
@@ -68,8 +66,7 @@ server.get("/api/posts", (req, res) => {
 
 server.get("/api/posts/:id", (req, res) => {
   const { id } = req.params;
-  db
-    .findById(id)
+  db.findById(id)
     .then(postArray => {
       // checkIfIdIsValid(postArray);
       if (postArray.length === 0) {
@@ -90,8 +87,7 @@ server.get("/api/posts/:id", (req, res) => {
 
 server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params;
-  db
-    .findById(id)
+  db.findById(id)
     .then(postArray => {
       // checkIfIdIsValid(postArray);
       if (postArray.length === 0) {
@@ -138,8 +134,7 @@ server.put("/api/posts/:id", (req, res) => {
   if (!title || !contents) {
     sendUserError(400, "Please provide title and contents for the post.", res);
   }
-  db
-    .findById(id)
+  db.findById(id)
     .then(postArray => {
       // checkIfIdIsValid(postArray);
       if (postArray.length === 0) {
