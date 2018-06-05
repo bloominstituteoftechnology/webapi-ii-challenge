@@ -18,7 +18,7 @@ const sendUserError = (status, message, res) => {
     return;
   };
   
-// add your server code starting here
+// -----add your server code starting here-----
 //GET an array of all users
 server.get('/api/posts', (req, res) => {
     db
@@ -44,11 +44,36 @@ server.get('/api/posts/:id', (req, res) => {
             }
             res.json(user);
         })
+        .catch(error => {
+            sendUserError(500, 'Error looking up user', res);
+        });
 })
 
+//POST Creates a post using the information sent inside the request body
+server.post('/api/posts', (req, res) => {
+    const { title, contents, created_at, updated_at } = req.body;
+    if (!title || !contents) {
+        sendUserError(400, 'Please provide title and contents for the post', res);
+        return;
+    }
+    db
+        .insert({
+            title,
+            contents,
+            created_at,
+            updated_at
+        })
+        .then(response => {
+            res.status(201).json(response);
+        })
+        .catch(error => {
+            console.log(error);
+            sendUserError(400, error, res);
+            return;
+        });
+});
 
 
-//server.post()
 //server.delete()
 //server.put()
 
