@@ -32,7 +32,7 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Lists of Contents</h1>
         </header>
-        <div>
+        <div className = 'main-container'>
           <AddContents />
           <ContentsList posts={this.state.posts}/>
         </div>

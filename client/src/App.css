@@ -3,7 +3,7 @@
 }
 
 .App-header {
-  background-color: #505672;
+  background-color: #0b1d3a;
   height: 80px;
   padding: 20px;
   color: #c6c9d3;
@@ -20,4 +20,54 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.main-container {
+  margin: 0 auto;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  margin: 35px 30px 0 30px;
+  align-content: space-around;
+}
+
+.content-inside {
+  padding: 20px;
+}
+
+.content-btn {
+  border: none;
+}
+
+.update {
+  background-color: #a6afbf
+}
+
+.delete {
+  background-color: #8a92a0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 30px;
+  padding: 30px;
+}
+
+.text-input {
+  margin: 20px 0;
+  padding: 10px;
+  height: 150px;
+}
+
+.title-input {
+  width: 50%;
+  padding: 10px;
+}
+
+.add-button {
+  width: 15%
 }
