@@ -8,13 +8,19 @@ body {
   background-color:rgb(214, 236, 214);
 }
 .title-name{
+  display:flex;
   background-color:#CFB53B;
   height:40px;
   margin:1px;
+  align-items:center;
+  justify-content: center;
 }
 .contents-name{
+  display:flex;
   background-color:darkgreen;
   color:goldenrod;
   height:40px;
   margin:1px;
+  align-items:center;
+  justify-content: center;
 }
