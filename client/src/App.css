@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100vh;
 }
 
 .App-header {
@@ -27,6 +28,7 @@
   padding: 30px;
   display: flex;
   flex-direction: column;
+  background-color: #e3e8ef;
 }
 
 .card {
@@ -69,5 +71,6 @@
 }
 
 .add-button {
-  width: 15%
+  width: 15%;
+  background-color: #c3cddb;
 }

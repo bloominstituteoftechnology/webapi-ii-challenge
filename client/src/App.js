@@ -25,6 +25,21 @@ class App extends Component {
       })
   }
 
+  addNewContent = ( newContent ) => {
+    axios
+      .post('http://localhost:5000/api/posts', newContent)
+      .then(res => {
+      axios
+        .get('http://localhost:5000/api/posts')
+        .then(res => {
+        // console.log(res.data.posts);
+          this.setState({ posts: res.data.posts })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      })
+  }
 
   render() {
     return (
@@ -33,7 +48,7 @@ class App extends Component {
           <h1 className="App-title">Lists of Contents</h1>
         </header>
         <div className = 'main-container'>
-          <AddContents />
+          <AddContents newContent={this.addNewContent}/>
           <ContentsList posts={this.state.posts}/>
         </div>
       </div>
