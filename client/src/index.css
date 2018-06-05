@@ -5,15 +5,16 @@ body {
 }
 .App{
   list-style: none;
+  background-color:rgb(214, 236, 214);
 }
 .title-name{
-  background-color:goldenrod;
-  height:30px;
+  background-color:#CFB53B;
+  height:40px;
   margin:1px;
 }
 .contents-name{
   background-color:darkgreen;
   color:goldenrod;
-  height:30px;
+  height:40px;
   margin:1px;
 }
