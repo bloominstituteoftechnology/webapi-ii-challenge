@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+.App{
+  list-style: none;
+}
+.title-name{
+  background-color:goldenrod;
+  height:30px;
+  margin:1px;
+}
+.contents-name{
+  background-color:darkgreen;
+  color:goldenrod;
+  height:30px;
+  margin:1px;
+}

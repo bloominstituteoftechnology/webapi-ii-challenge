@@ -22,11 +22,10 @@ server.get('/', (req, res) =>{
 });
 
 server.get('/api/posts', (req, res) =>{
-    const {title, contents} = req.body;
     db
       .find()
         .then(posts =>{
-            res.status(201).json(res)
+            res.json({posts})
         })
         .catch(error =>{
             return sendUserError(500, "There was an error while retrieving these posts", res);
@@ -34,6 +33,7 @@ server.get('/api/posts', (req, res) =>{
 })
 
 server.post('/api/posts', (req, res) =>{
+    const {title, contents} = req.body;
     if(!title||!contents){
         sendUserError(400, "Please provide title and contents for the post", res);
     }
