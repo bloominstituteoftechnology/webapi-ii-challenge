@@ -88,7 +88,7 @@ When the client makes a `POST` request to `/api/posts`:
   * return the following JSON response: `{ errorMessage: "Please provide title and contents for the post." }`.
 
 * If the information about the _post_ is valid:
-
+-
   * save the new _post_ the the database.
   * return HTTP status code `201` (Created).
   * return the newly created _post_.
