@@ -25,13 +25,13 @@ server.get('/api/posts', (req, res) => {
     });
 });
 
-/*
+
 // GET request to /api/posts/:id
 server.get('/api/posts/:id', (req, res) => {
     // grab the id from URL params
     const id = req.params.id;
     db
-        .findbyID(id)
+        .findById(id)
         .then(posts => {
             if (posts.length === 0) {
             res.status(404).json({ message: 'The post with the specified ID does not exist.' });
@@ -39,12 +39,10 @@ server.get('/api/posts/:id', (req, res) => {
             res.json(posts[0]);
         }
     })
-})
-// If retrieval error from database
-.catch(err => {
+    // If retrieval error from database
+    .catch(err => {
         res.status(500).json({ error: 'The posts information could not be retrieved.' });
     });
-
-*/
-
+})
+    
 server.listen(5000, () => console.log('\n== API Running on port 5000 ==\n'));
