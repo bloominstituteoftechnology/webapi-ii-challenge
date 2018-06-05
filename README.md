@@ -11,11 +11,21 @@
 
 Use Node.js and Express to build an API that performs CRUD operations on posts.
 
+Operation	SQL	HTTP	RESTful WS	DDS.
+
+Create	INSERT	PUT / POST	POST	write.
+
+Read (Retrieve)	SELECT	GET	GET	read / take.
+
+Update (Modify)	UPDATE	PUT / POST / PATCH	PUT	write.
+
+Delete (Destroy)	DELETE	DELETE	DELETE	dispose
+
 ### Download Project Files and Install Dependencies
 
 * **Fork** and **Clone** this repository.
-* **CD into the folder** where you cloned the repository.
-* Type `yarn` or `npm install` to download all dependencies listed inside `package.json`.
+* **CD into the folder** where you cloned the repository. done
+* Type `yarn` or `npm install` to download all dependencies listed inside `package.json`. done
 
 ### Database access
 
