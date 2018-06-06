@@ -85,11 +85,11 @@ server.post( '/api/posts', ( req, res ) =>
                 //if the information about the post is valid
                 res.status( 201 ).json( response );
             } )
-            .catch( err =>
+            .catch( error =>
             {
 
                 // if the request body is missing title or contents
-                if ( err.errno === title || contents )
+                if ( ! title || !contents )
                 {
                     res.status( 400 ).json( {
                         msg: "Please provide title and contents for the post."
