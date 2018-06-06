@@ -6,7 +6,7 @@ const cors = require('cors');
 
 const server = express();
 server.use(cors());
-
+server.use(express.json());
 server.get('/', (req, res) => {
     res.send('Yes its working');
 })
@@ -51,7 +51,7 @@ server.get('/api/posts/:id', (req, res) => {
 
 //POST Creates a post using the information sent inside the request body
 server.post('/api/posts', (req, res) => {
-    const { title, contents, created_at, updated_at } = req.body;
+    const { title, contents } = req.body;
     if (!title || !contents) {
         sendUserError(400, 'Please provide title and contents for the post', res);
         return;
@@ -59,16 +59,14 @@ server.post('/api/posts', (req, res) => {
     db
         .insert({
             title,
-            contents,
-            created_at,
-            updated_at
+            contents
         })
         .then(response => {
             res.status(201).json(response);
         })
         .catch(error => {
             console.log(error);
-            sendUserError(400, error, res);
+            sendUserError(500, error, res);
             return;
         });
 });
