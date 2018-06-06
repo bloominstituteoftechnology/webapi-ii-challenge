@@ -33,6 +33,7 @@ server.get('/api/posts', (req, res) =>{
 })
 
 server.post('/api/posts', (req, res) =>{
+    console.log(req.body);
     const {title, contents} = req.body;
     if(!title||!contents){
         sendUserError(400, "Please provide title and contents for the post", res);
