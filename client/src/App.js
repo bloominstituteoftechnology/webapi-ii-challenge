@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import axios from 'axios';
+import axios from 'axios'; 
+import { Card, CardTitle, CardText } from 'reactstrap';
 
 
 
@@ -40,12 +41,25 @@ addDummy = () => {
 render() {
   return (
     <div className="App">
-      {this.state.posts.map( element => {
-       return <div key={element.id}>{element.title}</div>
-       })}
       <input type='text' />
-      <button onClick={this.addDummy}>Guess that </button>
-    </div>
+      <button onClick={this.addDummy}>Guess who said that!!!commit </button> 
+      <div className='row boxes'>
+      {this.state.posts.map( element => {
+        return (
+          <div className="col-12 col-sm-6 col-md-4" key={element.id}>
+          <Card className="card">
+           <CardText> {element.title} </CardText>
+           < CardTitle> {element.contents}</ CardTitle>
+            </Card>
+          </div>
+          
+          
+          
+        ) 
+       })}
+       
+      </div>
+    </div>  
    
      );
   }
