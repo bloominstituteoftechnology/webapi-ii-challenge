@@ -14,19 +14,7 @@ class App extends Component {
       contents:"frankly my dear i dont give a dam"
     }
   }
-  // render() {
-  //   return (
-  //     <div className="App">
-  //       <header className="App-header">
-  //         <img src={logo} className="App-logo" alt="logo" />
-  //         <h1 className="App-title">Welcome to React</h1>
-  //       </header>
-  //       <p className="App-intro">
-  //         To get started, edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //     </div>
-  //   );
-  
+    
 componentWillMount(){
   axios
     .get('http://localhost:5000/api/posts/')
@@ -56,7 +44,7 @@ render() {
        return <div key={element.id}>{element.title}</div>
        })}
       <input type='text' />
-      <button onClick={this.addDummy}>Add Dummy Object</button>
+      <button onClick={this.addDummy}>Guess that </button>
     </div>
    
      );
