@@ -45,7 +45,7 @@ server.get('/api/posts/:id', (req, res) => {
     db
         .findById(id)
         .then(posts => {
-            if (post.length === 0) {
+            if (posts.length === 0) {
                 userError(404, "The post with the specified ID does not exist.", res);
                 return;
             }
