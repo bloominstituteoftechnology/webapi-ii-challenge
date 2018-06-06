@@ -40,6 +40,7 @@ class App extends Component {
         })
       })
   }
+ 
 
   render() {
     return (
@@ -49,7 +50,8 @@ class App extends Component {
         </header>
         <div className = 'main-container'>
           <AddContents newContent={this.addNewContent}/>
-          <ContentsList posts={this.state.posts}/>
+          <ContentsList posts={this.state.posts}
+          />
         </div>
       </div>
     );

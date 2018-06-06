@@ -1,8 +1,24 @@
 import React, { Component } from 'react';
 import { Card, CardTitle, CardText } from 'reactstrap';
+import axios from 'axios';
 
 class ContentsList extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    deleteContent = ( id ) => {
+        axios
+          .delete(`http://localhost:5000/api/posts/${id}`)
+          .then(res => { this.setState({ posts: res.data.posts });
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+
     render() {
+        console.log('props', this.props)
         return (
             <div className='row boxes'>
                 {this.props.posts.map(post => {
@@ -14,7 +30,7 @@ class ContentsList extends Component {
                                     <CardText>{post.title}</CardText> 
                                 </div>                       
                                 <button className='content-btn update'>Update</button>
-                                <button className='content-btn delete'>Delete</button>
+                                <button onClick={this.deleteContent} className='content-btn delete'>Delete</button>
                             </Card>
                         </div>
                     )

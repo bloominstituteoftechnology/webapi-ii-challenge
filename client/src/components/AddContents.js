@@ -24,14 +24,14 @@ class AddContents extends Component {
                 <input className='title-input'
                     type='text'
                     name='contents'
-                    placeholder='title'
+                    placeholder='Who said this'
                     value={this.state.contents}
                     onChange={this.handleInput}
                 />
                 <textarea className='text-input'
                     type='text'
                     name='title'
-                    placeholder='contents'
+                    placeholder='Content'
                     value={this.state.title}
                     onChange={this.handleInput}
                 />
