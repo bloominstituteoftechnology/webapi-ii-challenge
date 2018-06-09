@@ -4,7 +4,6 @@ import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux'
 import postReducer from '../src/reducers'
-import '../src/stylesheets/index.css'
 import App from '../src/components/App.js'
 
 const store = createStore(postReducer, (applyMiddleware(thunk)));

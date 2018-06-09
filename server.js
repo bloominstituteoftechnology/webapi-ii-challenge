@@ -13,7 +13,18 @@ const sendUserError = (status, message, res) => {
     res.status(status).json({ errorMessage: message });
     return;
   };
-server.get('/', (req, res) => {
+  
+const searchMiddleware = (req, res, next) => {
+    db.find().then(posts => {
+        req.posts = posts;
+        next();
+    }).catch(err => {
+        sendUserError(500, "Something bad happened", res)
+    })
+}
+server.get('/', searchMiddleware, (req, res) => {
+    console.log(req.query)
+    console.log(req.posts)
     res.send('Please work, thanks')
 });
 
