@@ -1,17 +1,20 @@
 // import your node modules
 const express = require('express'); //  to import the express module and make it available to our application
-const server = express(); // creates our Express application
-
 const db = require('./data/db.js');
+const cors = require('cors');
 
 // add your server code starting here
+const server = express(); // creates our Express application
+const port = 3000;
+server.use(express.json());
+server.use(cors());
 
 server.get('/', (req, res) => { // two arguments (the homies): an object that represents the request and another object that represents the response
     res.send('Hello World');
   });
 
 server.get('/posts', (req, res) => {
-    const posts = [
+    const postsArray = [
         {
           title:
             'I wish the ring had never come to me. I wish none of this had happened.',
@@ -57,7 +60,18 @@ server.get('/posts', (req, res) => {
           contents: 'Guess who said this',
         },
       ]
-    res.status(200).json(posts);
+    res.status(200).json(postsArray);
 });
 
-  server.listen(3000, () => console.log('API running...')); // Our server will only send a response to GET requests made to the / route on port 3000
+server.get('/api/posts', (req, res) => {
+    db
+        .find()
+        .then(posts => {
+            res.json(posts);
+        })
+        .catch(err => {
+            res.status(500).json({error: "The posts information could not be retrieved."})
+        })
+});
+
+  server.listen(port, () => console.log(`Server is listening to port ${port}`)); // Our server will only send a response to GET requests made to the / route on port 3000
