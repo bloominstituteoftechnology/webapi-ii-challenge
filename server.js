@@ -61,11 +61,16 @@ app.get('/api/posts/:id', (req, res) => {
     });
 });
 
-app.delete('/api/post/:id', (req, res) => {
+app.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params;
-  db.remove(id).then(() => {
-    res.status(200).json({ success: 'Post successfully deleted' });
-  });
+  db.remove(id)
+    .then(() => {
+      res.status(200).json({ success: 'Post successfully deleted' });
+    })
+    .call(err => {
+      console.log(err);
+      res.status(400).json({ error: 'Something went wrong deleting the post' });
+    });
 });
 
 app.put('/api/posts/:id', (req, res) => {
