@@ -9,6 +9,8 @@
   },
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
     "knex": "^0.14.4",
     "sqlite3": "^4.0.0"
   },
