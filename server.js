@@ -63,9 +63,17 @@ app.get('/api/posts/:id', (req, res) => {
 
 app.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params;
+  let cached;
+  db.findById(id)
+    .then(post => {
+      cached = post;
+    })
+    .catch(err => {
+      console.log(err);
+    });
   db.remove(id)
     .then(() => {
-      res.status(200).json({ success: 'Post successfully deleted' });
+      res.status(200).json({ post: cached });
     })
     .call(err => {
       console.log(err);
