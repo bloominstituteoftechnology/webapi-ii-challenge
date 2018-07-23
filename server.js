@@ -26,7 +26,7 @@ app.post('/api/posts', (req, res) => {
   };
   db.insert(post)
     .then(id => {
-      res.json({ id });
+      res.status(200).json({ id });
     })
     .catch(err => {
       console.log(err);
@@ -63,9 +63,12 @@ app.get('/api/posts/:id', async (req, res) => {
 
 app.delete('/api/post/:id', (req, res) => {
   const { id } = req.body;
-  const post = db.findById(id);
-  db.remove(id);
-  res.json({ post });
+  if (!req.body.id) {
+    res.status(400).json({ error: 'Please provide an ID for deletion ' });
+  }
+  db.remove(id).then(() => {
+    res.status(200).json({ success: 'Post successfully deleted' });
+  });
 });
 
 app.put('/api/posts/:id', (req, res) => {
