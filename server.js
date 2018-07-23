@@ -28,4 +28,13 @@ server.get('/api/posts/:id', (req, res) => {
     .catch(error => res.status(500).json({ error: "The posts information could not be retrieved." }))
 })
 
+server.post('/api/posts/', (req, res) => {
+    if (!('contents' in req.query) || !('title' in req.query)) {
+        return res.status(400).send({ errorMessage: "Please provide title and contents for the post." })
+    }
+    return db.insert(req.query)
+    .then(response => res.status(201).json(req.query))
+    .catch(error => res.status(500).send({ error: "There was an error while saving the post to the database" }))
+})
+
 server.listen(8000, () => console.log('API running on port 8000'));
