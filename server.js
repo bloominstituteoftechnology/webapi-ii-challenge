@@ -31,13 +31,27 @@ server.post('/', (req, res) => {
 })
 
 server.get('/api/posts/:id', (req, res) => {
-    res.send(db.findById(1))
+    let id = req.params.id;
+    console.log(id)
+    db.findById(id)
+    .then(result => res.status(201).json(result))
+    .catch(errorr => res.status(400).json(errorr));
 })
 server.delete('/api/posts/:id', (req, res) => {
-    res.send('delete request ...')
+    let id = req.params.id;
+    console.log(id)
+    db.remove(id)
+    .then(result => res.status(201).json(result))
+    .catch(errorr => res.status(400).json(errorr));
 })
 server.put('/api/posts/:id', (req, res) => {
-    res.send('put request ...')
+    let id = req.params.id;
+    let update = req.query;
+    
+    console.log(id)
+    db.update(id, update)
+    .then(result => res.status(201).json(result))
+    .catch(errorr => res.status(400).json(errorr));
 })
 
 const PORT_NUMBER = 8000;
