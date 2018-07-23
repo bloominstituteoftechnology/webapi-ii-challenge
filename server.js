@@ -17,7 +17,7 @@ server.post('/api/posts', (req, res) => {
         .catch(err => res.status(400).json({ error: "There was an error while saving the post to the database" }));
 })
 
-server.get('/', (req,res) => {
+server.get('/', (req, res) => {
     res.send('Home');
 })
 
@@ -40,12 +40,19 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
     db
-        .remove(req.params.id)
+        .findById(req.params.id)
         .then(user => {
-            if (user === 0) return res.status(404).json({ message: "The post with the specified ID does not exist." });
-            res.status(200).json({ completed: 'Delete completed!' })
+            if (user.length === 0) return res.status(404).json({ message: "The post with the specified ID does not exist." });
+            res.status(200).json(user)
+            db
+                .remove(req.params.id)
+                .then(count => {
+                    if (count === 0) return res.status(404).json({ message: "The post with the specified ID does not exist." });
+                })
+                .catch(err => res.status(500).json({ error: "The post could not be removed" }));
         })
-        .catch(err => res.status(500).json({ error: "The post could not be removed" }));
+        .catch(err => res.status(500).json({ error: "The post information could not be retrieved." }))
+
 })
 
 server.put('/api/posts/:id', (req, res) => {
@@ -54,9 +61,15 @@ server.put('/api/posts/:id', (req, res) => {
     if (!title || !contents) return res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
     db
         .update(id, { title, contents })
-        .then(user => {
-            if (user === 0) return res.status(404).json({ message: 'The post with the specified ID does not exist.' });
-            res.status(200).json({ completed: 'Update completed!' });
+        .then(count => {
+            if (count === 0) return res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+            db
+                .findById(id)
+                .then(user => {
+                    if (user.length === 0) return res.status(404).json({ message: "The post with the specified ID does not exist." });
+                    res.status(200).json(user)
+                })
+                .catch(err => res.status(500).json({ error: "The post information could not be retrieved." }));
         })
         .catch(err => res.status(500).json({ error: "The post information could not be modified." }));
 })
