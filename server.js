@@ -63,6 +63,17 @@ const errorMessages = {
 };
 
 app.post('/api/posts', (req, res) => {
+  const post = req.body;
+  if (
+    !post.title || 
+    !post.contents || 
+    post.title === '' || 
+    post.content === ''
+  ) {
+    const { code, message } = errorMessages.post.incomplete;
+    res.status(code).json(message);
+    return;
+  }
   const dBPromise = db.insert(req.body);
   dBPromise
     .then((resolve) => {
@@ -123,6 +134,35 @@ app.delete('/api/posts/:id', (req, res) => {
     })
     .catch((err) => {
       const { message, code } = errorMessages.delete.database;
+      res.status(code).json({ err: message });
+    });
+});
+
+app.put('/api/posts/:id', (req, res) => {
+  const { params: { id }, body } = req;
+  const post = body;
+  if (
+    !post.title || 
+    !post.contents || 
+    post.title === '' || 
+    post.content === ''
+  ) {
+    const { code, message } = errorMessages.put.incomplete;
+    res.status(code).json(message);
+    return;
+  }
+  const dBPromise = db.update(id, body);
+  dBPromise
+    .then((resolve) => {
+      if (resolve === 0) {
+        const { message, code } = errorMessages.put.notFound;
+        res.status(code).json({ err: message });
+      } else {
+        res.sendStatus(200);
+      }
+    })
+    .catch((err) => {
+      const { message, code } = errorMessages.put.database;
       res.status(code).json({ err: message });
     });
 });
