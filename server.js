@@ -47,8 +47,8 @@ app.get('/api/posts', (req, res) => {
     });
 });
 
-app.get('/api/posts/:id', async (req, res) => {
-  const { id } = req.body;
+app.get('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
   db.findById(id)
     .then(post => {
       res.status(200).json({ post });
@@ -62,21 +62,38 @@ app.get('/api/posts/:id', async (req, res) => {
 });
 
 app.delete('/api/post/:id', (req, res) => {
-  const { id } = req.body;
-  if (!req.body.id) {
-    res.status(400).json({ error: 'Please provide an ID for deletion ' });
-  }
+  const { id } = req.params;
   db.remove(id).then(() => {
     res.status(200).json({ success: 'Post successfully deleted' });
   });
 });
 
 app.put('/api/posts/:id', (req, res) => {
-  const post = req.body;
-  const { id } = req.body;
-  db.update(id, post);
-  const updated = db.findById(id);
-  res.json({ post: updated });
+  const { title, contents } = req.body;
+  const { id } = req.params;
+
+  const post = {
+    title,
+    contents
+  };
+
+  if (!title || !contents) {
+    return res
+      .status(400)
+      .error('Please provide title and contents for the post');
+  }
+  db.update(id, post)
+    .then(count => {
+      if (count === 1) {
+        res.status(200).json({ success: 'Post successfully updated' });
+      } else {
+        res.status(500).json({ failed: 'Something went wrong' });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json({ error: 'There was an error updating the post' });
+    });
 });
 
 app.listen(8000, () => {
