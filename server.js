@@ -33,4 +33,14 @@ server.get('/api/posts/:id', (req, res) => {
         .catch(err => res.status(500).json({ error: "The post information could not be retrieved." }));
 })
 
+server.delete('/api/posts/:id', (req, res) => {
+    db
+        .remove(req.params.id)
+        .then(user => {
+            if (user === 0) return res.status(404).json({ message: "The post with the specified ID does not exist." });
+            res.status(200).json({ completed: 'Delete completed!' })
+        })
+        .catch(err => res.status(500).json({ error: "The post could not be removed" }));
+})
+
 server.listen(8000, () => console.log('API is running...'));
