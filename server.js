@@ -20,14 +20,14 @@ server.use(express.json());
 
 server.get('/', (req, res) => {
      db.find()
-     .then(resolved => res.status(200).json((resolved)))
+     .then(resolved => res.status(200).json(resolved))
      .catch(error => console.log(error));
 })
 server.post('/', (req, res) => {
-    let post = req.body;
+    let post = req.query;
     db.insert(post)
     .then(result => res.status(201).json(result))
-    .catch(error => res.status(400).json(error));
+    .catch(errorr => res.status(400).json(errorr));
 })
 
 server.get('/api/posts/:id', (req, res) => {
@@ -42,4 +42,4 @@ server.put('/api/posts/:id', (req, res) => {
 
 const PORT_NUMBER = 8000;
 server.listen(PORT_NUMBER, () => console.log(`API running on port ${PORT_NUMBER}`));
-// add your server code starting here
+// add your server code starting hereß
