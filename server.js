@@ -54,7 +54,7 @@ server.post('/api/posts', (req, res) => {
             title, contents
         })
         .then(response => {
-            res.status(201).json(response);
+            res.status(201).json({title, contents});
         })
         .catch(error => {
             res.status(500).json({error: "There was an error while saving the post to the database" })
@@ -74,7 +74,7 @@ server.delete('/api/posts/:id', (req, res) => {
             .json({message: "The post with the specified ID does not exist."})
         }
         res
-        .json({message:' User removed from system!'})
+        .json({message:'User removed from system!'})
     })
         .catch(error => {
             res
