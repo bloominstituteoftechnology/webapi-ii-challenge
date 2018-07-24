@@ -1,10 +1,12 @@
 // import your node modules
 const express = require('express');
 const server = express();
+const cors = require('cors');
 
 const db = require('./data/db.js');
 
 server.use(express.json());
+server.use(cors());
 
 const sendServerError = (msg, res) => {
     res.status(500);
@@ -12,14 +14,13 @@ const sendServerError = (msg, res) => {
     return;
   };
 
-server.get('/api/posts', (req, res) => {
-    db.find()
-    .then( response => {
-        res.status(200).json(response);
-    })
-    .catch (err => {
+server.get('/api/posts', async (req, res) => {
+    try{
+    const posts = await db.find()
+   res.status(200).json(posts);
+    } catch (err) {
         sendServerError({error: 'The posts information could note be retrieved.'});
-    });
+    };
 });
 
 server.get('/api/posts/:id', (req, res) => {
