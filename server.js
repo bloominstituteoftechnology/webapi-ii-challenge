@@ -58,3 +58,38 @@ server.delete('/api/posts/:id', (req, res) => {
         res.status(500).json({ error: "The post could not be removed" })
     })
 })
+
+// server.put('/api/users/:id', (req, res) => {
+//     const { id } = req.params;
+//     const { title, contents } = req.body;
+
+//     db.update( id, { title, contents }).then(p => {
+//         if(!title || !contents) {
+//             res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+//         } else if(!user){
+//             res.status(404).json({ message: "The post with the specified ID does not exist." })
+//         } else {
+//             res.status(200).json(p)
+//         }
+//     })
+//     .catch(err => {
+//         res.status(500).json({ error: "The post information could not be modified." })
+//     })
+// })
+server.put('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    const { title, contents } = req.body; //express 
+    db.update( id, { title, contents })
+        .then(item => {
+            if(!title || !contents) {
+                res.status(400).json({ errorMessage: "Please provide name and bio for the user." })
+            } else if(!users) {
+                res.status(404).json({ message: "The user with the specified ID does not exist." })
+            } else {
+                res.status(200).json(item);
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ error: "The user information could not be modified." })
+        })
+})
