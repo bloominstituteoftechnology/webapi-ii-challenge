@@ -77,7 +77,7 @@ server.put('/api/posts/:id',async (req, res) => {
             const newPosts = await db.find();
             res.status(200).json(newPosts);
         }
-    } catch(erro){
+    } catch(error){
         res.status(500).send({ error: "The post information could not be modified." })
     }
 })
