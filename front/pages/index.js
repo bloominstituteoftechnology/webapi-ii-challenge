@@ -1,8 +1,13 @@
 import { get } from 'axios'
+import Post from '../components/Post'
 
 const Index =  ({ posts }) => 
   posts.map(post =>
-    <div key={post.id}>{post.title}</div>
+    <Post 
+      key={post.id}
+      title={post.title}
+      contents={post.contents}
+    />
   )
 
 Index.getInitialProps = async ({ req }) => {
