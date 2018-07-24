@@ -1,10 +1,14 @@
 // import your node modules
 const express = require('express');
+const helmet = require('helmet');
 const db = require('./data/db.js');
 const server = express();
 
 //middleware
 server.use(express.json());
+server.use(helmet());
+
+
 
 //route handlers
 server.get('/', (req, res) => {
@@ -55,7 +59,7 @@ server.post('/api/posts', (req,res) => {
 });
 
 server.delete('/api/posts', (req, res) => {
-	const id = req.query;
+	const { id } = req.query;
 	let post;
 	db
 		.findById(id)
@@ -70,6 +74,32 @@ server.delete('/api/posts', (req, res) => {
       res.status(500).json({ error: "The post could not be removed" });
     });
 });
+
+server.put('/api/posts/:id', (req, res) => {
+	const  { id } = req.params;
+	const { title, contents} = req.body;
+		if( !title || !contents ) {
+			res.status(400).json({ error: "Please provide title and content."})
+			return;
+		}
+
+	db
+	 	.update(id, {title, contents} )
+	 	.then(post => {
+	 		if (post === 0) {
+	 			res.status(404).json({ message: "The post with the specified ID does not exist."});
+	 		return;
+	 		} else {
+	 			res.status(200).json({ post })
+	 		}
+	 	})
+	 	.catch(err => {
+	 		res.status(500).json({ error: "The post information could not be modified." })
+	 	});
+});
+
+
+
 
 // add your server code starting here
 server.listen(3000, () => console.log('API is running'));
