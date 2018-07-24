@@ -81,18 +81,19 @@ server.post('/api/posts/', (req, res) => {
   //Tried to use async but it's unclear how it works with nested functions;
 });
 
-server.delete('/api/posts/:id', (req, res) => {
-  db.remove(req.params.id).then(response => {
-    console.log('resfafw', response);
-    if (response === 0) {
+server.delete('/api/posts/:id', async (req, res) => {
+  try {
+    const result = await db.remove(req.params.id);
+    if (result === 0) {
       sendUserError(404, "The post with the specified ID does not exist.", res);
       return;
     }
-    res.status(200).json(response);
-
-  }).catch(err => {
+    res.status(200).json({
+      "Result": `Post ${req.params.id} successfully deleted`
+    });
+  } catch (err) {
     sendUserError(500, err, res);
-  })
+  }
 })
 
 server.put('/api/posts/:id', (req, res) => {
