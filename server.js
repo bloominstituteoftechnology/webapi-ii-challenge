@@ -78,6 +78,7 @@ server.put('/api/posts/:id', (req, res) => {
   db.update(req.params.id, {title, contents}).then(response => {
     if (response === 0) {
       sendUserError(404, "The post with the specified ID does not exist.", res);
+      return;
     }
     db.findById(req.params.id).then(response => {
       res.status(200).json(response)
