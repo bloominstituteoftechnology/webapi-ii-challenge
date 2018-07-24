@@ -3,6 +3,8 @@ const db = require('./data/db')
 
 const server = express();
 
+server.use(express.json())
+
 server.get('/', (req, res) => {
   res.send('Hello World');
 });
@@ -12,7 +14,6 @@ server.get('/', (req, res) => {
 server.get('/api/posts', async (req,res) =>{
   try{
     const posts = await db.find()
-    console.log(posts.length) // 9
     posts.length > 0 ? res.status(200).json(posts) : 
      res.status(404).json({ message: "The users information could not be retrieved." })
   }
@@ -46,7 +47,16 @@ server.get('/api/posts/:id', async (req,res) =>{
   }
 })
 
-
+server.post('/api/posts', async (req,res) => {
+  try{
+    const post = await db.insert(req.body);
+    !req.body.title || !req.body.contents ? res.status(400).json({errorMessage: 'Please provide title and contents for the post.'}) :
+      res.status(200).json(post);
+  }
+  catch (err){
+    res.status(500).json({ error: "There was an error while saving the post to the database" })
+  }
+})
 
 
 
