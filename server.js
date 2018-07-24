@@ -90,6 +90,35 @@ server.delete('/api/posts/:id', (req, res) => {
 
   });
 
+server.put('/api/posts/:id', (req, res) => {
+  const { title, contents } = req.body;
 
+  const id =  req.params.id;
+  const post = {title, contents};
+
+//let foundPost = db.findById(id);
+
+        //foundUser.then(response => {
+          //      res.status(404).json({ message: "The post with the specified ID does not exist."});
+        //})
+
+
+if (!title || !contents) {
+                res.status(400).json({errorMessage: "Please provide title and content for the post."});
+}
+
+ const request = db.update(id, post);
+
+
+        request.then(response => {
+                if(response===0)  res.json({ message: "The post with the specified ID does not exist." });
+		else res.json(response);
+        })
+
+        .catch(error => {
+        res.json({ message: "Couldn't update the post" });
+        })
+
+});
 
 server.listen(9000, () => console.log('API running on port 9000'));
