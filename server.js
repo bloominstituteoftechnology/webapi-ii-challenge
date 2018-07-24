@@ -14,6 +14,7 @@ const sendUserError = (status, errorMessage, res) => {
 
 server.use(express.json());
 server.use(bodyParser.json());
+server.use(cors());
 // add your server code starting here
 server.get('/api/posts', (req, res) => {
   db.find().then(response => {
