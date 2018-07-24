@@ -6,19 +6,16 @@ const server = express();
 server.use(express.json());
 const PORT = 8000;
 
-const parseBody = (title, contents, res) => {
+// Creates a post using the information sent inside the request body
+server.post('/api/posts', (req, res) => {
+  const { title, contents } = req.body;
+
   if (!title || !contents) {
     res.status(400).json({
       error: 'Please provide title and contents for the post.',
     });
     return;
   }
-};
-
-// Creates a post using the information sent inside the request body
-server.post('/api/posts', (req, res) => {
-  const { title, contents } = req.body;
-  parseBody(title, contents, res);
 
   // our post object
   const post = { title, contents };
@@ -29,11 +26,12 @@ server.post('/api/posts', (req, res) => {
       data
         .findById(response.id)
         .then(response => res.status(201).json(response))
-        .catch(() =>
+        .catch(() => {
           res
             .status(500)
-            .json({ error: 'The post information could not be retrieved.' }),
-        );
+            .json({ error: 'The post information could not be retrieved.' });
+          return;
+        });
     })
     .catch(() => {
       res.status(500).json({
@@ -123,7 +121,13 @@ server.put('/api/posts/:id', (req, res) => {
   const id = req.params.id;
 
   const { title, contents } = req.body;
-  parseBody(title, contents, res);
+
+  if (!title || !contents) {
+    res.status(400).json({
+      error: 'Please provide title and contents for the post.',
+    });
+    return;
+  }
 
   // post object
   const post = { title, contents };
