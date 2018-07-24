@@ -44,7 +44,7 @@ server.get('/api/posts/:id', (req, res)=>{
         res.status(404).json({error: 'The post with the specified id does not exist'})
     })
     .catch(err => {
-        res.status(500).json({error: "The posts information could not be retrieved."});
+        res.status(500).json({error: "The post could not be retrieved."});
     })
 })
 
@@ -58,9 +58,28 @@ server.delete('/api/posts/:id', (req, res) => {
         res.status(404).json({error: 'The post with the specified id does not exist'})
     })
     .catch(err => {
-        res.status(500).json({error: "The posts information could not be retrieved."});
+        res.status(500).json({error: "The post could not be removed."});
     })
     
+})
+
+server.put('/api/posts/:id', (req, res)=>{
+    let id = req.params.id;
+    let post = req.body;
+    if (!('contents' in post) || !('title' in post)) {
+        res.status(400).send({ errorMessage: "Please provide title and contents for the post." })
+    }
+
+    db.update(id, post)
+    .then(post => {
+        if(post > 0)
+        res.status(200).json(post);
+        else
+        res.status(404).json({error: 'The post with the specified id does not exist'})
+    })
+    .catch(err => {
+        res.status(500).json({error: "The post could not be modified."});
+    })
 })
 
 
