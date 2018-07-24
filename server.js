@@ -34,7 +34,7 @@ server.post('/api/posts', (req, res) => {
     if (!title || !contents)
     res.status(400).json({ errorMessage: "Provide title AND contents"});
     db.insert({ title, contents })
-    .then(posts => res.status(201).json(posts))
+    .then(posts => res.status(201).json({title, contents}))
     .catch(err => res.status(400).json({ error: "Error saving post"}))
 })
 
@@ -45,7 +45,7 @@ server.delete('/api/posts/:id', (req, res) => {
         if(posts.length === 0) {
             res.status(404).json({ message: "That ID doesn't exists"});
         }
-        res.status(200).json(posts);
+        res.status(200).json({message: "Success in deleting"});
     })
     .catch(error => {
         res.status(500).json({ error: "Error Deleteing post"})
@@ -61,7 +61,7 @@ server.put('/api/posts/:id', (req, res) => {
         if(posts.length === 0) {
             res.status(404).json({ message: "ID dont exist fool"});
         }
-        res.status(200).json(posts);
+        res.status(200).json({title, contents});
     })
     .catch(error => {
         res.status(500).json({ error: "Error updating post"})
