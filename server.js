@@ -22,9 +22,26 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req, res) => {
     const id = req.params.id;
     db.findById(id).then(p => {
+        if(p.length === 0) {
+         res.status(404).json({ message: "The post with the specified ID does not exist." })
+        }
         res.status(200).json(p)
     })
     .catch(err => {
-        res.status(404).json({ message: "The post with the specified ID does not exist." })
+        res.status(500).json({ error: "The post information could not be retrieved." })
+    })
+})
+
+server.post('/api/posts', (req, res) => {
+    const { title, contents } = req.body;
+    if(!title || !contents) {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+        res.end();
+    }
+    db.insert({ title, contents }).then(p => {
+        res.status(201).json(p)
+    })
+    .catch(err => {
+        res.status(500).json({ error: "There was an error while saving the post to the database" })
     })
 })
