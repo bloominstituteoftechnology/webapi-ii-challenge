@@ -19,7 +19,7 @@ server.post('/api/posts', (req, res) => {
 
   if (!title || !contents) {
     res.status(400).json({
-      error: 'Please provide title and contents for the post.',
+      errorMessage: 'Please provide title and contents for the post.',
     });
     return;
   }
@@ -37,7 +37,6 @@ server.post('/api/posts', (req, res) => {
           res
             .status(500)
             .json({ error: 'The post information could not be retrieved.' });
-          return;
         });
     })
     .catch(() => {
@@ -69,12 +68,10 @@ server.get('/api/posts/:id', (req, res) => {
     .then(response => {
       if (response.length !== 0) {
         res.status(200).json(response);
-        return;
       } else {
         res
           .status(404)
           .json({ message: 'The post with the specified ID does not exist.' });
-        return;
       }
     })
     .catch(() =>
@@ -130,7 +127,7 @@ server.put('/api/posts/:id', (req, res) => {
 
   if (!title || !contents) {
     res.status(400).json({
-      error: 'Please provide title and contents for the post.',
+      errorMessage: 'Please provide title and contents for the post.',
     });
     return;
   }
@@ -139,42 +136,30 @@ server.put('/api/posts/:id', (req, res) => {
   const post = { title, contents };
 
   data
-    .findById(id)
-    .then(response => {
-      if (response.length === 0) {
-        res.status(404).json({
-          message: 'The post with the specified ID does not exist.',
-        });
-        return;
-      } else {
-        data
-          .update(id, post)
-          .then(() => {
-            data
-              .findById(id)
-              .then(response => {
-                res.status(200).json(response);
-                return;
-              })
-              .catch(() => {
-                res.status(500).json({
-                  error: 'The post information could not be retrieved.',
-                });
-                return;
-              });
-          })
-          .catch(() => {
-            res
-              .status(500)
-              .json({ error: 'The post information could not be modified.' });
+    .update(id, post)
+    .then(() => {
+      data
+        .findById(id)
+        .then(response => {
+          if (response.length === 0) {
+            res.status(404).json({
+              message: 'The post with the specified ID does not exist.',
+            });
+          } else {
+            res.status(200).json(response);
+          }
+        })
+        .catch(() => {
+          res.status(500).json({
+            error: 'The post information could not be retrieved.',
           });
-      }
+        });
     })
-    .catch(() =>
+    .catch(() => {
       res
         .status(500)
-        .json({ error: 'The post information could not be retrieved.' }),
-    );
+        .json({ error: 'The post information could not be modified.' });
+    });
 });
 
 server.listen(PORT, console.log(`Server listening on port ${PORT}`));
