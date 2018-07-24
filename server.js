@@ -29,11 +29,11 @@ server.get('/api/posts/:id', async (req, res) => {
 
 server.post('/api/posts', async (req, res) => {
     const { title, contents } = req.body;
-
+    
     if(!title || !contents){
         res.status(400).json({ "errorMessage": "Please provide title and contents for the post." })
     }
-
+    
     const post = {
         "title": title,
         "contents": contents
@@ -45,6 +45,30 @@ server.post('/api/posts', async (req, res) => {
         
     } catch(err) {
         res.status(500).json({ error: "There was an error while saving the post to the database" })
+    }
+})
+
+server.put('/api/posts/:id', async (req, res) => {
+    const { title, contents } = req.body
+    const { id } = req.params
+    let post = await db.findById(id);
+
+    if(!title || !contents){
+        res.status(400).json({ "errorMessage": "Please provide title and contents for the post." })
+    }
+    if(post.length < 1){
+        res.status(404).json({ "errorMessage": "The post with the specified ID does not exist." })
+    }
+
+    try{
+        post = post[0];
+        post["title"] = title;
+        post["contents"] = contents;
+        post["updated_at"] = Date.now();
+        await db.update(id, post);
+        res.status(200).send(post)
+    }catch(err) {
+        res.status(500).json({ error: "The post information could not be modified." })
     }
 })
 
