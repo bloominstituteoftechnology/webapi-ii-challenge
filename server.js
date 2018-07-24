@@ -40,7 +40,7 @@ server.post('/api/posts', async (req, res) => {
     }
     
     try{
-        const returnPst = await db.insert(post);
+        const returnPost = await db.insert(post);
         res.status(201).json(returnPost)
         
     } catch(err) {
