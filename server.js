@@ -13,56 +13,6 @@ server.get('/', (req, res) => { // two arguments (the homies): an object that re
     res.send('Hello World');
   });
 
-server.get('/posts', (req, res) => {
-    const postsArray = [
-        {
-          title:
-            'I wish the ring had never come to me. I wish none of this had happened.',
-          contents: 'Guess who said this',
-        },
-        {
-          title: 'I think we should get off the road. Get off the road! Quick!',
-          contents: 'Guess who said this',
-        },
-        {
-          title:
-            "I made a promise, Mr Frodo. A promise. \"Don't you leave him Samwise Gamgee.\" And I don't mean to. I don't mean to.",
-          contents: 'Guess who said this',
-        },
-        {
-          title:
-            " N-nothing important. That is, I heard a great deal about a ring, a Dark Lord, and something about the end of the world, but... Please, Mr. Gandalf, sir, don't hurt me. Don't turn me into anything... unnatural.",
-          contents: 'Guess who said this',
-        },
-        {
-          title:
-            'You need people of intelligence on this sort of mission...quest...thing.',
-          contents: 'Guess who said this',
-        },
-        {
-          title:
-            'All you have to do is decide what to do with the time that is given to you.',
-          contents: 'Guess who said this',
-        },
-        {
-          title:
-            'Do not be so quick to deal out death and judgement. Even the very wise do not see all ends.',
-          contents: 'Guess who said this',
-        },
-        {
-          title:
-            ' Fool of a Took! Throw yourself in next time and rid us of your stupidity!',
-          contents: 'Guess who said this',
-        },
-        {
-          title:
-            'I will be dead before I see the ring in the hands of an elf! Never trust an elf!',
-          contents: 'Guess who said this',
-        },
-      ]
-    res.status(200).json(postsArray);
-});
-
 server.get('/api/posts', (req, res) => {
     db
         .find()
@@ -73,5 +23,51 @@ server.get('/api/posts', (req, res) => {
             res.status(500).json({error: "The posts information could not be retrieved."})
         })
 });
+
+server.get('/api/posts/:id', (req, res) => {
+  const id = req.params.id;
+  
+  db
+      .findById(id)
+      .then(posts => {
+          if (posts.length === 0) {
+              res.status(404).json({ message: "The user with the specified ID does not exist." });
+          } else {
+              res.json(posts[0]);
+          }
+      })
+      .catch (message => {
+          res.status(500).json({ message: "The user information could not be retrieved." })
+      })
+})
+
+server.post('/api/posts', (req, res) => {
+  // if (!name||!bio) {
+  //     return res.status(400)({error: "Please provide name and bio for the user."})
+  // }
+
+  const newPost = req.body;
+
+  db
+      .insert(newPost)
+      .then(response => {
+          res.status(201).json(response);
+      })
+      .catch(errorMessage => {
+          res.status(500).json({errorMessage: "Please provide title and contents for the post."})
+      })
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+  const {id} = req.params
+  db
+    .remove(id)
+    .then(
+      res.status(404).json({message: "The user with the specified ID does not exist."})
+    )
+    .catch(error => {
+      res.status(500).json({ error: "The user could not be removed" })
+    })
+})
 
   server.listen(port, () => console.log(`Server is listening to port ${port}`)); // Our server will only send a response to GET requests made to the / route on port 3000
