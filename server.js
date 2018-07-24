@@ -5,21 +5,6 @@ const db = require('./data/db.js');
 const server = express();
 server.use(express.json());
 
-server.get('/api/posts', async (req, res) => {
-
-  try {
-  
-    // resolves to an array
-    const posts = await db.find()
-    res.status(200).json(posts)
-
-  } catch(e) {
-
-    res.status(500).json(e)
-
-  }
-   
-})
 
 server.post('/api/posts', async (req, res) => {
 
@@ -43,6 +28,47 @@ server.post('/api/posts', async (req, res) => {
   }
 
 })
+
+
+server.get('/api/posts', async (req, res) => {
+
+  try {
+  
+    // resolves to an array
+    const posts = await db.find()
+    res.status(200).json(posts)
+
+  } catch(e) {
+
+    res.status(500).json({ error: "The posts information could not be retrieved." })
+
+  }
+   
+})
+
+server.get('/api/posts/:id', async (req, res) => {
+  
+  const { id } = req.params
+
+  try {
+
+    // + before a string is a short hand type coercion
+    const post = await db.findById(+id)  
+
+    post.length > 0 ? res.status(200).json(post)
+                    : res.status(400).json({ message: "The post with the specified ID does not exist." })
+
+  } catch(e) { 
+  
+    res.status(500).json({ error: "The post information could not be retrieved." })
+
+  }
+
+
+})
+
+
+
 
 server.listen(5000, () => console.log('💵'))
 
