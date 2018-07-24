@@ -26,13 +26,24 @@ server.get('/api/posts', (req, res) => {
 
 server.get('/api/posts/:id', (req, res) => {
 	const id = req.params.id;
+	
+	/*try{
+	const post = await db.findById(id);
+	res.status(200).json(post);
+	}
 
-        const request = db.findById(id);
+	catch(err){
+	res.status(404).json({error: "The user with the specified ID does not exist."});
+	}*/
+
+       const request = db.findById(id);
 
         request.then(response => {
-        res.status(200).json(response);
-        })
+	if(response.length==0) res.status(404).json({ error: "The post with the specified ID does not exist." });
+         else res.status(200).json(response);
 
+        })
+	
         .catch(err => {
         res.status(404).json({error: "The user with the specified ID does not exist."});
         })
@@ -64,7 +75,20 @@ server.post('/api/posts', (req, res) => {
 
 	}  });
 
+server.delete('/api/posts/:id', (req, res) => {
+	const id = req.params.id;
+	const request = db.remove(id);
 
+        request.then(response => {
+     		if(response===1) res.json(response);
+		else res.status(404).json({ error: "The post with the specified ID does not exist." });
+        })
+
+        .catch(error => {
+        res.status(500).json({ error: "The post could not be removed" });
+        })
+
+  });
 
 
 
