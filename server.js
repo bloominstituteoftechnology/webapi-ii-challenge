@@ -5,6 +5,15 @@ const server = express();
 const port = 8000;
 const db = require('./data/db.js');
 
+server.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
+    
+
 server.use(helmet());
 server.use(express.json());
 
