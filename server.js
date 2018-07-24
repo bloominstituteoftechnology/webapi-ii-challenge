@@ -1,9 +1,16 @@
 const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
 const data = require('./data/db');
 
 const server = express();
 // turn on the body parser, using JSON data
 server.use(express.json());
+// lets localhost work
+server.use(cors());
+// security features, activated!
+server.use(helmet());
+
 const PORT = 8000;
 
 // Creates a post using the information sent inside the request body
@@ -119,7 +126,6 @@ server.put('/api/posts/', (req, res) => {
 // Returns the modified document, NOT the original
 server.put('/api/posts/:id', (req, res) => {
   const id = req.params.id;
-
   const { title, contents } = req.body;
 
   if (!title || !contents) {
