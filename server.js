@@ -57,4 +57,32 @@ server.get("/api/posts/:id", (req, res) => {
     });
 });
 
+// Delete Request
+server.delete("/api/posts/:id", (req, res) => {
+  db.findById(req.params.id)
+    .then(response => {
+      if (response.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist" });
+      }
+      res.status(200).json(response);
+      db.remove(req.params.id)
+        .then(count => {
+          if (count === 0)
+            return res.status(404).json({
+              message: "The post with the specified ID does not exist."
+            });
+        })
+        .catch(err =>
+          res.status(500).json({ error: "The post could not be removed" })
+        );
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The post could not be removed" });
+    });
+});
+
+// Put Request
+
 server.listen(8000, () => console.log("API running on port 8000"));
