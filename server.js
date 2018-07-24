@@ -8,6 +8,15 @@ const server = express()
 server.use(express.json())
 server.use(helmet())
 
+const catchError = async (err, res) => {
+  if (err.code === 'SQLITE_ERROR') {
+    return res.status(500).json({ error: 'The post could not be removed' })
+  } else {
+    return res
+      .status(404)
+      .json({ message: 'The post with the specified ID does not exist.' })
+  }
+}
 server.get('/api/posts', async (req, res) => {
   try {
     const posts = await db.find()
@@ -61,7 +70,7 @@ server.delete('/api/posts/:id', async (req, res) => {
     const deletedPost = await db.remove(postId)
     res.status(200).json(deletedPost)
   } catch (err) {
-    res.status({ message: 'The post with the specified ID does not exist.' })
+    await catchError(err, res)
   }
 })
 
