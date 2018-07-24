@@ -1,12 +1,16 @@
 // import your node modules
 const express = require('express');
 const helmet = require('helmet');
+const cors = require('cors');
 const db = require('./data/db.js');
+
 const server = express();
+const port = 8000;
 
 //middleware
 server.use(express.json());
 server.use(helmet());
+server.use(cors({ origin: 'http://localhost:3000' }));
 
 
 
@@ -102,4 +106,4 @@ server.put('/api/posts/:id', (req, res) => {
 
 
 // add your server code starting here
-server.listen(3000, () => console.log('API is running'));
+server.listen(8000, () => console.log('API is running'));
