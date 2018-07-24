@@ -53,6 +53,21 @@ server.post('/api/posts/', (req, res) => {
   }).catch(err => {
     sendUserError(500, "There was an error while saving the post to the database", res);
   })
+
+//   try {
+//     const newPostId = await db.insert({title, contents});
+//   } catch(err) {
+//     sendUserError(500, "There was an error while saving the post to the database", res);
+//   }
+//
+//   try {
+//   const newPost = db.findById(newPostId.id);
+//   res.status(201).json(newPost);
+// } catch(err) {
+//   sendUserError(404, "The post with the specified ID does not exist", res);
+// }
+
+//Tried to use async but it's unclear how it works with nested functions;
 });
 
 server.delete('/api/posts/:id', (req, res) => {
