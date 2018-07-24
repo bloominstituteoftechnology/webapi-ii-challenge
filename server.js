@@ -8,15 +8,6 @@ const server = express()
 server.use(express.json())
 server.use(helmet())
 
-const catchError = async (err, res) => {
-  if (err.code === 'SQLITE_ERROR') {
-    return res.status(500).json({ error: 'The post could not be removed' })
-  } else {
-    return res
-      .status(404)
-      .json({ message: 'The post with the specified ID does not exist.' })
-  }
-}
 server.get('/api/posts', (req, res) => {
   db
     .find()
@@ -55,26 +46,36 @@ server.get('/api/posts/:id', async (req, res) => {
 
 server.post('/api/posts', async (req, res) => {
   try {
-    const newPost = req.body
-    const post = await db.insert(newPost)
-    res.status(200).json(post)
+    !req.body.title || !req.body.contents
+      ? res.status(400).json({
+        errorMessage: 'Please provide title and contents for the post.'
+      })
+      : res.status(200).json(await db.insert(req.body))
   } catch (err) {
-    res
-      .status(400)
-      .json({ errorMessage: 'Please provide title and contents for the post.' })
+    res.status(500).json({
+      error: 'There was an error while saving the post to the database'
+    })
   }
 })
 
 server.put('/api/posts/:id', async (req, res) => {
+  let id = await db.findById(req.params.id)
   try {
-    const post = req.body
-    const id = req.params.id
-    const updatedPost = await db.update(id, post)
-    res.status(200).json(updatedPost)
+    !req.body.title || !req.body.contents
+      ? res
+        .status(400)
+        .json({
+          errorMessage: 'Please provide title and contents for the post.'
+        })
+      : id.length > 0
+        ? res.status(200).json(await db.update(req.params.id, req.body))
+        : res
+          .status(404)
+          .json({ message: 'The post with the specified ID does not exist.' })
   } catch (err) {
     res
-      .status(404)
-      .json({ message: 'The post with the specified ID does not exist.' })
+      .status(500)
+      .json({ error: 'The post information could not be modified.' })
   }
 })
 
@@ -83,9 +84,7 @@ server.delete('/api/posts/:id', async (req, res) => {
     const postId = req.params.id
     const deletedPost = await db.remove(postId)
     res.status(200).json(deletedPost)
-  } catch (err) {
-    await catchError(err, res)
-  }
+  } catch (err) {}
 })
 
 server.listen(8000, () => console.log('API RUNNING ...'))
