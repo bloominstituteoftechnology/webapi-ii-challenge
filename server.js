@@ -8,7 +8,7 @@ server.use(express.json());
 
 server.post('/api/posts', async (req, res) => {
 
-  if(!req.body || !req.body.title || !req.body.contents) {
+  if (!req.body || !req.body.title || !req.body.contents) {
     res.status(400).json({ error: "Please provide title and contents for the post" })
   }
 
@@ -66,6 +66,35 @@ server.get('/api/posts/:id', async (req, res) => {
 
 
 })
+
+server.delete('/api/posts/:id', async (req, res) => {
+
+  const { id } = req.params
+
+  try {
+
+    const post = await db.findById(+id) 
+
+    if (post.length > 0) {
+      
+      const numOfDeletedRecords = await db.remove(+id) 
+      res.status(200).json({ message: "Successfully deleted", post})
+
+    } else {
+
+      res.status(404).json({ message: "The post with the specified ID does not exist." })
+
+    }
+
+  } catch(e) {
+
+    res.status(500).json({ error: "The post could not be removed", e }) 
+    
+  }
+
+})
+
+
 
 
 
