@@ -27,5 +27,25 @@ server.get('/api/posts/:id', async (req, res) => {
     }
 })
 
+server.post('/api/posts', async (req, res) => {
+    const { title, contents } = req.body;
+
+    if(!title || !contents){
+        res.status(400).json({ "errorMessage": "Please provide title and contents for the post." })
+    }
+
+    const post = {
+        "title": title,
+        "contents": contents
+    }
+    
+    try{
+        const returnPst = await db.insert(post);
+        res.status(201).json(returnPost)
+        
+    } catch(err) {
+        res.status(500).json({ error: "There was an error while saving the post to the database" })
+    }
+})
 
 server.listen(8000, () => console.log('API running on port 8000'));
