@@ -1,0 +1,59 @@
+.main-container{
+	max-width: 1000px;
+        margin: 20px auto;
+}
+
+
+.App {
+  /*text-align: center;*/
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.post-container{
+	height: 200px;
+	width: 300px;
+	border: 1px solid chocolate;	
+	margin-top: 30px;
+	text-align: center;
+	padding: 5px;
+}
+
+.post-title{
+	color: teal;
+}
+
+.post-content{
+	color: chocolate;
+}
+
+.header-style{
+	text-align: center;
+	color: chocolate;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
