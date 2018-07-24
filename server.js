@@ -54,4 +54,21 @@ server.delete('/api/posts/:id', (req, res) => {
     .catch(error => res.status(500).send(error))
 })
 
+server.put('/api/posts/:id', (req, res) => {
+    if (!('contents' in req.body) || !('title' in req.body)) {
+        return res.status(400).send({ errorMessage: "Please provide title and contents for the post." })
+    }
+    const request = db.update(req.params.id, req.body);
+    return request
+    .then(response => {
+        if (response === 0) {
+            res.status(404).send({ message: "The post with the specified ID does not exist." })
+        } else {
+            db.find()
+            .then(re =>  res.status(200).json(re));
+        }
+    })
+    .catch(error => res.status(500).send({ error: "The post information could not be modified." }))
+})
+
 server.listen(8000, () => console.log('API running on port 8000'));
