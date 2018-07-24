@@ -12,10 +12,9 @@ server.get('/', (req, res) => {
 server.get('/api/posts', async (req,res) =>{
   try{
     const posts = await db.find()
-    console.log(posts)
-    res.status(200).json(posts)
-    // (posts.length > 0) ? res.status(200).json(posts) : 
-    //   res.status(404).json({ message: "The users information could not be retrieved." })
+    console.log(posts.length) // 9
+    posts.length > 0 ? res.status(200).json(posts) : 
+     res.status(404).json({ message: "The users information could not be retrieved." })
   }
   catch (err){
     res.status(500).json({error: "The users information could not be retrieved."})
@@ -26,7 +25,7 @@ server.get('/api/posts', async (req,res) =>{
 
 server.get('/api/posts/:id', async (req,res) =>{
 
-  //Using .then().catch()
+  // Using .then().catch()
   // db.findById(req.params.id)
   //   .then( post => {
   //     (post.length > 0) ? res.status(200).json(post) : res.status(404).json({ message: "The post with the specified ID does not exist." })
@@ -38,8 +37,9 @@ server.get('/api/posts/:id', async (req,res) =>{
   // Using Async/Await
   try{
     const post = await db.findById(req.params.id)
-    (post.length > 0) ? res.status(200).json(post) : 
+    post.length > 0 ? res.status(200).json(post) : 
       res.status(404).json({ message: "The post with the specified ID does not exist." })
+    // res.status(200).json(post)
   }
   catch (err){
     res.status(500).json({error: 'The user information could not be retrieved.'})
