@@ -30,5 +30,21 @@ server.get("/api/posts/:id", (req, res) => {
   })
 })
 
+server.post("/api/posts", (req, res) => {
+  if (req.query.title == "" || req.query.contents == ""){
+  res.status(400).send({ errorMessage: "Please provide title and contents for the post."});
+        }
+  else {
+    db.insert({
+      title: req.query.title,
+      contents: req.query.contents
+    })
+    .then(response => res.status(201).send("Created"))
+    .catch(error => {
+      res.status(500).send({ error: "There was an error while saving the post to the database" });
+    })
+  }
+});
+
 
 server.listen(8000, () => console.log('API running on port 8000'));
