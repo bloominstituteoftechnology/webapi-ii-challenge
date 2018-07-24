@@ -36,4 +36,25 @@ server.post("/api/posts", (req, res) => {
     );
 });
 
+// Get Specific Request
+server.get("/api/posts/:id", (req, res) => {
+  console.log("req.params: ", req.params);
+  console.log("req.params.id: ", req.params.id);
+  db.findById(req.params.id)
+    .then(posts => {
+      if (posts.length !== 0) {
+        return res.status(200).json(posts);
+      } else {
+        return res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist" });
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: "The post information could not be retrieved." });
+    });
+});
+
 server.listen(8000, () => console.log("API running on port 8000"));
