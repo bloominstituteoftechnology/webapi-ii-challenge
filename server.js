@@ -41,7 +41,7 @@ const errorMessages = {
       code: 404,
     },
     database: {
-      message: 'There post could not be removed.',
+      message: 'The post could not be removed.',
       code: 500,
     },
   },
@@ -51,7 +51,7 @@ const errorMessages = {
       code: 404,
     },
     database: {
-      message: 'There post could not be modified.',
+      message: 'The post could not be modified.',
       code: 500,
     },
     incomplete: {
@@ -62,7 +62,7 @@ const errorMessages = {
 
 };
 
-app.post('/api/posts', (req, res) => {
+app.post('/api/posts', async (req, res) => {
   const post = req.body;
   if (
     !post.title || 
@@ -74,72 +74,63 @@ app.post('/api/posts', (req, res) => {
     res.status(code).json(message);
     return;
   }
-  const dBPromise = db.insert(req.body);
-  dBPromise
-    .then((resolve) => {
-      const payload = req.body;
-      res.status(201).json(payload);
-    })
-    .catch((err) => {
-      const { message, code } = errorMessages.post.database;
-      res.status(code).json({ err: message });
-    });
+  try {
+    const dbResponse = await db.insert(req.body);
+    res.status(201).json(dbResponse);
+  }
+  catch(err) {
+    const { message, code } = errorMessages.post.database;
+    res.status(code).json({ err: message });
+  }
 });
 
-app.get('/api/posts', (req, res) => {
-  const dBPromise = db.find();
-  dBPromise
-    .then((resolve) => {
-      const payload = resolve.map(
-        (item) => {
-          const { title, contents } = item;
-          return { title, contents };
-        }
-      )
-      res.status(200).json(payload);
-    })
-    .catch((err) => {
-      const { message, code } = errorMessages.getAll.database;
-      res.status(code).json({ err: message });
-    });
+app.get('/api/posts', async (req, res) => {
+  try {
+    const dbResponse = await db.find();
+    const payload = dbResponse.map(post => ({ title: post.title, contents: post.contents }))
+    res.status(200).json(payload);
+  }
+  catch (err) {
+    const { message, code } = errorMessages.getAll.database;
+    res.status(code).json({ err: message });
+  }
 });
 
-app.get('/api/posts/:id', (req, res) => {
-  const dBPromise = db.findById(req.params.id);
-  dBPromise
-    .then((resolve) => {
-      if (resolve.length === 0) {
-        const { message, code } = errorMessages.getById.notFound;
-        res.status(code).json({ err: message });
-        return;
-      }
-      const { title, contents } = resolve[0];
-      res.status(200).json( { title, contents });
-    })
-    .catch((err) => {
-      const { message, code } = errorMessages.getById.database;
+app.get('/api/posts/:id', async (req, res) => {
+  try {
+    const dbResponse = await db.findById(req.params.id);
+    if (dbResponse.length === 0) {
+      const { message, code } = errorMessages.getById.notFound;
       res.status(code).json({ err: message });
-    });
+      return;
+    }
+    const { title, contents } = dbResponse[0];
+    res.status(200).json({ title, contents });
+
+  }
+  catch (err) {
+    const { message, code } = errorMessages.getById.database;
+    res.status(code).json({ err: message });
+  }
 });
 
-app.delete('/api/posts/:id', (req, res) => {
-  const dBPromise = db.remove(req.params.id);
-  dBPromise
-    .then((resolve) => {
-      if (resolve === 0) {
-        const { message, code } = errorMessages.delete.notFound;
-        res.status(code).json({ err: message });
-      } else {
-        res.status(200).json({ id: req.params.id });
-      }
-    })
-    .catch((err) => {
-      const { message, code } = errorMessages.delete.database;
+app.delete('/api/posts/:id', async (req, res) => {
+  try {
+    const dbResponse = await db.remove(req.params.id);
+    if (dbResponse === 0) {
+      const { message, code } = errorMessages.delete.notFound;
       res.status(code).json({ err: message });
-    });
+    } else {
+      res.status(200).json({ id: req.params.id });
+    }
+  }
+  catch (err) {
+    const { message, code } = errorMessages.delete.database;
+    res.status(code).json({ err: message });
+  }
 });
 
-app.put('/api/posts/:id', (req, res) => {
+app.put('/api/posts/:id', async (req, res) => {
   const {
     params: { id },
     body,
@@ -150,28 +141,23 @@ app.put('/api/posts/:id', (req, res) => {
     res.status(code).json(message);
     return;
   }
-  const dBPromise = db.update(id, body);
-  dBPromise
-    .then((resolve) => {
-      if (resolve === 0) {
-        const { message, code } = errorMessages.put.notFound;
-        res.status(code).json({ err: message });
-      }
-    })
-    .then(() => {
-      const dBPromise2 = db.findById(id);
-      dBPromise2
-        .then((resolve) => {
-          const {
-            title, contents,
-          } = resolve[0];
-          res.status(200).json({
-            title, contents,
-          });
-        })
-    })
-    .catch((err) => {
-      const { message, code } = errorMessages.put.database;
+
+  try {
+    const dbPromise = await db.update(id, body);
+    if (dbPromise === 0) {
+      const { message, code } = errorMessages.put.notFound;
       res.status(code).json({ err: message });
+    }
+    const dbPromise2 = await db.findById(id);
+    const {
+      title, contents,
+    } = dbPromise2[0];
+    res.status(200).json({
+      title, contents,
     });
+  }
+  catch (err) {
+    const { message, code } = errorMessages.put.database;
+    res.status(code).json({ err: message });
+  }
 });
