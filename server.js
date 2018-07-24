@@ -52,10 +52,7 @@ server.post('/api/posts', async (req,res) => {
     const post = await db.insert(req.body);
     !req.body.title && !req.body.contents ? res.status(400).json({errorMessage: 'Please provide title and contents for the post.'}) :
       res.status(200).json(post);
-
-    // (req.body.title.length > 0 && req.body.contents.length > 0) ? res.status(200).json(post) : 
-    // res.status(400).json({errorMessage: 'Please provide title and contents for the post.'});
-
+      
     }
   catch (err){
     res.status(500).json({ error: "There was an error while saving the post to the database" })
