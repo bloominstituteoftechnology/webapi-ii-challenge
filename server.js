@@ -97,9 +97,11 @@ server.put('/api/posts/:id', (req, res) => {
     }
     db.findById(req.params.id).then(response => {
       res.status(200).json(response)
+    }).catch(err => {
+      sendUserError(500, "Updated post could not be found", res);
     })
   }).catch(err => {
-    sendUserError(500, "The post could not be removed", res)
+    sendUserError(500, "The post could not be updated", res)
   })
 });
 
