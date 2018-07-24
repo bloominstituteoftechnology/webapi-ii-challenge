@@ -35,6 +35,34 @@ server.get('/api/posts/:id', (req, res) => {
   sendUserError(500, err, res);
   return;
 })
+});
+
+server.post('/api/posts/', (req, res) => {
+  const {title, contents} = req.body;
+  if (!(title && contents)) {
+    sendUserError(400, "Please provide title and contents for the post.", res);
+  }
+  db.insert({title, contents}).then(response => {
+    res.status(200).json(response);
+  }).catch(err => {
+    sendUserError(500, "There was an error while saving the post to the database", res);
+    return;
+  })
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+  db.remove(req.params.id).then(response => {
+    console.log('resfafw', response);
+    if (response === 0) {
+      sendUserError(404, "The post with the specified ID does not exist.", res);
+      return;
+    }
+      res.status(200).json(response);
+
+  }).catch(err => {
+    sendUserError(500, err, res);
+    return;
+  })
 })
 
 server.listen(8000, () => console.log('App is listening...'));
