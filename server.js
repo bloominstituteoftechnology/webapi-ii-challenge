@@ -49,9 +49,12 @@ server.get('/api/posts/:id', async (req,res) =>{
 
 server.post('/api/posts', async (req,res) => {
   try{
-    const post = await db.insert(req.body);
-    !req.body.title && !req.body.contents ? res.status(400).json({errorMessage: 'Please provide title and contents for the post.'}) :
+    if (!req.body.title || !req.body.contents){
+      res.status(400).json({errorMessage: 'Please provide title and contents for the post.'})
+    }else {
+      const post = await db.insert(req.body);
       res.status(200).json(post);
+    }
 
     }
   catch (err){
@@ -70,5 +73,22 @@ server.delete('/api/posts/:id', async (req,res) => {
   }
 })
 
+server.put('/api/posts/:id', async (req,res) => {
+  try{
+    
+    if (!req.body.title || !req.body.contents) {
+      res.status(400).json({errorMessage: 'Please provide title and contents for the post.'})
+    }
+    else {
+      const post = await db.update(req.params.id, req.body)  
+      post == '0' ? res.status(400).json({ message: "The post with the specified ID does not exist." }) :
+      res.status(200).send(`${post} record(s) were updated`);
+    }
+  
+  }
+  catch (err){
+    res.status(500).json({ error: "There was an error while saving the post to the database" })
+  }
+})
 
 server.listen(8000, () => console.log('API running on port 8000'));
