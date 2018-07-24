@@ -67,4 +67,25 @@ server.delete('/api/posts/:id', async (req, res) => {
   }
 });
 
+
+server.put('/api/posts/:id', async (req, res) => {
+  try {
+    const { title, contents } = req.body;
+    if (!title || !contents) {
+      res.status(400).send({ error: 'Please provide title and contents for the post.' })
+    }
+    let post = await db.findById(req.params.id);
+    if (post.length === 0) {
+      res.status(404).send({ error: 'The post with the specified ID does not exist.' })
+    } else {
+      await db.update(req.params.id, req.body);
+      post = await db.findById(req.params.id);
+      res.status(200).json(post);
+    }
+  } catch (err) {
+    res.status(500).send({ error: 'The post information could not be modified.' });
+  }
+});
+
+
 server.listen(8000, () => console.log('API running on port 8000'));
