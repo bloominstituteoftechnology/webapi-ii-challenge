@@ -48,7 +48,7 @@ server.post("/posts", (req, res) => {
     });
   }
   db.insert({ title, contents })
-    .then(posts => res.status(201).json(posts))
+    .then(posts => res.status(201).json({ title, contents }))
     .catch(error => {
       res.status(500).json({
         error: "There was an error while saving the post to the database"
@@ -65,10 +65,34 @@ server.delete("/posts/:id", (req, res) => {
           message: "The post with the specified ID does not exist."
         });
       }
-      res.status(200).json(posts);
+      res.status(200).json({ message: "post deleted" });
     })
     .catch(error => {
       res.status(500).json({ error: "the post could not be removed" });
+    });
+});
+
+server.put("/posts/:id", (req, res) => {
+  const id = req.params.id;
+  const { title, contents } = req.body;
+  if (!title || !contents) {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
+  db.update(id, { title, contents })
+    .then(posts => {
+      if (posts.length == 0) {
+        res.status(404).json({
+          errorMessage: "The post with the specified ID does not exist."
+        });
+      }
+      res.status(200).json({ title, contents });
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ error: "The post information could not be modified" });
     });
 });
 
