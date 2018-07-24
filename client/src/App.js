@@ -33,7 +33,7 @@ class App extends Component {
         <div className="App-intro">
           {this.state.posts.map(p => {
             return <div key={p.id} className='postWrapper'>
-                    <div>{p.title}</div>
+                    <div><b>{p.title}</b></div>
                     <div>{p.contents}</div>
                   </div>
           })}
