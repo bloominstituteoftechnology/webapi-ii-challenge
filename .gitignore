@@ -63,3 +63,6 @@ typings/
 # Vim files
 *.swp
 *.swo
+
+# Next.js files
+.next
