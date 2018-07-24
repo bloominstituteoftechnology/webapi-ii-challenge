@@ -38,10 +38,14 @@ server.post('/api/posts', (req, res) => {
 
 });
 
-server.delete('/api/posts:id', (req, res)=> {
-const {id} = req.params;
-posts = posts.filter(p => p.id != id)
+server.delete('/api/posts/:id', (req, res) => {
+// const {id} = req.params;
+// posts = posts.filter(p => p.id != id)
+db.remove(req.params.id)
+     .then(posts=>{
+       res.status(200).json(posts)
 })
+});
 
 
   server.listen(9000, () => console.log('API running on port 9000'));
