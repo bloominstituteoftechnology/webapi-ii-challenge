@@ -77,9 +77,15 @@ server.delete('/api/posts/:id', (req, res) => {
 
 server.put('/api/posts/:id', (req, res) => {
   const {id} = req.params
-  const update = req.body
+  const {title, contents} = req.body
+
+  if (!title || !contents) {
+    res.status(400).json({error: "Please provide title and contents for the post."});
+  return; 
+  }
+
   db
-      .update(id, update)
+      .update(id, {title, contents})
       .then(count => {
           if ( count > 0 ) {
               db
@@ -92,7 +98,7 @@ server.put('/api/posts/:id', (req, res) => {
           }
       })
       .catch(err => {
-          res.status(500).json({message: "The post information could not be modified."})
+          res.status(500).json({message: "The post could not be modified."})
       })
 
 })
