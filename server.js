@@ -78,7 +78,7 @@ server.post('/api/posts', (req, res) => {
   if(!title || !contents) {
     res
       .status(400)
-      .json({ errorMessage: "Please provide a title and contents for the post." })
+      .json({ errorMessage: "Please provide a title and content for the post." })
       .end();
   } else {
     db
@@ -103,8 +103,58 @@ server.post('/api/posts', (req, res) => {
           .status(500)
           .json({ error: "There was an error saving the post to the database." })
           .end();
+      });
+  };
+});
+
+server.put('/api/posts/:id', (req, res) => {
+  const title = req.body.title;
+  const contents = req.body.contents;
+  const post = { title, contents };
+  if(!title || !contents) {
+    res
+      .status(400)
+      .json({ errorMessage: "Please provide a title or content for the post." })
+      .end();
+  } else {
+    db.update(req.params.id, post)
+      .then(response => {
+        if(!response) {
+          res
+            .status(404)
+            .json({ message: "The post with the specified ID does not exist" })
+            .end();
+        } else {
+          db
+            .findById(req.params.id)
+            .then(response => {
+              if(!response[0]) {
+                res
+                  .status(404)
+                  .json({ message: "The post with the specified ID does not exist." })
+                  .end();
+              } else {
+                res
+                  .status(200)
+                  .json(response);
+                  return;
+              }
+            })
+            .catch(err => {
+              res
+                .status(500)
+                .json({ error: "The post information could not be retrieved."})
+                .end();
+            });
+        }
       })
-  }
-})
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: "The post information could not be modified." })
+          .end();
+      });
+  };
+});
 
 server.listen(8000, () => console.log(`API running on port 8000`));
