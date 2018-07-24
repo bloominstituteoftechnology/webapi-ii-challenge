@@ -55,4 +55,14 @@ server.put('/api/posts/:id', async (req, res) => {
   }
 })
 
+server.delete('/api/posts/:id', async (req, res) => {
+  try {
+    const postId = req.params.id
+    const deletedPost = await db.remove(postId)
+    res.status(200).json(deletedPost)
+  } catch (err) {
+    res.status({ message: 'The post with the specified ID does not exist.' })
+  }
+})
+
 server.listen(8000, () => console.log('API RUNNING ...'))
