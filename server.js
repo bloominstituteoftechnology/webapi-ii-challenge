@@ -11,7 +11,7 @@ server.use(cors());
 // security features, activated!
 server.use(helmet());
 
-const PORT = 8000;
+const PORT = 8001;
 
 // Creates a post using the information sent inside the request body
 server.post('/api/posts', (req, res) => {
@@ -139,23 +139,42 @@ server.put('/api/posts/:id', (req, res) => {
   const post = { title, contents };
 
   data
-    .update(id, post)
-    .then(() => {
-      data
-        .findById(id)
-        .then(response => res.status(200).json(response))
-        .catch(() => {
-          res
-            .status(500)
-            .json({ error: 'The post information could not be retrieved.' });
-          return;
+    .findById(id)
+    .then(response => {
+      if (response.length === 0) {
+        res.status(404).json({
+          message: 'The post with the specified ID does not exist.',
         });
+        return;
+      } else {
+        data
+          .update(id, post)
+          .then(() => {
+            data
+              .findById(id)
+              .then(response => {
+                res.status(200).json(response);
+                return;
+              })
+              .catch(() => {
+                res.status(500).json({
+                  error: 'The post information could not be retrieved.',
+                });
+                return;
+              });
+          })
+          .catch(() => {
+            res
+              .status(500)
+              .json({ error: 'The post information could not be modified.' });
+          });
+      }
     })
-    .catch(() => {
+    .catch(() =>
       res
         .status(500)
-        .json({ error: 'The post information could not be modified.' });
-    });
+        .json({ error: 'The post information could not be retrieved.' }),
+    );
 });
 
 server.listen(PORT, console.log(`Server listening on port ${PORT}`));
