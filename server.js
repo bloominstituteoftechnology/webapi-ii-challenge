@@ -5,25 +5,52 @@ const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
+server.use(express.json());
 
 server.get('/', (req, res) => {
     res.send('Hello World');
   });
 
-  server.get('/users', (req, res) => {
-    const users = [
-      {
-        id: 1,
-        name: 'User1',
-      },
-      {
-        id: 2,
-        name: 'User2',
-      },
-    ];
-  
+  server.get('/api/posts', (req, res) => {
+      db.find()
+      .then(posts=>{
+        res.status(200).json(posts);
+      })
+      .catch(error =>{
+        res.status(500)
+        .json({error:"we have error"})
+      })
     
-  
-    res.status(200).json(users);
+
   });
+  server.get('/api/posts/:id', (req, res) => {
+     db.findById(req.params.id)
+     .then(posts=>{
+       res.status(200).json(posts)
+     })
+
+    
+});
+server.post('/api/posts', (req, res) => {
+  // const post = {id:nextId++, name: "sam"};
+  // posts.push(post);
+  // res.status(200).json(posts);
+
+});
+
+server.delete('/api/posts:id', (req, res)=> {
+const {id} = req.params;
+posts = posts.filter(p => p.id != id)
+})
+
+
   server.listen(9000, () => console.log('API running on port 9000'));
+
+  // db.insert()
+  // .then(posts=>{
+  //   res.status(200).json(posts);
+  // })
+  // .catch(error =>{
+  //   res.status(500)
+  //   .json({error:"we have error"})
+  
