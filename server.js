@@ -42,9 +42,7 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 
-
 //Post
-
 server.post('/api/posts', (req, res) => {
     const {title, contents} = req.body;
     if (!title || !contents) {
@@ -63,6 +61,27 @@ server.post('/api/posts', (req, res) => {
         })
 });
 
+
+//Delete
+server.delete('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    db
+    .remove(id)
+    .then(response => {
+        if (response === 0) {
+            res
+            .status(404)
+            .json({message: "The post with the specified ID does not exist."})
+        }
+        res
+        .json({message:' User removed from system!'})
+    })
+        .catch(error => {
+            res
+            .status(500)
+            .json({error: "The post could not be removed"})
+        })
+})
 
 
 server.listen(8000, () => console.log("API running on port 8000"));
