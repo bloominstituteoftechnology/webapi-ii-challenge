@@ -4,9 +4,7 @@ const db = require('./data/db.js');
 const server = express();
 const cors = require('cors');
 server.use(express.json());
-
-// ? check to see if this is correct
-//server.use(cors({ origin: http://localhost:5000/ }));
+server.use(cors());
 
 server.get('/', (req, res) => {
   res.send({ API: 'running...' })
@@ -113,16 +111,5 @@ server.put('/posts/:id', (req, res) => {
 })
 
 
-
-
-
-
-
-
-
-
-
-
 server.listen(5000);
 
-// add your server code starting here
