@@ -1,19 +1,36 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Axios from '../../../node_modules/axios';
+import Posts from './components/Posts';
+import styled from 'styled-components';
 
+const ContentContainer = styled.div `
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+`
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: []
+    }
+  }
+
+  componentDidMount() {
+    this.fetchPosts();
+  }
+
+  fetchPosts = async () => {
+    const response = await Axios.get('http://localhost:8000/api/posts');
+    this.setState({ posts: response.data });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <ContentContainer className="App">
+        <Posts posts={this.state.posts} />
+      </ContentContainer>
     );
   }
 }
