@@ -20,8 +20,8 @@ server.get('/api/posts/:id', async (req, res) => {
         const id = req.params.id
         const getId = await db.findById(id)
         res.status(200).json(getId)
-        if (getId === undefined) {
-        res.status(404).json({message: "The post with the specified ID does not exist." })
+        if (getId.length === 0) {
+            return res.status(404).json({message: "The post with the specified ID does not exist." })
         }
     } catch (err) {
         res.status(500).json({error: "The post information could not be retrieved. "})
@@ -29,14 +29,27 @@ server.get('/api/posts/:id', async (req, res) => {
 })
 
 server.post('/api/posts', async (req, res) => {
-    if (req.body.title === undefined || req.body.contents === undefined) {
-        res.status(400).res.send({ errorMessage: "Please provide title and contents for the post."})
-    }
     try {
         const post = await db.insert(req.body)
         res.status(201).json(post)
+        if (req.body.title === undefined || req.body.contents === undefined) {
+           return res.status(400).json({ errorMessage: "Please provide title and contents for the post."})
+        }
     } catch (err) {
         res.status(500).json({ error: "There was an error while saving the post to the database"})
+    }
+})
+
+server.delete('/api/posts/:id', async (req, res) => {
+    try {
+        const id = req.params.id
+        const postDelete = await db.remove(id)
+        res.status(200).json(postDelete)
+        if (id === undefined) {
+            return res.status(404).json({ message: "The post with the specified ID does not exist"})
+        }
+    } catch (err) {
+        res.status(500).json({ error: "The post could not be removed"})
     }
 })
 
