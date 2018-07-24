@@ -43,17 +43,15 @@ server.post('/api/posts/', (req, res) => {
     sendUserError(400, "Please provide title and contents for the post.", res);
     return;
   }
+
   db.insert({title, contents}).then(response => {
     db.findById(response.id).then(response => {
       res.status(201).json(response);
     }).catch(err => {
       sendUserError(500, "The post with the specified ID does not exist.", res);
-      return;
     })
-
   }).catch(err => {
     sendUserError(500, "There was an error while saving the post to the database", res);
-    return;
   })
 });
 
@@ -62,13 +60,11 @@ server.delete('/api/posts/:id', (req, res) => {
     console.log('resfafw', response);
     if (response === 0) {
       sendUserError(404, "The post with the specified ID does not exist.", res);
-      return;
     }
       res.status(200).json(response);
 
   }).catch(err => {
     sendUserError(500, err, res);
-    return;
   })
 })
 
@@ -76,12 +72,10 @@ server.put('/api/posts/:id', (req, res) => {
   const {title, contents} = req.body;
   if (!(title && contents)) {
     sendUserError(400, "Please provide title and contents for the post.", res);
-    return;
   }
   db.update(req.params.id, {title, contents}).then(response => {
     if (response === 0) {
       sendUserError(404, "The post with the specified ID does not exist.", res);
-      return;
     }
     db.findById(req.params.id).then(response => {
       res.status(200).json(response)
