@@ -52,6 +52,23 @@ server.get('/api/posts/:id', async (req, res) => {
     }
 });
 
+server.put('/api/posts/:id', async(req, res) => {
+    try {
+        const id = req.params.id;
+        const { title, contents } = req.body;
+        if(title === undefined || contents === undefined) {
+            res.status(400).json({ errorMessage: 'Please provide title and contents for the post'});
+            res.end();
+            return;
+        }
+        const putResponse = await db.update(id, req.body);
+        res.status(200).json(putResponse);
+    }
+    catch(err) {
+        res.status(500).json({ error: 'The post information could not be modified.'});
+        res.end();
+    }
+});
 server.delete('/api/posts/:id', async(req, res) => {
     try {
         const id = req.params.id;
