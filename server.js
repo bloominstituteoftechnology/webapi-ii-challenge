@@ -19,7 +19,7 @@ server.get('/api/posts', (req, res) => {
         .then(posts => {
             res.json(posts);
         })
-        .catch(err => {
+        .catch(error => {
             res.status(500).json({error: "The posts information could not be retrieved."})
         })
 });
@@ -31,30 +31,35 @@ server.get('/api/posts/:id', (req, res) => {
       .findById(id)
       .then(posts => {
           if (posts.length === 0) {
-              res.status(404).json({ message: "The user with the specified ID does not exist." });
+              res.status(404).json({ message: "The post with the specified ID does not exist." });
           } else {
               res.json(posts[0]);
           }
       })
       .catch (message => {
-          res.status(500).json({ message: "The user information could not be retrieved." })
+          res.status(500).json({ message: "The post information could not be retrieved." })
       })
 })
 
 server.post('/api/posts', (req, res) => {
-  // if (!name||!bio) {
-  //     return res.status(400)({error: "Please provide name and bio for the user."})
-  // }
 
-  const newPost = req.body;
+  const {title, contents} = req.body;
+  if (!title || !contents) {
+    res.status(400).json({error: "Please provide title and contents for the post."});
+  return; 
+  }
 
   db
-      .insert(newPost)
+      .insert({title, contents})
       .then(response => {
-          res.status(201).json(response);
+        db
+          .findById(response.id)
+          .then(response => {
+            res.status(201).json(response);
+          })
       })
       .catch(errorMessage => {
-          res.status(500).json({errorMessage: "Please provide title and contents for the post."})
+          res.status(500).json({error: "There was an error while saving the post to the database"})
       })
 })
 
