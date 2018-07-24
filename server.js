@@ -15,7 +15,7 @@ server.get('/', (req, res) => {
 server.get('/posts', (req, res) => {
     db
         .find()
-        .then(response => {
+        .then(posts => {
             res.json({ posts });
         })
         .catch(error => {
