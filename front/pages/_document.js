@@ -13,6 +13,7 @@ export default class extends Document {
             body {
               padding: 0;
               margin: 0;
+              overflow: hidden;
               background: #6d6464;
               color: #fff;
               font-family: SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;

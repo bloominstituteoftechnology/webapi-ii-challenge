@@ -3,8 +3,8 @@ export const Container = ({ children }) =>
     {children}
     <style jsx>{`
        div {
-         max-width: 600px;
-         max-height: 600px;
+         width: 600px;
+         height: 600px;
          margin: 30px auto;
          overflow-y: scroll;
        }

@@ -1,4 +1,4 @@
-const Button = ({onClick, children}) =>
+const Button = ({onClick, children, p, ls}) =>
   <span onClick={onClick}>
     {children}
     <style jsx>{`
@@ -7,8 +7,8 @@ const Button = ({onClick, children}) =>
       width: 200px;
       text-align: center;
       text-transform: uppercase;
-      letter-spacing: 0.5rem;
-      padding: 10px;
+      letter-spacing: ${ls ? ls : '0.5rem'};
+      padding: ${p ? p : '10px'};
     `}</style>
   </span>
 
