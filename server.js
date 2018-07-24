@@ -54,6 +54,22 @@ server.post('/api/posts', (req,res) => {
     });
 });
 
+server.delete('/api/posts', (req, res) => {
+	const id = req.query;
+	let post;
+	db
+		.findById(id)
+		.then(foundPost => {
+			post = { ...foundPost[0] };
+
+	db.remove(id).then(response => {
+      res.status(200).json(response);
+		});
+ 	})
+    .catch(error => {
+      res.status(500).json({ error: "The post could not be removed" });
+    });
+});
 
 // add your server code starting here
 server.listen(3000, () => console.log('API is running'));
