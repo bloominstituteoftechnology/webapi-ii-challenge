@@ -41,6 +41,7 @@ server.post('/api/posts/', (req, res) => {
   const {title, contents} = req.body;
   if (!(title && contents)) {
     sendUserError(400, "Please provide title and contents for the post.", res);
+    return;
   }
   db.insert({title, contents}).then(response => {
     res.status(200).json(response);
@@ -64,5 +65,22 @@ server.delete('/api/posts/:id', (req, res) => {
     return;
   })
 })
+
+server.put('/api/posts/:id', (req, res) => {
+  const {title, contents} = req.body;
+  if (!(title && contents)) {
+    sendUserError(400, "Please provide title and contents for the post.", res);
+    return;
+  }
+  db.update(req.params.id, {title, contents}).then(response => {
+    if (response === 0) {
+      sendUserError(404, "The post with the specified ID does not exist.", res);
+      return;
+    }
+    res.status(200).json(response);
+  }).catch(err => {
+    sendUserError(500, "The post could not be removed", res)
+  })
+});
 
 server.listen(8000, () => console.log('App is listening...'));
