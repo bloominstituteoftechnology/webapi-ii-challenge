@@ -55,5 +55,18 @@ server.delete("/api/posts/:id", (req, res) => {
   .catch(res.status(404).send({ message: "The post with the specified ID does not exist." }))
 })
 
+server.put("/api/posts/:id", (req, res) => {
+  let post = req.params;
+  let newPost = {
+    title: req.query.title,
+    contents: req.query.contents
+  }
+  db.findById(post.id)
+  .then(db.update(post.id, newPost)
+        .then(res.status(200).send("Update worked"))
+        .catch(res.status(500).send({ error: "The post information could not be modified." })))
+  .catch(res.status(404).send({ message: "The post with the specified ID does not exist." }))
+})
+
 
 server.listen(8000, () => console.log('API running on port 8000'));
