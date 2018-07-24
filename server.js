@@ -1,5 +1,28 @@
-// import your node modules
-
+const express = require('express');
 const db = require('./data/db.js');
 
-// add your server code starting here
+const server = express();
+
+
+server.get('/', (req, res) => {
+	res.send('Test');
+
+});
+
+
+server.get('/api/posts', (req, res) => {
+	const request = db.find();
+
+	request.then(response => {
+	res.status(200).json(response);
+	})
+
+	.catch(err => {
+	res.status(404).json({error: "The posts information could not be retrieved."});
+	})
+
+});
+
+
+
+server.listen(9000, () => console.log('API running on port 9000'));
