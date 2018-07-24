@@ -60,6 +60,7 @@ server.delete('/api/posts/:id', (req, res) => {
     console.log('resfafw', response);
     if (response === 0) {
       sendUserError(404, "The post with the specified ID does not exist.", res);
+      return;
     }
       res.status(200).json(response);
 
@@ -72,6 +73,7 @@ server.put('/api/posts/:id', (req, res) => {
   const {title, contents} = req.body;
   if (!(title && contents)) {
     sendUserError(400, "Please provide title and contents for the post.", res);
+    return;
   }
   db.update(req.params.id, {title, contents}).then(response => {
     if (response === 0) {
