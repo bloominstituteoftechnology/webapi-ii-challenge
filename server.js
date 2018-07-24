@@ -44,7 +44,13 @@ server.post('/api/posts/', (req, res) => {
     return;
   }
   db.insert({title, contents}).then(response => {
-    res.status(200).json(response);
+    db.findById(response.id).then(response => {
+      res.status(201).json(response);
+    }).catch(err => {
+      sendUserError(500, "The post with the specified ID does not exist.", res);
+      return;
+    })
+
   }).catch(err => {
     sendUserError(500, "There was an error while saving the post to the database", res);
     return;
@@ -77,7 +83,9 @@ server.put('/api/posts/:id', (req, res) => {
       sendUserError(404, "The post with the specified ID does not exist.", res);
       return;
     }
-    res.status(200).json(response);
+    db.findById(req.params.id).then(response => {
+      res.status(200).json(response)
+    })
   }).catch(err => {
     sendUserError(500, "The post could not be removed", res)
   })
