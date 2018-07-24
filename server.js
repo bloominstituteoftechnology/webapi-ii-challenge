@@ -30,4 +30,16 @@ server.get('/api/posts/:id', async (req, res) => {
   }
 })
 
+server.post('/api/posts', async (req, res) => {
+  try {
+    const newPost = req.body
+    const post = await db.insert(newPost)
+    res.status(200).json(post)
+  } catch (err) {
+    res
+      .status(400)
+      .json({ errorMessage: 'Please provide title and contents for the post.' })
+  }
+})
+
 server.listen(8000, () => console.log('API RUNNING ...'))
