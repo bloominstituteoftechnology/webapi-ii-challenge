@@ -19,4 +19,15 @@ server.get('/api/posts', async (req, res) => {
   }
 })
 
+server.get('/api/posts/:id', async (req, res) => {
+  try {
+    const post = await db.findById(req.params.id)
+    res.status(200).json(post)
+  } catch (err) {
+    res
+      .status(404)
+      .json({ message: 'The post with the specified ID does not exist.' })
+  }
+})
+
 server.listen(8000, () => console.log('API RUNNING ...'))
