@@ -1,9 +1,7 @@
-
 const express = require('express');
 const server = express();
-const db = require('./data/db.js');
-
 server.use(express.json());
+const db = require('./data/db');
 
 server.get('/api/posts', (req, res) => {
   db
@@ -51,20 +49,41 @@ server.post('/api/posts', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params;
-  if(!id) {
-    res.status(404).json({ message: "The post with the specified ID does not exist." })
-  }
   db
   .remove(id)
   .then(post => {
+    if(!post) {
+      res.status(404).json({ message: "The post with the specified ID does not exist." })
+    } else {
       res.status(200).json({ post })
+    }
   })
   .catch(error => {
     res.status(500).json({ error: "The post could not be removed" })
   })
 })
 
-
+server.put('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  const { title, contents } = req.body;
+  if ( !title || !contents ) {
+    res.status(400).json({ error: "Please provide title and contents for the post."});
+    return;
+  }
+  db
+  .update(id, { title, contents })
+  .then(post => {
+     if (post === 0) {
+      res.status(404).json({ message: "The post with the specified ID does not exist." })
+      return;
+    } else {
+      res.status(200).json({ post })
+    }
+  })
+  .catch(error => {
+    res.status(500).json({ error: "The post information could not be modified." })
+  })
+})
 
 
 server.listen(8000, () => console.log('API running on port 8000'));
