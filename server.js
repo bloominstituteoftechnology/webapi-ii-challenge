@@ -8,7 +8,6 @@ const server = express();
 
 server.use(express.json());
 
-
 server.get('/', (req, res) => {
     res.send({ hello: 'world' });
 });
@@ -37,33 +36,56 @@ server.post('/api/posts', (req, res) => {
 
 // GET | Returns an array of all the post objects contained in the database
 // /api/posts
-server.get('/api/posts', (req, res) => {
-    const dbFind = db.find();
+// server.get('/api/posts', (req, res) => {
+//     const dbFind = db.find();
 
-    dbFind
-    .then( result => {
-        const payload = result.map(item => {
-            const {
-                title, contents
-            } = item;
-        })
-        return res.status(200).json(payload); 
+//     dbFind
+//     .then( result => {
+//         const payload = result.map(item => {
+//             const {
+//                 id, title, contents
+//             } = item;
+//         })
+//         return res.status(200).json(payload); 
+//     })
+//     .catch(err => {
+//         res.status(500).json(err);
+//     })
+// })
+
+server.get('/api/posts/', (req, res) => {
+    db
+    .find()
+    .then(posts => {
+        res.json({posts})
     })
-    .catch(err => {
-        res.status(500).json(err);
+    .catch(error => {
+        res.json({error});
     })
-})
+});
 
 // GET | Returns the post object with the specified id.
 // /api/posts/:id
 server.get('/api/posts/:id', (req, res) => {
-    res.status(200);
+    const id = req.params.id;
+    db.findById(id)
+    .then(item => {
+        if(item.length === 0) {
+            res.status(404).json({ error: "Not found" });
+        }
+        console.log(item);
+        res.status(200).json(item);
+    })
+    .catch( () => {
+        res.status(500).json({ error: "The post with the specified ID does not exist." })
+    })
 })
 
 // DELETE | Removes the post with the specified id and returns the deleted post.
 // /api/posts/:id
 server.delete('/api/posts/:id', (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params.id;
+    console.log(req.params);
     if ( !id ) {
         return res.status(404).json({ message: "The post with the specified ID does not exist." })
     }
@@ -79,5 +101,17 @@ server.delete('/api/posts/:id', (req, res) => {
 // PUT | Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
 // api/posts/:id
 server.put('/api/posts/:id', (req, res) => {
-    res.status(200);
+    const id = req.params.id;
+    const post = req.body;
+    if ( !id ) {
+        res.status(404).json( {message: "The post with the specified ID does not exist."})
+    } else if ( !post.title || !post.contents || post.title === '' || post.contents === '' ) {
+        res.status(404).json( {message: "Please provide title and contents for the post."})
+        return;
+    }
+    db.update(id, post)
+    .then(res.status(200).json(post))
+    .catch( () => {
+        res.status(500).json({ error: "The post information could not be modified." })
+    })
 })
