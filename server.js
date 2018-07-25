@@ -8,6 +8,10 @@ const express = require("express");
 const server = express();
 server.use(express.json()); // Body parser.
 
+// CORS
+const cors = require("cors");
+server.use(cors());
+
 // Get Request
 server.get("/api/posts", (req, res) => {
   db.find()
