@@ -18,7 +18,7 @@ const sendUserError = (msg, res) => {
 
   let nextId = 10;
 
-server.get('/posts', (req, res) => {
+server.get('/api/posts', (req, res) => {
     req.params.posts
     db.find().then(posts => {
         res.status(200).json(posts);
@@ -26,47 +26,46 @@ server.get('/posts', (req, res) => {
     .catch(err => res.send(err));
 });
 
-server.get('/posts/:id', (req, res) => {
-    const id = req.params.id
+server.get('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
     db.findById(id).then(posts => {
         res.status(200).json(posts);
     })
     .catch(err => res.send(err));
 })
 
-server.put('/posts/:id', (req, res) => {
+server.put('/api/posts/:id', (req, res) => {
     const id = req.params.id;
-    const post = req.body;
-    db.update(id, post).then(posts => {
+    const { title, contents } = req.body;
+    
+    db.update(id, { title, contents }).then(posts => {
         res.status(200).json(posts);
+
     })
     .catch(err => res.send(err));
 })
 
-server.post('/posts/', (req, res) => {
-    const { id, title, contents, created_at, updated_at } = req.body;
-    // newContent.id = nextId++;
-    // if (!title || !contents ) {
-    //     return sendUserError(
-    //         `{ errorMessage: "Please provide title and contents for the post." }`, res
-    //     );
-    // };
+server.post('/api/posts/', (req, res) => {
+    const { title, contents } = req.body;
+    if (!title || !contents ) {
+        res.status(400).json(`{ errorMessage: "Please provide title and contents for the post." }`)
+    };
 
-    db.insert({ id, title, contents, created_at, updated_at }).then(posts => {
-        posts.push({ id, title, contents, created_at, updated_at });
-        res.status(200).json(posts);
+    let msg = db.find()[db.find()-1];
+
+    db.insert({ title, contents }).then(posts => {
+        posts.push({ title, contents });
+        res.status(201).json(`{Message: "Success"}`);
     })
     .catch(err => res.send(err));
 })
 
-server.delete('/posts/:id', (req, res) => {
+server.delete('/api/posts/:id', (req, res) => {
     const id = req.params.id;
-    const post = req.body;
-    db.remove().then(posts => {
-        res.status(200).json(posts);
+    db.remove(id).then(posts => {
+        res.status(204).json(posts);
     })
     .catch(err => res.send(err));
 })
-
 
 server.listen(8000, () => console.log('API running on port 8000'))
