@@ -27,7 +27,7 @@ server.get('/api/posts', async (req, res) => {
       err: err
     });
   }
-}); //Here I have used async/await syntax just to try it out.
+});
 
 server.get('/api/posts/:id', async (req, res) => {
   try {
@@ -42,43 +42,31 @@ server.get('/api/posts/:id', async (req, res) => {
   }
 });
 
-server.post('/api/posts/', (req, res) => {
+server.post('/api/posts/', async (req, res) => {
   const {
     title,
     contents
   } = req.body;
+
   if (!(title && contents)) {
     sendUserError(400, "Please provide title and contents for the post.", res);
     return;
   }
 
-  db.insert({
-    title,
-    contents
-  }).then(response => {
-    db.findById(response.id).then(response => {
-      res.status(201).json(response);
-    }).catch(err => {
-      sendUserError(500, "The post with the specified ID does not exist.", res);
-    })
-  }).catch(err => {
+  try {
+    const newPostId = await db.insert({title, contents});
+    try {
+    const newPost = await db.findById(newPostId.id);
+    res.status(201).json(newPost);
+  } catch(err) {
+    sendUserError(404, "The post with the specified ID does not exist", res);
+    return;
+  }
+
+  } catch(err) {
     sendUserError(500, "There was an error while saving the post to the database", res);
-  })
-
-  //   try {
-  //     const newPostId = await db.insert({title, contents});
-  //   } catch(err) {
-  //     sendUserError(500, "There was an error while saving the post to the database", res);
-  //   }
-  //
-  //   try {
-  //   const newPost = db.findById(newPostId.id);
-  //   res.status(201).json(newPost);
-  // } catch(err) {
-  //   sendUserError(404, "The post with the specified ID does not exist", res);
-  // }
-
-  //Tried to use async but it's unclear how it works with nested functions;
+    return;
+  }
 });
 
 server.delete('/api/posts/:id', async (req, res) => {
@@ -96,7 +84,7 @@ server.delete('/api/posts/:id', async (req, res) => {
   }
 })
 
-server.put('/api/posts/:id', (req, res) => {
+server.put('/api/posts/:id', async (req, res) => {
   const {
     title,
     contents
@@ -105,22 +93,24 @@ server.put('/api/posts/:id', (req, res) => {
     sendUserError(400, "Please provide title and contents for the post.", res);
     return;
   }
-  db.update(req.params.id, {
-    title,
-    contents
-  }).then(response => {
-    if (response === 0) {
+
+  try {
+    const postUpdate = await db.update(req.params.id, {title, contents});
+    if (postUpdate === 0) {
       sendUserError(404, "The post with the specified ID does not exist.", res);
       return;
     }
-    db.findById(req.params.id).then(response => {
-      res.status(200).json(response)
-    }).catch(err => {
-      sendUserError(500, "Updated post could not be found", res);
-    })
-  }).catch(err => {
-    sendUserError(500, "The post could not be updated", res)
-  })
+    try {
+      const updatedPost = await db.findById(req.params.id);
+      res.status(200).json(updatedPost);
+    } catch(err) {
+      sendUserError(404, "Updated post could not be found", res);
+      return;
+    }
+} catch(err) {
+  sendUserError(500, "The post could not be updated", res)
+  return;
+}
 });
 
 server.listen(8000, () => console.log('App is listening...'));
