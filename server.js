@@ -2,7 +2,7 @@
 
 // import your node modules
 const express = require('express')
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const db = require('./data/db.js');
 const cors = require('cors');
 
@@ -23,11 +23,10 @@ server.get('/api/posts', (req, res) => {
             res.json(posts);
     })
 // If retrieval error from database
-.catch(err => {
+    .catch(err => {
         res.status(500).json({ error: 'The posts information could not be retrieved.' });
     });
 });
-
 
 // GET request to /api/posts/:id
 server.get('/api/posts/:id', (req, res) => {
@@ -74,6 +73,20 @@ server.delete('/api/posts/:id', (req, res) => {
                 res.json({ posts })
             })
             .catch({ message: "The post with the specified ID does not exist." })
+    })
+
+server.put('/api/posts/:id', (req, res) => {
+        const { title, contents } = req.body;
+        const id = req.params.id;
+        db
+            .update(id, { title, contents })
+            .then(count => {
+                res.json({ count })
+                })
+                .catch(error => {
+                    res.json({ message: "The post with the specified ID does not exist." })
+                })
+        
     })
 
 server.listen(5000, () => console.log('\n== API Running on port 5000 ==\n'));
