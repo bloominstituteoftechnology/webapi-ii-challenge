@@ -86,11 +86,10 @@ server.put('/api/posts/:id', async (req,res) => {
       } else {
         const updatedPost = await db.findById(req.params.id)
         res.status(200).json(updatedPost);
-      }
-        
+      } 
     }
-  
   }
+  
   catch (err){
     res.status(500).json({ error: "There was an error while saving the post to the database" })
   }
