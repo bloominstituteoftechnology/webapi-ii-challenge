@@ -19,16 +19,6 @@ server.get('/api/posts', (req, res) => {
     )
 })
 
-//   try {
-//     const posts = await db.find()
-//     res.status(200).json(posts)
-//   } catch (err) {
-//     res
-//       .status(500)
-//       .json({ error: 'The posts information could not be retrieved.' })
-//   }
-// })
-
 server.get('/api/posts/:id', async (req, res) => {
   try {
     const post = await db.findById(req.params.id)
@@ -62,13 +52,12 @@ server.put('/api/posts/:id', async (req, res) => {
   let id = await db.findById(req.params.id)
   try {
     !req.body.title || !req.body.contents
-      ? res
-        .status(400)
-        .json({
-          errorMessage: 'Please provide title and contents for the post.'
-        })
+      ? res.status(400).json({
+        errorMessage: 'Please provide title and contents for the post.'
+      })
       : id.length > 0
-        ? res.status(200).json(await db.update(req.params.id, req.body))
+        ? (await db.update(req.params.id, req.body)) &&
+          res.status(200).json(await db.findById(req.params.id))
         : res
           .status(404)
           .json({ message: 'The post with the specified ID does not exist.' })
@@ -80,11 +69,16 @@ server.put('/api/posts/:id', async (req, res) => {
 })
 
 server.delete('/api/posts/:id', async (req, res) => {
+  let id = await db.findById(req.params.id)
   try {
-    const postId = req.params.id
-    const deletedPost = await db.remove(postId)
-    res.status(200).json(deletedPost)
-  } catch (err) {}
+    id.length > 0
+      ? res.status(200).json(await db.remove(req.params.id))
+      : res
+        .status(404)
+        .json({ message: 'The post with the specified ID does not exist.' })
+  } catch (err) {
+    res.status(500).json({ error: 'The post could not be removed' })
+  }
 })
 
 server.listen(8000, () => console.log('API RUNNING ...'))
