@@ -81,8 +81,13 @@ server.put('/api/posts/:id', async (req,res) => {
     }
     else {
       const post = await db.update(req.params.id, req.body)  
-      post == '0' ? res.status(400).json({ message: "The post with the specified ID does not exist." }) :
-      res.status(200).send(`${post} record(s) were updated`);
+      if (post == '0'){
+        res.status(400).json({ message: "The post with the specified ID does not exist." })
+      } else {
+        const updatedPost = await db.findById(req.params.id)
+        res.status(200).json(updatedPost);
+      }
+        
     }
   
   }
