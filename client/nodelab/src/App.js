@@ -20,8 +20,8 @@ class App extends Component {
     axios
       .get('http://localhost:5000/posts')
       .then((response) => {
-        console.log('response', response);
-        //this.setState({posts: response.data.posts})
+        //console.log('response', response.data.posts);
+        this.setState({posts: response.data.posts})
       })
       .catch(err => console.log(err));
   }
@@ -55,11 +55,11 @@ class App extends Component {
   }
 
   render() {
-    //console.log('state', this.state.posts)
+    console.log('state', this.state.posts)
     return (
       <div className="App">
         <h1>Node Express Lab</h1>
-        {/* <input 
+        <input 
           name="title" 
           type="text" 
           placeholder="title" 
@@ -78,12 +78,12 @@ class App extends Component {
                 Title: {post.title}
               </div>
               <div>
-                Content: {post.content}
+                Content: {post.contents}
               </div>
               <button onClick={() => this.handleDelete(post.id)}>Delete</button>
             </div>
           )
-        })} */}
+        })}
       </div>
     );
   }
