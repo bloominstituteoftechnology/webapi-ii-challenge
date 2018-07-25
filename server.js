@@ -1,3 +1,5 @@
+// REFERENCE FOR SPRINT
+
 // import your node modules
 const express = require('express')
 const bodyParser = require('body-parser');
@@ -6,7 +8,7 @@ const cors = require('cors');
 
 // middleware
 const server = express();
-server.use(bodyParser.json());
+// server.use(bodyParser.json());
 
 // add your server code starting here
 server.get('/', (req, res) => {
@@ -63,5 +65,15 @@ server.post('/api/posts', (req, res) => {
         res.status(500).json({ error: 'There was an error while saving the post to the database.' })
     });
 });
+
+server.delete('/api/posts/:id', (req, res) => {
+        const id = req.params.id;
+        db
+            .remove(id)
+            .then(posts => {
+                res.json({ posts })
+            })
+            .catch({ message: "The post with the specified ID does not exist." })
+    })
 
 server.listen(5000, () => console.log('\n== API Running on port 5000 ==\n'));
