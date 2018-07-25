@@ -6,6 +6,9 @@ const db = require('./data/db.js');
 const server = express()
 
 server.use(helmet())
+server.use(express.json())
+
+
 
 //GET ReQUEST /api/posts
 server.get('/api/posts', async (req, res) =>{
@@ -37,6 +40,31 @@ server.get('/api/posts/:id', async ( req, res) => {
     }
 } )
 
+// Post Request /api/posts
+
+server.post('/api/posts', async (req,res) => {
+    try{
+        const post = await db.insert(req.body)
+        res.status(201).json(post)
+    }
+    catch(err){
+        res.status(500).json({ error : err })
+    }
+
+})
+
+//Post Request /api/posts
+
+server.put('/api/posts/:id', async (req,res) => {
+
+     try{
+         const post = await db.update(req.params.id, req.body)
+         res.status(200).json(post)
+     }
+     catch(err){
+        res.status(500).json({ error: "The post information could not be modified." })
+     }
+})
 
 
 
