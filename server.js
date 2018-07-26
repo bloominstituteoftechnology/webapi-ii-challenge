@@ -41,6 +41,7 @@ server.get('/api/posts', (req, res) => {
         })
 
 })
+//GET POST BY ID
 
 server.listen(port, () => console.log(`Server is running on port ${port}`));
 
