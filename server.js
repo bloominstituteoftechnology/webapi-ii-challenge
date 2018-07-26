@@ -24,23 +24,38 @@ const sendUserError = (status, message, res) => {
 //         }
 //     ]
 // }
+//end of DATA SHAPE
+
+
 // GET ALL POSTS
-server.get('/api/posts', (req, res) => {
-    //const { post } = req.body;
-    console.log(req.body);
+// server.get('/api/posts', (req, res) => {
+//     //const { post } = req.body;
+//     console.log(req.body);
 
-    db
-        .find()
-        .then(posts => {
-            res.json( {posts} )
-        })
-        .catch(error => {
-            console.log(error);
-            sendUserError(500, "The posts information could not be retrieved.", res);
-            return;
-        })
+//     db
+//         .find()
+//         .then(posts => {
+//             res.json( {posts} )
+//         })
+//         .catch(error => {
+//             console.log(error);
+//             sendUserError(500, "The posts information could not be retrieved.", res);
+//             return;
+//         })
 
+// })
+
+////ASYNC!!!
+//GET all posts
+server.get('/api/posts', async(req, res) => {
+    try {
+        const posts = await db.find();
+        res.status(200).json(posts);
+    } catch (error) {
+        res.status(500).json({message: 'The posts information could not be retrieved.', error: error})
+    }
 })
+
 //GET POST BY ID
 server.get('/api/posts/:id', (req, res) => {
     const id = req.params.id;
