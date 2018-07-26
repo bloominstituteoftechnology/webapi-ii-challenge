@@ -60,6 +60,24 @@ server.get('/api/posts/:id', (req, res) => {
             return;
         })
 })
+//POST / CREATE new post
+server.post('/api/posts', (req, res) => {
+    const { title, contents } = req.body;
+    if (!title || !contents) {
+        sendUserError(400, "Please provide title and contents for the post.", res);
+        return;
+    }
+    db
+        .insert({ title, contents })
+        .then(response => {
+            res.status(201).json({"successNewId" : response});
+        })
+        .catch(error => {
+            console.log(error);
+            sendUserError(500, "There was an error while saving the post to the database", res);
+            return;
+        })        
+})
 
 server.listen(port, () => console.log(`Server is running on port ${port}`));
 
