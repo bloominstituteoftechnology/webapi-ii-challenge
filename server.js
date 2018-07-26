@@ -42,6 +42,24 @@ server.get('/api/posts', (req, res) => {
 
 })
 //GET POST BY ID
+server.get('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+    db
+        .findById(id)
+        .then(post => {
+            if (post.length === 0) {
+                sendUserError(404, "The post with the specified ID does not exist.", res);
+                return;
+            } else {
+                res.json({ post })
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            sendUserError(500, "The post information could not be retrieved.", res);
+            return;
+        })
+})
 
 server.listen(port, () => console.log(`Server is running on port ${port}`));
 
