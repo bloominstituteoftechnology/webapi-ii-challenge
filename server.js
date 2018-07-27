@@ -45,12 +45,14 @@ server.get('/api/posts/:id', async ( req, res) => {
 server.post('/api/posts', async (req,res) => {
     const { title, contents } = req.body
     try{
-        if( title.length === 0 || contents === 0 ){
-            console.log('some data are not present')
-            //res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+        if( !title || !contents){
+
+            res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+        }else{
+            const post = await db.insert(req.body)
+            res.status(201).json(post)
         }
-        const post = await db.insert(req.body)
-        res.status(201).json(post)
+
     }
     catch(err){
         res.status(500).json({ error : err })
@@ -71,6 +73,16 @@ server.put('/api/posts/:id', async (req,res) => {
      }
 })
 
+server.delete('/api/posts/:id', async (req, res) =>{
+    const { id } = req.params
+    try {
+        const deletedPost = db.remove(id)
+        res.status(200).json(deletedPost)
+    }
+    catch(err){
+        res.status(500).json({error: "there was an error deleting Post"})
+    }
+})
 
 
 server.listen(8000, () => {
