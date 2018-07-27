@@ -43,7 +43,12 @@ server.get('/api/posts/:id', async ( req, res) => {
 // Post Request /api/posts
 
 server.post('/api/posts', async (req,res) => {
+    const { title, contents } = req.body
     try{
+        if( title.length === 0 || contents === 0 ){
+            console.log('some data are not present')
+            //res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+        }
         const post = await db.insert(req.body)
         res.status(201).json(post)
     }
