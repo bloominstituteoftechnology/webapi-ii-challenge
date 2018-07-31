@@ -14,7 +14,7 @@ class App extends Component {
    the node url */
 
   componentDidMount() {
-    fetch("api/users")
+    fetch("api/posts")
       .then(res => res.json())
       .then(posts => this.setState({ posts }));
   }
