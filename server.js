@@ -1,6 +1,7 @@
 // import your node modules
 const express = require('express');
 const helmet = require('helmet');
+const cors = require('cors');
 const db = require('./data/db.js');
 
 // add your server code starting here
@@ -9,6 +10,7 @@ const server = express();
 
 server.use(helmet());
 server.use(express.json());
+server.use(cors());
 
 server.get('/', (req, res) => {
     res.send('Api Running');
@@ -63,7 +65,7 @@ server.post('/api/posts', (req, res) => {
 });
 
 server.put('/api/posts/:id', (req, res) => {
-    const { id } = req.params.id;
+    const { id } = req.params;
     const update = req.body;
 
     db
