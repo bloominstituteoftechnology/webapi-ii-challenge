@@ -62,8 +62,8 @@ server.post('/api/posts', (req, res) => {
         });
 });
 
-server.put('/api/posts/:id', function (req, res) {
-    const { id } = req.params;
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params.id;
     const update = req.body;
 
     db
@@ -86,7 +86,7 @@ server.put('/api/posts/:id', function (req, res) {
 
 server.delete('/api/posts/:id', function (req, res) {
     const { id } = req.query;
-    let user;
+   // let user;
 
     db
         .findById(id)
