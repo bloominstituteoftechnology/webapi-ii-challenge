@@ -19,8 +19,14 @@ server.post('/api/posts', (req, res) => {
       res.status(500)
         .json({ error: "There was an error while saving the post to the database" });
     });
+});
 
-
+server.get('/api/posts', (req, res) => {
+  db.find()
+    .then(response => res.status(200).json(response))
+    .catch(() => res.status(500)
+      .json({ error: "The posts information could not be retrieved." })
+    );
 });
 
 server.listen(8000, () => console.log('API running on port 8000'));
