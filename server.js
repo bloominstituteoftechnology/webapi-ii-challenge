@@ -67,4 +67,110 @@ server.get("/api/posts", (req, res) => {
     );
 });
 
+//* GET Request by ID
+// TODO: When the client makes a GET request to /api/posts/:id:
+
+// TODO: If the post with the specified id is not found:
+// TODO: return HTTP status code 404 (Not Found).
+// TODO: return the following JSON object: { message: "The post with the specified ID does not exist." }.
+
+// TODO: If there's an error in retrieving the post from the database:
+// TODO: cancel the request.
+// TODO: respond with HTTP status code 500.
+// TODO: return the following JSON object: { error: "The post information could not be retrieved." }.
+
+server.get("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  db.findById(id)
+    .then(post => {
+      if (post.length === 0) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        res.status(200).json(post[0]);
+      }
+    })
+    .catch(err =>
+      res
+        .status(500)
+        .json({ error: "The post information could not be retrieved." })
+    );
+});
+
+//* DELETE Request
+// TODO: When the client makes a DELETE request to /api/posts/:id:
+
+// TODO: If the post with the specified id is not found:
+// TODO: return HTTP status code 404 (Not Found).
+// TODO: return the following JSON object: { message: "The post with the specified ID does not exist." }.
+
+// TODO: If there's an error in removing the post from the database:
+// TODO: cancel the request.
+// TODO: respond with HTTP status code 500.
+// TODO: return the following JSON object: { error: "The post could not be removed" }.
+
+server.delete("/api/post/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.remove(id)
+    .then(post => {
+      if (post.length === 0) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        res.status(200).json({ message: "The post has been deleted." });
+      }
+    })
+    .catch(err =>
+      res.status(500).json({ error: "The post could not be removed" })
+    );
+});
+
+//* UPDATE Request
+// TODO: When the client makes a PUT request to /api/posts/:id:
+// TODO: If the post with the specified id is not found:
+// TODO: return HTTP status code 404 (Not Found).
+// TODO: return the following JSON object: { message: "The post with the specified ID does not exist." }.
+
+// TODO: If the request body is missing the title or contents property:
+// TODO: cancel the request.
+// TODO: respond with HTTP status code 400 (Bad Request).
+// TODO: return the following JSON response: { errorMessage: "Please provide title and contents for the post." }.
+
+// TODO: If there's an error when updating the post:
+// TODO: cancel the request.
+// TODO: respond with HTTP status code 500.
+// TODO: return the following JSON object: { error: "The post information could not be modified." }.
+
+// TODO: If the post is found and the new information is valid:
+// TODO: update the post document in the database using the new information sent in the reques body.
+// TODO: return HTTP status code 200 (OK).
+// TODO: return the newly updated post.
+
+server.put("/api/post/:id", (req, res) => {
+  const { title, contents } = req.body;
+  const { id } = req.params;
+
+  if (!title || !contents) {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
+  db.update(id, { title, contents })
+    .then(response => {
+      if (response.length === 0) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        res.status(200).json({ title, contents });
+      }
+    })
+    .catch(err =>
+      res.status(500).json({ error: "The post could not be removed" })
+    );
+});
+
 server.listen(8000, () => console.log("API running on port 8000"));
