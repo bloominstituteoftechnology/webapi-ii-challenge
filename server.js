@@ -61,5 +61,27 @@ server.delete('/posts/:id', (req, res) => {
         })
 })
 
+server.put('/posts/:id', (req, res) => {
+    const {id} = req.params;
+    const post = req.body;
+
+    if (post.title == null || post.contents == null) {
+        res.status(400).json({ errorMessage: 'Please provide title and contents for the post'})
+    }
+    db.findById(id)
+        .then(response => {
+            if (response < 1) {
+                res.status(404).json({ message: 'The post with the specified ID does not exist' })
+            }
+            db.update(id, post)
+                .then(post => {
+                    res.status(200).json(post)
+                })
+                .catch(() => {
+                    res.status(500).json({ error: 'The post information could not be modified' })
+                })
+        })
+})
+
 
 server.listen(8000, () => console.log('API running...'))
