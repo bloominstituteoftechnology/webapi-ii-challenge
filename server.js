@@ -38,9 +38,9 @@ server.post('/posts', (req, res) => {
     if (post.title == null || post.contents == null) {
         res.status(400).json({ errorMessage: 'Please provide title and contents for the post'})
     }
-    db.insert()
-        .then( user => {
-            res.status(201).json(user)
+    db.insert(post)
+        .then( post => {
+            res.status(201).json(post)
         })
         .catch(() => {
             res.status(500).json({ error: 'There was an error while saving the post to the database' })
