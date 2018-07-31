@@ -12,7 +12,24 @@ server.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-// POST Request
+//* POST Request
+// TODO: When the client makes a POST request to /api/posts:
+
+// TODO:  If the request body is missing the title or contents property:
+// TODO: cancel the request.
+// TODO: respond with HTTP status code 400 (Bad Request).
+// TODO: return the following JSON response: { errorMessage: "Please provide title and contents for the post." }.
+
+// TODO: If the information about the post is valid:
+// TODO: save the new post the the database.
+// TODO: return HTTP status code 201 (Created).
+// TODO: return the newly created post.
+
+// TODO: If there's an error while saving the post:
+// TODO: cancel the request.
+// TODO: respond with HTTP status code 500 (Server Error).
+// TODO: return the following JSON object: { error: "There was an error while saving the post to the database" }.
+
 server.post("/api/posts", (req, res) => {
   if (!req.body.title || !req.body.contents) {
     return res.status(400).json({
@@ -26,11 +43,9 @@ server.post("/api/posts", (req, res) => {
   })
     .then(id => res.status(201).json(id))
     .catch(err =>
-      res
-        .status(500)
-        .json({
-          error: "There was an error while saving the post to the database"
-        })
+      res.status(500).json({
+        error: "There was an error while saving the post to the database"
+      })
     );
 });
 
