@@ -10,7 +10,7 @@ class App extends Component {
     };
   }
 
-  /* When mounted pull in users api. In package.json you'll need to proxy 
+  /* When mounted pull in posts api. In package.json you'll need to proxy 
    the node url */
 
   componentDidMount() {
