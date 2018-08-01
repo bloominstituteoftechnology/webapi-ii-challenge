@@ -45,7 +45,7 @@ server.get('/api/posts/:id', (req, res) => {
     });
 });
 
-server.delete('/api/users/:id', (req, res) => {
+server.delete('/api/posts/:id', (req, res) => {
   db.remove(req.params.id)
     .then(response => {
       if (response === 0) {
@@ -58,5 +58,26 @@ server.delete('/api/users/:id', (req, res) => {
         .json({ error: "The user could not be removed" });
     });
 });
+
+server.put('/api/posts/:id', (req, res) => {
+  if (!req.body.title || !req.body.contents) {
+    res.status(400)
+      .json({ errorMessage: "Please provide title and contents for the post." });
+    return;  
+  }
+  db.update(req.params.id, req.body)
+    .then(response => {
+      if (response === 0) {
+        res.status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        res.status(200);
+      }
+    })
+    .catch(() => {
+      res.status(500)
+        .json({ error: "The post information could not be modified." })
+    });
+})
 
 server.listen(8000, () => console.log('API running on port 8000'));
