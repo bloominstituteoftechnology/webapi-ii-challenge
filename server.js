@@ -34,10 +34,10 @@ server.get('/api/posts/:id', (req, res) => {
     db
         .findById(id)
         .then(post => {
-            if (users.length === 0) {
+            if (post.length === 0) {
                 res.status(404).json({ message: 'The post with the specified ID does not exist' });
             } else {
-                res.json(posts[0]);
+                res.json(post);
             }
         })
         .catch(err => {
@@ -87,19 +87,18 @@ server.put('/api/posts/:id', (req, res) => {
 });
 
 server.delete('/api/posts/:id', function (req, res) {
-    const { id } = req.query;
+    const { id } = req.params;
    // let user;
-
-    db
-        .findById(id)
-        .then(foundPost => {
-            user = { ...foundPost[0] };
-        })
 
     db
         .remove(id)
         .then(response => {
-            res.status(204).json(response);
+            if(response !== 1 ) {
+                res.status(404).json({message: 'The post with this specified id does not exist'});
+            } else {
+                res.status(200).json({ message: 'Post was removed!'});
+            }
+           
         })
 
         .catch(err => {
