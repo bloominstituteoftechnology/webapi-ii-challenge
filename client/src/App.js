@@ -8,10 +8,30 @@ class App extends Component {
     super(props);
     this.state = {
       posts: [],
-      title: '',
-      contents: ''
+      post: {
+        title: '',
+        contents: '',
+      }   
     }
   }
+
+  addPost = e => {
+    e.preventDefault();
+    const newPost = this.state.post;
+    axios
+      .post('http://localhost:8000/api/posts', newPost)
+      .then(response => {
+        console.log(response);
+        
+      })
+      .catch(err => {
+        console.log(err);
+      })  
+  }
+
+  handleInputChange = e => {
+    this.setState({ post: {[e.target.name]: e.target.value} });
+  };
 
   componentDidMount(){
     axios
@@ -38,6 +58,21 @@ class App extends Component {
             )
           })
         }
+        <form>
+          <input
+            onChange={this.handleInputChange}
+            placeholder="title"
+            value={this.state.post.title}
+            name="title"
+          />
+          <textarea
+            onChange={this.handleInputChange}
+            placeholder="contents"
+            value={this.state.post.contents}
+            name="contents"
+          />
+          <button onClick={this.addPost} type="submit">Add Post</button>
+        </form>
       </div>
     );
   }
