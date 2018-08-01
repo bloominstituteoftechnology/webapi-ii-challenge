@@ -2,8 +2,12 @@
 const express = require('express');
 const server = express();
 const db = require('./data/db.js');
+const cors = require('cors');
+
+// server.use(helmet());
 
 server.use(express.json());
+server.use(cors());
 // add your server code starting here
 
 server.get('/api/posts', (req, res) => {
@@ -86,4 +90,4 @@ server.put('/api/posts/:id', (req, res) => {
     });
 });
 
-server.listen(5000, () => console.log('API running on port 5000'));
+server.listen(8000, () => console.log('API running on port 5000'));
