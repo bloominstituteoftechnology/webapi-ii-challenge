@@ -2,16 +2,24 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+import Post from './Post';
+import PostForm from './PostForm';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      posts: [],
-      title: '',
-      contents: ''
-    };
-  }
+  // constructor(props) { //only use this if you're using redux or props from somewhere
+  //   super(props);
+  //   this.state = {
+  //     posts: [],
+  //     title: '',
+  //     contents: ''
+  //   };
+  // }
+
+  state = {
+    posts: [],
+    title: '',
+    contents: ''
+  };
 
   componentDidMount() {
     axios
@@ -25,12 +33,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.posts.map((post) => (
-          <div key={post.id}>
-            <div>{post.title}</div>
-            <div>{post.contents}</div>
-          </div>
-        ))}
+        {this.state.posts.map((post) => <Post post={post} />)}
+        <PostForm />
       </div>
     );
   }
