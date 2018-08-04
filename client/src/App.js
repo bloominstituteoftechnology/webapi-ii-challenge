@@ -22,8 +22,27 @@ class App extends Component {
       });
   }
 
-  updateState = (response) => {
-    this.setState({ posts: response.data });
+  // updateState = (response) => {
+  //   this.setState({ posts: response.data });
+  // };
+
+  deletePost = (id) => {
+    axios
+      .delete(`http://localhost:8000/api/posts/${id}`)
+      .then((response) => {
+        console.log(response);
+        // this.setState(this.state);
+        // this.forceUpdate();
+        axios
+          .get('http://localhost:8000/api/posts')
+          .then((response) => this.setState({ posts: response.data }))
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   render() {
@@ -37,7 +56,7 @@ class App extends Component {
         {/* <Route path="/posts/:id" component={ViewPost} /> */}
         <Route
           path="/posts/:id"
-          render={(props) => <ViewPost {...props} updateState={this.updateState} />}
+          render={(props) => <ViewPost {...props} deletePost={this.deletePost} />}
         />
       </div>
     );

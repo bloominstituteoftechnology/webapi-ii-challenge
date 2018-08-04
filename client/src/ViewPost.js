@@ -7,18 +7,6 @@ class ViewPost extends Component {
     super(props);
   }
 
-  deletePost = (id) => {
-    axios
-      .delete(`http://localhost:8000/api/posts/${id}`)
-      .then((response) => {
-        console.log(response);
-        this.props.updateState();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   // this.props.posts.filter(post => post.id === id)
 
   render() {
@@ -26,7 +14,7 @@ class ViewPost extends Component {
       <div>
         <div>{this.props.location.state.title}</div>
         <div>{this.props.location.state.contents}</div>
-        <Link to="/posts" onClick={this.deletePost(this.props.location.state.id)}>
+        <Link to="/posts" onClick={() => this.props.deletePost(this.props.location.state.id)}>
           Delete
         </Link>
       </div>
