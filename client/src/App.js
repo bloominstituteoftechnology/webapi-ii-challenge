@@ -3,8 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import { Route } from 'react-router-dom';
-import Post from './Post';
-import PostForm from './PostForm';
+import Posts from './Posts';
 import ViewPost from './ViewPost';
 
 class App extends Component {
@@ -39,8 +38,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.posts.map((post) => <Post post={post} />)}
-        <PostForm />
+        <Route
+          exact
+          path="/posts/"
+          render={(props) => <Posts {...props} posts={this.state.posts} />}
+        />
         {/* <Route path="/posts/:id" component={ViewPost} /> */}
         <Route
           path="/posts/:id"
