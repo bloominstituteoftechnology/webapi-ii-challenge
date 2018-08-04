@@ -8,7 +8,7 @@ class Post extends Component {
 
   render() {
     return (
-      <Link to={`/posts/${this.props.post.id}`}>
+      <Link to={{ pathname: `/posts/${this.props.post.id}`, state: this.props.post }}>
         <div key={this.props.post.id}>
           <div>{this.props.post.title}</div>
           <div>{this.props.post.contents}</div>
@@ -17,5 +17,6 @@ class Post extends Component {
     );
   }
 }
+// sending down each individual post as state on Link tag
 
 export default Post;

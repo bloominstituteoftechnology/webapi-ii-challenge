@@ -6,7 +6,11 @@ import PostForm from './PostForm';
 const Posts = (props) => {
   return (
     <div>
-      {props.posts.map((post) => <Post post={post} />)}
+      {props.posts.map((post) => (
+        <div key={post.id}>
+          <Post post={post} />
+        </div>
+      ))}
       <PostForm />
     </div>
   );

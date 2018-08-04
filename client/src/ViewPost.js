@@ -12,19 +12,21 @@ class ViewPost extends Component {
       .delete(`http://localhost:8000/api/posts/${id}`)
       .then((response) => {
         console.log(response);
-        this.props.updateState(response);
+        this.props.updateState();
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  // this.props.posts.filter(post => post.id === id)
+
   render() {
     return (
       <div>
-        <div>{this.props.title}</div>
-        <div>{this.props.contents}</div>
-        <Link to="/posts" onClick={(id) => this.deletePost(id)}>
+        <div>{this.props.location.state.title}</div>
+        <div>{this.props.location.state.contents}</div>
+        <Link to="/posts" onClick={this.deletePost(this.props.location.state.id)}>
           Delete
         </Link>
       </div>

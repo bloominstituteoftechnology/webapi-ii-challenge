@@ -7,15 +7,6 @@ import Posts from './Posts';
 import ViewPost from './ViewPost';
 
 class App extends Component {
-  // constructor(props) { //only use this if you're using redux or props from somewhere
-  //   super(props);
-  //   this.state = {
-  //     posts: [],
-  //     title: '',
-  //     contents: ''
-  //   };
-  // }
-
   state = {
     posts: [],
     title: '',
@@ -46,14 +37,7 @@ class App extends Component {
         {/* <Route path="/posts/:id" component={ViewPost} /> */}
         <Route
           path="/posts/:id"
-          render={(props) => (
-            <ViewPost
-              {...props}
-              updateState={this.updateState}
-              title={this.state.title}
-              contents={this.state.contents}
-            />
-          )}
+          render={(props) => <ViewPost {...props} updateState={this.updateState} />}
         />
       </div>
     );
