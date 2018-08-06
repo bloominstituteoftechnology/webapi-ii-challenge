@@ -9,9 +9,11 @@ class Post extends Component {
   render() {
     return (
       <Link to={{ pathname: `/posts/${this.props.post.id}`, state: this.props.post }}>
-        <div key={this.props.post.id}>
-          <div>{this.props.post.title}</div>
-          <div>{this.props.post.contents}</div>
+        <div className="flip-container">
+          <div className="flipper" key={this.props.post.id}>
+            <div className="front">{this.props.post.title}</div>
+            <div className="back">{this.props.post.contents}</div>
+          </div>
         </div>
       </Link>
     );

@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -23,6 +23,83 @@
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  text-decoration: none;
+}
+
+/* entire container, keeps perspective */
+.flip-container {
+  perspective: 1000px;
+  margin: 15px;
+  color: black;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+
+/* flip the pane when hovered */
+.flip-container:hover .flipper,
+.flip-container.hover .flipper {
+  transform: rotateY(180deg);
+}
+
+.flip-container,
+.front,
+.back {
+  width: 240px;
+  height: 250px;
+}
+
+/* flip speed goes here */
+.flipper {
+  transition: 0.7s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+/* hide back of pane during swap */
+.front,
+.back {
+  backface-visibility: hidden;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* padding-top: 90px; */
+  line-height: 250px;
+  text-align: center;
+}
+
+.front,
+.back p {
+  line-height: 1.5;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* front pane, placed above back */
+.front {
+  z-index: 2;
+  transform: rotateY(0deg);
+  background-color: pink;
+}
+
+/* back, initially hidden pane */
+.back {
+  transform: rotateY(180deg);
+  background-color: rosybrown;
+}
+
+.back:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
