@@ -1,50 +1,32 @@
-/* .App {
-  text-align: center;
+body {
+  font-family: 'Raleway', sans-serif;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.App {
+  background: #fff4f5;
+  height: 100vh;
+  overflow: scroll;
 }
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
 .cards {
   display: flex;
   flex-wrap: wrap;
   text-decoration: none;
+  margin: 0 auto;
+  width: 85%;
+}
+
+form {
+  display: flex;
+  justify-content: center;
 }
 
 /* entire container, keeps perspective */
 .flip-container {
   perspective: 1000px;
   margin: 15px;
-  color: black;
+  color: #34323b;
   text-align: center;
   vertical-align: middle;
-  border-radius: 2px;
 }
 
 /* flip the pane when hovered */
@@ -78,6 +60,7 @@
   /* padding-top: 90px; */
   line-height: 250px;
   text-align: center;
+  border-radius: 2px;
 }
 
 .front,
@@ -92,14 +75,85 @@
   z-index: 2;
   transform: rotateY(0deg);
   background-color: pink;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* back, initially hidden pane */
 .back {
   transform: rotateY(180deg);
   background-color: rosybrown;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .back:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2); */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.post-container {
+  display: flex;
+  padding: 50px;
+  margin: 10px;
+}
+.post {
+  width: 300px;
+  height: 300px;
+  background-color: #dea6af;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.post:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.links {
+  display: flex;
+  justify-content: space-around;
+  width: 90%;
+}
+
+.link {
+  text-decoration: none;
+  padding-top: 10px;
+  color: #9896a4;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  60%,
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+
+  40% {
+    -webkit-transform: translateY(-20px);
+    transform: translateY(-20px);
+  }
+
+  80% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+}
+
+.link:hover {
+  animation: bounce 1s;
+  color: rgb(83, 39, 39);
+}
+
+.text {
+  color: whitesmoke;
 }
