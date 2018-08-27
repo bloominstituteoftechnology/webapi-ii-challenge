@@ -25,5 +25,16 @@ server.get('/posts', (req, res) => {
         })
 })
 
+server.get('/posts/:id', (req, res) => {
+    db.findById(req.params.id)
+        .then(post => {
+            res.status(200).json(post);
+        })
+        .catch(err => {
+            console.log('error', err);
+
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
+        })
+})
 
 server.listen(8000, () => console.log('\n== API on port 8k==\n'))
