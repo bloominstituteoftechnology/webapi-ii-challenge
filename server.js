@@ -34,10 +34,22 @@ server.get('/api/posts/:id', (req, res) => {
         })
 });
 
-
+server.delete('/api/posts/:id', (req, res) => {
+    db.remove(req.params.id)
+        .then(posts => {   
+            if(posts.length === 0){
+                res.status(404).json({message: "The post with the specified ID does not exist."})
+            }  else {res.status(200).json(posts);
+               }
+        })
+        .catch(err => {
+            console.log('error', err);
+                
+            res.status(500).json({error: "The post could not be removed"  }); 
+        })
+});
 
 server.listen(9000, () => console.log('listen test'));
-
 
 // find: calling find returns a promise that resolves to an array of all the posts contained in the database.
 // findById: this method expects an id as it's only parameter and returns the post corresponding to the id provided or an empty array if no post with that id is found.
