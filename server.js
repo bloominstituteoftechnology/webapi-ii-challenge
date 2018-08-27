@@ -18,20 +18,27 @@ server.get("/api/posts", (req, res) => {
 server.post("/api/posts", (req, res) => {
     const post = req.body;
     post.id = 10;
-    if(!req.body || !req.body.title || !req.body.contents){
-        res.status(400).json({errorMessage: "Please provide title and contents for the post."});
-    }
-    else{
-        posts.push(post)
-        res.status(201).json(posts);
-    }
+    db.insert()
+        .then(post => {
+            if(!req.body || !req.body.title || !req.body.contents){
+                res.status(400).json({errorMessage: "Please provide title and contents for the post."});
+            }
+            else{
+                posts.push(post)
+                res.status(201).json(posts);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: 'There was an error while saving the post to the databse.'})
+        })
 });
 
 server.get("/api/posts/:id", (req, res) => {
    db.findById(req.params.id)
         .then(post => {
             if (post.length < 1){
-                res.status(404).json({error: "The Post with the specificed ID does not exist."})
+                res.status(404).json({error: "The Post with the specified ID does not exist."})
             }
             else{
                 res.status(200).json(post);
@@ -47,7 +54,7 @@ server.get("/api/posts/:id", (req, res) => {
 server.delete("/api/posts/:id", (req, res) => {
     db.remove(req.params.id)
         .then(data => {
-            if(req.params.id !== req.params.id){
+            if(req.params.id < 0 ){
                 res.status(404).json({message: "The post with the specified ID does not exist."})
             }
             else {
@@ -58,5 +65,25 @@ server.delete("/api/posts/:id", (req, res) => {
             console.log(err);
             res.status(500).json({error: "The post could not be removed."});
         })
-})
+});
+
+server.put("/api/posts/:id", (req, res) => {
+    db.update(req.params.id, req.body)
+        .then(post => {
+            if(!req.params.id){
+                res.status(404).json({message: "The post with the specified ID does not exist."})
+            }
+            else if(!req.body.contents || !req.body.title){
+                res.status(400).json({errorMessage: "Please provide title and contents for the post."})
+            }
+            else{
+                res.status(200).json(post);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: "The post information could not be modified."});
+        })
+});
+
 server.listen(8000, () => console.log("===The server is running on port 8000==="));
