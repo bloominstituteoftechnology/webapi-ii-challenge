@@ -1,11 +1,13 @@
 // import your node modules
 const express = require('express');
+const cors = require('cors');
 const db = require('./data/db.js');
 
 // add your server code starting here
-
+const port = 5000;
 const server = express();
 server.use(express.json());
+server.use(cors({ origin: 'http://localhost:3000' }));
 
 
 
@@ -131,6 +133,6 @@ server.put('/api/posts/:id', (req, res) => {
 
 
 
-server.listen(5000, () => 
-    console.log('\n==listening API at port 5000 ==\n')
+server.listen(port, () => 
+    console.log(`\n==listening API at ${port} port ==\n`)
 );
