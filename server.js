@@ -48,6 +48,14 @@ server.post('/posts', (req,res) => {
     res.status(200).json(posts);
 });
 
+//DELETE request
+server.delete('/posts/:id', (req, res) => {
+    const { id } = req.params;
+    //delete the post referencing the id
+    posts = posts.filter(p = p.id != id) //filter out posts not equal to the selected post (id is a number, so use = )
+    res.status(200).json(posts);
+})
+
 //Once the server is fully configured, we can have it listen for connections on a particular port
 //the callback function passed as the second argument will run once when the server starts
 server.listen(9000, () => console.log('\n==API on port 9k==\n'));
