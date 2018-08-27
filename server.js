@@ -5,6 +5,8 @@ const server = express();
 
 const db = require('./data/db.js');
 
+server.use(express.json());
+
 // add your server code starting here
 
 server.get('/', (req, res) => {
@@ -18,7 +20,26 @@ server.get('/posts', (req, res) => {
   })
   .catch(err => {
     console.error('error', err);
-    res.status(500).json({message: 'error getting data'})
+    res.status(500).json({message: 'The posts information could not be retrieved.'})
+  })
+})
+
+
+server.post('/posts', (req, res) => {
+// console.log(req, res)
+  // res.status(201).json(res);
+
+  db.insert(req.body)
+    .then(posts => {
+      res.status(201).json(posts)})
+    .catch(res.status(400).json({message: 'Please provide title and contents for the post.' }))
+})
+
+server.get('/posts/:id', (req, res) => {
+  db.findById(req.params.id).then(post => {
+    res.status(200).json(post)
+  }).catch(err =>  {
+    res.status(500).json({message: 'The post with the specified ID does not exist.'})
   })
 })
 
