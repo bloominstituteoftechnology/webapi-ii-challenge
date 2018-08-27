@@ -70,6 +70,39 @@ server.delete('/api/posts/:id', (req, res) => {
         })
 })
 
+server.put('/api/posts/:id', (req, res) => {
+    if (req.body.title && req.body.contents) {
+        res.status(200);
+        res.json({user});
+    } else if (!req.body.title || !req.body.contents) {
+        res.status(400);
+        res.json({
+            message: 'Please provide title and the contents for the user!'
+        })
+    } else {
+        const {id} = req.params;
+        const {title, content} = req.body;
+        db.update (id, {title, contents})
+            .then(success => {
+                if (posts.length > 0) {
+                    res.json({success});
+                } else {
+                    res.status(404);
+                    res.json({
+                        message: 'The post with the specified ID does not exist!'
+                    });
+                }
+            }
+    )
+    .catch(error => {
+        res.status(500);
+        res.json({
+            error: 'The post could not be found'
+        });
+    })
+    }
+})
+
 
 
 server.listen(5000, () => 
