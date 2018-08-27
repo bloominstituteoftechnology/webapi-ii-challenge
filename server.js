@@ -1,5 +1,19 @@
-// import your node modules
+const express = require('express');
+const server = express();
+const db = require('./data/db')
 
-const db = require('./data/db.js');
+server.get('/', (req, res) => {
+  res.send('Hello World');
+});
 
-// add your server code starting here
+server.get('/api/users', (req, res) => {
+  db.find().then((results)=>{
+    res.status(200).json(results);
+  });
+});
+server.get('/api/users/:postID', (req, res) => {
+  db.findById(req.params.postID).then((results)=>{
+    res.status(200).json(results);
+  });
+});
+server.listen(8000, () => console.log('API running on port 8000'));
