@@ -6,5 +6,6 @@ const posts_controller = require('../controllers/post_controller')
 
 router.get('/', posts_controller.getPosts)
 router.post('/', posts_controller.addPost)
+router.put('/:id', posts_controller.updatePost)
 
 module.exports = router 
