@@ -56,4 +56,38 @@ app.get('/api/posts/:id', (req, res) => {
 		})
 });
 
+app.delete('/api/posts/:id', (req, res) => {
+	db.remove(req.params.id)
+		.then(data => {
+			if (data < 1){
+				res.status(404).json({ error: 'The post with the specified ID does not exist' });
+			}
+			else {
+				res.status(200).json({ message: 'Succesfully deleted' })
+			}
+		})
+		.catch(err => {
+			res.status(500).json({ error: 'The post could not be removed' });
+		})
+})
+
+app.put('/api/posts/:id', (req, res) => {
+	if (!req.body || !req.body.title || !req.body.contents) {
+		res.status(400).json({ error: 'Please provide title and contents for the post.' })
+	}
+	db.update(req.params.id, req.body)
+		.then(data => {
+			if (data < 1){
+				res.status(404).json({ error: 'The post with the specified ID does not exist.' });
+			}
+			else {
+				res.status(200).json({ message: 'Succesfully updated' });
+			}
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ error: "The post information could not be modified." })
+		})
+})
+
 app.listen(9000, () => console.log('===server is running on port 9000==='));
