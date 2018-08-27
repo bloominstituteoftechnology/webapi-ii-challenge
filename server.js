@@ -1,22 +1,44 @@
 // import your node modules
 const express = require('express');
 const db = require('./data/db.js');
+const bodyParser = require('body-parser');
 
 // add your server code starting here
 const server = express();
 
 // configure middleware
-server.use(express.json());
+// server.use(express.json());
 
-// configure routing
+server.use(bodyParser.urlencoded({extended: true}));
+server.use(bodyParser.json());
+
+// configure routing    
+server.post('/api/posts', (req, res) => {
+    const { title, contents } = req.body; 
+    if (!title || !contents) {
+        res.status(400).json({errorMessage: 'Please provide title and contents for the post.'})
+        req.connection.end();
+    } else {
+        db.insert({title, contents})
+            .then(() => {
+                res.status(201);
+                res.json({title, contents})
+            })
+            .catch(err => {
+                res.status(500).json({error: 'There was an error while saving the post to the database.'});
+                req.connection.end();
+            })
+    }
+})
+
 server.get('/api/posts', (req, res) => {
     db.find()
         .then(posts => {
             res.status(200).json(posts)
         })
         .catch(err => {
-            req.abort();
-            res.status(500).json({error: 'The posts information could not be retrieved.'})
+            res.status(500).json({error: 'The posts information could not be retrieved.'});
+            req.connection.end();
         })
 })
 
@@ -31,8 +53,8 @@ server.get('/api/posts/:id', (req, res) => {
             }
         })
         .catch(err => {
-            req.abort();
-            res.status(500).json({error: 'The post information could not be retrieved.'})
+            res.status(500).json({error: 'The post information could not be retrieved.'});
+            req.connection.end();
         })
 })
 
