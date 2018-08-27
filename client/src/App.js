@@ -24,6 +24,16 @@ class App extends Component {
       console.log(error);
     })
   }
+  deleteFriend = (id) => {
+    axios
+      .delete(`http://localhost:8000/api/posts/${id}`)
+      .then(response => {
+        this.getData()
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
   componentDidMount =()=>{
     this.getData();
   }
@@ -40,7 +50,7 @@ class App extends Component {
           {e.contents}
           </div>
           
-         
+         <button onClick={()=>{this.deleteFriend(i)}}> Delete</button>
           </div>
        )
           
