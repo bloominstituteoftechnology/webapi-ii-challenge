@@ -38,6 +38,25 @@ server.get('/api/posts/:id', (req, res)=> {
     .catch(err=> res.status(500).json({ message: "The post information could not be retrieved." }));
 });
 
+//delete selected post, return deleted post
+server.delete('/api/posts/:id', (req, res)=> {
+  db.findById(req.params.id)
+    .then(post => {
+      db.remove(req.params.id)
+        .then(response => {
+          if(response < 1){
+            return res.status(404).json({ message: "The post with the specified ID does not exist." })
+          }else if (response === 1){
+            return res.status(201).json(post[0])
+          }else{
+            return res.status(500).json({ error: "Something REALLY screwed up" })
+          }
+        })
+        .catch(err => res.status(500).json({ error: "The post could not be removed" }));
+    })
+    .catch(err => err);
+});
+
 
 
 server.listen(3333, ()=> console.log('API running on port 3333'));
