@@ -13,7 +13,7 @@ server.get("/api/posts", (req, res) => {
             console.error('error', err)
             res.status(500).json({errorMessage: 'Failed to retrieve data'})
         })
-})
+});
 
 server.post("/api/posts", (req, res) => {
     const post = req.body;
@@ -25,7 +25,7 @@ server.post("/api/posts", (req, res) => {
         posts.push(post)
         res.status(201).json(posts);
     }
-})
+});
 
 server.get("/api/posts/:id", (req, res) => {
    db.findById(req.params.id)
@@ -44,4 +44,19 @@ server.get("/api/posts/:id", (req, res) => {
 
 });
 
+server.delete("/api/posts/:id", (req, res) => {
+    db.remove(req.params.id)
+        .then(data => {
+            if(req.params.id !== req.params.id){
+                res.status(404).json({message: "The post with the specified ID does not exist."})
+            }
+            else {
+                res.status(200).json({message: `Post with ID ${req.params.id} has been deleted.`});
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: "The post could not be removed."});
+        })
+})
 server.listen(8000, () => console.log("===The server is running on port 8000==="));
