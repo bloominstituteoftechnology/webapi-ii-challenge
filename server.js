@@ -14,6 +14,22 @@ server.get("/api/posts", (req, res) => {
             console.error('error', err)
             res.status(500).json({errorMessage: 'Failed to retrieve data'})
         })
-})
+});
 
+server.get("/api/posts/:id", (req, res) => {
+   db.findById(req.params.id)
+        .then(post => {
+            if (post.length < 1){
+                res.status(404).json({error: "The Post with the specificed ID does not exist."})
+            }
+            else{
+                res.status(200).json(post);
+            }
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({error: "The posts information could not be retrieved."})
+        })
+
+});
  server.listen(9000, () => console.log(`\n=== API on port 9000 ===\n`))
