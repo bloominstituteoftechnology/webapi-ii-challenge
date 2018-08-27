@@ -1,0 +1,45 @@
+.friendsListTitleBar{
+  display:flex;
+  margin: 30px 0;
+  width: 800px;
+  justify-content: space-between;
+}
+.titleItem{
+  width: 200px;
+
+}
+
+.friendListRow{
+  display:flex;
+  margin: 30px 0;
+  width: 800px;
+  justify-content: space-between;
+  text-decoration: none;
+  color:black;
+}
+
+.friendsListItem{
+  width: 200px;
+}
+
+.friendSubmitForm{
+  display:flex;
+  flex-direction: column;
+width: 600px;
+justify-content: center;
+}
+.friendSubmitFormInput{
+margin: 10px;
+width: 100%;
+}
+.App{
+  margin:0 auto;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
+.friendForm{
+  margin: 50px 0;
+}
