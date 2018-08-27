@@ -26,13 +26,18 @@ server.get('/posts', (req, res) => {
 
 
 server.post('/posts', (req, res) => {
-// console.log(req, res)
+  console.log(req.body)
   // res.status(201).json(res);
 
   db.insert(req.body)
-    .then(posts => {
-      res.status(201).json(posts)})
-    .catch(res.status(400).json({message: 'Please provide title and contents for the post.' }))
+
+    .then( () => {
+      db.find()
+      .then(posts => {
+      res.status(200).json(posts);//this replaces the .send() method above but they perform a similar action. .status() sends an http status code. .json() is used to indicate the datatype that is going to be returned. Which is a json object.
+    })
+    })
+    .catch(() => res.status(400).json({message: 'Please provide title and contents for the post.' }))
 })
 
 server.get('/posts/:id', (req, res) => {
