@@ -8,7 +8,7 @@ server.use(bodyParser.json())
 
 // 1. creates a post using the information sent inside the request body
 server.post('/api/posts', (req, res) => {
-  if (Object.keys(req.body)[0] !== 'title' || Object.keys(req.body)[1] !== 'contents') {
+  if (!req.body || !req.body.title || !req.body.content) {
     const error = { "errorMessage": "Please provide title and contents for the post." }
     res.status(400).json(error)
   }
@@ -67,7 +67,7 @@ server.delete('/api/posts/:id', (req, res) => {
 // 5. updates the post with the specified id using data from the request body.
 // returns the modified document, NOT the original.
 server.put('/api/posts/:id', (req, res) => {
-  if (Object.keys(req.body)[0] !== 'title' || Object.keys(req.body)[1] !== 'contents') {
+  if (!req.body || !req.body.title || !req.body.content) {
     const error = { "errorMessage": "Please provide title and contents for the post." }
     res.status(400).json(error)
   }
