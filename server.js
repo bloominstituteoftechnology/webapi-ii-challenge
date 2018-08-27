@@ -54,9 +54,27 @@ server.delete('/api/posts/:id', (req, res)=> {
         })
         .catch(err => res.status(500).json({ error: "The post could not be removed" }));
     })
-    .catch(err => err);
+    .catch(err => res.status(500).json({ error: "The post could not be removed" }));
 });
 
+server.put('/api/posts/:id', (req, res)=> {
+  const { title, contents } = req.body;
+  if(!title || !contents){
+    return res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+  }
+
+  db.update(req.params.id, ({ title, contents }))
+    .then(response=> {
+      if(response < 1){
+        res.status(404).json({ error: "The post with the specified ID does not exist." });
+      }else{
+        db.findById(req.params.id)
+          .then(post => res.status(201).json(post[0]))
+          .catch(err => res.status(500).json({ error: "The post information could not be modified."}))
+      }
+    })
+    .catch(err=> res.status(500).json({ error: "The post information could not be modified."}));
+});
 
 
 server.listen(3333, ()=> console.log('API running on port 3333'));
