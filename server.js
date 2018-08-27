@@ -19,13 +19,49 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
 
-  db.find(id)
-  .then(users => {
-    res.status(200).json(users)
+  db.findById(id)
+  .then(post => {
+    post.length === 0 ?
+    res.status(404).json({message: "The post with the specified ID does not exist."})
+    :
+    res.status(200).json(post);
   })
   .catch(err => {
     console.log('error', err);
-    res.status(500).json({messege: 'The posts information could not be retrieved'});
+    res.status(500).json({messege: 'The post information could not be retrieved'});
+  });
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+
+  db.remove(id)
+  .then(post => {
+    post.length === 0 ?
+    res.status(404).json({message: "The post with the specified ID does not exist."})
+    :
+    res.status(200).json(post);
+  })
+  .catch(err => {
+    console.log('error', err);
+    res.status(500).json({messege: 'The post could not be removed'});
+  });
+});
+
+server.put('/api/posts/:id', (req, res) => {
+  const { id, title, contents } = req.params;
+  
+  const body = {title, contents}
+  db.update(id, body)
+  .then(post => {
+    post.length === 0 ?
+    res.status(404).json({message: "The post with the specified ID does not exist."})
+    :
+    res.status(200).json(post);
+  })
+  .catch(err => {
+    console.log('error', err);
+    res.status(500).json({messege: 'The post could not be removed'});
   });
 });
 
