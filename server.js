@@ -18,17 +18,6 @@ server.get('/posts', (req,res) =>{
         res.status(500).json({message: 'Error getting the data'})
     })
 })
-// server.get('/users', (req, res) => {
-//     db.find().then( users => {
-//         res.status(200).json(users);
-//     }).catch(err => {
-//         console.log.error('error', err);
-
-//         res.status(500).json({message: 'Error getting the data'})
-//     });
-// })
-
 
 server.listen(9000, () => console.log('\n==API on port 9000 ==\n'))
 
-// add your server code starting here
