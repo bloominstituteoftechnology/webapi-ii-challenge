@@ -22,9 +22,10 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req, res) => {
     db.findById(req.params.id)
         .then(posts => {   
-            if(posts === []){
+            if(posts.length === 0){
                 res.status(404).json({message: "The post with the specified ID does not exist."})
-            }  else{res.status(200).json(posts);}
+            }  else {res.status(200).json(posts);
+               }
         })
         .catch(err => {
             console.log('error', err);
