@@ -22,7 +22,7 @@ server.get('/posts', (req, res)=>{
     })
 }); 
 server.get('/posts/:id', (req, res)=>{
-    const id = req.params
+    const id = req.params.id
     db
     .findById(id)
     .then( posts =>{
