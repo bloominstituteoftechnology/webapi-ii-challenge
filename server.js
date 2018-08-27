@@ -50,15 +50,8 @@ server.delete('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts/', (req, res) => {
-    let posted = {
-        id: req.params.id,
-        title: req.params.title,
-        contents: req.params.contents,
-        created_at: req.params.created_at,
-        updated_at: req.params.updated_at, 
-    }
-
-    db.insert(posted)
+    let posts = req.body;
+    db.insert(posts)
         .then(posts => {   
             if(posts.length === 0){
                 res.status(404).json({message: "The post with the specified ID does not exist."})
