@@ -40,4 +40,20 @@ app.post('/api/posts', (req, res) => {
 		})
 })
 
+app.get('/api/posts/:id', (req, res) => {
+	db.findById(req.params.id)
+		.then(post => {
+			if (post.length < 1) {
+				res.status(404).json({ error: 'The post with the specified ID does not exist.' })
+			}
+			else {
+				res.status(200).json(post);
+			}
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({ error: 'The post information could not be retrieved' })
+		})
+});
+
 app.listen(9000, () => console.log('===server is running on port 9000==='));
