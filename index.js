@@ -26,13 +26,7 @@ app.post('/api/posts', (req, res) => {
 	}
 	db.insert(req.body)
 		.then(id => {
-			db.findById(id)
-				.then(post=> {
-					res.status(201).json(post)
-				})
-				.catch(err => {
-					console.log(err);
-				})
+			res.status(200).json(req.body);
 		})
 		.catch(err => {
 			console.log(err);
