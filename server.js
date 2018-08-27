@@ -49,6 +49,29 @@ server.delete('/api/posts/:id', (req, res) => {
         })
 });
 
+server.post('/api/posts/', (req, res) => {
+    let posted = {
+        id: req.params.id,
+        title: req.params.title,
+        contents: req.params.contents,
+        created_at: req.params.created_at,
+        updated_at: req.params.updated_at, 
+    }
+
+    db.insert(posted)
+        .then(posts => {   
+            if(posts.length === 0){
+                res.status(404).json({message: "The post with the specified ID does not exist."})
+            }  else {res.status(201).json(posts);
+               }
+        })
+        .catch(err => {
+            console.log('error', err);
+                
+            res.status(500).json({error: "There was an error while saving the post to the database"}); 
+        })
+});
+
 server.listen(9000, () => console.log('listen test'));
 
 // find: calling find returns a promise that resolves to an array of all the posts contained in the database.
