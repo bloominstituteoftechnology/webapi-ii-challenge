@@ -27,8 +27,14 @@ app.post('/api/posts', (req, res) => {
 		res.status(400).json({ error: 'The posts information could not be retrieved.' })
 	}
 	db.insert(req.body)
-		.then(id => {
-			res.status(200).json(req.body);
+		.then(data => {
+			db.findById(data.id)
+				.then(post =>{
+					res.status(200).json(post)
+				})
+				.catch(err => {
+					res.status(500).json({ error: 'There was an error trying to access the database '})
+				})
 		})
 		.catch(err => {
 			console.log(err);
