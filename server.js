@@ -2,11 +2,14 @@ const express = require('express');
 const db = require('./data/db.js');
 const server = express();
 const bodyParser = require('body-parser');
+
+// middleware
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
   next();
 });
 
@@ -43,9 +46,9 @@ server.post('/posts', (req, res) => {
   }
   const post = { title, contents };
   db.insert(post)
-    .then(id => {
-      db.find(id)
-        .then(post => res.status(201).json(post))
+    .then(() => {
+      db.find()
+        .then(posts => res.status(201).json(posts))
         .catch(err => {
           console.error(err);
           res.status(500).json({ error: 'There was an error indexing and/or finding the post.' });
@@ -62,10 +65,8 @@ server.delete('/posts/:id', (req, res) => {
   db.findById(id)
     .then(post => {
       db.remove(id)
-        .then(success => {
-          if (success) {
-            fetchPosts(req, res);
-          }
+        .then(() => {
+          fetchPosts(req, res);
         })
         .catch(err => {
           console.error(err);
@@ -87,10 +88,8 @@ server.put('/posts/:id', (req, res) => {
   db.findById(id)
     .then(post => {
       db.update(id, { title, contents })
-        .then(success => {
-          if (success) {
-            fetchPosts(req, res);
-          }
+        .then(() => {
+          fetchPosts(req, res);
         })
         .catch(err => {
           console.error(err);

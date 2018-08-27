@@ -34,3 +34,13 @@ body {
   margin: 50px 20px 0;
   padding: 0 20px;
 }
+
+.post span {
+  float: right;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.add-post-form {
+  margin-top: 50px;
+}
