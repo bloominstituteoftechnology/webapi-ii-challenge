@@ -45,6 +45,11 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.post('/api/posts', (req, res) => {
     const {title, contents} = req.body;
+    if(!title ||!contents) {
+        console.error('error', error);
+
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    }
     db.insert({title, contents})
         .then(() => {
             db.find()
