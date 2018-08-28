@@ -68,15 +68,15 @@ server.put("/api/posts/:id", (req,res)=>{
   const body = req.body;
   db.update(id, body)
     .then(posts => {
-      res.status(200).json(posts);
-      console.log(posts)
-      // if(posts){
-      //   res.status(200).json(posts);
-      // } else {
-      //   res.status(404).json({message: `The post with the specified ID does not exits. Check ID: ${id}`})
-      // }
+      if(posts){
+        console.log(body)
+        //res.status(200).json(posts);
+        res.send(body).status(200).json(posts)
+      } else {
+        res.status(404).json({errorMessage: `The post with the specified ID does not exits. Check ID: ${id}`})
+      }
     })
-    .catch(error => res.status(500).json({message: `The post information could not be modified for ${id}`}))
+    .catch(error => res.status(500).json({error: `The post information could not be modified for ${id}`}))
 })
 
 server.listen(9000, () => console.log("\n==API on port 9000 ==\n"));
