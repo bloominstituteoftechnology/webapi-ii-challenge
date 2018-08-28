@@ -106,6 +106,43 @@ server.delete('/api/posts/:id', (req, res) => {
         });
 });
 
+//PUT Request
+
+server.put('/api/posts/:id', (req,res) => {
+    const id = req.params.id;
+    const { title, contents } = req.body;
+    if(!title || !contents) {
+        res.status(400).json({message: 'Must provide title and contents'});
+        return;
+    }
+    db
+        .update(id, {title, contents})
+        .then(response => {
+            if (response == 0) {
+                res.status(404).json({message: 'There is no post with that identifier'});
+                return;
+            }else{
+                res.status(200).json({message: 'successful update'})
+            }
+        db
+            .findById(id)
+            .then(post => {
+                if (post.length === 0){
+                res.status(404).json({message: 'Unable to find specified user'});
+                return;
+            }
+            res.json(post);
+            })   
+        .catch(error => {
+            res.status(500).json({message: 'Error looking up user'});
+        }); 
+    })
+    .catch(error => {
+        res.status(500).json({message: 'Problem encountered database'});
+        return;
+    });     
+});
+
 //Once the server is fully configured, we can have it listen for connections on a particular port
 //the callback function passed as the second argument will run once when the server starts
 server.listen(9000, () => console.log('\n==API on port 9k==\n'));
