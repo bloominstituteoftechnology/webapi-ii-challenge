@@ -1,8 +1,15 @@
 import React, {Component} from 'react';
+import styled from 'styled-components';
 import axios from 'axios';
 import Post from "./Post";
 const url = 'http://localhost:5000/api/posts/';
 
+
+const ListWrap = styled.div`
+    > h1 {
+        color: #72593d;
+    }
+`
 
 class PostsList extends Component {
     constructor(props) {
@@ -26,7 +33,8 @@ class PostsList extends Component {
 
     render() { 
         return ( 
-            <div>
+            <ListWrap>
+            <h1>Lord Of The Rings Quotes</h1>
             {this.state.posts.map(post => {
                 return (
                 <Post 
@@ -37,7 +45,7 @@ class PostsList extends Component {
                     updated={post.updated_at}
                 />
             )})}
-            </div>
+            </ListWrap>
          );
          
     }
