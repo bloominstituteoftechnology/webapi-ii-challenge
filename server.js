@@ -34,4 +34,40 @@ server.get("/api/posts/:id", (req, res) => {
     });
 });
 
+server.post("/api/posts", (req, res) => {
+  const { title, contents } = req.body;
+  if (!title || !contents) {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+    return;
+  }
+  db.insert({
+    title,
+    contents
+  })
+    .then(response => {
+      res.status(201).json(req.body);
+    })
+    .catch(error => {
+      console.error("error", err);
+      res.status(500).json({
+        error: "There was an error while saving the post to the database"
+      });
+      return;
+    });
+});
+
+server.delete("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  db.remove(id)
+    .then(count => {
+      res.status(204).end();
+      res
+        .status(404)
+        .json({ message: "The post with the specified ID does not exist." });
+    })
+    .catch(err => res.status(500).json(err));
+});
+
 server.listen(4000, () => console.log("/n= API on port 4000 =/n"));
