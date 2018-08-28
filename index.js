@@ -5,6 +5,18 @@ const server = express();
 
 server.use(express.json());
 
+// CORS
+server.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
+// end CORS
+
 // GET REQUEST
 server.get("/api/posts", (req, res) => {
   db.find()
@@ -50,7 +62,7 @@ server.post("/api/posts", async (req, res) => {
     try {
       const response = await db.insert(post);
       res.status(201).json(response);
-    } catch {
+    } catch (err) {
       res.status(500).json({
         error: "There was an error while saving the post to the database"
       });
