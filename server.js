@@ -1,23 +1,18 @@
 // import your node modules
 const express = require('express');
 const db = require('./data/db.js');
-const bodyParser = require('body-parser');
 
 // add your server code starting here
 const server = express();
 
 // configure middleware
-// server.use(express.json());
-
-server.use(bodyParser.urlencoded({extended: true}));
-server.use(bodyParser.json());
+server.use(express.json());
 
 // configure routing    
 server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body; 
     if (!title || !contents) {
         res.status(400).json({errorMessage: 'Please provide title and contents for the post.'})
-        req.connection.end();
     } else {
         db.insert({title, contents})
             .then(() => {
@@ -25,8 +20,8 @@ server.post('/api/posts', (req, res) => {
                 res.json({title, contents})
             })
             .catch(err => {
+                console.log(err);
                 res.status(500).json({error: 'There was an error while saving the post to the database.'});
-                req.connection.end();
             })
     }
 })
@@ -38,7 +33,6 @@ server.get('/api/posts', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({error: 'The posts information could not be retrieved.'});
-            req.connection.end();
         })
 })
 
@@ -47,15 +41,50 @@ server.get('/api/posts/:id', (req, res) => {
     db.findById(id)
         .then(post => {
             if (post.length > 0) {
-                res.status(200).json(post)
+                res.status(200).json(post);
+            } else {
+                res.status(404).json({message: 'The post with the specified ID does not exist.'});
+            }
+        })
+        .catch(err => {
+            res.status(500).json({error: 'The post information could not be retrieved.'});
+        })
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    db.remove(id)
+        .then(value => {
+            console.log("value from delete", value);
+            if (value === 1) {
+                res.status(200).json({message: 'The post was successfully deleted.'});
+            } else {
+                res.status(404).json({message: 'The post with the specified ID does not exist.'});
+            }
+        })
+        .catch(err => {
+            res.status(500).json({error: 'The post could not be removed.'});
+        })
+})
+
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const { title, contents } = req.body;
+    if (!title || !contents) {
+        res.status(400).json({errorMessage: 'Please provide title and contents for the post.'})
+    } else { 
+        db.update(id, ({title, contents}))
+        .then(updated => {
+            if (updated) {
+                res.status(200).json(updated)
             } else {
                 res.status(404).json({message: 'The post with the specified ID does not exist.'})
             }
         })
         .catch(err => {
-            res.status(500).json({error: 'The post information could not be retrieved.'});
-            req.connection.end();
+            res.status(500).json({error: 'The post information could not be modified.'})
         })
+    }
 })
 
 // start the server
