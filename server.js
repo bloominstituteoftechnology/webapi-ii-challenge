@@ -1,4 +1,3 @@
-// import your node modules
 const express = require('express');
 const server = express();
 const db = require('./data/db.js');
@@ -10,7 +9,7 @@ server.use(function (req, res, next){
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 })
-// add your server code starting here
+
 server.get("/api/posts", (req, res) => {
     db.find()
         .then(posts => {
