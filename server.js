@@ -42,7 +42,7 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts', (req, res) => {
-    const { title, contents, created_at, updated_at } = req.body;
+    const { title, contents } = req.body;
     if (!title || !contents) {
         res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
         return;
@@ -63,10 +63,15 @@ server.post('/api/posts', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params;
+    const expost = db.findById(id).then(post => { if (post.length === 0) {
+        res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+        return;
+        }
+        res.json(post) });
     db.remove(id)
         .then(count => {
             if (count) {
-                res.status(204).end();
+                res.status(204).json(expost).end();
             } else {
                 res.status(404).json({ message: 'The post with the specified ID does not exist.' })
             }
