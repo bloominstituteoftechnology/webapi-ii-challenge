@@ -77,19 +77,29 @@ server.post("/api/posts", async (req, res) => {
 server.delete("/api/posts/:id", (req, res) => {
   // const id = req.params.id; // same as below
   const { id } = req.params; // uses destructuring
-  if (id !== 1) {
-    return res.status(404).json({
-      message: "The post with the specified ID does not exist."
-    });
-  }
 
   db.remove(id)
-    .then(post => {
-      res.status(200).json(post);
+    .then(count => {
+      if (count) {
+        res.status(200).json(count);
+      } else {
+        res.status(404).json({
+          message: "The post with the specified ID does not exist."
+        });
+      }
     })
     .catch(err => {
       res.status(500).json({ error: "The post could not be removed" });
     });
+
+  // working
+  // db.remove(id)
+  //   .then(post => {
+  //     res.status(200).json(post);
+  //   })
+  //   .catch(err => {
+  //     res.status(500).json({ error: "The post could not be removed" });
+  //   });
 });
 
 server.listen(8000, () => console.log("\n== API on port 8k === \n"));
