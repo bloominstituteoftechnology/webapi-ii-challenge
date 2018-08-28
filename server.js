@@ -45,4 +45,18 @@ server.delete('/posts/:id',(req,res)=>{
     })
     .catch(err=>res.status(500).json({error: "The post could not be removed" }))
 })
+server.put('/posts/:id',(req,res)=>{
+    const post=req.body.post;
+    if (!post.title||!post.contents) {
+        res.status(400).json({errorMessage: "Please provide title and contents for the post."})
+    } else {
+        db.update(req.params.id,post).then(
+            count=>{
+                count===1?
+                db.findById(req.params.id).then(post=>res.status(200).json(post)).catch(err=>console.log(err)):
+                req.status(404).json({ message: "The post with the specified ID does not exist."})
+            }
+        ).catch(err=>res.status(500).json({ error: "The post information could not be modified." }))
+    }
+})
 server.listen(9000,()=>console.log('Engines firing server starting new horizons venturing.'))
