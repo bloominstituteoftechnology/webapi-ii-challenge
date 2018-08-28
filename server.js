@@ -10,7 +10,7 @@ server.use(express.json());
 server.use(cors({ origin: 'http://localhost:3000' }));
 
 
-
+// Server GET request
 server.get('/', (req, res) => {
     res.send('We are in the root!');
 })
@@ -29,7 +29,7 @@ server.get('/api/posts', (req, res) => {
         })
 })
 
-
+// Server GET BY ID request
 server.get('/api/posts/:id', (req, res) => {
     const {id} = req.params;
     db.findById(req.params.id)
@@ -51,6 +51,8 @@ server.get('/api/posts/:id', (req, res) => {
         })
 })
 
+
+// Server POST request
 server.post('api/posts', (req, res) => {
     if(!req.body.title || !req.body.contents) {
         res.status(400);
@@ -76,6 +78,7 @@ server.post('api/posts', (req, res) => {
     }
 })
 
+//Server DELETE request
 server.delete('/api/posts/:id', (req, res) => {
     const {id} = req.params;
     db.remove(id)
@@ -98,6 +101,7 @@ server.delete('/api/posts/:id', (req, res) => {
         })
 })
 
+// Server PUT request
 server.put('/api/posts/:id', (req, res) => {
     const {title, contents} = req.body;
     const id = req.params.id;
@@ -132,7 +136,7 @@ server.put('/api/posts/:id', (req, res) => {
 })
 
 
-
+// Server listen on port 5000
 server.listen(port, () => 
     console.log(`\n==listening API at ${port} port ==\n`)
 );

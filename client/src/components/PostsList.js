@@ -6,16 +6,22 @@ const url = 'http://localhost:5000/api/posts/';
 
 
 const ListWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     > h1 {
         color: #72593d;
     }
 `
+
+
 
 class PostsList extends Component {
     constructor(props) {
         super(props);
         this.state = { 
             posts: []
+
          }
     }
 
@@ -31,7 +37,10 @@ class PostsList extends Component {
           })
       }
 
+
     render() { 
+
+        const {posts, selectedQuote} = this.state;
         return ( 
             <ListWrap>
             <h1>Lord Of The Rings Quotes</h1>
@@ -43,6 +52,7 @@ class PostsList extends Component {
                     contents={post.contents}
                     created={post.created_at}
                     updated={post.updated_at}
+                    post={posts[selectedQuote]}
                 />
             )})}
             </ListWrap>

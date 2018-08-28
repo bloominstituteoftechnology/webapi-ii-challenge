@@ -8,6 +8,9 @@ const PostView = styled.div`
     margin: 10px;
     border: 1px solid #896f4c;
     border-radius: 5px;
+    background: rgba(89, 69, 45, 0.7);
+    max-width: 550px;
+    width: 100%;
 
     > h3 {
         color: #e7d9bd;
@@ -20,11 +23,11 @@ const PostView = styled.div`
 const DateWrap = styled.div`
     display: flex;
     justify-content: space-between;
-
+    border-bottom: 1px solid #a0855e;
     > p {
         font-size: 10px;
         color: #f3ead8;
-        border-bottom: 1px solid #a0855e;
+        
     }
 
 `
