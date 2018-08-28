@@ -47,6 +47,7 @@ server.get("/posts/:id", (req, res) => {
 })
 
 server.post("/posts", (req, res) => {
+  console.log(req)
   if (req.body.title && req.body.contents) {
     db.insert(req.body) 
       .then(id => {
