@@ -1,0 +1,49 @@
+import {
+  FETCHING_POSTS,
+  POSTS_FETCHED,
+  TOGGLE_SHOW,
+  ERROR
+} from '../actions'
+
+const initialState = {
+  posts: [],
+  isFetchingPosts: false,
+  error: null
+}
+
+export const postsReducer = (state=initialState, action) => {
+  switch(action.type){
+    case FETCHING_POSTS:
+      return {
+        ...state,
+        isFetchingPosts: true,
+      }
+    case POSTS_FETCHED:
+      return{
+        ...state,
+        isFetchingPosts: false,
+        posts: action.payload
+      }
+    case TOGGLE_SHOW:
+      return{
+        ...state,
+        posts: state.posts.map(post => {
+            if(post.id === action.id){
+              return {
+                ...post,
+                showing: !post.showing
+              }
+            }
+            return post
+            }
+        )
+      }
+    case ERROR:
+      return{
+        ...state,
+        error: action.payload
+      }
+    default:
+      return state;
+  }
+}

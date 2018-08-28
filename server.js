@@ -1,8 +1,10 @@
 const express = require('express');
 const db = require('./data/db.js');
+const cors = require('cors');
 
 const server=express();
 server.use(express.json());
+server.use(cors());
 
 const formattedDate = () => {
   return new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
