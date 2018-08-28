@@ -33,7 +33,9 @@ server.get('/posts/:id', (req, res) => {
   const id = req.params.id;
   db.findById(id)
     .then(post => {
-      if (!post) res.status(404).json({ message: `The post with an id of ${id} does not exist.` });
+      if (post.length === 0) {
+        res.status(404).json({ message: `The post with an id of ${id} does not exist.` });
+      }
       else res.status(200).json(post);
     })
     .catch(err => {
@@ -45,7 +47,7 @@ server.get('/posts/:id', (req, res) => {
 server.post('/posts', (req, res) => {
   const { title, contents } = req.body;
   if (!title || !contents) {
-    res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
+    res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' }).end();
   }
   const post = { title, contents };
   db.insert(post)
@@ -67,14 +69,18 @@ server.delete('/posts/:id', (req, res) => {
   const id = req.params.id;
   db.findById(id)
     .then(post => {
-      db.remove(id)
-        .then(() => {
-          fetchPosts(req, res);
-        })
-        .catch(err => {
-          console.error(err);
-          res.status(500).json({ error: 'The post could not be removed.' });
-        });
+      if (post.length === 0) {
+        res.status(404).json({ message: `The post with an id of ${id} does not exist.` });
+      } else {
+        db.remove(id)
+          .then(() => {
+            fetchPosts(req, res);
+          })
+          .catch(err => {
+            console.error(err);
+            res.status(500).json({ error: 'The post could not be removed.' });
+          });
+        }
     })
     .catch(err => {
       console.error(err);
@@ -85,19 +91,23 @@ server.delete('/posts/:id', (req, res) => {
 server.put('/posts/:id', (req, res) => {
   const { title, contents } = req.body;
   if (!title || !contents) {
-    res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
+    res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' }).end();
   }
   const id = req.params.id;
   db.findById(id)
     .then(post => {
-      db.update(id, { title, contents })
-        .then(() => {
-          fetchPosts(req, res);
-        })
-        .catch(err => {
-          console.error(err);
-          res.status(500).json({ message: 'The post information could not be modified.' });
-        });
+      if (post.length === 0) {
+        res.status(404).json({ message: `The post with an id of ${id} does not exist.` });
+      } else {
+        db.update(id, { title, contents })
+          .then(() => {
+            fetchPosts(req, res);
+          })
+          .catch(err => {
+            console.error(err);
+            res.status(500).json({ message: 'The post information could not be modified.' });
+          });
+        }
     })
     .catch(err => {
       console.error(err);
