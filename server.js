@@ -62,12 +62,24 @@ server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   db.remove(id)
     .then(count => {
-      res.status(204).end();
-      res
-        .status(404)
-        .json({ message: "The post with the specified ID does not exist." });
+      if (count === 1) {
+        res.status(204).end();
+        return;
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
     })
-    .catch(err => res.status(500).json(err));
+    .catch(err => res.status(500).json({ error: "The post could not be removed" }));
+});
+
+server.put("/api/posts/:id", (req, res) => {
+  db.update(req.params.id, req.body)
+  .then(posts => {
+    res.status(200).json(users);
+  })
+  .catch(err => res.status(500).json({error: "The post information could not be modified."}))
 });
 
 server.listen(4000, () => console.log("/n= API on port 4000 =/n"));
