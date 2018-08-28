@@ -39,15 +39,17 @@ server.get('/posts/:id', (req, res) => {
 
 server.delete('/posts/:id', (req, res) => {
     db.remove(req.params.id)
-        .then(
-            res.status(200).json({
-                url: `/posts/${req.params.id}`,
-                operation: `DELETE for post with id ${req.params.id}`
-            })
-        )
-        // .then(post => {
-        //     res.status(200).json(post);
-        // })
+        // .then(
+        //     console.log(post);
+        //     res.status(200).json({
+        //         url: `/posts/${req.params.id}`,
+        //         operation: `DELETE for post with id ${req.params.id}`
+        //     })
+        // )
+        .then(post => {
+            console.log(post)
+            res.status(200).json(post);
+        })
         .catch(err => {
             console.log('error', err);
 
