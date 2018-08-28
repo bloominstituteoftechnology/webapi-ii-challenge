@@ -60,7 +60,7 @@ server.post("/api/posts", async (req, res) => {
 // END POST
 
 // DELETE REQUEST
-server.delete("/api/posts/:id", (req, res) => {
+server.delete("/api/posts/:id", async (req, res) => {
   const { id } = req.params;
 
   // Working Promise Version Below
@@ -77,6 +77,26 @@ server.delete("/api/posts/:id", (req, res) => {
     .catch(err => {
       res.status(500).json({ error: "The post could not be removed" });
     });
+  // end promise version
+
+  // attempt at using Async version below, works but is throwing lots of errors
+  // try {
+  //   const response = await db.remove(id);
+  //   res.status(200).json(response);
+  //   if (response) {
+  //     res.status(404).json({
+  //       message: "The post with the specified ID does not exist."
+  //     });
+  //   } else {
+  //     // do nothing
+  //   }
+  // } catch (err) {
+  //   console.log(err);
+  //   res.status(500).json({
+  //     error: err
+  //   });
+  // }
+  // end async version
 });
 // END DELETE
 
