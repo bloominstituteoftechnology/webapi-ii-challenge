@@ -60,33 +60,41 @@ server.delete('/posts/:id', (req, res) => {
 })
 
 server.put('/posts/:id', (req, res) => {
-    db.update(req.params.id, req.body)
-        .then(count => {
-            if (count) {
-                db.findById(req.params.id)
-                    .then(post => {
-                        console.log(post);
-                        if (post.length > 0) {
-                            res.status(200).json(post);
-                        } else {
-                            res.status(404).json({ message: "The post with the specified ID does not exist." });
-                        }
-                    })
-                    .catch(err => {
-                        console.log('error', err);
+    if (!req.params.id) {
+        res.status(400).json({ message: "The post with the specified ID does not exist." });
+    } else if (req.body.title && req.body.contents) {
+        db.update(req.params.id, req.body)
+            .then(count => {
+                if (count) {
+                    db.findById(req.params.id)
+                        .then(post => {
+                            console.log(post);
+                            if (post.length > 0) {
+                                res.status(200).json(post);
+                            } else {
+                                res.status(404).json({ message: "The post with the specified ID does not exist." });
+                            }
+                        })
+                        .catch(err => {
+                            console.log('error', err);
 
-                        res.status(500).json({ error: "The post information could not be retrieved." })
-                    })
-            } else {
-                res.status(404).json({ message: "The post with the specified ID does not exist." });
-            }
+                            res.status(500).json({ error: "The post information could not be retrieved." })
+                        })
+                } else {
+                    res.status(404).json({ message: "The post with the specified ID does not exist." });
+                }
 
-        })
-        .catch(err => {
-            console.log('error', err);
+            })
+            .catch(err => {
+                console.log('error', err);
 
-            res.status(500).json({ error: "The post information could not be modified." });
-        })
+                res.status(500).json({ error: "The post information could not be modified." });
+            })
+
+    } else {
+        res.status(400).json({ error: "Please provide title and contents for the post." });
+    }
+
 })
 
 
