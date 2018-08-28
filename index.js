@@ -75,19 +75,20 @@ server.post("/api/posts", async (req, res) => {
 
 //// delete request
 server.delete("/api/posts/:id", (req, res) => {
-  const { id } = req.params;
-
-  // same as above, just using destructuring
-  // const id = req.params.id;
+  // const id = req.params.id; // same as below
+  const { id } = req.params; // uses destructuring
+  if (id !== 1) {
+    return res.status(404).json({
+      message: "The post with the specified ID does not exist."
+    });
+  }
 
   db.remove(id)
     .then(post => {
       res.status(200).json(post);
     })
     .catch(err => {
-      res
-        .status(500)
-        .json({ error: "The post information could not be retrieved." });
+      res.status(500).json({ error: "The post could not be removed" });
     });
 });
 
