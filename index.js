@@ -11,85 +11,67 @@ app.get('/', (req, res) => {
     res.send('hello');
 });
 
-app.get('/api/posts', (req, res) => {
-	db.find()
-		.then(posts => {
-			res.status(200).json(posts);
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(500).json({ error: 'The posts information could not be retrieved.'});
-		});
+app.get('/api/posts', async (req, res) => {
+	try {
+		const posts = await db.find();
+		res.status(200).json(posts);
+	}
+	catch(err) {
+		res.status(500).json({ error: 'The posts information could not be retrieved.' })
+	}
 });
 
-app.post('/api/posts', (req, res) => {
+app.post('/api/posts', async (req, res) => {
 	if (!req.body || !req.body.title || !req.body.contents) {
 		res.status(400).json({ error: 'The posts information could not be retrieved.' })
 	}
-	db.insert(req.body)
-		.then(data => {
-			db.findById(data.id)
-				.then(post =>{
-					res.status(200).json(post)
-				})
-				.catch(err => {
-					res.status(500).json({ error: 'There was an error trying to access the database '})
-				})
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(500).json({ error: "There was an error while saving the post to the database" })
-		})
+	try {
+		const id = await db.insert(req.body);
+		const post = await db.findById(id.id);
+		res.status(200).json(post);
+	}
+	catch(err) {
+		res.status(500).json({ error: "There was an error while saving the post to the database" });
+	}
 })
 
-app.get('/api/posts/:id', (req, res) => {
-	db.findById(req.params.id)
-		.then(post => {
-			if (post.length < 1) {
-				res.status(404).json({ error: 'The post with the specified ID does not exist.' })
-			}
-			else {
-				res.status(200).json(post);
-			}
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(500).json({ error: 'The post information could not be retrieved' })
-		})
+app.get('/api/posts/:id', async (req, res) => {
+	try {
+		const post = await db.findById(req.params.id);
+		post.length < 1 
+		? res.status(404).json({ error: 'The post with the specified ID does not exist.' })
+		: res.status(200).json(post)
+	}
+	catch(err) {
+		res.status(500).json({ error: 'The post information could not be retrieved' });
+	}
 });
 
-app.delete('/api/posts/:id', (req, res) => {
-	db.remove(req.params.id)
-		.then(data => {
-			if (data < 1){
-				res.status(404).json({ error: 'The post with the specified ID does not exist' });
-			}
-			else {
-				res.status(200).json({ message: 'Succesfully deleted' })
-			}
-		})
-		.catch(err => {
-			res.status(500).json({ error: 'The post could not be removed' });
-		})
+app.delete('/api/posts/:id', async (req, res) => {
+	try {
+		const deleted = await db.remove(req.params.id);
+		deleted < 1 
+		? res.status(404).json({ error: 'The post with the specified ID does not exist' })
+		: res.status(200).json({ message: 'Succesfully deleted' })
+	}
+	catch(err) {
+		res.status(500).json({ error: 'The post could not be removed' });
+	}
 })
 
-app.put('/api/posts/:id', (req, res) => {
+app.put('/api/posts/:id', async (req, res) => {
 	if (!req.body || !req.body.title || !req.body.contents) {
 		res.status(400).json({ error: 'Please provide title and contents for the post.' })
 	}
-	db.update(req.params.id, req.body)
-		.then(data => {
-			if (data < 1){
-				res.status(404).json({ error: 'The post with the specified ID does not exist.' });
-			}
-			else {
-				res.status(200).json({ message: 'Succesfully updated' });
-			}
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(500).json({ error: "The post information could not be modified." })
-		})
+	try{
+		const updated = await db.update(req.params.id, req.body);
+		updated < 1
+		? res.status(404).json({ error: 'The post with the specified ID does not exist.' })
+		: res.status(200).json({ message: 'Succesfully updated' })
+	}
+	catch(err) {
+		res.status(500).json({ error: "The post information could not be modified." })
+	}
 })
 
 app.listen(9000, () => console.log('===server is running on port 9000==='));
