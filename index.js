@@ -24,7 +24,7 @@ server.get("/api/posts", (req, res) => {
 });
 
 server.get("/api/posts/:id", (req, res) => {
-  let id = req.params.id;
+  const id = req.params.id;
   db.findById(id)
     .then(post => {
       if (post.length === 0) {
@@ -54,27 +54,55 @@ let nextId = 10;
 //   }
 // ];
 
-server.post("/api/posts", (req, res) => {
-  ///////////////////////////
-  // the only way I can get it to work with postman
-  // const post = req.body;
-  // post.id = nextId++;
-  // posts.push(post);
-  // res.status(201).json(posts);
-  // stop kind of works
-  //////////////////////////////
-  // const post = req.body;
-  // // post.id = nextId++;
-  // post.id = 13;
-  // post.title = `Title number ${post.id}`;
-  // post.contents = `Contents number ${post.id}`;
-  if (!req.body.title || !req.body.contents) {
-    return res.status(400).json({
+server.post("/api/posts", async (req, res) => {
+  const post = req.body;
+
+  // original way you did it
+  // if (!post.title || !post.contents) {
+  //   return res.status(400).json({
+  //     errorMessage: "Please provide title and contents for the post."
+  //   });
+  // } else {
+  //   db.insert(post)
+  //     .then(post => {
+  //       res.status(200).json(post);
+  //     })
+  //     .catch(err => {
+  //       res
+  //         .status(500)
+  //         .json({ error: "The post information could not be retrieved." });
+  //     });
+  // }
+  // refactored way using Luis' method
+  if (!post.title || !post.contents) {
+    return res.status(422).json({
       errorMessage: "Please provide title and contents for the post."
     });
+  } else {
+    try {
+      const response = await db.insert(post);
+      res.status(201).json({ post });
+    } catch {
+      res
+        .status(500)
+        .json({ error: "The post information could not be retrieved." });
+    }
   }
+});
 
-  db.insert(req.body)
+//// delete request
+server.post("/api/posts:id", (req, res) => {
+  // let id = req.params.id;
+  // let id = 89090980;
+  // if (!req.body.title || !req.body.contents) {
+  //   return res.status(400).json({
+  //     errorMessage: "Please provide title and contents for the post."
+  //   });
+  // }
+
+  const post = req.body;
+  // let id = req.params.id;
+  db.remove(post)
     .then(post => {
       res.status(200).json(post);
     })
