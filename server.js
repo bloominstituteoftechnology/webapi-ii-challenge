@@ -45,13 +45,18 @@ server.get('/posts/:id', (req, res) => {
 server.post('/posts', (req, res) => {
     const newPost = req.body;
 
-    db.insert(newPost).then(post => {
-        res.status(201).json(post);
-    })
-        .catch(err => {
-            console.log('error', err);
-            res.status(500).json({ error: "There was an error while saving the post to the database" })
+    if (newPost.title && newPost.contents) {
+        db.insert(newPost).then(post => {
+            res.status(201).json(post);
         })
+            .catch(err => {
+                console.log('error', err);
+                res.status(500).json({ error: "There was an error while saving the post to the database" })
+            })
+    } else {
+        res.status(400).json({ error: "Please provide title and contents for the post." });
+    }
+
 })
 
 server.delete('/posts/:id', (req, res) => {
