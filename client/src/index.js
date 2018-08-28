@@ -6,6 +6,14 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 import App from "./components/App";
 import rootReducer from "./reducers";
+import { injectGlobal } from 'styled-components';
+
+injectGlobal`
+  html, body, #root {
+    width: 100%;
+  }
+`
+
 
 const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 

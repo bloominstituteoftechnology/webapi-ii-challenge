@@ -47,7 +47,6 @@ server.get("/posts/:id", (req, res) => {
 })
 
 server.post("/posts", (req, res) => {
-  console.log(req)
   if (req.body.title && req.body.contents) {
     db.insert(req.body) 
       .then(response => {
@@ -58,7 +57,7 @@ server.post("/posts", (req, res) => {
         })
       })
       .catch(err => {
-        console.err(err);
+        console.error(err);
         res.status(500).json({
           error: "There was an error while saving the post to the database"
         });
@@ -84,7 +83,7 @@ server.delete("/posts/:id", (req, res) => {
       }
     })
     .catch(err => {
-      console.err(err);
+      console.error(err);
       res.status(500).json({
         error: "The post could not be removed."
       })
@@ -112,7 +111,7 @@ server.put("/posts/:id", (req, res) => {
       }
     })
     .catch(err => {
-      console.err(err);
+      console.error(err);
       res.status(500).json({
         error: "The post information could not be modified."
       })

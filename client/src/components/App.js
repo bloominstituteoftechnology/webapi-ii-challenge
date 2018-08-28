@@ -1,28 +1,28 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchPosts, addPost, deletePost } from "../actions";
+import { fetchPosts, addPost } from "../actions";
 import styled from "styled-components";
+import Post from "./Post";
+import Form from "./Form";
 
 const PostContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-content: space-around;
+  align-content: center;
   flex-direction: column;
   height: 100vh;
 `;
+
 const PostCard = styled.div`
+  border-radius: 3px;
   width: 200px;
   background-color: gray;
   padding: 5px;
-  margin: 10px 0;
-  border: 1px solid black;
+  margin: 10px;
+  background: #fff;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  font-family: 'Lato', sans-serif;
 `;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: 5px 0;
-`
 
 class App extends Component {
   state = {
@@ -36,8 +36,8 @@ class App extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.addPost(this.state);
-    this.setState({title: '', contents: ''})
-  }
+    this.setState({ title: "", contents: "" });
+  };
 
   render() {
     return (
@@ -47,28 +47,17 @@ class App extends Component {
         ) : (
           this.props.posts.map(post => (
             <PostCard key={post.id}>
-              <h3>{post.title}</h3>
-              <p>{post.contents}</p>
-              <button onClick={() => this.props.deletePost(post.id)}>delete</button>
+              <Post post={post} />
             </PostCard>
           ))
         )}
         <PostCard>
-          <Form onSubmit={this.handleSubmit}>
-            <input
-              type="text"
-              value={this.state.title}
-              placeholder='Enter title'
-              onChange={e => this.setState({ title: e.target.value })}
-            />
-            <input 
-              type="text"
-              value={this.state.contents}
-              placeholder='Enter contents'
-              onChange={e => this.setState({ contents: e.target.value })}
-            />
-            <input type="submit" />
-          </Form>
+          <Form
+            handleSubmit={this.handleSubmit}
+            title={this.state.title}
+            contents={this.state.contents}
+            onChange={e => this.setState({ [e.target.name]: e.target.value })}
+          />
         </PostCard>
       </PostContainer>
     );
@@ -82,5 +71,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchPosts, addPost, deletePost }
+  { fetchPosts, addPost }
 )(App);

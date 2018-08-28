@@ -9,6 +9,9 @@ export const DELETING_POST = "DELETING_POST";
 export const DELETING_POST_SUCCESS = "DELETING_POST_SUCCESS";
 export const ADDING_POST_ERROR = "ADDING_POST_ERROR";
 export const DELETING_POST_ERROR = "DELETING_POST_ERROR";
+export const EDITTING_POST = "EDITTING_POST";
+export const EDITTING_POST_SUCCESS = "EDITTING_POST_SUCCESS";
+export const EDITTING_POST_ERROR = "EDITTING_POST_ERROR";
 
 const URL = "http://localhost:9000/posts";
 
@@ -65,3 +68,21 @@ export const deletePost = id => dispatch => {
       });
     });
 };
+
+export const editPost = (id, post) => dispatch => {
+  dispatch({ type: EDITTING_POST });
+  axios
+    .put(`${URL}/${id}`, post)
+    .then(response => {
+      dispatch({ 
+        type: EDITTING_POST_SUCCESS,
+        payload: response.data
+      })
+    })
+    .catch(error => {
+      dispatch({
+        type: EDITTING_POST_ERROR,
+        payload: error.data
+      })
+    })
+}
