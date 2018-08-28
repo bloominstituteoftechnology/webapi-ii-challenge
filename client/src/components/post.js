@@ -1,6 +1,7 @@
 import React from 'react';
-
-const Post=(props)=><div className='card'><p>{props.data.title}</p><p>{props.data.contents}</p>
-<i class="fas fa-trash-alt" onClick={()=>props.delete(props.data.id)}></i></div>
+import {Link} from 'react-router-dom';
+const Post=(props)=><div className='card'>
+<Link to={`/${props.data.id}`}>
+<p>{props.data.title}</p><p>{props.data.contents}</p></Link></div>
 
 export default Post;

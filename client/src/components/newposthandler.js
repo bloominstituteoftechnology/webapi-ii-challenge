@@ -28,8 +28,8 @@ class NewPostHandler extends React.Component{
     render() {
         return(
             <div>
-                <Input type='text' name='title' placeholder='Enter post title' value={this.state.name} onChange={this.handleInputChange}/>
-                <Input type='text' name='contents' placeholder='Enter post contents' value={this.state.name} onChange={this.handleInputChange}/>
+                <Input type='text' name='title' placeholder='Enter post title' value={this.state.title} onChange={this.handleInputChange}/>
+                <Input type='text' name='contents' placeholder='Enter post contents' value={this.state.contents} onChange={this.handleInputChange}/>
                 <button className='btn waves-effect waves-light' onClick={()=>this.submitPost()}>Submit New Post</button>
             </div>
         )

@@ -1,6 +1,7 @@
 import React from 'react';
 import Post from './post.js';
 import axios from 'axios';
+import NewPostHandler from './newposthandler.js';
 
 class Posts extends React.Component{
     constructor(){
@@ -18,7 +19,8 @@ class Posts extends React.Component{
     render() {
         return (
         <div>
-            {this.state.posts.length>0?this.state.posts.map((e,i)=><Post data={e} key={i} delete={this.delete}/>):null}
+            {this.state.posts.length>0?this.state.posts.map((e,i)=><Post data={e} key={i}/>):null}
+            <NewPostHandler/>
         </div>
         )
     }
