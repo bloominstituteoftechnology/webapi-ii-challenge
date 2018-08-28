@@ -57,6 +57,7 @@ server.post('/api/posts', (req,res) => {
         });
     });
 
+//Get all posts including new posts
 server.get('/api/posts',(req,res) => {
     db
     .find()
@@ -67,6 +68,23 @@ server.get('/api/posts',(req,res) => {
         res.status(500).json({message: 'The list of posts could not be retrieved'});
         return;
     });
+});
+
+//Get an individual post using a unique id
+server.get('/api/posts/:id',(req,res)=> {
+    const id = req.params.id;
+    db
+        .findById(id)
+        .then(post => {
+            if (post.length === 0){
+                res.status(404).json({message: 'No user corresponding to that identifier'});
+                return;
+            }
+            res.json(post);
+        })
+        .catch(error => {
+            res.status(500, 'Error looking for post');
+        });
 });
 
 //DELETE request
