@@ -59,10 +59,10 @@ server.post('/api/posts/', (req, res) => {
 
 server.put('/api/posts/:id', (req, res) => {
     const post = req.body;
-    const id = req.params.id; 
+    const id = req.params.id;
         db.update(id, post)
         .then(posts => {   
-            if(post.length === 0){
+            if(posts.length === undefined){
                 res.status(404).json({message: "The post with the specified ID does not exist."});
             } else if (!post.title || !post.contents) 
                 {res.status(400).json({error: "Please provide title and contents for the post."});
@@ -70,7 +70,7 @@ server.put('/api/posts/:id', (req, res) => {
                 }
         })   
         .catch(err => {
-            res.status(500).json({error: "There was an error while saving the post to the database"}); 
+            res.status(500).json({error: "The post information could not be modified."}); 
         })
 });
 
