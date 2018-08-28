@@ -50,8 +50,6 @@ server.post('/api/posts', (req, res) => {
     db.insert({
         title,
         contents,
-        created_at,
-        updated_at
     })
     .then(response => {
         res.status(201).json(req.body);
@@ -62,5 +60,18 @@ server.post('/api/posts', (req, res) => {
         return;
     })
 })
+
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    db.remove(id)
+        .then(count => {
+            if (count) {
+                res.status(204).end();
+            } else {
+                res.status(404).json({ message: 'The post with the specified ID does not exist.' })
+            }
+        })
+        .catch(err => res.status(500).json({ error: 'The post could not be removed' }));
+});
 
 server.listen(5000, () => console.log('/n== API on port 5k==/n') );
