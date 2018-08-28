@@ -57,23 +57,6 @@ let nextId = 10;
 server.post("/api/posts", async (req, res) => {
   const post = req.body;
 
-  // original way you did it
-  // if (!post.title || !post.contents) {
-  //   return res.status(400).json({
-  //     errorMessage: "Please provide title and contents for the post."
-  //   });
-  // } else {
-  //   db.insert(post)
-  //     .then(post => {
-  //       res.status(200).json(post);
-  //     })
-  //     .catch(err => {
-  //       res
-  //         .status(500)
-  //         .json({ error: "The post information could not be retrieved." });
-  //     });
-  // }
-  // refactored way using Luis' method
   if (!post.title || !post.contents) {
     return res.status(422).json({
       errorMessage: "Please provide title and contents for the post."
