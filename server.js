@@ -45,20 +45,21 @@ server.post("/api/posts", async (req, res) => {
 
 server.delete("/api/posts/:id", (req,res) => {
   const {id} = req.params;
-  //const deleting = db.findById(id).then(post => post)
-  //console.log(deleting, "deleting")
-  server.get("/api/posts/:id", (req,res) => {
-    db.findById(id)
-      .then(post => {
-        console.log(res.json.post)
-        res.status(200).json(post)
-      })
-  })
+  let deleting = {}; 
+  db.findById(id)
+    .then(post => {
+      //res.status(200).json(post);
+      deleting = post; 
+    })
+    .catch(error => {
+      res.status(500).json({message: `Error getting the post with id: ${id}`})
+    })
   db.remove(id)
     .then(count => {
       if (count){
-        console.log()
-        res.status(204).json(req.body)
+        console.log(deleting[0])
+        deleting = deleting[0]
+        res.status(204).json(deleting)
       } else {
         res.status(404).json({message: `The post with the specified ID does not exist. ${id} not found.`})
       }
