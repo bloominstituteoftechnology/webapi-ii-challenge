@@ -5,10 +5,6 @@ const server = express();
 
 server.use(express.json());
 
-// server.get("/", (req, res) => {
-//   res.send("Testing Server");
-// });
-
 // GET REQUEST
 server.get("/api/posts", (req, res) => {
   db.find()
@@ -68,19 +64,19 @@ server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params;
 
   // Working Promise Version Below
-  // db.remove(id)
-  //   .then(count => {
-  //     if (count) {
-  //       res.status(200).json(count);
-  //     } else {
-  //       res.status(404).json({
-  //         message: "The post with the specified ID does not exist."
-  //       });
-  //     }
-  //   })
-  //   .catch(err => {
-  //     res.status(500).json({ error: "The post could not be removed" });
-  //   });
+  db.remove(id)
+    .then(count => {
+      if (count) {
+        res.status(200).json(count);
+      } else {
+        res.status(404).json({
+          message: "The post with the specified ID does not exist."
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The post could not be removed" });
+    });
 });
 // END DELETE
 
