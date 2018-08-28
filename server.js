@@ -35,12 +35,15 @@ server.get('/api/posts/:id', (req, res)=> {
 });
 
 server.post('/api/posts', (req, res)=> {
+    if (req.body.title && req.body.contents) {
     db.insert(req.body).then(posts => {
         res.status(200).json(posts);
     }).catch(err=> {
         console.log('error', err);
         res.status(500).json({message: "error posting data"})
-    });
+    })} else { 
+            res.status(400).json({errorMessage: "Please provide title and contents for the post." })
+    }
 });
 
 server.put('/api/posts/:id', (req, res)=> {
