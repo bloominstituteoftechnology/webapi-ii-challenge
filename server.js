@@ -46,14 +46,20 @@ server.post('/api/posts', (req, res) => {
     }
 })
 
-// server.post('/api/posts', (req, res) => {
-//         const newPost = req.body
-//         db.insert(newPost).then(postId => {
-//             res.status(201).json(postId)
-//         }).catch(err => {
-//             res.status(500).json({ error: "There was an error while saving the post to the database"})
-//         })
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id
     
-// })
+    db.remove(id)
+    .then(count => {
+        if(count){
+            res.status(200).json({message: "Successfully deleted post"})
+        }else{
+            res.status(404).json({error: "The post with the specified ID does not exist"})
+        }
+    }).catch(err => {
+        res.status(500).json({error: "There was an error removing the post"})
+    })
+})
+
 
 server.listen('3000'); 
