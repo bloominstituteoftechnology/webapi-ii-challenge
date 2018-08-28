@@ -27,15 +27,12 @@ server.get('/api/posts/:id', (req, res) => {
         .catch(err => console.error('error', err));
 });
 
-const yoyo = {
-    title: 'I dunno',
-    content: 'Some content'
-};
-
-server.post('/api/posts/', (req, res) => {
-    db.insert(post)
+server.post('/api/posts', (req, res) => {
+    let bod = req.body;
+    db.insert(bod)
         .then(posts => {
-            res.status(200).json(posts);
+            
+            res.status(201).json(posts);
         })
         .catch(err => console.error('error', err));
 });
