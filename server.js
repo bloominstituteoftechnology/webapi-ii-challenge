@@ -4,6 +4,10 @@ const db = require('./data/db.js');
 const server=express();
 server.use(express.json());
 
+const formattedDate = () => {
+  return new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+}
+
 //return all posts in db
 server.get('/api/posts', (req, res)=> {
   db.find()
@@ -63,7 +67,7 @@ server.put('/api/posts/:id', (req, res)=> {
     return res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
   }
 
-  db.update(req.params.id, ({ title, contents }))
+  db.update(req.params.id, ({ title, contents, updated_at: formattedDate() }))
     .then(response=> {
       if(response < 1){
         res.status(404).json({ error: "The post with the specified ID does not exist." });
