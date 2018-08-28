@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchPosts, addPost } from "../actions";
+import { fetchPosts, addPost, deletePost } from "../actions";
 import styled from "styled-components";
 
 const PostContainer = styled.div`
@@ -35,7 +35,7 @@ class App extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.addPost({title: this.state.title, contents: this.state.contents});
+    this.props.addPost(this.state);
     this.setState({title: '', contents: ''})
   }
 
@@ -49,6 +49,7 @@ class App extends Component {
             <PostCard key={post.id}>
               <h3>{post.title}</h3>
               <p>{post.contents}</p>
+              <button onClick={() => this.props.deletePost(post.id)}>delete</button>
             </PostCard>
           ))
         )}
@@ -81,5 +82,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchPosts, addPost }
+  { fetchPosts, addPost, deletePost }
 )(App);

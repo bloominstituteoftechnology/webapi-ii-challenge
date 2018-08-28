@@ -71,11 +71,12 @@ server.post("/posts", (req, res) => {
 })
 
 server.delete("/posts/:id", (req, res) => {
+  console.log(req)
   db.remove(req.params.id)
     .then(result => {
       if (result > 0 ) {
         res.status(200).json({
-          message: `${result} post were deleted.`
+          id: req.params.id
         })
       } else {
         res.status(404).json({
