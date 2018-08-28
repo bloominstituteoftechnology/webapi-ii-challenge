@@ -5,6 +5,10 @@ const server = express();
 
 const db = require('./data/db.js');
 
+const cors = require('cors');
+
+server.use(cors());
+
 server.use(express.json());
 
 // add your server code starting here
