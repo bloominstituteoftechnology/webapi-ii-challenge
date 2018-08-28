@@ -64,38 +64,36 @@ server.delete("/api/posts/:id", async (req, res) => {
   const { id } = req.params;
 
   // Working Promise Version Below
-  db.remove(id)
-    .then(count => {
-      if (count) {
-        res.status(200).json(count);
-      } else {
-        res.status(404).json({
-          message: "The post with the specified ID does not exist."
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).json({ error: "The post could not be removed" });
-    });
+  // db.remove(id)
+  //   .then(count => {
+  //     if (count) {
+  //       res.status(200).json(count);
+  //     } else {
+  //       res.status(404).json({
+  //         message: "The post with the specified ID does not exist."
+  //       });
+  //     }
+  //   })
+  //   .catch(err => {
+  //     res.status(500).json({ error: "The post could not be removed" });
+  //   });
   // end promise version
 
-  // attempt at using Async version below, works but is throwing lots of errors
-  // try {
-  //   const response = await db.remove(id);
-  //   res.status(200).json(response);
-  //   if (response) {
-  //     res.status(404).json({
-  //       message: "The post with the specified ID does not exist."
-  //     });
-  //   } else {
-  //     // do nothing
-  //   }
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(500).json({
-  //     error: err
-  //   });
-  // }
+  // Working Async Version Below
+  try {
+    const response = await db.remove(id);
+    if (response === 0) {
+      return res.status(404).json({
+        message: "The post with the specified ID does not exist."
+      });
+    } else {
+      return res.status(200).json(response);
+    }
+  } catch (err) {
+    return res.status(500).json({
+      error: "The post could not be removed"
+    });
+  }
   // end async version
 });
 // END DELETE
