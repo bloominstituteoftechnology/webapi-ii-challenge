@@ -54,7 +54,7 @@ server.post('/api/posts', (req, res) => {
         updated_at
     })
     .then(response => {
-        res.status(201).json(response);
+        res.status(201).json(req.body);
     })
     .catch(error => {
         console.error('error', err);
