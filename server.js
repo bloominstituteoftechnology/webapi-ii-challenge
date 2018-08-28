@@ -1,23 +1,46 @@
 // import your node modules
-const express = require('express');
-const db = require('./data/db.js');
+const express = require("express");
+const db = require("./data/db.js");
 const server = express();
 
 server.use(express.json());
 
-server.get('/', (req,res) => {
-    res.send("Hello FSW12 Express Node.js backend")
-})
+server.get("/api", (req, res) => {
+  res.send("Hello FSW12 Express Node.js backend");
+});
 
-server.get('/posts', (req,res) =>{
-    db.find().then(posts => {
-        res.status(200).json(posts);
-    }).catch( error => {
-        console.log.error('error', error);
-
-        res.status(500).json({message: 'Error getting the data'})
+server.get("/api/posts", (req, res) => {
+  db.find()
+    .then(posts => {
+      res.status(200).json(posts);
     })
-})
+    .catch(error => {
+      console.log.error("error", error);
 
-server.listen(9000, () => console.log('\n==API on port 9000 ==\n'))
+      res.status(500).json({ message: "Error getting the data" });
+    });
+});
 
+server.post("/api/posts", async (req, res) => {
+  const post = req.body;
+  if (post.title && post.contents) {
+    try {
+      const response = await db.insert(post);
+      res.status(201).json(response);
+    } catch (error) {
+      res.status(500).json({
+        message: "There was an error while saving the post to the database",
+        description: "The post was not created",
+        recoveryInstructions: "Check that you are using the correct end point also make sure your properties included are  title    and   contents  ."
+      });
+    }
+  } else {
+    res
+      .status(422)
+      .json({
+        errorMessage: "Please provide title and contents for the posts."
+      });
+  }
+});
+
+server.listen(9000, () => console.log("\n==API on port 9000 ==\n"));
