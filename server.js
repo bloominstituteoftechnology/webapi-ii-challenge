@@ -18,14 +18,14 @@ server.post('/api/posts', (req, res) => {
         .then(data => {
             db.findById(data.id)
                 .then(post => {
-                    res.status(200).json(post)
+                    res.status(201).json(post)
                 })
                 .catch(err => {
                     res.status(500).json({ error: 'There was an error accessing the database' })
                 })
         })
         .catch(err => {
-            res.status(500).json({ error: 'There was anm error while saving the post to the database.' })
+            res.status(500).json({ error: 'There was an error while saving the post to the database.' })
         })
 })
 
