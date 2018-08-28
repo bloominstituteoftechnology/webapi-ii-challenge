@@ -74,18 +74,13 @@ server.post("/api/posts", async (req, res) => {
 });
 
 //// delete request
-server.post("/api/posts:id", (req, res) => {
-  // let id = req.params.id;
-  // let id = 89090980;
-  // if (!req.body.title || !req.body.contents) {
-  //   return res.status(400).json({
-  //     errorMessage: "Please provide title and contents for the post."
-  //   });
-  // }
+server.delete("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
 
-  const post = req.body;
-  // let id = req.params.id;
-  db.remove(post)
+  // same as above, just using destructuring
+  // const id = req.params.id;
+
+  db.remove(id)
     .then(post => {
       res.status(200).json(post);
     })
