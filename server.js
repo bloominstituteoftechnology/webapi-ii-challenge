@@ -57,9 +57,17 @@ server.post('/api/posts', (req,res) => {
         });
     });
 
-// db.insert(post)
-// .then(response => response.status(201).json(response))
-// .catch(err=> res.status(500).json(err));
+server.get('/api/posts',(req,res) => {
+    db
+    .find()
+    .then(posts => {
+        res.json({posts});
+    })
+    .catch(error => {
+        res.status(500).json({message: 'The list of posts could not be retrieved'});
+        return;
+    });
+});
 
 //DELETE request
 server.delete('/api/posts/:id', (req, res) => {
