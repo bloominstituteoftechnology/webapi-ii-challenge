@@ -1,11 +1,12 @@
 // import your node modules
 const express=require('express');
+const bodyParser=require('body-parser');
 
 const db = require('./data/db.js');
 
 const server=express();
 
-server.use(express.json());
+server.use(bodyParser.json());
 // add your server code starting here
 
 server.get('/posts',(req,res)=>
@@ -20,5 +21,17 @@ server.get('/posts/:id',(req,res)=>
         return res.status(200).json(post)}})
     .catch(err=>res.status(500).json({error: "The post information could not be retrieved." }))
 )
-
+server.post('/posts',(req,res)=>{
+    const post=req.body.post;
+    if (!post.title||!post.contents) {
+        res.status(400).json({errorMessage: "Please provide title and contents for the post." });
+    } else {
+        db.insert(post)
+        .then(post=>{
+            return db.findById(post.id).then(post=>res.status(201).json(post)).catch(err=>console.log(err))
+        })
+        .catch({ error: "There was an error while saving the post to the database" })
+    }
+}
+)
 server.listen(9000,()=>console.log('Engines firing server starting new horizons venturing.'))
