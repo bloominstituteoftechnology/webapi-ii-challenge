@@ -1,20 +1,17 @@
-// import your node modules
 const express = require('express');
 
 const db = require('./data/db.js');
 
-// add your server code starting here
 const server = express();
 
 server.use(express.json());
+
 
 server.get('/api/posts', (req, res) => {
     db.find()
         .then(posts =>{
             res.status(200).json(posts);
         }).catch(err => {
-            console.log('error', err);
-
             res.status(500).json({error: "The posts information could not be retrieved."}); 
         })
 });
@@ -23,13 +20,11 @@ server.get('/api/posts/:id', (req, res) => {
     db.findById(req.params.id)
         .then(posts => {   
             if(posts.length === 0){
-                res.status(404).json({message: "The post with the specified ID does not exist."})
+                res.status(404).json({message: "The post with the specified ID does not exist."});
             }  else {res.status(200).json(posts);
                }
         })
         .catch(err => {
-            console.log('error', err);
-                
             res.status(500).json({error: "The posts information could not be retrieved." }); 
         })
 });
@@ -38,29 +33,43 @@ server.delete('/api/posts/:id', (req, res) => {
     db.remove(req.params.id)
         .then(posts => {   
             if(posts.length === 0){
-                res.status(404).json({message: "The post with the specified ID does not exist."})
+                res.status(404).json({message: "The post with the specified ID does not exist."});
             }  else {res.status(200).json(posts);
                }
         })
         .catch(err => {
-            console.log('error', err);
-                
-            res.status(500).json({error: "The post could not be removed"  }); 
+            res.status(500).json({error: "The post could not be removed"}); 
         })
 });
 
 server.post('/api/posts/', (req, res) => {
-    let posts = req.body;
-    db.insert(posts)
-        .then(posts => {   
-            if(posts.length === 0){
-                res.status(404).json({message: "The post with the specified ID does not exist."})
-            }  else {res.status(201).json(posts);
-               }
+    let posted = req.body;
+    db.insert(posted)
+        .then(posts =>{
+            if(posted.title && posted.contents){
+                res.status(201).json(posts);
+            } else {res.status(400).json({error: "Please provide title and contents for the post."});
+                }
         })
         .catch(err => {
-            console.log('error', err);
-                
+            res.status(500).json({error: "There was an error while saving the post to the database"}); 
+        })
+});
+
+
+server.put('/api/posts/:id', (req, res) => {
+    const post = req.body;
+    const id = req.params.id; 
+        db.update(id, post)
+        .then(posts => {   
+            if(post.length === 0){
+                res.status(404).json({message: "The post with the specified ID does not exist."});
+            } else if (!post.title || !post.contents) 
+                {res.status(400).json({error: "Please provide title and contents for the post."});
+            } else {res.status(200).json(posts);
+                }
+        })   
+        .catch(err => {
             res.status(500).json({error: "There was an error while saving the post to the database"}); 
         })
 });
