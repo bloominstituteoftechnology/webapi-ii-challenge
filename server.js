@@ -43,4 +43,18 @@ server.post("/api/posts", async (req, res) => {
   }
 });
 
+server.delete("/api/posts/:id", (req,res) => {
+  const {id} = req.params;
+  const deleting = db.findById(id);
+  db.remove(id)
+    .then(count => {
+      if (count){
+        res.status(204).json(deleting)
+      } else {
+        res.status(404).json({message: `The post with the specified ID does not exist. ${id} not found.`})
+      }
+    })
+    .catch(error => res.status(500).json(error));
+})
+
 server.listen(9000, () => console.log("\n==API on port 9000 ==\n"));
