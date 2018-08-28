@@ -1,18 +1,21 @@
 const express = require('express');
 const db = require('./data/db.js');
 const server = express();
-const bodyParser = require('body-parser');
 
-// middleware
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: true }));
+/* Middleware */
+
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+  res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
   next();
 });
 
+/* DB fetching */
+
+// helper func to return posts after any sort of update
 const fetchPosts = (req, res) => {
   db.find()
     .then(posts => {
@@ -101,5 +104,7 @@ server.put('/posts/:id', (req, res) => {
       res.status(404).json({ message: `The post with an id of ${id} does not exist.` });
     });
 });
+
+/* Listener */
 
 server.listen(3333, () => 'server listening on port 3333');

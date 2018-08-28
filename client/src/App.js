@@ -38,11 +38,23 @@ class App extends Component {
       .catch(err => console.error(err));
   };
 
+  updatePost = id => {
+    const { title, contents } = this.state;
+    axios.put(`${this.URL}/${id}`, { title, contents })
+      .then(({ data }) => this.setState({ posts: data }))
+      .catch(err => console.error(err));
+  };
+
   /* Form methods */
 
-  onSubmit = e => {
+  onAddSubmit = e => {
     e.preventDefault();
     this.addPost();
+  };
+
+  onEditSubmit = (e, id) => {
+    e.preventDefault();
+    this.updatePost(id)
   };
 
   onChange = e => {
@@ -69,15 +81,24 @@ class App extends Component {
                 <span onClick={() => this.deletePost(id)}>X</span>
                 <h4 className="post-title">{title}</h4>
                 <p className="post-contents">{contents}</p>
+                {this.state.posts.length === 1 ? (
+                  <form className="post-form" onSubmit={(e) => this.onEditSubmit(e, id)}>
+                    <input name="title" onChange={this.onChange} placeholder="Enter post title..." />
+                    <input name="contents" onChange={this.onChange} placeholder="Enter post content..." />
+                    <input type="submit" value="Edit post" />
+                  </form>
+                ) : ''}
               </div>
             );
           })}
         </div>
-        <form className="add-post-form" onSubmit={this.onSubmit}>
-          <input name="title" onChange={this.onChange} placeholder="Enter post title..." />
-          <input name="contents" onChange={this.onChange} placeholder="Enter post content..." />
-          <input type="submit" value="Add post" />
-        </form>
+        {this.state.posts.length !== 1 ? (
+          <form className="post-form" onSubmit={this.onAddSubmit}>
+            <input name="title" onChange={this.onChange} placeholder="Enter post title..." />
+            <input name="contents" onChange={this.onChange} placeholder="Enter post content..." />
+            <input type="submit" value="Add post" />
+          </form>
+        ) : ''}
       </div>
     );
   }

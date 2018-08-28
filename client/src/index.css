@@ -41,6 +41,6 @@ body {
   cursor: pointer;
 }
 
-.add-post-form {
-  margin-top: 50px;
+.post-form {
+  margin: 40px auto 30px;
 }
