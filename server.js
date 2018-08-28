@@ -8,10 +8,6 @@ const server = express();
 server.use(express.json());
 
 // add your server code starting here
-server.get('/', (req, res) => {
-    res.send('Hello World');
-});
-
 server.get('/api/posts', (req, res) => {
     db.find()
     .then(posts => {
@@ -39,9 +35,8 @@ server.get('/api/posts/:id', (req, res) => {
 server.post('/api/posts', (req, res) => {
     db.insert(req.body)
     .then(post => {
-        if (!post.title || !post.contents) {
-            res.status(400).json(post.length);
-            //{ error: "Please provide title and contents for the post." }
+        if (!req.body.title || !req.body.contents) {
+            res.status(400).json({ error: "Please provide title and contents for the post." });
         } else {
             res.status(201).json(post);
         }
@@ -53,14 +48,12 @@ server.post('/api/posts', (req, res) => {
   });
 
   server.delete('/api/posts/:id', (req, res) => {
-      const copy = req.body;
-
       db.remove(req.params.id)
       .then(post => {
           if (post) {
-              res.status(204).json(copy);
+            res.status(204).end();
           } else {
-              res.status(404).json({ message: "The post with the specified ID does not exist." })
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
           }
       })
       .catch(err => {
@@ -72,9 +65,9 @@ server.post('/api/posts', (req, res) => {
   server.put('/api/posts/:id', (req, res) => {
       db.update(req.params.id, req.body)
       .then(post => {
-          if (post.length === 0) {
+          if (post === 0) {
             res.status(404).json({ message: "The post with the specified ID does not exist." });
-          } else if (!post.title || !post.conent) {
+          } else if (!req.body.title || !req.body.contents) {
             res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
           } else {
             res.status(200).json(post);
