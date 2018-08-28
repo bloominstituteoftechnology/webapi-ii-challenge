@@ -43,22 +43,12 @@ server.get("/api/posts/:id", (req, res) => {
 });
 // END GET
 
-// START POST
-
-let nextId = 10;
-// let posts = [
-//   {
-//     id: nextId,
-//     title: "The post title",
-//     contents: "The post contents"
-//   }
-// ];
-
+// POST REQUEST
 server.post("/api/posts", async (req, res) => {
   const post = req.body;
 
   if (!post.title || !post.contents) {
-    return res.status(422).json({
+    return res.status(400).json({
       errorMessage: "Please provide title and contents for the post."
     });
   } else {
@@ -72,8 +62,9 @@ server.post("/api/posts", async (req, res) => {
     }
   }
 });
+// END POST
 
-//// delete request
+// DELETE REQUEST
 server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params;
 
@@ -91,5 +82,35 @@ server.delete("/api/posts/:id", (req, res) => {
       res.status(500).json({ error: "The post could not be removed" });
     });
 });
+// END DELETE
+
+// PUT REQUEST
+server.put("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const post = req.body;
+
+  if (!post.title || !post.contents) {
+    return res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  } else {
+    db.update(id, post)
+      .then(count => {
+        if (count) {
+          res.status(200).json(count);
+        } else {
+          res.status(404).json({
+            message: "The post with the specified ID does not exist."
+          });
+        }
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: "The post information could not be modified." });
+      });
+  }
+});
+// END PUT
 
 server.listen(8000, () => console.log("\n== API on port 8k === \n"));
