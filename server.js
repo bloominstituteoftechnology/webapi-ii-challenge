@@ -3,7 +3,6 @@
 //require the express module, use '$ yarn add to include in project'
 const express = require('express');
 
-const helmet = require ('helmet');
 
 //connects to our database
 const db = require('./data/db.js');
@@ -12,10 +11,13 @@ const db = require('./data/db.js');
 const server = express();
 
 // add your server code starting here
-server.use(helmet());
-server.use(express.json()); //allows parsing of data
+server.use(express.json()); //allows parsing of json data from req.body
 
-const nextId = 10;
+const sendUserError = (status, message, res) => {
+    //helper method used to send errors (borrowed from node-express-mini solution)
+    res.status(status).json({errorMessage: message});
+    return;
+};
 
 //Configures our server to execute a function for every GET request to "/"
 //the second argument passed to the .get() method is the "Route Handler Function"
@@ -28,7 +30,7 @@ server.get('/', (req, res) => {
 
 //Configuring Routing with specific endpoint
 //GET request
-let posts = server.get('/posts', (req,res) => {
+server.get('/api/posts', (req,res) => {
     db.find()
     .then(posts => {
         res.status(200).json(posts);
@@ -40,20 +42,39 @@ let posts = server.get('/posts', (req,res) => {
 });
 
 //POST request
-server.post('/posts', (req,res) => {
-    const post = {id: nextId++, ...req.body}
-    console.log(post)
-    posts.push(post);
+server.post('/api/posts', async (req,res) => {
+    const { title, contents} =req.body;
+    if(!title || !body) {
+        sendUserError(400, 'Must provide title and contents', res);
+        return;
+    }
+    db
+        .insert({
+            title,
+            contents
+        })
+        .then(response => {
+            res.status(201).json(response);
+        })
+        .catch(error => {
+            console.log(error);
+            sendUserError(400,error,res);
+            return;
+        });
+    });
 
-    res.status(200).json(posts);
-});
+// db.insert(post)
+// .then(response => response.status(201).json(response))
+// .catch(err=> res.status(500).json(err));
 
 //DELETE request
-server.delete('/posts/:id', (req, res) => {
-    const { id } = req.params;
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
     //delete the post referencing the id
-    posts = posts.filter(p = p.id != id) //filter out posts not equal to the selected post (id is a number, so use = )
-    res.status(200).json(posts);
+    res.status(200).json({
+        url: `/api/posts/${id}`,
+        operation: `DELETE for post with id: ${id}`,
+    })
 })
 
 //Once the server is fully configured, we can have it listen for connections on a particular port
