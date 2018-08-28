@@ -63,6 +63,9 @@ server.delete('/api/posts/:id', (req, res)=> {
     .catch(err => res.status(500).json({ error: "The post could not be removed" }));
 });
 
+//requires title-contents, updates post in db
+//returns newly created posts
+//added in updated timestamp
 server.put('/api/posts/:id', (req, res)=> {
   const { title, contents } = req.body;
   if(!title || !contents){

@@ -4,13 +4,14 @@ import { Posts } from './styled';
 import PostCard from './PostCard';
 import { toggleShow } from '../actions';
 
-const PostList = props => {
+const PostList = ({ posts, toggleShow }) => {
+  posts.sort((a, b) => b.id - a.id);
   return(
     <Posts>
-      {props.posts.map(post => <PostCard
-                                  key={post.id} 
+      {posts.map(post => <PostCard
+                                  key={post.id}
                                   {...post}
-                                  click={() => props.toggleShow(post.id) }
+                                  click={() => toggleShow(post.id) }
                                 />)}
     </Posts>
   );

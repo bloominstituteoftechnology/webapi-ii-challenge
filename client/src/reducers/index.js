@@ -2,6 +2,7 @@ import {
   FETCHING_POSTS,
   POSTS_FETCHED,
   TOGGLE_SHOW,
+  CREATED_POST,
   ERROR
 } from '../actions'
 
@@ -23,6 +24,11 @@ export const postsReducer = (state=initialState, action) => {
         ...state,
         isFetchingPosts: false,
         posts: action.payload
+      }
+    case CREATED_POST:
+      return{
+        ...state,
+        posts: [...state.posts, action.payload]
       }
     case TOGGLE_SHOW:
       return{
