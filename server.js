@@ -5,7 +5,6 @@ const server = express();
 
 server.use(express.json());
 
-
 server.get('/', (req, res) => {
     res.send('Node Express Lab')
 })
@@ -48,6 +47,22 @@ server.get('/api/posts/:id', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({ message: 'The post information could not be retrieved.' })
+        })
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.remove(id)
+        .then(count => {
+            if(count) {
+                res.status(204).end();
+            } else {
+                res.status(404).json({ message: 'The post with the specified ID does not exist' });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'The post could not be removed' });
         })
 })
 
