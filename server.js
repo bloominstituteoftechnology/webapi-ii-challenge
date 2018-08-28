@@ -30,7 +30,7 @@ server.post('/posts',(req,res)=>{
         .then(post=>{
             return db.findById(post.id).then(post=>res.status(201).json(post)).catch(err=>console.log(err))
         })
-        .catch({ error: "There was an error while saving the post to the database" })
+        .catch(err=>res.status(500).json({ error: "There was an error while saving the post to the database" }))
     }
 }
 )
