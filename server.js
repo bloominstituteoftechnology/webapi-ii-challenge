@@ -4,6 +4,7 @@ const server = express();
 const db = require('./data/db.js');
 
 // add your server code starting here
+server.use(express.json())
 
 server.get("/api/posts", (req, res) => {
     db.find()
@@ -32,4 +33,21 @@ server.get("/api/posts/:id", (req, res) => {
         })
 
 });
+
+server.post('/users', (req, res) => {
+    const user = req.body
+    if(user.title && user.contents){
+        db.insert(user).then(response =>
+            db.findById(response.id).then(post => {
+                res.status(201).json(post)
+            })
+        ).catch(err => {
+            res.status(500).json({error: "Cannot Save to database"})
+        })
+    }else {
+        res.status(400).json( {errorMessage: "Must insert title and Contents"})
+    }
+})
+
+
  server.listen(9000, () => console.log(`\n=== API on port 9000 ===\n`))
