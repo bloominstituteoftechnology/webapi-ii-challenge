@@ -24,7 +24,9 @@ class App extends Component {
     return (
       <div className="App">
         <h1>My Awesome Posts</h1>
-        {this.state.posts.map(post => <Post post={post} key={post.created_at} />)}
+        <div className="postsParent">
+          {this.state.posts.map(post => <Post post={post} key={post.created_at} />)}
+        </div>
       </div>
     );
   } else {

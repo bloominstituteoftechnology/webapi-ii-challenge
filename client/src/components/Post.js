@@ -11,10 +11,9 @@ class Post extends Component {
 
     render() {
         return (
-            <div>
+            <div className="postBox">
                 <h2>{this.props.post.title}</h2>
                 <p>{this.props.post.contents}</p>
-                <hr/>
             </div>
         )
     }

@@ -1,5 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .App-logo {
@@ -25,4 +33,63 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+h1, h2 {
+  font-family: 'Kosugi Maru';
+}
+
+h1 {
+  margin-top: 50px;
+  margin-bottom: -30px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  border: 3px solid lightblue;
+  box-shadow: 5px 10px lightblue;
+}
+
+p {
+  font-family: 'Jua';
+}
+
+.postBox {
+  width: 300px;
+  min-height: 200px;
+  border: 3px solid lightblue;
+  margin: 20px;
+  box-shadow: 5px 10px lightblue;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.postsParent {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+}
+
+@keyframes bgcolor {
+  0% {
+    background-color: #cbec53;
+  }
+  30% {
+    background-color: #66bf39;
+  }
+  60% {
+    background-color: #eb670f;
+  }
+  90% {
+    background-color: #f35;
+  }
+  100% {
+    background-color: #864cbf;
+  }
+}
+
+body {
+  animation: bgcolor 10s infinite;
 }
