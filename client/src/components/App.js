@@ -11,12 +11,12 @@ const PostContainer = styled.div`
   align-content: center;
   flex-direction: column;
   height: 100vh;
+  overflow: scroll;
 `;
 
 const PostCard = styled.div`
   border-radius: 3px;
   width: 200px;
-  background-color: gray;
   padding: 5px;
   margin: 10px;
   background: #fff;

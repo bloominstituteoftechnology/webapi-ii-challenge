@@ -9,6 +9,11 @@ import rootReducer from "./reducers";
 import { injectGlobal } from 'styled-components';
 
 injectGlobal`
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  };
   html, body, #root {
     width: 100%;
   }

@@ -20,9 +20,16 @@ const Button = styled.button`
   }
 `
 const ButtonWrapper = styled.div`
-  margin-top: 5px;
+  margin: 5px 0;
   display: flex;
   justify-content: flex-end;
+`
+const Header = styled.h3`
+  padding: 5px;
+`
+
+const Contents = styled.p`
+  padding: 5px;
 `
 
 class Post extends Component {
@@ -62,8 +69,8 @@ class Post extends Component {
             <img src={trash} /> 
             </Button>
             </ButtonWrapper>
-            <h3>{this.props.post.title}</h3>
-            <p>{this.props.post.contents}</p>
+            <Header>{this.props.post.title}</Header>
+            <Contents>{this.props.post.contents}</Contents>
             
           </Fragment>
         )}
