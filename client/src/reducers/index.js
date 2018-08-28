@@ -3,6 +3,7 @@ import {
   POSTS_FETCHED,
   TOGGLE_SHOW,
   CREATED_POST,
+  DELETED_POST,
   ERROR
 } from '../actions'
 
@@ -43,6 +44,11 @@ export const postsReducer = (state=initialState, action) => {
             return post
             }
         )
+      }
+    case DELETED_POST:
+      return{
+        ...state,
+        posts: state.posts.filter(post => post.id !== action.payload.id)
       }
     case ERROR:
       return{

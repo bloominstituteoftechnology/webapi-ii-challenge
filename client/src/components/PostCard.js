@@ -8,10 +8,12 @@ const PostCard = ({
                   contents,
                   created_at,
                   updated_at,
-                  click
+                  show,
+                  del
                 }) => {
   return(
-    <Post onClick={click}>
+    <Post onClick={show}>
+      <span onClick={del}>X</span>
       <p>id: {id}</p>
       <p>title: {title}</p>
       {showing &&
