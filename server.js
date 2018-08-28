@@ -45,10 +45,19 @@ server.post("/api/posts", async (req, res) => {
 
 server.delete("/api/posts/:id", (req,res) => {
   const {id} = req.params;
+  //const deleting = db.findById(id).then(post => post)
+  //console.log(deleting, "deleting")
+  server.get("/api/posts/:id", (req,res) => {
+    db.findById(id)
+      .then(post => {
+        console.log(res.json.post)
+        res.status(200).json(post)
+      })
+  })
   db.remove(id)
     .then(count => {
       if (count){
-        console.log(req.body)
+        console.log()
         res.status(204).json(req.body)
       } else {
         res.status(404).json({message: `The post with the specified ID does not exist. ${id} not found.`})
