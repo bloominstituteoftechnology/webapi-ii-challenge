@@ -83,7 +83,7 @@ server.get('/api/posts/:id',(req,res)=> {
             res.json(post);
         })
         .catch(error => {
-            res.status(500, 'Error looking for post');
+            res.status(500).json({message: 'Error looking for post'});
         });
 });
 
@@ -91,11 +91,20 @@ server.get('/api/posts/:id',(req,res)=> {
 server.delete('/api/posts/:id', (req, res) => {
     const id = req.params.id;
     //delete the post referencing the id
-    res.status(200).json({
-        url: `/api/posts/${id}`,
-        operation: `DELETE for post with id: ${id}`,
-    })
-})
+    db
+        .remove(id)
+        .then(response => {
+            if(response === 0) {
+                res.status(404).json({message: 'The post you are trying to delete does not exist'});
+                return;
+            }
+            res.json({success: `User with id: ${id} was removed from the system`});
+        })
+        .catch(error =>{
+            res.status(500).json({message: 'This user could note be removed'});
+            return;
+        });
+});
 
 //Once the server is fully configured, we can have it listen for connections on a particular port
 //the callback function passed as the second argument will run once when the server starts
