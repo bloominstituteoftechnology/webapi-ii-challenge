@@ -26,7 +26,7 @@ server.post("/api/posts", async (req, res) => {
   if (post.title && post.contents) {
     try {
       const response = await db.insert(post);
-      res.status(201).json(response);
+      res.status(201).json(post);
     } catch (error) {
       res.status(500).json({
         message: "There was an error while saving the post to the database",
