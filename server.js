@@ -2,10 +2,12 @@
 
 const db = require('./data/db.js');
 const express = require('express');
+const server = express();
+// const bodyParser = require('body-parser');
 
 // add your server code starting here
-const server = express();
 
+// server.use(bodyParser.json());
 server.use(express.json());
 
 server.get('/', (req, res) => {
@@ -35,8 +37,30 @@ server.get('/api/posts/:id', (req, res) => {
     })
     .catch(err => {
         console.error('error', err);
-        rest.status(500).json({ error: 'The post information could not be retrieved.'})
+        res.status(500).json({ error: 'The post information could not be retrieved.'})
     })
 });
+
+server.post('/api/posts', (req, res) => {
+    const { title, contents, created_at, updated_at } = req.body;
+    if (!title || !contents) {
+        res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
+        return;
+    }
+    db.insert({
+        title,
+        contents,
+        created_at,
+        updated_at
+    })
+    .then(response => {
+        res.status(201).json(response);
+    })
+    .catch(error => {
+        console.error('error', err);
+        res.status(500).json({ error: 'There was an error while saving the post to the database' });
+        return;
+    })
+})
 
 server.listen(5000, () => console.log('/n== API on port 5k==/n') );
