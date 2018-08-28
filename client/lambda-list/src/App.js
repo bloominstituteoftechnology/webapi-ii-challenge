@@ -30,31 +30,47 @@ class App extends Component {
   }
 
   deleteItem = (e) => {
-    //e.preventDefault();
+    e.preventDefault();
     let id = this.state.idInputDelete;
     axios.delete(`${url}/${id}`)
       .then(res => {
         console.log(res)
+        axios.get(url)
+        .then(response => {
+          this.setState({data: response.data});
+        })
+        .catch(err => {
+          console.log('Error', err);
+        });
       })
       .catch(err => console.log(err));
     this.setState({idInputDelete: ''})
   }
 
   editItem = (e) => {
-    //e.preventDefault();
+    e.preventDefault();
     let id = this.state.idInputEdit;
     let body = {
       title: this.state.titleEdit,
       contents: this.state.contentsEdit
     }
     axios.put(`${url}/${id}`, body)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        axios.get(url)
+        .then(response => {
+          this.setState({data: response.data});
+        })
+        .catch(err => {
+          console.log('Error', err);
+        });    
+      })
       .catch(err => console.log(err));
     this.setState({idInputEdit: '', titleEdit: '', contentsEdit: ''})
   }
 
   addItem = e => {
-    //e.preventDefault();
+    e.preventDefault();
     let body = {
       title: this.state.titleAdd,
       contents: this.state.contentsAdd
@@ -62,6 +78,13 @@ class App extends Component {
     axios.post(url, body)
       .then(res => {
         console.log(res, 'HELLLo')
+        axios.get(url)
+        .then(response => {
+          this.setState({data: response.data});
+        })
+        .catch(err => {
+          console.log('Error', err);
+        });    
       })
       .catch(err => console.log(err));
     this.setState({titleAdd: '', contentsAdd: ''})
