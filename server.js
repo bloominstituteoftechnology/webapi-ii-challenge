@@ -13,12 +13,6 @@ const server = express();
 // add your server code starting here
 server.use(express.json()); //allows parsing of json data from req.body
 
-const sendUserError = (status, message, res) => {
-    //helper method used to send errors (borrowed from node-express-mini solution)
-    res.status(status).json({errorMessage: message});
-    return;
-};
-
 //Configures our server to execute a function for every GET request to "/"
 //the second argument passed to the .get() method is the "Route Handler Function"
 //the route handler function will run on every GET request to "/"
@@ -42,10 +36,10 @@ server.get('/api/posts', (req,res) => {
 });
 
 //POST request
-server.post('/api/posts', async (req,res) => {
-    const { title, contents} =req.body;
-    if(!title || !body) {
-        sendUserError(400, 'Must provide title and contents', res);
+server.post('/api/posts', (req,res) => {
+    const { title, contents} = req.body;
+    if(!title || !contents) {
+        res.status(400).json({message: 'Must provide title and contents'})
         return;
     }
     db
@@ -58,7 +52,7 @@ server.post('/api/posts', async (req,res) => {
         })
         .catch(error => {
             console.log(error);
-            sendUserError(400,error,res);
+            res.status(400).json({message: error});
             return;
         });
     });
