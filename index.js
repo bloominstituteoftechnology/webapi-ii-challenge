@@ -16,7 +16,6 @@ server.get("/api/posts", (req, res) => {
       res.status(200).json(posts);
     })
     .catch(err => {
-      console.error("error", err);
       res
         .status(500)
         .json({ error: "The posts information could not be retrieved." });
@@ -56,9 +55,9 @@ server.post("/api/posts", async (req, res) => {
       const response = await db.insert(post);
       res.status(201).json({ post });
     } catch {
-      res
-        .status(500)
-        .json({ error: "The post information could not be retrieved." });
+      res.status(500).json({
+        error: "There was an error while saving the post to the database"
+      });
     }
   }
 });
