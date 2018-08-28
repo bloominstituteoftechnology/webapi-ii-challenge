@@ -16,7 +16,7 @@ server.get('/api/posts', (req, res) => {
 
         res.status(500).json({ error: 'The posts information could not be retrieved.' });
     });
-})
+});
 
 server.get('/api/posts/:id', (req, res) => {
     db.findById(req.params.id)
@@ -50,6 +50,20 @@ server.post('/api/posts', async (req, res) => {
     } else {
         res.status(422).json({ errorMessage: 'Please provide title and contents for the post.' });
     }
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params; // the same as const id = req.params.id but destructuring the code
+    db.remove(id)
+        .then(count => {
+            console.log('count: ', count);
+            if(count) {
+                res.status(204).end()
+            } else {
+                res.status(404).json({ message: 'No user with this id was found.' });
+            }
+        })
+        .catch(err => res.status(500).json(err));
 });
 
 
