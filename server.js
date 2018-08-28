@@ -45,17 +45,11 @@ server.post("/api/posts", async (req, res) => {
 
 server.delete("/api/posts/:id", (req,res) => {
   const {id} = req.params;
-  db.findById(id)
-  .then(post => {
-    res.status(200).json(post);
-  }).catch(error => {
-    res.status(500).json({message: `Error getting the post with id: ${id}`})
-  })
-    
   db.remove(id)
     .then(count => {
       if (count){
-        res.status(204).json(deleting)
+        console.log(res.serverResponse.req)
+        res.status(204).end()
       } else {
         res.status(404).json({message: `The post with the specified ID does not exist. ${id} not found.`})
       }
@@ -69,18 +63,12 @@ server.put("/api/posts/:id", (req,res)=>{
   db.update(id, body)
     .then(posts => {
       if(posts){
-        console.log(body)
-        //res.status(200).json(posts);
         res.status(200).json(body)
       } else {
         res.status(404).json({errorMessage: `The post with the specified ID does not exits. Check ID: ${id}`})
       }
     })
     .catch(error => res.status(500).json({error: `The post information could not be modified for ${id}`}))
-  // db.findById(id)
-  //   .then(posts => {
-  //     res.status(200).json(body)
-  //   }) 
 })
 
 server.listen(9000, () => console.log("\n==API on port 9000 ==\n"));
