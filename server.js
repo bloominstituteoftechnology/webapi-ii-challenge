@@ -3,6 +3,7 @@ const express = require('express');
 const server = express();
 const db = require('./data/db.js');
 
+server.use(express.json());
 // add your server code starting here
 server.get("/api/posts", (req, res) => {
     db.find()
@@ -17,20 +18,18 @@ server.get("/api/posts", (req, res) => {
 
 server.post("/api/posts", (req, res) => {
     const post = req.body;
-    post.id = 10;
-    db.insert()
-        .then(post => {
-            if(!req.body || !req.body.title || !req.body.contents){
+    db.insert(post)
+        .then(data => {
+            if(!post || !post.title || !post.contents){
                 res.status(400).json({errorMessage: "Please provide title and contents for the post."});
             }
             else{
-                posts.push(post)
-                res.status(201).json(posts);
+                res.status(201).json(post);
             }
         })
         .catch(err => {
             console.log(err);
-            res.status(500).json({error: 'There was an error while saving the post to the databse.'})
+            res.status(500).json({error: 'There was an error while saving the post to the database.'})
         })
 });
 
