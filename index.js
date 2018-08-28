@@ -75,8 +75,7 @@ server.post("/api/posts", async (req, res) => {
 
 //// delete request
 server.delete("/api/posts/:id", (req, res) => {
-  // const id = req.params.id; // same as below
-  const { id } = req.params; // uses destructuring
+  const { id } = req.params;
 
   db.remove(id)
     .then(count => {
@@ -91,15 +90,6 @@ server.delete("/api/posts/:id", (req, res) => {
     .catch(err => {
       res.status(500).json({ error: "The post could not be removed" });
     });
-
-  // working
-  // db.remove(id)
-  //   .then(post => {
-  //     res.status(200).json(post);
-  //   })
-  //   .catch(err => {
-  //     res.status(500).json({ error: "The post could not be removed" });
-  //   });
 });
 
 server.listen(8000, () => console.log("\n== API on port 8k === \n"));
