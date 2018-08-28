@@ -4,7 +4,7 @@ const db = require('../data/db.js');
 
 exports.getPosts = async (req, res) => {
     try {
-        const posts = await db.find()
+        const posts = await db.find() // res
         res.status(200).json(posts)
     }catch(err) {
         console.log(err)
