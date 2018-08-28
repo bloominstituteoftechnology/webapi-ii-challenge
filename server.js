@@ -66,6 +66,13 @@ server.delete('/api/posts/:id', (req, res) => {
         .catch(err => res.status(500).json(err));
 });
 
+server.put('/api/posts/:id', (req, res) => {
+    db.update(req.params.id, req.body)
+    .then(posts => {
+        res.status(200).json(posts);
+    })
+    .catch(err => res.status(500).json({ message: "Update failed." }));
+});
 
 
 
