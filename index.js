@@ -63,18 +63,18 @@ server.post("/api/posts", (req, res) => {
   // res.status(201).json(posts);
   // stop kind of works
   //////////////////////////////
-  const post = req.body;
-  // post.id = nextId++;
-  post.id = nextId++;
-  post.title = `Title number ${post.id}`;
-  post.contents = `Contents number ${post.id}`;
+  // const post = req.body;
+  // // post.id = nextId++;
+  // post.id = 13;
+  // post.title = `Title number ${post.id}`;
+  // post.contents = `Contents number ${post.id}`;
   if (!req.body.title || !req.body.contents) {
     return res.status(400).json({
       errorMessage: "Please provide title and contents for the post."
     });
   }
 
-  db.insert(post)
+  db.insert(req.body)
     .then(post => {
       res.status(200).json(post);
     })
