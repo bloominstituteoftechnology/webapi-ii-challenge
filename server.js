@@ -49,6 +49,19 @@ server.post('/api/posts', (req, res) => {
     .catch((err) => {
       console.log(err);
     })
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+  db.remove(req.params.id)
+    .then((response) => {
+      if (response === 0) {
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
+      }
+      res.status(200);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 })
 
 server.listen(8000, () => {
