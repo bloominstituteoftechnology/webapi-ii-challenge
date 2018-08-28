@@ -34,7 +34,7 @@ server.get("/api/posts/:id", (req, res) => {
 
 });
 
-server.post('/users', (req, res) => {
+server.post('/posts/:id', (req, res) => {
     const user = req.body
     if(user.title && user.contents){
         db.insert(user).then(response =>
@@ -49,5 +49,24 @@ server.post('/users', (req, res) => {
     }
 })
 
+server.delete("/posts/:id", (req, res) => {
+    const { id } = req.params;
+    db.remove(id)
+      .then(count => {
+          if(count){
+              res.status(204).end()
+          }else{
+              res.status(404).json({message: "No Post with that id"})
+          }
+      })
+      .catch(err => res.status(500).json(err));
+  });
+  
+  server.put('/posts/:id', (req, res)=>{
+      db.update(req.params.id, req.body).then(posts =>{
+          res.status(200).json(posts)
+      })
+      .catch(err => res.status(500).json({message: "Update failed"}))
+  })
 
  server.listen(9000, () => console.log(`\n=== API on port 9000 ===\n`))
