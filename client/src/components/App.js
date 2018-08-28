@@ -13,7 +13,7 @@ const PostContainer = styled.div`
 const PostCard = styled.div`
   width: 200px;
   background-color: gray;
-  padding: 0 5px;
+  padding: 5px;
   margin: 10px 0;
   border: 1px solid black;
 `;

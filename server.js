@@ -50,9 +50,9 @@ server.post("/posts", (req, res) => {
   console.log(req)
   if (req.body.title && req.body.contents) {
     db.insert(req.body) 
-      .then(id => {
+      .then(response => {
         res.status(201).json({
-          id, 
+          id: response.id, 
           title: req.body.title, 
           contents: req.body.contents
         })
@@ -71,7 +71,6 @@ server.post("/posts", (req, res) => {
 })
 
 server.delete("/posts/:id", (req, res) => {
-  console.log(req)
   db.remove(req.params.id)
     .then(result => {
       if (result > 0 ) {
