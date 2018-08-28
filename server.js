@@ -51,30 +51,45 @@ server.get('/posts', (req, res) => {
 })
 
 server.delete('/posts/:id', (req, res) => {
+
   db.findById(req.params.id)
     .then(post => {
-      res.status(200).json(post)
+       res.status(200).json(post)
     })
     .catch(err => {
       res.status(404).json(err)
     })
+
   db.remove(req.params.id)
     .then(count => {
-      if (count) {
+      if (count > 0) {
+        console.log(count)
         res.status(204).end()
       } else {
         res.status(404).json({message: "no user with this id was found"});
       }
     })
-    .catch( err => {res.status(500).json(err)})
+    .catch( err => {res.status(500).json({ error: "The post could not be removed"})})
 })
 
 server.put('/posts/:id', (req, res) => {
-  db.update(req.params.id, req.body)
-    .then(count => {
-      res.status(200).json(count)
-    }).catch(err => res.status(500).json({message: 'update failed'}))
+  if (req.body.title && req.body.contents) {
+    db.update(req.params.id, req.body)
+      .then(post => {
+        console.log(post) // how to tell what the response is.
+        if (post) {
+          res.status(200).json(post);
+        } else {
+          res.status(404).json({message: "cannot find id"})
+        }
+      }).catch(err =>
+         res.status(500).json({message: 'the post information could not be modified'})
+       );
+  } else {
+    res.status(422).json({message: 'post needs a title and content.'})
+  }
 
 })
+
 
 server.listen(9001, () => console.log("== API on port 9k =="));
