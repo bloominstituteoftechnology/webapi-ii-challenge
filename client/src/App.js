@@ -16,7 +16,6 @@ class App extends Component {
   fetchPosts = () => {
     const promise = axios.get('http://localhost:9000/api/posts')
       promise.then(response => {
-        console.log(response)
         this.setState({posts: response.data})
       })
       .catch(error => {

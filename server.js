@@ -61,52 +61,27 @@ server.post("/api/posts", async (req, res) => {
       });
   }
 });
-server.delete("/api/posts/:id", (req,res) =>{
-  const {id} = req.params
-  const deleting = [];
+
+server.delete("/api/posts/:id", (req,res) => {
+  const {id} = req.params;
+  let deleting = {}; 
   db.findById(id)
-    .then(data => {
-      deleting.push(data[0])
-      return db.remove(id)
-    })
-    .then(data => {
-      res.status(200).json(deleting)
-    })
+    .then(post => {
+      db.remove(id)
+        .then(count => {
+          if (count){
+            res.status(200).json(post[0])
+        } else {
+            res.status(404).json({message: `The post with the specified ID does not exist. ${id} not found.`})
+          }
+        })
+          .catch(error => res.status(500).json(error));
+          })
     .catch(error => {
-      res.status(404).json({message: `The post with the specified ID does not exist. ${id} not found. ${error}`})
+      res.status(500).json({message: `Error getting the post with id: ${id} error = ${error}`})
     })
+  
 })
-// server.delete("/api/posts/:id", (req,res) => {
-//   const {id} = req.params;
-//   let deleting = {}; 
-
-//   db.findById(id)
-//     .then(post => {
-//       let deleting = post[0]
-//       return db.remove(id);
-//     })
-//     .then(post => res.json(post[0]))
-//     .catch(error => res.json(err));
-
-//     .then(post => {
-//       //res.status(200).json(post);
-//       //deleting = post; 
-//       db.remove(id)
-//       .then(count => {
-//       if (count){
-//         //deleting = deleting[0]
-//         res.status(200).json(post[0])
-//       } else {
-//         res.status(404).json({message: `The post with the specified ID does not exist. ${id} not found.`})
-//       }
-//     })
-//     .catch(error => res.status(500).json(error));
-
-//     })
-//     .catch(error => {
-//       res.status(500).json({message: `Error getting the post with id: ${id} error = ${error}`})
-//     })
-//   })
 
 server.put("/api/posts/:id", (req,res)=>{
   const {id} = req.params;
