@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-export default class List extends Component {
+class List extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -10,8 +10,10 @@ export default class List extends Component {
     }
 
     componentDidMount() {
+        const endpoint = 'http://localhost:9000/api/posts';
+
         axios
-        .get('http://localhost:9000/api/posts')
+        .get(endpoint)
         .then(response => {
             this.setState(() => ({ posts: response.data }));
         })
@@ -22,21 +24,19 @@ export default class List extends Component {
 
     render() {
         return (
-            <div>
-                {this.state.posts.map(post => (
-                <PostsDetails post={ post }/>
-            ))}
-            </div>
+            <ul>
+                hello
+                {this.state.posts.map(post => {
+                    return (
+                        <li>
+                            {post.title}
+                            {post.contents}
+                        </li>
+                    )
+                })}
+            </ul>
         )    
     }
 }
 
-function PostsDetails ({ post }) {
-    const { title, contents } = post;
-    return (
-        <div>
-            <h1>{ title }</h1>
-            <p>{ contents }</p>
-        </div>  
-    )
-}
+export default List;

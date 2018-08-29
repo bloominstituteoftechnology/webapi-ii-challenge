@@ -1,10 +1,11 @@
 const express = require('express');
-
 const db = require('./data/db.js');
-
 const server = express();
+const port = 9000;
+const cors = require('cors');
 
 server.use(express.json()); //This teaches express to parse json information from req.body
+server.use(cors());
 
 server.get('/api/posts', (req, res) => {
     db.find()
@@ -21,7 +22,7 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req, res) => {
     db.findById(req.params.id)
     .then(post => {
-        if( post.length < 1) {
+        if( post.length === 0) {
             res.status(404).json({ error: 'The post with the specified ID does not exist.' })
         }
         else {
@@ -76,4 +77,7 @@ server.put('/api/posts/:id', (req, res) => {
 
 
 
-server.listen(9000, () => console.log('\n== API on port 9k ==\n'));
+server.listen(port, err => {
+    if(err) console.log(err);
+    console.log(`Server is listening on port ${port}`);
+});
