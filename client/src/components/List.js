@@ -24,17 +24,16 @@ class List extends Component {
 
     render() {
         return (
-            <ul>
-                hello
+            <div>
                 {this.state.posts.map(post => {
                     return (
-                        <li>
-                            {post.title}
-                            {post.contents}
-                        </li>
+                        <div key={ post.id }>
+                            <h3>title: { post.title }</h3>
+                            <p>content: { post.contents }</p> 
+                        </div>       
                     )
                 })}
-            </ul>
+            </div>
         )    
     }
 }
