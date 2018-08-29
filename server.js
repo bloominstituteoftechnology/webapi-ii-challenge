@@ -59,7 +59,7 @@ server.delete('/api/posts/:id', (req, res) => {
         .then(count => {
             console.log("count from delete", count);
             if (count === 1) {
-                res.status(204).json({message: 'The post was successfully deleted.'});
+                res.status(204).end();
             } else {
                 res.status(404).json({message: 'The post with the specified ID does not exist.'});
             }
