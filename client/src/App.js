@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios'; 
 
+axios.defaults.withCredentials = true;
+
  const url = "http://localhost:9000/api/posts"
+ 
 
 class App extends Component {
   constructor(){
@@ -12,8 +15,7 @@ class App extends Component {
   }
   
   componentDidMount(){
-     axios 
-    .get(url)
+     axios.get(url)
     .then(response => {
       this.setState({
         posts: response.data
@@ -26,11 +28,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.posts.map(user =>{
-          <div key={user.id}>
-          <p>{user.title}</p>
-          <p>{user.contents}</p>
-          </div>
+        {this.state.posts.map(user => {
+          return (
+            <div key={user.id}>
+              <p>{user.title}</p>
+              <p>{user.contents}</p>
+            </div>
+          );
         })}
       </div>
     );
