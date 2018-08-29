@@ -1,6 +1,8 @@
 const express = require('express');
 const server = express();
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
+server.use(morgan('combined'));
 server.use(express.json());
 
 
@@ -61,8 +63,8 @@ server.delete('api/posts/:id', async (req, res) => {
   if(id) {
     try {
       const response = await db.remove(id);
-      res.status(200).json(response);
-    } catch(err) {
+      res.status(204).json(response);
+    } catch(ex) {
       res.status(500).json({ error: "The post could not be removed" });
     }
   } else {
@@ -70,6 +72,20 @@ server.delete('api/posts/:id', async (req, res) => {
   } 
 })
 
+server.put('/api/posts/id', async (req, res) => {
+  const { id } = req.params;
+  const post = req.body;
+  if(post){
+  try {
+    const response = await db.update(id, post)
+    res.status(200).json(response);
+  } catch(ex) {
+    res.status(500).json({ message: "Error updating posts" })
+  }
+  } else{
+    res.status(404).json({ error: "Please provide title and contents for the post" })
+  }
+})
 
 // add your server code starting here
 const PORT = 5000;
