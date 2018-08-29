@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from "axios";
+import Post from './components.js/Post';
 
 const url = "http://localhost:5000/api/posts";
 
@@ -29,13 +30,9 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to Server-side Routing</h1>
         </header>
-        <p className="App-intro">
-          {this.state.posts.map(post => {
-            return (
-              post.title
-            )
-          })}
-        </p>
+        <div>
+          {this.state.posts.map(post => <Post post={post} key={post.id} />)}
+        </div>
       </div>
     );
   }
