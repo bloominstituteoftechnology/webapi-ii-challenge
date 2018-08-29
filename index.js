@@ -7,6 +7,8 @@ server.use(express.json());
 server.use(cors());
 
 // CORS
+// below does exact same thing as line 2 and 7
+// had to install cors via yarn first
 // server.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
 //   res.header(
