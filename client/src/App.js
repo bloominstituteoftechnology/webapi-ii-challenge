@@ -12,6 +12,7 @@ class App extends Component {
   componentDidMount (){
 		axios.get(`http://localhost:9000/api/posts`)
 			.then(res => {
+        console.log(res.data)
 				this.setState({posts: res.data, loading: false})
 			})
 			.catch(err => {
@@ -25,9 +26,9 @@ class App extends Component {
           ? <h1>loading...</h1>
           : this.state.posts.map(post => {
             return (
-              <div key={post.id}>
-                <h1>{post.title}</h1>
-                <p>{post.content}</p>
+              <div key={post.id} className="card">
+                <h1 className="title">{post.title}</h1>
+                <p className="content">{post.contents}</p>
               </div>
             )
           })}
