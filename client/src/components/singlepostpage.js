@@ -12,7 +12,7 @@ class SinglePostPage extends React.Component{
     }
     componentDidMount() {
         axios.get(`http://localhost:9000/posts/${this.props.match.params.id}`)
-        .then(res=>this.setState({id:res.data[0].id,title:res.data[0].title,contents:res.data[0].contents},()=>console.log(this.state)))
+        .then(res=>this.setState(res.data[0],()=>console.log(this.state)))
         .catch(err=>console.log(err));
     }
     delete=()=>{
