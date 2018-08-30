@@ -1,12 +1,12 @@
 // import your node modules
 const express=require('express');
 const bodyParser=require('body-parser');
-
+const cors=require('cors');
 const db = require('./data/db.js');
 
 const server=express();
 
-server.use(bodyParser.json());
+server.use(bodyParser.json()).use(cors());
 // add your server code starting here
 
 server.get('/posts',(req,res)=>
@@ -22,7 +22,7 @@ server.get('/posts/:id',(req,res)=>
     .catch(err=>res.status(500).json({error: "The post information could not be retrieved." }))
 )
 server.post('/posts',(req,res)=>{
-    const post=req.body.post;
+    const post=req.body;
     if (!post.title||!post.contents) {
         res.status(400).json({errorMessage: "Please provide title and contents for the post." });
     } else {
@@ -46,7 +46,7 @@ server.delete('/posts/:id',(req,res)=>{
     .catch(err=>res.status(500).json({error: "The post could not be removed" }))
 })
 server.put('/posts/:id',(req,res)=>{
-    const post=req.body.post;
+    const post=req.body;
     if (!post.title||!post.contents) {
         res.status(400).json({errorMessage: "Please provide title and contents for the post."})
     } else {
