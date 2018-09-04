@@ -23,13 +23,15 @@ server.post("/api/posts", async (req, res) => {
     } catch (err) {
       // handle error
       res.status(500).json({
-        message: "There was an error while saving the post to the database."
+        error: "There was an error while saving the post to the database."
       });
     }
   } else {
     res
       .status(400)
-      .json({ message: "Please provide title and contents for the post." });
+      .json({
+        errorMessage: "Please provide title and contents for the post."
+      });
   }
 
   //Alternative way of writing my code db
@@ -53,10 +55,9 @@ server.get("/api/posts", (req, res) => {
     .catch(err => {
       console.error("Error:", err);
 
-      res.status(
-        500,
-        json({ message: "The posts information could not be retrieved." })
-      );
+      res
+        .status(500)
+        .json({ error: "The posts information could not be retrieved." });
     });
 });
 
@@ -77,7 +78,7 @@ server.get("/api/posts/:id", (req, res) => {
       console.log("Error: ", err);
       res
         .status(500)
-        .json({ message: "The post information could not be retrieved." });
+        .json({ error: "The post information could not be retrieved." });
     });
 });
 
@@ -96,7 +97,7 @@ server.delete("/api/posts/:id", (req, res) => {
       }
     })
     .catch(err =>
-      res.status(500).json({ message: "The post could not be removed" })
+      res.status(500).json({ error: "The post could not be removed" })
     );
 });
 
