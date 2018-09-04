@@ -48,14 +48,18 @@ server.get("/posts/:id", (req, res) => {
 //POST
 server.post("/posts", async (req, res) => {
   const post = req.body; //express.json() middleware
-  db.insert(user);
-  if (post.title && post.content) {
+  if (post.title && post.contents) {
+      console.log( 'in the if')
     try {
       const response = await db.insert(user);
       res.status(201).json(response);
       //200-299: success, 300-399: redirection, 400=499: client error, 500+: server error
     } catch (ex) {
-      res.status(500).json({ message: "Error getting the Data" });
+      res
+        .status(500)
+        .json({
+          message: "There was an error while saving the post to the database"
+        });
     }
   } else {
     res
