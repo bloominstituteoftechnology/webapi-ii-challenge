@@ -8,5 +8,6 @@ module.exports = {
       tableName: 'dbmigrations',
     },
     seeds: { directory: './data/seeds' },
+    
   },
 };
