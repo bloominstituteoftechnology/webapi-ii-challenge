@@ -46,12 +46,22 @@ server.get("/posts/:id", (req, res) => {
 });
 
 //POST
-server.post("/posts", (req, res) => {
-  db.insert();
-  const post = req.body;
-  post.id = nextId++;
-  //Something here
-  res.status(201).json({ url: "./posts", operation: "POST" });
+server.post("/posts", async (req, res) => {
+  const post = req.body; //express.json() middleware
+  db.insert(user);
+  if (post.title && post.content) {
+    try {
+      const response = await db.insert(user);
+      res.status(201).json(response);
+      //200-299: success, 300-399: redirection, 400=499: client error, 500+: server error
+    } catch (ex) {
+      res.status(500).json({ message: "Error getting the Data" });
+    }
+  } else {
+    res
+      .status(400)
+      .json({ message: "Please provide title and contents for the post." });
+  }
 });
 
 //PUT
