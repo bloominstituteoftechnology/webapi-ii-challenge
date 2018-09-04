@@ -25,8 +25,7 @@ componentDidMount(){
 
 
   render() {
-    console.log(this.state.posts);
-    return (
+   return (
       <div className="App">
       <h1 className="title">Posts</h1>
     {this.state.posts.map(post => <PostsList key={post.id} post={post} />)}

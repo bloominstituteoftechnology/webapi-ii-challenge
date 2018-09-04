@@ -1,5 +1,5 @@
 import React from 'react';
- export default function PostsList(post){
+ export default function PostsList({ post }){
    return(
     <div>
       <div>{post.title}</div>
