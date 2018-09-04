@@ -27,11 +27,9 @@ server.post("/api/posts", async (req, res) => {
       });
     }
   } else {
-    res
-      .status(400)
-      .json({
-        errorMessage: "Please provide title and contents for the post."
-      });
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
   }
 
   //Alternative way of writing my code db
@@ -62,12 +60,12 @@ server.get("/api/posts", (req, res) => {
 });
 
 server.get("/api/posts/:id", (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
 
-  db.find(id)
-    .then(response => {
-      if (response) {
-        res.status(204).end();
+  db.findById(id)
+    .then(post => {
+      if (post) {
+        res.status(200).json(post);
       } else {
         res
           .status(404)
@@ -102,11 +100,27 @@ server.delete("/api/posts/:id", (req, res) => {
 });
 
 server.put("/api/posts/:id", (req, res) => {
-  db.update(req.params.id, req.body)
-    .then(users => {
-      res.status(200).json(users);
-    })
-    .catch(err => res.status(500).json({ message: "update failed" }));
+  if (req.body.title && req.body.contents) {
+    db.update(req.params.id, req.body)
+      .then(users => {
+        if (users) {
+          res.status(200).json(users);
+        } else {
+          res.status(404).json({
+            message: "The post with the specified ID does not exist."
+          });
+        }
+      })
+      .catch(err =>
+        res
+          .status(500)
+          .json({ error: "The post information could not be modified." })
+      );
+  } else {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
 });
 
 //start the server
