@@ -69,4 +69,4 @@ server.get('/posts/:id', (req, res) => {
   })
   
 
-server.listen(3000, () => console.log('\n== API on port 3k ==\n'));
+server.listen(4000, () => console.log('\n== API on port 4k ==\n'));
