@@ -8,7 +8,7 @@ const db = require("./data/db.js"); //<======this
 
 const server = express();
 //configure middleware for ther server
-server.use(express.json()); //this teaches express to parse json info from req.body
+server.use(express.json()); //this teaches express how to parse JSON info from req.body
 
 //configure routing (routing is also a form of middleware)
 server.get("/", (req, res) => {
@@ -34,7 +34,7 @@ server.post("/users", async (req, res) => {
   if (user.name && user.bio) {
     try {
       const response = await db.insert(user);
-      res.status(201).json(response);
+      res.status(201).json({ message: "User created successfully" });
       //200-299: success, 300-399: redirection, 400-499: client error, 500+: server error
     } catch (ex) {
       // handle error
