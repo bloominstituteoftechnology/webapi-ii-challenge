@@ -1,9 +1,9 @@
 import React from 'react';
- export default function PostsList(posts){
+ export default function PostsList(post){
    return(
     <div>
-      <div>{posts.post.title}</div>
-      <div>{posts.post.contents}</div>
+      <div>{post.title}</div>
+      <div>{post.contents}</div>
     </div>
    )
 } 

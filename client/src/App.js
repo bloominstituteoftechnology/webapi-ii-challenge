@@ -25,6 +25,7 @@ componentDidMount(){
 
 
   render() {
+    console.log(this.state.posts);
     return (
       <div className="App">
       <h1 className="title">Posts</h1>
