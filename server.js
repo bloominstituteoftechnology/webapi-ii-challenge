@@ -44,6 +44,14 @@ server.get('/posts/:id', (req, res) => {
           res.status(500).json({error: 'There was an error while saving the post to the database.'})
       })
   });
+
+
+  server.put('/posts/:id', (req, res) => {
+      db.update(req.params.id, req.body).then(posts => {
+          res.status(200).json(posts)
+      })
+      .catch(err => res.status(500).json({ message: 'update failed'}));
+  })
   
 
 server.listen(3000, () => console.log('\n== API on port 3k ==\n'));
