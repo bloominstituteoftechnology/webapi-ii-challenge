@@ -33,8 +33,9 @@ server.get("/posts", (req, res) => {
 //GET DATA FROM ID
 server.get("/posts/:id", (req, res) => {
   const id = req.params.id;
-  db.findById(`/posts/${id}`)
+  db.findById(id)
     .then(post => {
+        console.log('anything' , post)
       res.status(200).json(post);
     })
     .catch(err => {
@@ -52,7 +53,7 @@ server.post("/posts", async (req, res) => {
       console.log( 'in the if')
     try {
       const response = await db.insert(post);
-      res.status(201).json(post);
+      res.status(201).json(response);
       //200-299: success, 300-399: redirection, 400=499: client error, 500+: server error
     } catch (ex) {
       res
@@ -83,7 +84,7 @@ server.put("/posts", (req, res) => {
 //DELETE
 server.delete("/posts/:id", (req, res) => {
   const id = req.params.id;
-  db.remove(`/posts/${id}`).then(post => {
+  db.remove(id).then(post => {
     res
       .status(200)
       .json({ url: "/posts", operation: `DELETE for post with id ${id}` })
