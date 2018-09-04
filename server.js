@@ -65,11 +65,26 @@ server.post("/posts", (req, res) => {
 server.put("/posts/:id", (req, res) => {
   const { id } = req.params;
   const post = req.body;
-  db.update(id, post)
-    .then(posts => {
-      res.status(200).json(posts);
-    })
-    .catch(err => res.status(500).json({ message: "update failed" }));
+  db.update(id, post).then(count => {
+    if (!count) {
+      res
+        .status(404)
+        .json({ message: "The post with the specified ID does not exist." });
+    } else if (post.title && post.contents) {
+      try {
+        db.update(id, post);
+        res.status(200).json(post);
+      } catch (err) {
+        res
+          .status(500)
+          .json({ message: "The post information could not be modified" });
+      }
+    } else {
+      res.status(400).json({
+        errorMessage: "Please provide title and contents for the post."
+      });
+    }
+  });
 });
 
 server.delete("/posts/:id", (req, res) => {
