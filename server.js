@@ -11,25 +11,23 @@ const server = express();
 server.use(express.json()); //this teaches express how to parse JSON info from req.body
 
 //configure routing (routing is also a form of middleware)
-server.post("/users", async (req, res) => {
+server.post("/api/posts", async (req, res) => {
   //http message = headers + body(data)
-  const user = req.body; //this requies the express.json() middleware
+  const post = req.body; //this requies the express.json() middleware
 
-  if (user.name && user.bio) {
+  if (post.title && post.contents) {
     try {
-      const response = await db.insert(user);
+      const response = await db.insert(post);
       res.status(201).json({ message: "User created successfully" });
       //200-299: success, 300-399: redirection, 400-499: client error, 500+: server error
     } catch (err) {
       // handle error
       res.status(500).json({
-        title: "Error adding the user",
-        description: "what happened",
-        recoveryInstructions: "this is what you can do to recover"
+        message: "There was an error while saving the post to the database."
       });
     }
   } else {
-    res.status(422).json({ message: "a user needs both a name and bio" });
+    res.status(400).json({ message: "Please provide title and contents for the post." });
   }
 
   //Alternative way of writing my code db
@@ -42,15 +40,18 @@ server.get("/", (req, res) => {
   res.send("Hello FSW12");
 });
 
-server.get("/users", (req, res) => {
+//using query string: http://localhost:9000/users ? sort=asc & field=name
+server.get("/api/posts", (req, res) => {
+  // const { sort, field } = req.query;
   db.find()
-    .then(users => {
-      res.status(200).json(users);
+    .then(posts => {
+      //({sortedBy: field, sortOrder: sort, users})
+      res.status(200).json(posts);
     })
     .catch(err => {
       console.error("Error:", err);
 
-      res.status(500, json({ message: "Error getting the data" }));
+      res.status(500, json({ message: "The posts information could not be retrieved." }));
     });
 });
 
@@ -70,8 +71,12 @@ server.delete("/users/:id", (req, res) => {
 });
 
 server.put("/users/:id", (req, res) => {
-  
-})
+  db.update(req.params.id, req.body)
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(err => res.status(500).json({ message: "update failed" }));
+});
 
 //start the server
 server.listen(9000, () => console.log("\n== API on port 9k ==\n"));
