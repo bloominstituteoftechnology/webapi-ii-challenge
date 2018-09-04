@@ -10,15 +10,35 @@ server.use(express.json()); // this teaches express to parse json information fr
 
 // configure routing (Routing is also a form of middleware)
 server.get("/users", (req, res) => {
-  db.find()
+  const { sort, field } = req.query;
+  
+    db.find(sort, field)
     .then(users => {
-      res.status(200).json(users);
+        res.status(200).json({sortedBy: field, sortOrder: sort, users});
+        //sort them
+        if(sort){
+            
+        }
+      
     })
     .catch(err => {
       console.log("error", err);
       res.status(500).json({ message: "Error getting the data" });
     });
 });
+
+//using query strgin: http://localhost:9000/users ? sort=asc & field=name
+
+server.get("/users/:id", (req, res) => {
+    db.find()
+    .then(users => {
+        if (sort){
+
+        }
+    })
+})
+
+
 
 server.post("/users", async (req, res) => {
   //http message = headers + body(data)
@@ -44,6 +64,8 @@ server.post("/users", async (req, res) => {
   //     .then(response => response.status(201).json(response))
   //     .catch(err => res.status(500).json(err));
 });
+
+
 
 server.delete("/users/:id", (req, res) => {
   const { id } = req.params; //the same as: const id = req.params.weaponId
