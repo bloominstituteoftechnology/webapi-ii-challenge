@@ -27,7 +27,9 @@ server.post("/api/posts", async (req, res) => {
       });
     }
   } else {
-    res.status(400).json({ message: "Please provide title and contents for the post." });
+    res
+      .status(400)
+      .json({ message: "Please provide title and contents for the post." });
   }
 
   //Alternative way of writing my code db
@@ -51,11 +53,35 @@ server.get("/api/posts", (req, res) => {
     .catch(err => {
       console.error("Error:", err);
 
-      res.status(500, json({ message: "The posts information could not be retrieved." }));
+      res.status(
+        500,
+        json({ message: "The posts information could not be retrieved." })
+      );
     });
 });
 
-server.delete("/users/:id", (req, res) => {
+server.get("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.find(id)
+    .then(response => {
+      if (response) {
+        res.status(204).end();
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist" });
+      }
+    })
+    .catch(err => {
+      console.log("Error: ", err);
+      res
+        .status(500)
+        .json({ message: "The post information could not be retrieved." });
+    });
+});
+
+server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params; //const id = req.params.id;
 
   db.remove(id)
@@ -64,13 +90,17 @@ server.delete("/users/:id", (req, res) => {
       if (count) {
         res.status(204).end();
       } else {
-        res.status(404).json({ message: "No user with this id was found" });
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
       }
     })
-    .catch(err => res.status(500).json(err));
+    .catch(err =>
+      res.status(500).json({ message: "The post could not be removed" })
+    );
 });
 
-server.put("/users/:id", (req, res) => {
+server.put("/api/posts/:id", (req, res) => {
   db.update(req.params.id, req.body)
     .then(users => {
       res.status(200).json(users);
