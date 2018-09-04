@@ -16,7 +16,7 @@ server.get("/", (req, res) => {
 server.get("/users", (req, res) => {
   db.find()
     .then(users => {
-        res.status(200).json(users);
+      res.status(200).json(users);
     })
     .catch(err => {
       console.error("Error:", err);
@@ -25,9 +25,18 @@ server.get("/users", (req, res) => {
     });
 });
 
-server.post("/users", (req, res) => {
-    //http message = headers + body(data)
-    const user = req.body;
-})
+server.post("/users", async (req, res) => {
+  //http message = headers + body(data)
+  const user = req.body; //this requies the express.json() middleware
+  try {
+    const response = await db.insert(user);
+    res.status(201).json(response);
+    //200-299: success, 300-399: redirection, 400-499: client error, 500+: server error
+  } catch (ex) {
+    // handle error
+    res.status(500).json({ message: "Error getting the data" });
+  }
+});
 
+//start the server
 server.listen(9000, () => console.log("\n== API on port 9k ==\n"));
