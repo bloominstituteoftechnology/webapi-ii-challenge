@@ -51,8 +51,8 @@ server.post("/posts", async (req, res) => {
   if (post.title && post.contents) {
       console.log( 'in the if')
     try {
-      const response = await db.insert(user);
-      res.status(201).json(response);
+      const response = await db.insert(post);
+      res.status(201).json(post);
       //200-299: success, 300-399: redirection, 400=499: client error, 500+: server error
     } catch (ex) {
       res
