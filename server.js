@@ -6,15 +6,26 @@ server.use(express.json());
 server.get('/', (req, res) => {
     res.send('Hello FSW12');
 });
-server.get('/users', (req, res) => {
+server.get('/posts', (req, res) => {
     db.find()
-    .then(users => {
-        res.status(200).json(users);
+    .then(posts => {
+        res.status(200).json(posts);
     })
     .catch(err => {
         console.error('error', err);
-        res.status(500).json({message: 'Error getting the data'})
+        res.status(500).json({error: "The posts information could not be retrieved."})
     })
+})
+server.get('/posts/:id', (req, res) => {
+    db.findById(`/posts/${posts.id}`)
+    .then(post => {
+        res.status(200).json(post)
+    })
+    .catch(err => {
+        console.error('error', err);
+        res.status(404).json({message: 'The post with the specified ID does not exist.'})
+    })
+
 })
 
 server.listen(9000, () => console.log('API on port 9k'))
