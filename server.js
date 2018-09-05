@@ -26,17 +26,21 @@ server.get('/api/posts', (req, res) => {
 //ID:
 server.get('/api/posts/:id', (req, res) => {
   db.findById(req.params.id)
-  .then((id) => {
-    res.status(200).json(id);
+  .then((post) => {
+    !post ?
+    res.status(404).json({message: 'The Post with the specified ID does not exist.'})
+    : res.status(200).json(post)
   })
   .catch(err =>
   {
     res
       .status(500)
-      .json({error: "The posts information could not be retrieved."})
+      .json({error: "The post information could not be retrieved."})
   })
 });
-//can't call it id if I define an id, app
+//can't call it id if I define an id
+
+//--------post----------
 
 
 
