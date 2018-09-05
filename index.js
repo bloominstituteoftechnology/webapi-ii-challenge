@@ -11,10 +11,6 @@ server.use(express.json()); //allows express to parse json info from req.body
 
 // configure routing
 
-server.get('/', (req, res) => {
-    res.send('Test test test');
-});
-
 server.get('/posts', (req, res) => {
     db.find().then(posts => {
         res.status(200).json(posts);
@@ -39,15 +35,6 @@ server.post('/posts', async (req, res) => {
     // .then(response => res.status(201).json(response))
     // .catch(err => res.status(500).json(err))
 
-})
-
-server.get('/posts/:id', (req, res) => {
-    const id = req.params;
-
-    db.find(id).then(posts => {
-        res.status(200).json(posts)
-    })
-    .catch(err => res.status(404).json({ message: "The post with the specified ID does not exist." }))
 })
 
 server.delete('/posts/:id', (req, res) => {
