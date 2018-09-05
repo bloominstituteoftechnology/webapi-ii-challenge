@@ -41,22 +41,23 @@ server.get('/api/posts/:id', (req, res) => {
 });
 //can't call it id if I define an id
 
-//--------post----------
+//--------Post---------- //
 server.post('/api/posts', (req, res) => {
   const { title, contents} = req.body;
   if  (!title || !contents)  {
     res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
   }
-  db.insert( req.body )
+  db.insert({ title, contents })
     .then(id => {
       db.find(id)
-        .then(post => res.status(201).json( req.body))
+        .then(post => res.status(201).json({ title, contents }))
         .catch(err => {
           res.status(500).json({error: "There was an error while saving the post to the database"})
         })
     });
 });
 
+//----Delete --------//
 
 
 server.listen(8000, () => console.log('API running on port 8000'))
