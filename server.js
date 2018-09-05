@@ -50,7 +50,6 @@ server.get("/posts/:id", (req, res) => {
 server.post("/posts", async (req, res) => {
   const post = req.body; //express.json() middleware
   if (post.title && post.contents) {
-    console.log("in the if");
     try {
       const response = await db.insert(post);
       res.status(201).json(response);
