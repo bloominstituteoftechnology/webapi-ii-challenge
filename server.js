@@ -13,7 +13,8 @@ server.get('/', (req, res) => {
 //------Get request methods-------//
 
 server.get('/api/posts', (req, res) => {
-  db.find().then((posts) => {
+  db.find()
+  .then((posts) => {
     res.status(200).json(posts);
   })
   .catch(err =>
@@ -58,6 +59,30 @@ server.post('/api/posts', (req, res) => {
 });
 
 //----Delete --------//
+server.delete('/posts/:id', (req, res) => {
+  db.findById(req.params.id)
+    .then(post => {
+      db.remove(req.params.id)
+        .then(removed => {
+          if (removed) {
+                  db.find()
+                    .then(posts => {
+                      res.status(200).json(posts);
+                    })
+                    .catch(err => {
+                      res.status(500).json({ error: 'The posts information could not be retrieved.' });
+                    });
+          }
+        })
+        .catch(err => {
+          res.status(500).json({ error: 'The post could not be removed.' });
+        });
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(404).json({ message: "The post with the specified ID does not exist." });
+    });
+});
 
-
+//listener
 server.listen(8000, () => console.log('API running on port 8000'))
