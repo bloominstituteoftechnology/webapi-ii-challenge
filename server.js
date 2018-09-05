@@ -25,10 +25,9 @@ server.get('/api/posts', (req, res) => {
 
 //ID:
 server.get('/api/posts/:id', (req, res) => {
-  const id = req.params.id
-  db.findById(id)
-  .then((post) => {
-    res.status(200).json(post);
+  db.findById(req.params.id)
+  .then((id) => {
+    res.status(200).json(id);
   })
   .catch(err =>
   {
@@ -37,6 +36,7 @@ server.get('/api/posts/:id', (req, res) => {
       .json({error: "The posts information could not be retrieved."})
   })
 });
+//can't call it id if I define an id, app
 
 
 
