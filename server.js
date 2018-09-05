@@ -35,7 +35,7 @@ server.get("/posts/:id", (req, res) => {
   const id = req.params.id;
   db.findById(id)
     .then(post => {
-        console.log('anything' , post)
+      console.log("anything", post);
       res.status(200).json(post);
     })
     .catch(err => {
@@ -50,17 +50,15 @@ server.get("/posts/:id", (req, res) => {
 server.post("/posts", async (req, res) => {
   const post = req.body; //express.json() middleware
   if (post.title && post.contents) {
-      console.log( 'in the if')
+    console.log("in the if");
     try {
       const response = await db.insert(post);
       res.status(201).json(response);
       //200-299: success, 300-399: redirection, 400=499: client error, 500+: server error
     } catch (ex) {
-      res
-        .status(500)
-        .json({
-          message: "There was an error while saving the post to the database"
-        });
+      res.status(500).json({
+        message: "There was an error while saving the post to the database"
+      });
     }
   } else {
     res
@@ -70,30 +68,27 @@ server.post("/posts", async (req, res) => {
 });
 
 //PUT
-server.put("/posts", (req, res) => {
-  const post = posts.find(post => post.id == req.params.id);
-  db.update();
-  if (!post) {
-    res.status(404).json({ message: "Post does not exist" });
-  } else {
-    Object.assign(post, req.body);
-    res.status(200).json({ post });
-  }
+server.put("/posts/:id", (req, res) => {
+  db.update(req.params.id, req.body)
+    .then(post => {
+      res.status(200).json(post);
+    })
+    .catch(err => res.status(404).json({ message: "Post does not exist" }));
 });
 
 //DELETE
 server.delete("/posts/:id", (req, res) => {
   const id = req.params.id;
-  db.remove(id).then(post => {
-    res
-      .status(200)
-      .json({ url: "/posts", operation: `DELETE for post with id ${id}` })
-      .catch(err => {
-        console.error("error", err);
-        res
-          .status(404)
-          .json({ message: "The post with the specified ID does not exist." });
-      });
+  db.remove(id).then(count => {
+    if (count) {
+      res
+        .status(204)
+        .json({ url: "/posts", operation: `DELETE for post with id ${id}` });
+    } else {
+      res
+        .status(404)
+        .json({ message: "The post with the specified ID does not exist." });
+    }
   });
 });
 
