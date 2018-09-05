@@ -2,9 +2,10 @@
 const express = require('express');
 const server = express();
 const db = require('./data/db.js');
+const bodyParser = require('body-parser');
 
 // add your server code starting here
-
+server.use(express.json());
 server.get('/', (req, res) => {
   res.send("what's up ma brutha?")
 });
@@ -36,21 +37,25 @@ server.get('/api/posts/:id', (req, res) => {
     res
       .status(500)
       .json({error: "The post information could not be retrieved."})
-  })
+  });
 });
 //can't call it id if I define an id
 
 //--------post----------
 server.post('/api/posts', (req, res) => {
-  db.insert({ title, contents })
+  const { title, contents} = req.body;
+  if  (!title || !contents)  {
+    res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
+  }
+  db.insert( req.body )
     .then(id => {
       db.find(id)
-        .then(post => res.status(201).json({ title,  contents }))
+        .then(post => res.status(201).json( req.body))
         .catch(err => {
           res.status(500).json({error: "There was an error while saving the post to the database"})
         })
-    })
-})
+    });
+});
 
 
 
