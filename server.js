@@ -41,7 +41,16 @@ server.get('/api/posts/:id', (req, res) => {
 //can't call it id if I define an id
 
 //--------post----------
-
+server.post('/api/posts', (req, res) => {
+  db.insert({ title, contents })
+    .then(id => {
+      db.find(id)
+        .then(post => res.status(201).json({ title,  contents }))
+        .catch(err => {
+          res.status(500).json({error: "There was an error while saving the post to the database"})
+        })
+    })
+})
 
 
 
