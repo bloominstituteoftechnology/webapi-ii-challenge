@@ -29,17 +29,20 @@ server.get("/api/posts", (req, res) => {
 
 // GET to /api/posts/:id
 server.get("/api/posts/:id", (req, res) => {
-  const { id } = req.params; // same as const id = req.params.id
+  const id = req.params.id;
+
   db.findById(id)
-    .then(posts => {
-      if (posts) {
-        res.status(204).json(posts)
+    .then(post => {
+      if (post) {
+        res.status(200).json(post);
       } else {
-        res.status(404).json({ message: "The post with the specified ID does not exist." });
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist" });
       }
     })
     .catch(err => {
-      console.log("error:", err);
+      console.log("Error: ", err);
       res
         .status(500)
         .json({ error: "The post information could not be retrieved." });
@@ -57,18 +60,14 @@ server.post("/api/posts", async (req, res) => {
       res.status(201).json({ message: "post created successfully" });
       // 200-299 success (created in ^ case), 300-399: redirection, 400-499 client error, 500+ server error
     } catch (ex) {
-      res
-        .status(500)
-        .json({
-          error: "There was an error while saving the post to the database"
-        });
+      res.status(500).json({
+        error: "There was an error while saving the post to the database"
+      });
     }
   } else {
-    res
-      .status(400)
-      .json({
-        errorMessage: "Please provide title and contents for the post."
-      });
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
   }
   // equivilent to the above try and catch (not the if else thats extra example). below is promise (not async)
   //   db.insert(user)
@@ -78,24 +77,46 @@ server.post("/api/posts", async (req, res) => {
 
 // DELETE
 server.delete("/api/posts/:id", (req, res) => {
-    const { id } = req.params; // same as const id = req.params.id
-  
-    db.remove(id).then(count => {
+  const { id } = req.params; // same as const id = req.params.id
+
+  db.remove(id)
+    .then(count => {
       if (count) {
-          res.status(204).end()
+        res.status(204).end();
       } else {
-          res.status(404).json({ message: "The post with the specified ID does not exist."})
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
       }
-      })
-        .catch(err => res.status(500).json({ error: "The post could not be removed" }));
-    });
-  
+    })
+    .catch(err =>
+      res.status(500).json({ error: "The post could not be removed" })
+    );
+});
+
 // PUT
 server.put("/api/posts/:id", (req, res) => {
-    db.update(req.params.id, req.body).then( posts => {
-        res.status(200).json(posts);
-    })
-    .catch(err => res.status(500).json({message: 'update failed'}))
-}) 
+  if (req.body.title && req.body.contents) {
+    db.update(req.params.id, req.body)
+      .then(users => {
+        if (users) {
+          res.status(200).json(users);
+        } else {
+          res.status(404).json({
+            message: "The post with the specified ID does not exist."
+          });
+        }
+      })
+      .catch(err =>
+        res
+          .status(500)
+          .json({ error: "The post information could not be modified." })
+      );
+  } else {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
+});
 //start the server
 server.listen(9000, () => console.log("\n== API on port 9K ==\n"));
