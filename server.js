@@ -22,4 +22,11 @@ server.post('/api/posts', (req, res) => {
         .catch(err => res.status(500).json(err));
 });
 
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+    db.remove(id)
+        .then(count => res.status(204).end())
+        .catch(err => res.status(500).json(err));
+});
+
 server.listen(3000, () => console.log('Listening on Port 3000'));
