@@ -1,22 +1,31 @@
 // import your node modules
 const express = require('express'); //commonJS modules
 
+const db = require('./data/db.js');
+
 const server = express(); 
 
 //comfigure middleware for the server
 server.use(express.json());
 
 
-//configure routing
+//configure routing (form of middleware)
 server.get('/', (req, res) => {
     res.send('Hello FSW12');
 });
-// const db = require('./data/db.js');
 
 
+server.get('/users', (req, res) => {
+    db.find().then(users => {
+        res.status(200).json(users);
+    }
+    ).catch(fail => {
+        console.log('fail', fail)
+        res.status(500).json({message: 'Error getting the data'});
+    });
+})
 
-//start the server
-server.listen(9000, () => console.log('\n== API on port 9k ==\n'));
+
 
 // add your server code starting here
 
@@ -25,6 +34,7 @@ server.listen(9000, () => console.log('\n== API on port 9k ==\n'));
 
 
 server.post('/api/posts', (req, res) => {
+    // const {variables that contain the key value with it's same name} (= from) inside.of.this.object.variables.
     const { title, contents } = req.body;
     /*
         In req.body, there's two properties:
@@ -82,7 +92,7 @@ server.get('/api/posts', (request, response) => {
 
 
 server.get(`/api/posts/:id`, (req,res) => {
-    
+    const {id} = req.params;
 
     db.findById(id)
         .then((post) => {
@@ -171,7 +181,8 @@ server.put(`/api/posts/:id`, (req, res) => {
 
 
 
-
+//start the server
+server.listen(9000, () => console.log('\n== API on port 9k ==\n'));
 
 
 
