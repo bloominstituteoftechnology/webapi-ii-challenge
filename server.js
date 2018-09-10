@@ -6,7 +6,7 @@ const db = require('./data/db.js');
 const server = express(); 
 
 //comfigure middleware for the server
-server.use(express.json());
+server.use(express.json()); // this teaches express to parse json information from req.body
 
 
 //configure routing (form of middleware)
@@ -35,7 +35,8 @@ server.get('/users', (req, res) => {
 
 server.post('/api/posts', (req, res) => {
     // const {variables that contain the key value with it's same name} (= from) inside.of.this.object.variables.
-    const { title, contents } = req.body;
+
+    const { title, contents } = req.body; //this requires the express.json() middleware
     /*
         In req.body, there's two properties:
             title, contents
@@ -112,7 +113,7 @@ server.get(`/api/posts/:id`, (req,res) => {
 
 
 
-server.delete('/api/posts', (req, res) => {
+server.delete('/api/posts/:id', (req, res) => {
     const {id} = req.params;
 
         db.findById(id)
