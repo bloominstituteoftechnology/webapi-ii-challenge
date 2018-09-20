@@ -90,4 +90,4 @@ server.put('/api/posts/:id', (req, res) => {
     });
 });
 
-server.listen(8000, () => console.log('API running on port 5000'));
+server.listen(8000, () => console.log('API running on port 8000'));
