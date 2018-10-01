@@ -24,6 +24,6 @@ server.get('/api/posts', (req, res) => {
       res.json(posts)
     })
     .catch(err => {
-      res.send(`${err}: The posts information could not be retrieved.`)
+      res.json({ message: "The post with the specified ID does not exist." })
     })
 })
