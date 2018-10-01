@@ -32,7 +32,7 @@ const server = express();
     return the following JSON object: { error: "There was an error while saving the post to the database" }.
 */
 
-server.post("/api/posts", async (req, res) => {});
+server.post("/api/posts", (req, res) => {});
 
 /*
   get all posts : TODO: add logic
@@ -44,6 +44,22 @@ server.post("/api/posts", async (req, res) => {});
     return the following JSON object: { error: "The posts information could not be retrieved." }.
 */
 
-server.get("/api/posts", async (req, res) => {});
+server.get("/api/posts", (req, res) => {});
+
+/*
+  get a single post dependant upon id
+  -----------------------------------
+
+  If the post with the specified id is not found:
+    return HTTP status code 404 (Not Found).
+    return the following JSON object: { message: "The post with the specified ID does not exist." }.
+
+  If there's an error in retrieving the post from the database:
+    cancel the request.
+    respond with HTTP status code 500.
+    return the following JSON object: { error: "The post information could not be retrieved." }.
+*/
+
+server.get("/api/posts/:id", (req, res) => {});
 
 server.listen(8000, () => console.log("API listenint on port 8000"));
