@@ -4,3 +4,16 @@ body {
   font-family: sans-serif;
   background-color: #ddd;
 }
+
+
+/* Animations */
+@keyframes fade-in-anim {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes grow-anim {
+  0% {transform: scale(0)}
+  50% {transform: scale(1.2)}
+  100% {transform: scale(1)}
+}

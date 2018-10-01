@@ -8,6 +8,9 @@ const PostDiv = styled.div`
 	border-radius: 5px;
 	width: 80%;
 	margin: 10px;
+	animation-name: grow-anim;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
 
 	* {
 		margin: 10px;

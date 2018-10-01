@@ -11,6 +11,9 @@ const AppDiv = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	animation-name: fade-in-anim;
+	animation-duration: 2s;
+	animation-fill-mode: forwards;
 
 	header {
 		display: flex;
@@ -52,6 +55,8 @@ class App extends Component {
 	}
 
 	render() {
+		const { users } = this.state;
+
 		return (
 			<AppDiv>
 				<header>
@@ -59,7 +64,7 @@ class App extends Component {
 					<Link to = '/'>Home</Link>
 				</header>
 
-				<Route exact path = '/' render = { () => this.state.users.map((user, i) => <Post key = { i } user = { user } />) } />
+				<Route exact path = '/' render = { () => users.map((user, i) => <Post key = { i } user = { user } />) } />
 
 				<Route path = '/post/:id' render = { props =>  <SinglePost id = { props.match.params.id } /> } />
 			</AppDiv>
