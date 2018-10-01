@@ -9,7 +9,7 @@ import PostList from './components/PostList'
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8000/api/posts')
+    axios.get('http://localhost:5000/api/posts')
     .then(response => {
       this.setState({posts: response.data});
     })

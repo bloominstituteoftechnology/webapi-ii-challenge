@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import Post from '../components/Post';
 
 function PostList(props) {

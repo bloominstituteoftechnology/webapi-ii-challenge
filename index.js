@@ -10,7 +10,6 @@ server.use(cors());
 // configures our server to execute a function for every GET request to "/api/posts"
 // the second argument passed to the .get() method is the "Route Handler Function"
 // the route handler function will run on every GET request to "/"
-
 server.get("/api/posts", (req, res) => {
   db.find()
 		.then(posts => res.json(posts))
@@ -23,7 +22,7 @@ server.get("/", (req, res) => {
 })
 
 // Port listening code
-const port = 8000;
+const port = 5000;
 server.listen(port, () =>
   console.log(`Server is listening on Port ${port}`)
 );
