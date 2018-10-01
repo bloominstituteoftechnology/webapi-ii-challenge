@@ -1,5 +1,5 @@
-// import your node modules
+// import database handler
+const db = require("./data/db.js");
 
-const db = require('./data/db.js');
-
-// add your server code starting here
+// import express
+const express = require("express");
