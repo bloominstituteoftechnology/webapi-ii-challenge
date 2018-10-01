@@ -13,3 +13,15 @@ const db = require('./data/db.js');
 server.get('/', (req, res) => {
   res.send('Testing server.');
 });
+
+server.get('/posts', (req, res) => {
+  db.find().then(posts => {
+    console.log('\n** posts **', posts);
+    res.json(posts);
+  })
+  .catch(err => res.send(err));
+});
+
+// listen on port 8000
+
+server.listen(8000, () => console.log('Server listening on port 8000.'));
