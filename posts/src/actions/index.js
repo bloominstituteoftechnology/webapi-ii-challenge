@@ -13,6 +13,6 @@ export const getPosts = () => {
         dispatch({ type: FETCH_POSTS_SUCCESSFUL, payload: resp.data })
         }
       )
-      .catch(err => dispatch({ type: FETCH_POSTS_FAILURE, payload: [...err] }));
+      .catch(err => dispatch({ type: FETCH_POSTS_FAILURE, payload: err.response.data }));
   };
 };

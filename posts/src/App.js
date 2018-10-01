@@ -14,7 +14,7 @@ class App extends Component {
       <div className="App" style={{ margin: "20px 0" }}>
         {this.props.error ? (
           <div>
-            <h4>{this.props.error}</h4>
+            <h4>{this.props.error} <a href="http://localhost:9000/">Root API Page</a></h4>
           </div>
         ) : (
           <PostList posts={this.props.posts} />
