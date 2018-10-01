@@ -3,9 +3,12 @@ const express = require("express");
 const db = require("./data/db.js");
 const server = express();
 const port = 8000;
+const cors = require("cors");
+server.use(cors());
 server.listen(port, () =>
 	console.log(`server started listening on port ${port}`)
 );
+
 // add your server code starting here
 server.get("/", (req, res) => {
 	res.send(

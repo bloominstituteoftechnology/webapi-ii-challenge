@@ -1,0 +1,67 @@
+body {
+	background: #f4f4f4;
+}
+
+.App {
+	text-align: center;
+	display: flex;
+	max-width: 1200px;
+	width: 33%;
+	margin: 0 auto;
+	justify-content: space-evenly;
+	flex-wrap: wrap;
+}
+
+.App-logo {
+	animation: App-logo-spin infinite 20s linear;
+	height: 80px;
+}
+
+.App-header {
+	background-color: #222;
+	height: 150px;
+	padding: 20px;
+	color: white;
+}
+
+.App-title {
+	font-size: 1.5em;
+}
+
+.App-intro {
+	font-size: large;
+}
+.guess {
+	box-shadow: 0px 8px 30px 0px black;
+	padding: 15px 30px;
+	width: 15%;
+	text-align: center;
+	margin: 10px auto 30px;
+	background: red;
+	color: white;
+}
+.title {
+	padding: 15px 30px;
+	border-bottom: 1px solid black;
+	text-align: center;
+	margin: 0px auto 30px;
+	background: blue;
+	color: white;
+}
+.posts-container {
+	border: 1px solid #ededed;
+	box-shadow: 0px 20px 60px 6px #d6d6d6;
+	background: white;
+	margin: 30px 1%;
+	height: auto;
+	width: 100%;
+}
+
+@keyframes App-logo-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
