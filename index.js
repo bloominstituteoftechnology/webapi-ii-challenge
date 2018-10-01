@@ -17,11 +17,17 @@ server.get("/api/posts", (req, res) => {
     console.log(`Here are the posts I've found: ${posts}`);
 });
 
-server.get("/", (req, res) => {
-  res.send('<h1>Post Feed</h1>')
-})
+server.get("api/posts/:id", (req, res) => {
+  db.findById(parseInt(req.params.id))
+      .then(post => {
+        res.status(200).json(post);
+      })
+      .catch(err => {
+          res.status(500).json({ error: "Post could not be found" });
+      });
+});
 
-// Port listening code
+// The port that the server we're creating will host the info on
 const port = 5000;
 server.listen(port, () =>
   console.log(`Server is listening on Port ${port}`)
