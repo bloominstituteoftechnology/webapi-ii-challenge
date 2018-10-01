@@ -8,10 +8,10 @@ export const fetchPosts = () => {
   return dispatch => {
     dispatch({ type: FETCHING_POSTS });
     axios
-      .get('http://localhost:3000/api/posts')
+      .get('http://localhost:8000/api/posts')
 
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         dispatch({ type: FETCHED_POSTS, payload: response.data });
       })
 

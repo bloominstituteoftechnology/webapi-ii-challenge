@@ -1,27 +1,27 @@
 import { FETCHING_POSTS, FETCHED_POSTS, FETCH_POSTS_ERRORS } from '../actions';
 
-const initialState = { friends: [], friend: {}, fetching: false, error: '' };
+const initialState = {
+  title: '',
+  contents: '',
+  created_at: '',
+  updated_at: '',
+  fetching: false,
+  error: ''
+};
 
-export const friendsReducer = (state = initialState, action) => {
+const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCHING:
+    case FETCHING_POSTS:
       return { ...state, fetching: true };
 
-    case FETCHED:
+    case FETCHED_POSTS:
       return {
         ...state,
         friends: action.payload,
         fetching: false
       };
 
-    case FRIEND_FETCHED:
-      return {
-        ...state,
-        friend: action.payload,
-        fetching: false
-      };
-
-    case ERRORS:
+    case FETCH_POSTS_ERRORS:
       return {
         ...state,
         fetching: false,
@@ -32,3 +32,5 @@ export const friendsReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default rootReducer;
