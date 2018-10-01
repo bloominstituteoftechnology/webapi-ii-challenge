@@ -1,0 +1,15 @@
+.App {
+  text-align: center;
+  background-color: darkgray;
+  top: 0;
+}
+
+.post{
+  color: lightblue;
+  width: 600px;
+  margin: 5% auto;
+  border: 1px solid black;
+  background-color: black;
+  border-radius: 8px;
+
+}
