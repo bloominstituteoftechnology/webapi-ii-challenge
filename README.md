@@ -51,7 +51,7 @@ contents of the post, also as a String.
 
 ### Provided Code
 
-We have provided a `server.js` file and a folder called `data`. Inside the data folder we have added a database with some posts already populated that you can use to test your endpoints as you build them.
+We have provided an `index.js` file and a folder called `data`. Inside the `data` folder we have added a database with some posts already populated that you can use to test your endpoints as you build them.
 
 Server.js already has `db.js` required and ready for you to use when building your endpoints.
 
