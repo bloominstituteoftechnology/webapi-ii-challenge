@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "LambdaSchool Node.js and Express",
   "private": true,
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon index.js"
   },
   "license": "ISC",
   "dependencies": {
@@ -13,6 +13,6 @@
     "sqlite3": "^4.0.2"
   },
   "devDependencies": {
-    "nodemon": "^1.18.3"
+    "nodemon": "^1.18.4"
   }
 }
