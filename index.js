@@ -1,12 +1,14 @@
 // import your node modules
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const db = require("./data/db.js");
 
 // add your server code starting here
 const server = express();
 const port = 8000;
+server.use(bodyParser.json());
 
 server.listen(port, () => {
   console.log("API running");
@@ -14,31 +16,34 @@ server.listen(port, () => {
 
 //POST new post
 server.post("/api/posts", (req, res) => {
-  console.log("this is the request: ");
-  console.log(req);
-  //   if (
-  //     post.title === "" ||
-  //     post.title === undefined ||
-  //     post.contents === "" ||
-  //     post.contents === undefined
-  //   ) {
-  //     res.status(400).json({
-  //       errorMessage: "Please provide title and contents for the post."
-  //     });
-  //   } else {
-  //     db.insert(post)
-  //       .then(post => {
-  //         res.status(201);
-  //         db.findById(post.id)
-  //           .then(post => res.json(post))
-  //           .catch(err => {
-  //             res.send({ error: "The post information could not be retrieved" });
-  //           });
-  //       })
-  //       .catch(err => {
-  //         error: "There was an error while saving the post to the database";
-  //       });
-  //   }
+  //save post from request body
+  const post = { title: "", contents: "" };
+  post.title = req.body.title;
+  post.contents = req.body.contents;
+
+  if (
+    post.title === "" ||
+    post.title === undefined ||
+    post.contents === "" ||
+    post.contents === undefined
+  ) {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  } else {
+    db.insert(post)
+      .then(post => {
+        res.status(201);
+        db.findById(post.id)
+          .then(post => res.json(post))
+          .catch(err => {
+            res.send({ error: "The post information could not be retrieved" });
+          });
+      })
+      .catch(err => {
+        error: "There was an error while saving the post to the database";
+      });
+  }
 });
 //GET all posts
 server.get("/", (req, res) => {
