@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin: auto;
 }
 
 .App-logo {
@@ -26,3 +27,29 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.posts{
+  margin: auto;
+  width: 850px;
+  align-items: center;
+}
+.forPosts{
+  background-color: grey;
+  border: 1px solid black;
+  width: 850px;
+  margin-top: 2%;
+}
+
+h2{
+  color: white;
+  align-items: center;
+  padding: 2%;
+}
+
+.thePosts{
+  font-size: 1.2rem;
+  color: pink;
+  
+}
+
+
