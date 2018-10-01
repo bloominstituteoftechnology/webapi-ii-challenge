@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+
+import Post from "../Post";
 import "./index.css";
 
 class App extends Component {
@@ -23,7 +25,15 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Node Express Labs</h1>
         </header>
-        <p className="App-intro">posts will go here</p>
+        <p className="App-intro">
+          {this.state.posts.map(post => {
+            return (
+              <div>
+                <Post title={post.title} contents={post.contents} />
+              </div>
+            );
+          })}
+        </p>
       </div>
     );
   }
