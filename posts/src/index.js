@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
-import postsReducer from './reducers/index';
+import { postsReducer } from './reducers/index';
 
 const store = createStore(postsReducer, applyMiddleware(thunk));
 
