@@ -30,13 +30,9 @@ class Posts extends Component {
                 {this.state.posts.map(post => {
                     return (
                         <div className = 'forPosts' key={post.id}>
-                        <div className = 'title'>
                             <h2>{post.title}</h2>
-                        </div>
-                        <div className = 'thePostss'>
                             <p className = 'thePosts'>{post.contents}</p>
                             <p>{post.create_at}</p>
-                        </div>
                         </div>
                     )
                 })}
