@@ -15,14 +15,18 @@ server.get('/api/posts', (req, res) => {
       res.json(post);
     })
     .catch(err => {
+      // 1
       // console.log(err.statusMessage)
+
+      // 2
       // res.status(500).send(res.statusMessage);
-      res.statusMessage = "The posts information could not be retrieved.";
-      res.status(500).end();
-      //   res.status(500).json({
-      //     message: err.message,
-      //     error: err
-      // })
+      
+      // 3
+      res.status(500).json({ error: "The posts information could not be retrieved." })
+      
+      // 4 
+      // res.statusMessage = "The posts information could not be retrieved.";
+      // res.status(500).end();
     });
 })
 
