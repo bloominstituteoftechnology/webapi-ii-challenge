@@ -12,9 +12,9 @@ server.get('/api/posts', (req, res) => {
   db.find()
     .then(posts => {
       console.log("posts", posts);
-      res.json(posts);
+      res.json(post);
     })
-    .catch(err => res.send(err));
+    .catch(err => res.status(500).json({ error: "The posts information could not be retrieved." }));
 })
 
 // PORT LISTENER

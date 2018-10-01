@@ -12,7 +12,7 @@ class App extends Component {
       .then(res => {
         this.setState({ posts: res.data })
       })
-      .catch(err => alert(err))
+      .catch(err => console.log(err))
   }
 
   render() {
@@ -35,6 +35,7 @@ class App extends Component {
             )
           })
         }
+
         <GlobalStyle />
       </Div1>
     )
@@ -68,7 +69,6 @@ const GlobalStyle = createGlobalStyle`
     font-size: 1.6rem;
   }
 `
-
 const Div1 = styled.div``
 const Div2 = styled.div``
 const H11 = styled.h1``
