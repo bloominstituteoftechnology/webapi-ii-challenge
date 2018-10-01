@@ -18,10 +18,6 @@ server.get("/api/posts", (req, res) => {
     console.log(`Here are the posts I've found: ${posts}`);
 });
 
-server.get("/", (req, res) => {
-  res.send('<h1>Post Feed</h1>')
-})
-
 // Port listening code
 const port = 8000;
 server.listen(port, () =>
