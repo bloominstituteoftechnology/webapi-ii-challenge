@@ -13,8 +13,24 @@ const AppDiv = styled.div`
 	align-items: center;
 
 	header {
-		h1 {
+		display: flex;
+		flex-direction: column;
+
+		h1, a {
 			text-align: center;
+		}
+
+		a {
+			text-decoration: none;
+			border:1px solid black;
+			border-radius: 5px;
+			color: black;
+			padding: 5px 0;
+
+			&:hover {
+				background-color: black;
+				color: white;
+			}
 		}
 	}
 `;

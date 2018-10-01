@@ -1,6 +1,33 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import styled from 'styled-components';
+
+const PostDiv = styled.div`
+	border: 1px solid black;
+	border-radius: 5px;
+	width: 80%;
+	margin: 10px;
+
+	* {
+		margin: 10px;
+	}
+
+	.title {
+		background-color: gray;
+		text-align: center;
+		border-bottom: 1px solid black;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+		padding: 10px 5px;
+
+		* {
+			margin: 0;
+		}
+	}
+`;
+
 export default class SinglePost extends Component {
 	state = {
 		user: {},
@@ -19,13 +46,13 @@ export default class SinglePost extends Component {
 		const { id, title, contents, created_at, updated_at } = this.state.user;
 
 		return(
-			<div>
+			<PostDiv>
+				<div className = 'title'>Quote: { title }</div>
 				<p>ID: { id }</p>
-				<p>Quote: { title }</p>
 				<p>{ contents }</p>
 				<p>Created: { created_at }</p>
 				<p>Updated: { updated_at }</p>
-			</div>
+			</PostDiv>
 		);
 	}
 }
