@@ -1,16 +1,13 @@
 // import your node modules
-
 const db = require("./data/db.js");
-
-// require the express npm module, needs to be added to the project using "yarn add" or "npm install"
 const express = require("express");
 const cors = require("cors");
 
-// creates an express application using the express module
+// creates an server express application using the express module
 const server = express();
 server.use(cors());
 
-// configures our server to execute a function for every GET request to "/"
+// configures our server to execute a function for every GET request to "/api/posts"
 // the second argument passed to the .get() method is the "Route Handler Function"
 // the route handler function will run on every GET request to "/"
 
