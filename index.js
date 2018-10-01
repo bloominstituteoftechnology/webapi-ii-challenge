@@ -14,7 +14,16 @@ server.get('/api/posts', (req, res) => {
       console.log("posts", posts);
       res.json(post);
     })
-    .catch(err => res.status(500).json({ error: "The posts information could not be retrieved." }));
+    .catch(err => {
+      // console.log(err.statusMessage)
+      // res.status(500).send(res.statusMessage);
+      res.statusMessage = "The posts information could not be retrieved.";
+      res.status(500).end();
+      //   res.status(500).json({
+      //     message: err.message,
+      //     error: err
+      // })
+    });
 })
 
 // PORT LISTENER
