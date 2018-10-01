@@ -10,8 +10,7 @@ export const fetchPosts = () => {
         axios
             .get('http://localhost:8100/')
             .then(res => {
-                console.log('fetchPosts .then', res);
-                dispatch({ type: POSTS_FETCHED, payload: 'hi, fix payload'})
+                dispatch({ type: POSTS_FETCHED, payload: res.data })
             })
             .catch(err => {
                 dispatch({ type: FETCH_ERROR })

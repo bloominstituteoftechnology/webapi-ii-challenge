@@ -10,14 +10,16 @@ class Posts extends React.Component {
     render() {
         return (
             <div>
-                
+                <h3>Lord of the Rings' Quotations</h3> 
+                {this.props.posts.map(post => 
+                    <h6 key={post.id}>{post.title}</h6>
+                )}
             </div>
         )
     }
 }
 
 const mapStateToProps = state => {
-    console.log('posts, mapStateToProps', state);
     return {
         posts: state.posts
     }
