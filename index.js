@@ -11,6 +11,9 @@ const cors = require("cors");
 const server = express();
 
 // endpoints
+// will be using async and await with try catch blocks
+// ref async, await : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+// ref try, catch: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch
 
 /* 
   add post : TODO: add logic
@@ -35,7 +38,7 @@ const server = express();
 server.post("/api/posts", (req, res) => {});
 
 /*
-  get all posts : TODO: add logic
+  get all posts
   -------------
 
   If there's an error in retrieving the posts from the database:
@@ -44,7 +47,17 @@ server.post("/api/posts", (req, res) => {});
     return the following JSON object: { error: "The posts information could not be retrieved." }.
 */
 
-server.get("/api/posts", (req, res) => {});
+// testing async await and try catch
+server.get("/api/posts", async (req, res) => {
+  try {
+    const posts = await db.find();
+    res.status(200).json(posts);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "The posts information could not be retrieved." });
+  }
+});
 
 /*
   get a single post dependant upon id TODO: fill in logic
