@@ -46,7 +46,7 @@ Posts in the database conform to the following structure:
 }
 ```
 
-`title` is the title of the post, as a String. `contents` contains the body
+`title` is the title of the post, as a String. `contents` contains the body 
 contents of the post, also as a String.
 
 ### Provided Code
