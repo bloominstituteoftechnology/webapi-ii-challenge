@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
+import Styled from 'styled-components';
 
 import Quote from './quote';
+
+const FlexDiv = Styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+`;
 
 class QuotesList extends Component {
     state = {
@@ -22,7 +29,9 @@ class QuotesList extends Component {
 
     render() {
         return (
-            this.state.qlist.map( (post) => <Quote post={post} key={post.id} />)
+            <FlexDiv>
+                {this.state.qlist.map( (post) => <Quote post={post} key={post.id} />)}
+            </FlexDiv>
         );
     }
 };
