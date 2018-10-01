@@ -47,7 +47,7 @@ server.post("/api/posts", (req, res) => {});
 server.get("/api/posts", (req, res) => {});
 
 /*
-  get a single post dependant upon id
+  get a single post dependant upon id TODO: fill in logic
   -----------------------------------
 
   If the post with the specified id is not found:
@@ -61,5 +61,21 @@ server.get("/api/posts", (req, res) => {});
 */
 
 server.get("/api/posts/:id", (req, res) => {});
+
+/*
+  delete a single post besed upon id TODO: fill in logic
+  ----------------------------------
+
+  If the post with the specified id is not found:
+    return HTTP status code 404 (Not Found).
+    return the following JSON object: { message: "The post with the specified ID does not exist." }.
+    
+  If there's an error in removing the post from the database:
+    cancel the request.
+    respond with HTTP status code 500.
+    return the following JSON object: { error: "The post could not be removed" }.
+*/
+
+server.delete("/api/posts/:id", (req, res) => {});
 
 server.listen(8000, () => console.log("API listenint on port 8000"));
