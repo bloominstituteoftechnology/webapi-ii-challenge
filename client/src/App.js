@@ -25,7 +25,7 @@ class App extends Component {
   render() {
     return (
       <div className = 'App'>
-        <p>Test: </p>
+        <p>Test: {this.props.posts.map(post => {post})}</p>
       </div>
     );
   }
