@@ -8,7 +8,7 @@ export default class PostList extends React.Component {
         {
           this.props.posts.map(post => {
             return (
-              <Post post={post} />
+              <Post key={Math.random(Date.now() * 1000)} post={post} />
             )
           })
         }

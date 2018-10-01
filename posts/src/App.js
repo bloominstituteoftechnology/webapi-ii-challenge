@@ -1,37 +1,37 @@
 import React, { Component } from "react";
 import "./App.css";
-import axios from "axios";
-import PostList from './components/PostList';
+import PostList from "./components/PostList";
+import { connect } from "react-redux";
+import { getPosts } from "./actions";
 
 class App extends Component {
-  state = {
-    posts: [],
-    error: null
-  };
-
   componentDidMount() {
-    axios
-      .get("http://localhost:9000/api/posts")
-      .then(res => {
-        console.log(res);
-        this.setState({ posts: res.data })
-      })
-      .catch(err => this.setState({ error: err }));
+    this.props.getPosts();
   }
 
   render() {
     return (
       <div className="App" style={{ margin: "20px 0" }}>
-        {
-          this.state.error ?
+        {this.props.error ? (
           <div>
-            <h4>{this.state.error.message}</h4>
+            <h4>{this.props.error}</h4>
           </div>
-          : <PostList posts={this.state.posts} />
-        }
+        ) : (
+          <PostList posts={this.props.posts} />
+        )}
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProp = state => {
+  return {
+    posts: state.posts,
+    error: state.error
+  };
+};
+
+export default connect(
+  mapStateToProp,
+  { getPosts }
+)(App);
