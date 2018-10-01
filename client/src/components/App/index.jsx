@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import Post from "../Post";
 import "./index.css";
 
 class App extends Component {
@@ -9,11 +8,13 @@ class App extends Component {
   state = {
     posts: []
   };
+
   // get all posts
   componentDidMount() {
     axios
-      .get(`http://localhost:8000/api/posts`)
+      .get("http://localhost:8000/api/posts")
       .then(response => {
+        console.log(response);
         this.setState({ posts: response.data });
       })
       .catch(error => console.log(error));
@@ -25,15 +26,15 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Node Express Labs</h1>
         </header>
-        <p className="App-intro">
-          {this.state.posts.map(post => {
-            return (
-              <div>
-                <Post title={post.title} contents={post.contents} />
-              </div>
-            );
-          })}
-        </p>
+
+        {this.state.posts.map(post => {
+          return (
+            <div>
+              <h3>{post.title}</h3>
+              {post.contents}
+            </div>
+          );
+        })}
       </div>
     );
   }
