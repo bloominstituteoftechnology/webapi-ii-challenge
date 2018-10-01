@@ -25,14 +25,16 @@ server.get('/api/posts', (req, res) => {
 })
 
 
-// server.get('/api/posts/:id', (req, res) => {
-//   const { id } = req.params;
-//   db.findById(id)
-//   .then( posts => {
-//     console.log('\n ** single post **', post)
-//     res.json(posts);
-//   }).catch(err => res.send(err))
-// })
+server.get('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  console.log(req.params);
+
+  db.findById(id)
+  .then(post => {
+    console.log('\n ** single post **', post)
+    res.json(post);
+  }).catch(err => res.send(err))
+})
 
 const port = 8000;
 server.listen(port, () =>
