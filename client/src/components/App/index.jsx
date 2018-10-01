@@ -3,6 +3,20 @@ import axios from "axios";
 import "./index.css";
 
 class App extends Component {
+  // state to hold posts
+  state = {
+    posts: []
+  };
+  // get all posts
+  componentDidMount() {
+    axios
+      .get(`http://localhost:8000/api/posts`)
+      .then(response => {
+        this.setState({ posts: response.data });
+      })
+      .catch(error => console.log(error));
+  }
+
   render() {
     return (
       <div className="App">
