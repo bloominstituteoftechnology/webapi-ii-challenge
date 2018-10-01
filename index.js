@@ -4,9 +4,9 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const server = express();
 
-const notRetrieved = "The information could not be retrieved.";
-const notFound = "The post with the specified ID does not exist.";
-const incompleteForm = "Please provide title and contents for the post.";
+const getError = "The information could not be retrieved.";
+const notExist = "The post with the specified ID does not exist.";
+const formError = "Please provide title and contents for the post.";
 const saveError = "There was an error while saving the post to the database";
 const editError = "The post information could not be modified.";
 
@@ -41,7 +41,7 @@ server.get("/", (req, res) => {
 
 server.post("/api/posts", async (req, res) => {
   if (!req.body.title || !req.body.contents) {
-    return res.status(400).json({ errorMessage: incompleteForm });
+    return res.status(400).json({ errorMessage: formError });
   }
   try {
     const { id } = await db.insert(req.body);
@@ -49,7 +49,7 @@ server.post("/api/posts", async (req, res) => {
       const post = await db.findById(id);
       res.status(201).json(post);
     } catch (error) {
-      return res.status(404).json({ error: notFound });
+      return res.status(404).json({ error: notExist });
     }
   } catch (error) {
     res.status(500).json({ error: saveError });
@@ -70,7 +70,7 @@ server.get("/api/posts", async (req, res) => {
     const posts = await db.find();
     res.status(200).json(posts);
   } catch (error) {
-    res.status(500).json({ error: notRetrieved });
+    res.status(500).json({ error: getError });
   }
 });
 
@@ -90,11 +90,11 @@ server.get("/api/posts/:id", async (req, res) => {
   try {
     const post = await db.findById(req.params.id);
     if (post.length === 0) {
-      return res.status(404).json({ message: notFound });
+      return res.status(404).json({ message: notExist });
     }
     res.status(200).json(post);
   } catch (error) {
-    res.status(500).json({ error: notRetrieved });
+    res.status(500).json({ error: getError });
   }
 });
 
@@ -145,6 +145,29 @@ server.delete("/api/posts/:id", async (req, res) => {
     return the newly updated post.
 */
 
-server.put("/api/posts/:id", async (req, res) => {});
+server.put("/api/posts/:id", async (req, res) => {
+  if (!req.body.title || !req.body.contents) {
+    return res.status(400).json({ errorMessage: formError });
+  }
+  try {
+    await db.update(req.params.id, req.body);
+    try {
+      const post = await db.findById(req.params.id);
+      if (post.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        return res.status(200).json(post);
+      }
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Please provide title and contents for the post." });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: editError });
+  }
+});
 
 server.listen(8000, () => console.log("API listenning on port 8000"));
