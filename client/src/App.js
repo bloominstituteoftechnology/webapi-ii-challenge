@@ -1,18 +1,42 @@
 import React, { Component } from 'react'
-import { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
+import axios from 'axios'
 
 class App extends Component {
   state = {
     posts: [],
   }
-  
+
+  getPosts = () => {
+    axios.get('http://localhost:8000/api/posts')
+      .then(res => {
+        this.setState({ posts: res.data })
+      })
+      .catch(err => alert(err))
+  }
+
   render() {
     return (
-      <div className="App">
-        <h1>App Class Component</h1>
-        <button>GET request</button>
+      <Div1 className="App">
+        <H11>App Class Component</H11>
+        <Button1
+          onClick={this.getPosts}
+        >
+          GET request
+        </Button1>
+
+        {
+          this.state.posts.map(post => {
+            return (
+              <Div2 className="Post" key={post.id}>
+                <H31>{post.title}</H31>
+                <P1>-{post.contents}</P1>
+              </Div2>
+            )
+          })
+        }
         <GlobalStyle />
-      </div>
+      </Div1>
     )
   }
 }
@@ -44,5 +68,12 @@ const GlobalStyle = createGlobalStyle`
     font-size: 1.6rem;
   }
 `
+
+const Div1 = styled.div``
+const Div2 = styled.div``
+const H11 = styled.h1``
+const H31 = styled.h3``
+const P1 = styled.p``
+const Button1 = styled.button``
 
 export default App
