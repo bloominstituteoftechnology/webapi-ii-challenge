@@ -58,7 +58,6 @@ class Posts extends Component {
             <Post key={post.id}>
               <h2>{post.title}</h2>
               <PostContent>{post.contents}</PostContent>
-              <p>{post.create_at}</p>
             </Post>
           );
         })}
