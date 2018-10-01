@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink, Fa } from 'mdbreact';
 
 class NavigationBar extends Component {
@@ -20,33 +21,36 @@ class NavigationBar extends Component {
     const bgPink = {backgroundColor: '#ec407a'}
       return(
         <div>
-            <Navbar style={bgPink} dark expand="md" scrolling fixed="top">
-                <NavbarBrand href="/">
-                    <strong>Node Express Lab</strong>
-                </NavbarBrand>
-                <NavbarToggler onClick={ this.onClick } />
-                <Collapse isOpen = { this.state.collapse } navbar>
-                <NavbarNav left>
-                    <NavItem active>
-                        <NavLink to="/">Home</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/posts">Posts</NavLink>
-                    </NavItem>
-                </NavbarNav>
-                <NavbarNav right>
-                    <NavItem>
-                    <NavLink to="#"><Fa icon="facebook" /></NavLink>
-                    </NavItem>
-                    <NavItem>
-                    <NavLink to="#"><Fa icon="twitter" /></NavLink>
-                    </NavItem>
-                    <NavItem>
-                    <NavLink to="#"><Fa icon="instagram" /></NavLink>
-                    </NavItem>
-                </NavbarNav>
-                </Collapse>
-            </Navbar>
+            <Route>
+                <Navbar style={bgPink} dark expand="md" scrolling fixed="top">
+                    <NavbarBrand href="/">
+                        <strong>Node Express Lab</strong>
+                    </NavbarBrand>
+                    <NavbarToggler onClick={ this.onClick } />
+                    <Collapse isOpen = { this.state.collapse } navbar>
+                    <NavbarNav left>
+                        <NavItem active={this.props.location.pathname === '/'} >
+                            <NavLink exact to="/">Home</NavLink>
+                        </NavItem>
+                        <NavItem active={this.props.location.pathname === '/posts'}>
+                            <NavLink to="/posts">Posts</NavLink>
+                        </NavItem>
+                    </NavbarNav>
+                    <NavbarNav right>
+                        <NavItem>
+                        <NavLink to="#"><Fa icon="facebook" /></NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink to="#"><Fa icon="twitter" /></NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink to="#"><Fa icon="instagram" /></NavLink>
+                        </NavItem>
+                    </NavbarNav>
+                    </Collapse>
+                </Navbar>
+            </Route>
+           
         </div>
       );
     }

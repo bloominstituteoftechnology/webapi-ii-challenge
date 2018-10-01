@@ -11,7 +11,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <NavigationBar />
+        <Route component={NavigationBar} />
         <Route exact path="/" component={Home} />
         <Route exact path="/posts" component={PostListView} />
       </div>
