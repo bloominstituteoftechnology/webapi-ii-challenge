@@ -7,9 +7,15 @@ const db = require('./data/db.js');
 const server = express();
 server.use(cors());
 
-server.get('/', (req, res) => {
+server.get('/api/posts', (req, res) => {
 	db.find()
 		.then(users => res.json(users))
+		.catch(err => console.log(err))
+});
+
+server.get('/api/posts/:id', (req, res) => {
+	db.findById(req.params.id)
+		.then(user => res.json(user))
 		.catch(err => console.log(err))
 });
 
