@@ -29,11 +29,38 @@ const PostDiv = styled.div`
 			margin: 0;
 		}
 	}
+
+	.button-wrapper {
+		display: flex;
+		justify-content: center;
+
+		.delete-btn {
+			border-radius: 5px;
+			padding: 5px 10px;
+			background: red;
+			color: white;
+
+			&:hover {
+				background: black;
+				color: red;
+				cursor: pointer;
+			}
+		}
+	}
 `;
 
 export default class SinglePost extends Component {
 	state = {
 		user: {},
+	}
+
+	deletePost = e => {
+		e.preventDefault();
+		const URL = 'http://localhost:5000';
+		axios.delete(`${ URL }/api/posts/${ this.state.user.id }`)
+			.then(res => this.props.getPosts())
+			.then(() => this.props.history.push('/'))
+			.catch(err => console.error(err))
 	}
 
 	componentDidMount() {
@@ -55,6 +82,13 @@ export default class SinglePost extends Component {
 				<p>{ contents }</p>
 				<p>Created: { created_at }</p>
 				<p>Updated: { updated_at }</p>
+
+				<div className = 'button-wrapper'>
+					<button
+						className = 'delete-btn'
+						onClick = { this.deletePost }
+					>Delete</button>
+				</div>
 			</PostDiv>
 		);
 	}

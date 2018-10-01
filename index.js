@@ -26,5 +26,11 @@ server.post('/api/posts', (req, res) => {
 		.catch(err => console.log(err))
 });
 
+server.delete('/api/posts/:id', (req, res) => {
+	db.remove(req.params.id)
+		.then(id => res.json(id))
+		.catch(err => console.log(err))
+});
+
 const port = 5000;
 server.listen(port, () => console.log(`\n=== Listening on port ${ port } ===`));

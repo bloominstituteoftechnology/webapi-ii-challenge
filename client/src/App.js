@@ -82,7 +82,7 @@ class App extends Component {
 
 				<Route exact path = '/' render = { () => users.map((user, i) => <Post key = { i } user = { user } />) } />
 
-				<Route path = '/post/:id' render = { props =>  <SinglePost id = { props.match.params.id } /> } />
+				<Route path = '/post/:id' render = { props =>  <SinglePost history = { props.history } getPosts = { this.getPosts } id = { props.match.params.id } /> } />
 
 				<Route path = '/create' render = { props => <CreatePost getPosts = { this.getPosts } history = { props.history } /> } />
 			</AppDiv>
