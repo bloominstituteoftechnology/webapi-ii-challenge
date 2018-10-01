@@ -15,6 +15,18 @@ server.listen(port, () =>
 
 server.get('/api/posts', (request, response) => {
     db.find()
-        .then(posts => response.json(posts))
+        .then(posts => {
+            response.status(200).json(posts);
+        })
         .catch(error => response.send(error));
+});
+
+server.get('/api/posts/:id', (request, response) => {
+    const id = request.params.id;
+
+    db.findById(id)
+        .then(post => {
+            response.status(200).json(post);
+        })
+        .catch(error => response.send(error))
 });
