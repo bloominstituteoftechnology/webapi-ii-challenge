@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+import Post from "../Post";
+
 import "./index.css";
 
 class App extends Component {
@@ -30,8 +32,7 @@ class App extends Component {
         {this.state.posts.map(post => {
           return (
             <div>
-              <h3>{post.title}</h3>
-              {post.contents}
+              <Post title={post.title} contents={post.contents} />
             </div>
           );
         })}
