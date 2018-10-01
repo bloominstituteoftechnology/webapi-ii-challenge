@@ -28,14 +28,12 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Node Express Labs</h1>
         </header>
-
-        {this.state.posts.map(post => {
-          return (
-            <div>
-              <Post title={post.title} contents={post.contents} />
-            </div>
-          );
-        })}
+        <div />
+        <div className="main">
+          {this.state.posts.map(post => {
+            return <Post title={post.title} contents={post.contents} />;
+          })}
+        </div>
       </div>
     );
   }
