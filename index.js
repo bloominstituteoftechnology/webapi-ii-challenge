@@ -43,7 +43,7 @@ server.delete('/api/posts/:id', (req,res) => {
 })
 
 server.post('/api/posts', (req,res) => {
-    console.log(req.body);
+    
     const {title, contents} = req.body
     const newPost = {title:title, contents: contents}
     db.insert(newPost).then(post => {
@@ -54,7 +54,8 @@ server.post('/api/posts', (req,res) => {
 
 server.put('/api/posts/:id', (req,res) => {
     const {id} = req.params
-    const newPost = {title:'title', contents: 'contents'}
+    const {title, contents} = req.body
+    const newPost = {title: title, contents: contents}
     db.update(id, newPost).then(post => res.json(post))
 })
 // add your server code starting here

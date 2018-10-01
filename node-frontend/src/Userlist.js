@@ -5,7 +5,8 @@ class UserList extends Component {
   state = {
     posts: [],
     titleInput: "",
-    contentsInput: ""
+    contentsInput: "",
+    idInput: ''
   };
   handleInput = event => {
       const {name, value} = event.target
@@ -14,6 +15,7 @@ class UserList extends Component {
       })
   }
   postInput = () => {
+    if(!this.state.idInput){
       axios.post("http://localhost:8000/api/posts", {
           title: this.state.titleInput,
           contents: this.state.contentsInput
@@ -26,6 +28,10 @@ class UserList extends Component {
         )
         
     })
+    }else {
+      this.updatePost(parseInt(this.state.idInput))
+    }
+      
   }
 
   deletePost = id => {
@@ -41,19 +47,37 @@ class UserList extends Component {
       })
   }
 
+  updatePost = id => {
+    console.log('hi');
+    console.log(id);
+    axios.put(`http://localhost:8000/api/posts/${id}`, {
+      title: this.state.titleInput,
+      contents: this.state.contentsInput
+    }).then(() => {
+      axios.get('http://localhost:8000/api/posts/').then(
+        res => {
+          this.setState({
+            posts:res.data
+          })
+        }
+      )
+    })
+  }
+
   render() {
-    const { posts, titleInput, contentsInput } = this.state;
+    const { posts, titleInput, contentsInput, idInput } = this.state;
     return (
       <div>
         <input onChange={this.handleInput} name = "titleInput" value={titleInput} />
         <input onChange={this.handleInput} name = "contentsInput" value={contentsInput} />
+        <input onChange={this.handleInput} name = "idInput" value={idInput} />
         <button type='butto' onClick={this.postInput}>Sumbit</button>
         <h1>Post List</h1>
         <ul>
           {posts.length > 1 ? posts.map(post => {
             return (
               <div>
-                <h2>{post.title}</h2>
+                <h2>{post.title}, {post.id}</h2>
                 <p>{post.contents}</p>
                 <button type='button' onClick={() => this.deletePost(post.id)}>Delete</button>
               </div>
