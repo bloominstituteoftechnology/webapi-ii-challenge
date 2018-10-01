@@ -22,9 +22,9 @@ server.get("/api/posts", (req, res) => {
 });
 
 server.get("/api/posts/:id", (req, res) => {
-  db.findById(req.param.id)
+  db.findById(req.params.id)
     .then(post => {
-      console.log("POSTS", post);
+      console.log("POST", post);
       res.json(post);
     })
     .catch(error => res.send(error));
