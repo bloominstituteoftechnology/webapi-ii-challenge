@@ -1,5 +1,30 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+
+const PostsContainer = styled.div`
+  margin: auto;
+  width: 850px;
+  align-items: center;
+`;
+
+const Post = styled.div`
+  background-color: lightblue;
+  border: 1px solid black;
+  width: 850px;
+  margin-top: 2%;
+
+  h2 {
+    color: black;
+    align-items: center;
+    padding: 2%;
+  }
+`;
+
+const PostContent = styled.p`
+  font-size: 1.2rem;
+  color: black;
+`;
 
 class Posts extends Component {
   constructor(props) {
@@ -27,17 +52,17 @@ class Posts extends Component {
       return <div />;
     }
     return (
-      <div className="posts">
+      <PostsContainer>
         {this.state.posts.map(post => {
           return (
-            <div key={post.id}>
-              <h1>{post.title}</h1>
-              <p>{post.contents}</p>
+            <Post key={post.id}>
+              <h2>{post.title}</h2>
+              <PostContent>{post.contents}</PostContent>
               <p>{post.create_at}</p>
-            </div>
+            </Post>
           );
         })}
-      </div>
+      </PostsContainer>
     );
   }
 }
