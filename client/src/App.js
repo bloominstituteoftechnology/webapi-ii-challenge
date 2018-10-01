@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import './components/PostsList.css';
+
+import axios from 'axios';
+
+import PostsList from './components/PostsList';
+
 
 class App extends Component {
+  state = {
+      posts: []
+    };
+
+componentDidMount() {
+  axios.get('http://localhost:9000/api/posts')
+      .then(response => {
+        console.log(response);
+        this.setState({ posts: response.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+}
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Node Express Lab Day 1</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div>
+        <PostsList postsList={this.state.posts} />
+        </div>
       </div>
     );
   }
