@@ -1,19 +1,17 @@
 import React from 'react';
 import Styled from 'styled-components';
 
-import PostsList from './PostsList';
-
 const Wrapper = Styled.div`
     max-width: 880px;
     margin: 100px auto;
 `;
 
-function PostsContainer(props) {
+function Home(props) {
     return (
         <Wrapper>
-            <PostsList posts={props.posts} />
+            <h1>Node Express Lab</h1>
         </Wrapper>
     )
 };
 
-export default PostsContainer;
+export default Home;
