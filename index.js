@@ -15,6 +15,7 @@ const server = express();
 /* 
   add post : TODO: add logic
   --------
+
   If the request body is missing the title or contents property:
     cancel the request.
     respond with HTTP status code 400 (Bad Request).
@@ -32,5 +33,17 @@ const server = express();
 */
 
 server.post("/api/posts", async (req, res) => {});
+
+/*
+  get all posts : TODO: add logic
+  -------------
+
+  If there's an error in retrieving the posts from the database:
+    cancel the request.
+    respond with HTTP status code 500.
+    return the following JSON object: { error: "The posts information could not be retrieved." }.
+*/
+
+server.get("/api/posts", async (req, res) => {});
 
 server.listen(8000, () => console.log("API listenint on port 8000"));
