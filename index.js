@@ -17,7 +17,13 @@ server.use(cors());
 const port = 9000;
 
 // test page
-server.get("/", (req, res) => res.send(`<h1>Weclome</h1>`));
+server.get("/", (req, res) => res.send(`
+<h1>Weclome</h1>
+<h2>API End Points</h2>
+<ul>
+  <li><a href="http://localhost:9000/api/posts">/api/posts</a></li>
+</ul>
+`));
 
 // GET listener
 server.get("/api/posts", (req, res) => {
