@@ -26,13 +26,7 @@ server.get('/api/posts', (req, res)=> {
 });
 
 server.get('/api/posts/:id', (req, res)=> {
-    db.posts.findById(id)
-        .then(post=> {
-            res.json(post);
-        })
-        .catch(err=> {
-            res.send(err);
-        })
+   res.send('id:' + req.params.id);
 });
 
 server.listen(port, ()=> {

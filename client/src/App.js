@@ -23,6 +23,17 @@ class App extends Component {
         });
   }
 
+  getPostById() {
+    axios.get('http://localhost:8000/api/posts:id')
+        .then(response=> {
+          console.log(response);
+          this.setState({posts: response.data})
+        })
+        .catch(err=> {
+          console.log(err);
+        });
+  }
+
   render() {
     return (
       <div className="App">
