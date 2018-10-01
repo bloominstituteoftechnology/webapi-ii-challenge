@@ -23,7 +23,7 @@ class PostsView extends Component {
 				) : this.props.posts.length ? (
 					<div className="Posts">
 						{this.props.posts.map(post => (
-							<Post key={post._id} post={post} />
+							<Post key={post.id} post={post} />
 						))}
 					</div>
 				) : !this.props.error ? (
