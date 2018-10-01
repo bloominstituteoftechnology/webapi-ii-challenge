@@ -1,9 +1,11 @@
 // MODULES
 const express = require('express');
 const db = require('./data/db.js');
+const cors = require('cors');
 
 // SERVER SETUP
 const server = express();
+server.use(cors());
 
 // API ENDPOINTS
 server.get('/api/posts', (req, res) => {
