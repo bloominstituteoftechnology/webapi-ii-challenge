@@ -16,7 +16,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost.com/8000/api/posts')
+    axios.get('http://localhost:8000/api/posts')
     .then(response => {
       this.setState({ postsData: response.data })
     })
@@ -28,7 +28,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-       {  
+      <h1>Hello</h1>
+     
+        <div className="posts-list-wrapper">
+        {  
                     this.state.postsData.map(post => (
                     <div className="post-card" key={post.id}>
                         <h4>
@@ -39,6 +42,9 @@ class App extends Component {
                 ))
                 
                 }
+        </div>
+    
+        
       </div>
     );
   }

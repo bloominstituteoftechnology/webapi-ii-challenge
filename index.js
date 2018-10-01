@@ -27,8 +27,6 @@ server.get('/api/posts', (req, res) => {
 
 server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
-  console.log(req.params);
-
   db.findById(id)
   .then(post => {
     console.log('\n ** single post **', post)
