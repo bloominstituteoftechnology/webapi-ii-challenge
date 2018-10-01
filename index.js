@@ -9,11 +9,16 @@ const server = express(); // creates the server
 
 server.use(cors()); // this needed to connect from react
 
+server.get('/', (req, res) => {
+  // request or route handler function
+  res.send('<code>Nothing Here</code>');
+});
+
 server.get('/api/posts', (req, res) => {
   db.find()
-    .then(users => {
-      console.log('\n** posts **, posts');
-      res.json(users);
+    .then(posts => {
+      console.log('\n** posts **', posts);
+      res.json(posts);
     })
     .catch(err => res.send(err));
 });
