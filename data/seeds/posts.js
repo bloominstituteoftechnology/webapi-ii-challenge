@@ -6,7 +6,7 @@ exports.seed = function(knex, Promise) {
         {
           title:
             'I wish the ring had never come to me. I wish none of this had happened.',
-          contents: 'Frodo Baggins',
+          contents: 'Guess who said this',
         },
         {
           title: 'I think we should get off the road. Get off the road! Quick!',
@@ -15,7 +15,7 @@ exports.seed = function(knex, Promise) {
         {
           title:
             "I made a promise, Mr Frodo. A promise. \"Don't you leave him Samwise Gamgee.\" And I don't mean to. I don't mean to.",
-          contents: 'Samwise Gamgee',
+          contents: 'Guess who said this',
         },
         {
           title:
@@ -40,12 +40,12 @@ exports.seed = function(knex, Promise) {
         {
           title:
             ' Fool of a Took! Throw yourself in next time and rid us of your stupidity!',
-          contents: 'Gandalf the Grey',
+          contents: 'Guess who said this',
         },
         {
           title:
             'I will be dead before I see the ring in the hands of an elf! Never trust an elf!',
-          contents: 'Gimli',
+          contents: 'Guess who said this',
         },
       ]);
     });
