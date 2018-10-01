@@ -26,7 +26,7 @@ server.get('/api/posts', (req, res)=> {
 });
 
 server.get('/api/posts/:id', (req, res)=> {
-    db.findById(id)
+    db.posts.findById(id)
         .then(post=> {
             res.json(post);
         })
