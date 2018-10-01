@@ -1,10 +1,10 @@
 import { FETCHING_POSTS, POSTS_FETCHED, FETCH_ERROR } from '../actions';
 
 const initialState = {
-    fetchingPosts = false,
-    postsFetched = false,
-    posts = [],
-    error = null
+    fetchingPosts: false,
+    postsFetched: false,
+    posts: [],
+    error: null
 }
 
 export const postsReducer = (state = initialState, action) => {
