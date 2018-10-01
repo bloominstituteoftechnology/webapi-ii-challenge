@@ -11,10 +11,41 @@ const port = 8000;
 server.listen(port, () => {
   console.log("API running");
 });
+
+//POST new post
+server.post("/api/posts", (req, res) => {
+  console.log("this is the request: ");
+  console.log(req);
+  //   if (
+  //     post.title === "" ||
+  //     post.title === undefined ||
+  //     post.contents === "" ||
+  //     post.contents === undefined
+  //   ) {
+  //     res.status(400).json({
+  //       errorMessage: "Please provide title and contents for the post."
+  //     });
+  //   } else {
+  //     db.insert(post)
+  //       .then(post => {
+  //         res.status(201);
+  //         db.findById(post.id)
+  //           .then(post => res.json(post))
+  //           .catch(err => {
+  //             res.send({ error: "The post information could not be retrieved" });
+  //           });
+  //       })
+  //       .catch(err => {
+  //         error: "There was an error while saving the post to the database";
+  //       });
+  //   }
+});
+//GET all posts
 server.get("/", (req, res) => {
   res.send("Hello Posts!");
 });
 
+//GET all posts
 server.get("/api/posts", (req, res) => {
   db.find()
     .then(posts => res.status(200).json(posts))
@@ -23,6 +54,7 @@ server.get("/api/posts", (req, res) => {
     );
 });
 
+//GET specific post
 server.get("/api/posts/:id", (req, res) => {
   const id = req.params.id;
   db.findById(id)
@@ -37,4 +69,22 @@ server.get("/api/posts/:id", (req, res) => {
     .catch(err =>
       res.json({ error: "The post information could not be retrieved" })
     );
+});
+
+//DELETE specific post
+server.delete("/api/posts/:id", (req, res) => {
+  const id = req.params.id;
+  const post = db.findById(id);
+  db.remove(id)
+    .then(post => {
+      if (post.length === 0) {
+        res
+          .status(400)
+          .json({ message: "The post with the specified ID does not exist" });
+      } else
+        res
+          .status(200)
+          .json({ message: `Post with ID ${id} has been removed` });
+    })
+    .catch(err => res.json({ error: "The post could not be removed" }));
 });
