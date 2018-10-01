@@ -1,16 +1,34 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
+import PostCard from './components/PostCard';
 import './styles/App.css';
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      posts: [],
+    };
+  }
+
+  componentDidMount() {
+    axios
+      .get('http://localhost:9000/api/posts')
+      .then((response) => {
+        this.setState(() => ({ posts: response.data }));
+      })
+      .catch((error) => {
+        console.error('Server Error', error);
+      });
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {this.state.posts.map((post) => (
+          <PostCard post={post} key={post.id} />
+        ))}
       </div>
     );
   }
