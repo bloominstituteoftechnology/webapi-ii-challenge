@@ -9,7 +9,6 @@ export const getPosts = () => {
       .get("http://localhost:9000/api/posts")
       .then(resp =>
         {
-          console.log('RESP', resp.data);
         dispatch({ type: FETCH_POSTS_SUCCESSFUL, payload: resp.data })
         }
       )
