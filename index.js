@@ -11,6 +11,7 @@ const db = require('./data/db.js');
 // quick text display to make sure everything loads properly
 
 server.get('/', (req, res) => {
+  console.log('test');
   res.send('Testing server.');
 });
 
