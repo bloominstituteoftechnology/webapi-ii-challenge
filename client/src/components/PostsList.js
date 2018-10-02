@@ -6,7 +6,7 @@ function PostsList(props) {
       <div>
         <h2> List of Posts:</h2>
 
-        <div>
+        <div className={"posts-container"}>
           {props.postsList.map(post => <div className={"post"} key={post.id} post={post}>
             <p>Title:{post.title}</p>
             <p>Contents:{post.contents}</p>

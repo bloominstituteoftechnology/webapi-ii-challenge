@@ -5,17 +5,14 @@ const cors = require('cors');
 const db = require('./data/db.js');
 
 // add your server code starting here
-const server = express();
+const server = express(); // creates the server
 
-server.use(cors());
+server.use(cors()); // this neeeded to connect from react
 
-// const sendUserError = (msg, res) => {
-//   res.status(500);
-//   res.json({ Error: msg });
-//   return;
-// };
+server.use(express.json()); // formatting our req.body obj
 
 server.get('/', (req, res) => {
+  // request/route handler
   res.send('This is a GET TEST');
 });
 
@@ -25,8 +22,18 @@ server.get('/api/posts', (req, res) => {
       console.log('\n** posts **', posts);
       res.json(posts);
     })
-    .catch(err => res.status(500).send({error: "The posts information could not be retrieved."}));
+    .catch(err => res.status(500).send({ error: "The posts information could not be retrieved." }));
 
+});
+
+server.get('/api/posts/:id', (req, res) => {
+  db.findById(req.params.id)
+    .then(post => {
+      if (post.length > 0) {
+        res.json(post)
+      } else res.status(404).send({ message: "The post with the specified ID does not exist." });
+    })
+    .catch(err => res.status(500).send({ error: "The post information could not be retrieved." }));
 });
 
 const port = 9000;

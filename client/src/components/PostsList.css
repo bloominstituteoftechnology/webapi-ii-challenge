@@ -1,3 +1,11 @@
+.posts-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .post{
   border: 1px solid black;
+  width: 29%;
+  height: 241px;
+  margin: 20px;
 }
