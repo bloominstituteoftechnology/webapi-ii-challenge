@@ -11,7 +11,7 @@
 }
 
 .App-header {
-    background-color: #222;
+    background-color:darkblue;
     height: 150px;
     padding: 20px;
     color: white;
@@ -36,6 +36,7 @@
 
 .post {
     background: white;
+    color: darkmagenta;
     border: 1 pix solid black;
     margin: 50px 20px 0;
     padding: 0 20px;

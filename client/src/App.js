@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+ import './App.css';
 import axios from "axios";
-import { Jumbotron } from "reactstrap";
-URL = "http://localhost:3333/posts";
+//URL = "http://localhost:3333/posts";
 
 class App extends Component {
   constructor(props) {
@@ -11,34 +9,27 @@ class App extends Component {
     this.state = {
       posts: []
     };
-  } //{ title: 'Loading', contents: 'Here I Come!' }
+  } 
   componentDidMount(){
-    axios.get("http://localhost:3333/posts")
-    .then((response)=>
-      this.setState({posts:response.data.posts}));
-      
+    axios.get("http://localhost:3333/posts").then(response => {
+      this.setState({ posts: response.data });
+    });
     }
   
   render(){
     return (
-      
-      
-         
-        this.state.posts.map((post, index)=>{
-          return(
-        
-            <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Node Express</h1>
-        </header>
-        <p className="lead">{post.contents}</p>
-      
+      this.state.posts.map((post, index)=>{
+        return <div className="App">
+            <header className="App-header">
+              <h1 className="App-title">{post.title}</h1>
+            <h3 className="post">{post.contents}</h3>
+            </header>
+          </div>;
+
+      })
     )
-  })
+  }
 }
-</div>
-    );
-}
-} 
 
 export default App;
+ 
