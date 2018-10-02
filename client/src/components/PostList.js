@@ -23,6 +23,12 @@ const CreateBtn = styled.button`
 	margin-left: 5%;
 `
 
+const PostError = styled.div`
+	font-size: 1.6rem;
+	color:red;
+	padding: 2%;
+`
+
 class PostList extends React.Component {
 	constructor(){
 		super();
@@ -30,6 +36,7 @@ class PostList extends React.Component {
 			posts: [],
 			createTitle: '',
 			createContents: '',
+			postError: [],
 		};
 	}
 
@@ -72,10 +79,13 @@ class PostList extends React.Component {
   			this.setState({
   				createTitle: '',
   				createContents: '',
+  				postError: []
   			})
   			this.resetState()
   		})
-  		.catch(error => console.log(error));
+  		.catch(error =>
+  			this.setState({postError: error.response.data})
+  		);
   }
 
 	render(){
@@ -101,7 +111,8 @@ class PostList extends React.Component {
 							value={this.state.createContents}
 						/>
 					</CreateForm>
-					<CreateBtn onClick={this.createPost}>Create New Post</CreateBtn>
+					<CreateBtn onClick={this.createPost}>Create New Post</CreateBtn><br />
+					<PostError><p>{this.state.postError.errorMessage}</p></PostError>
 				</CreateDiv>
 			</ContainerDiv>
 		)

@@ -14,6 +14,12 @@ const EditForm = styled.form`
 	width: 200px;
 `;
 
+const EditError = styled.div`
+	font-size: 1.6rem;
+	color:red;
+	padding: 2%;
+`
+
 class Post extends React.Component {
 	constructor(props){
 		super(props);
@@ -21,6 +27,7 @@ class Post extends React.Component {
 			title: '',
 			contents: '',
 			showEdit: false,
+			editError: [],
 		};
 	}
 
@@ -55,7 +62,9 @@ class Post extends React.Component {
 				})
 				this.props.resetState();
 			})
-			.catch(error => console.log(error))
+			.catch(error =>
+				this.setState({editError: error.response.data})
+			)
 	}
 
 	handleChange = event => {
@@ -90,6 +99,7 @@ class Post extends React.Component {
 				}
 				<button onClick={this.toggleEdit}>toggle Edit Form </button>
 				<button onClick={() => {this.deleteNote(this.props.post.id)}}>Delete Post</button>
+				<EditError><p>{this.state.editError.errorMessage}</p></EditError>
 			</PostDiv>
 		)
 	}

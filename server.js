@@ -66,28 +66,28 @@ server.get('/api/posts/:id', (req, res) => {
 server.put('/api/posts/:id', (req, res) => {
 	const id = req.params.id
 	const {title, contents} = req.body;
-	db
-	.update(id, {title, contents})
-	.then(post => {
+	if (!req.body.title || !req.body.contents){
+		res.status(400).json({ errorMessage: "Please provide title and contents editing the post." });
+	} else {
+		db
+		.update(id, {title, contents})
+		.then(post => {
 
-		//0 for no post there at request link
-		if (post === 0){
-			res.status(404).json({ message: "The post with the specified ID does not exist." })
-		}
-
-		//1 for there is a post there at request link
-		if (post === 1) {
-			if (!req.body.title || !req.body.contents){
-				res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
-			} else {
-				res.status(200).json(post);
+			//0 for no post there at request link
+			if (post === 0){
+				res.status(404).json({ message: "The post with the specified ID does not exist." })
 			}
-		}
-	})
-	.catch(error => {
-		console.log(error);
-		res.status(500).json({error: "The post information could not be retrieved." });
-	});
+
+			//1 for there is a post there at request link
+			if (post === 1) {
+				res.status(400).json({ errorMessage: "Please provide title and contents for editing the post." });
+			}
+		})
+		.catch(error => {
+			console.log(error);
+			res.status(500).json({error: "The post information could not be retrieved." });
+		});
+	}
 })
 
 server.delete('/api/posts/:id', (req, res) => {
