@@ -1,18 +1,17 @@
-// import your node modules
+const db = require('./data/db.js');
+const cors = require('cors')
 const express = require('express');
 const port = 8000;
 const server = express();
-const db = require('./data/db.js');
 
-// add your server code starting here
-
+server.use(cors())
 server.use(express.json());
 
 server.get('/', (req, res) => {
-	res.send('<h1>Hello FSW13</h1>');
+	res.send('hello from express');
 })
 
-server.post('/api/posts/', (req, res) => {
+server.post('/api/posts', (req, res) => {
 	const {title, contents} = req.body;
 	if (!req.body.title || !req.body.contents){
 		res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
@@ -28,11 +27,12 @@ server.post('/api/posts/', (req, res) => {
 	}
 });
 
-server.get('/api/posts/', (req, res) => {
+
+server.get('/api/posts', (req, res) => {
 	db
 	.find()
 	.then(posts => {
-		res.status(200).json({ posts })
+		res.status(200).json(posts)
 	})
 	.catch(error => {
 		console.log(error)
@@ -40,7 +40,7 @@ server.get('/api/posts/', (req, res) => {
 	});
 })
 
-server.get('/api/posts/:id/', (req, res) => {
+server.get('/api/posts/:id', (req, res) => {
 	const id = req.params.id
 	db
 	.findById(id)
@@ -48,7 +48,7 @@ server.get('/api/posts/:id/', (req, res) => {
 		if (!post[0]){
 			res.status(404).json({ message: "The post with the specified ID does not exist." })
 		} else {
-			res.status(200).json({post})
+			res.status(200).json(post)
 		}
 	})
 	.catch(error => {
@@ -57,32 +57,33 @@ server.get('/api/posts/:id/', (req, res) => {
 	})
 })
 
-server.put('/api/posts/:id/', (req, res) => {
+server.put('/api/posts/:id', (req, res) => {
 	const id = req.params.id
 	const {title, contents} = req.body;
-	db
-	.update(id, {title, contents})
-	.then(post => {
-
-		if (post === 0){
-			res.status(404).json({ message: "The post with the specified ID does not exist." })
-		}
-
-		if (post === 1) {
-			if (!req.body.title || !req.body.contents){
-				res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
-			} else {
-				res.status(200).json(post);
+	if (!req.body.title || !req.body.contents){
+		res.status(400).json({ errorMessage: "Please provide title and contents editing the post." });
+	} else {
+		db
+		.update(id, {title, contents})
+		.then(post => {
+			console.log(post)
+			if (post === 0){
+				res.status(404).json({message: "The post with the specificed ID does not exist"})
 			}
-		}
-	})
-	.catch(error => {
-		console.log(error);
-		res.status(500).json({error: "The post information could not be retrieved." });
-	});
+
+			if (post === 1){
+				res.status(200).json(post)
+			}
+
+		})
+		.catch(error => {
+			console.log(error);
+			res.status(500).json({error: "The post information could not be retrieved." });
+		});
+	}
 })
 
-server.delete('/api/posts/:id/', (req, res) => {
+server.delete('/api/posts/:id', (req, res) => {
 	const id = req.params.id
 	db
 	.remove(id)
