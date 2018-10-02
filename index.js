@@ -6,7 +6,9 @@ const cors = require("cors");
 
 const server = express();
 // add your server code starting here
-server.use(cors());
+server.use(cors()); //connect to react
+
+server.use(express.json()); // format our req.body obj
 
 server.get("/", (req, res) => {
   //request/route handler
@@ -39,7 +41,32 @@ server.get("/api/posts/:id", (req, res) => {
     );
 });
 
-server.post("/api/posts", (req, res) => {});
+server.post("/api/posts", (req, res) => {
+  const { title, contents } = req.body;
+  const newPost = { title: title, contents: contents };
+  db.insert(newPost).then(post => {
+    res.json(post);
+  });
+});
+
+server.delete("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const foundPost = db.findById(id);
+  if (foundPost) {
+    console.log("post found");
+    db.remove(id).then(posts => {
+      console.log(posts);
+      res.json(posts);
+    });
+  }
+});
+
+server.put("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const { title, contents } = req.body;
+  const newPost = { title: title, contents: contents };
+  db.update(id, newPost).then(post => res.json(post));
+});
 
 //watch for traffic on specific port
 const port = 8000;
