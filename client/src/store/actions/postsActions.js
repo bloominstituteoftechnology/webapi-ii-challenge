@@ -55,7 +55,6 @@ export const deletePost = id => dispatch => {
 };
 
 export const setUpdatePost = id => dispatch => {
-    console.log('setUpdatePost', id);
     dispatch({ type: SET_UPDATE_POST, payload: id });
 };
 

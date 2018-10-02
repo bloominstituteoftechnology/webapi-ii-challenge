@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getPosts, deletePost, updatePost } from '../store/actions';
+import { getPosts, deletePost, setUpdatePost } from '../store/actions';
 import PostPage from '../components/Posts/PostPage';
 
 class PostView extends Component {
@@ -17,7 +17,8 @@ class PostView extends Component {
 
     handleUpdate = (e, id) => {
         e.preventDefault();
-        this.props.updatePost(id);
+        console.log('UPDATE',id);
+        this.props.setUpdatePost(id);
         this.props.history.push('/form');
     }
 
@@ -36,4 +37,4 @@ const mapStateToProps = state => ({
     posts: state.posts,
 });
 
-export default connect(mapStateToProps, { getPosts, deletePost, updatePost })(PostView);
+export default connect(mapStateToProps, { getPosts, deletePost, setUpdatePost })(PostView);
