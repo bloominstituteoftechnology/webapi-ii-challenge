@@ -92,8 +92,8 @@ server.put('/api/posts/:id', (req, res) =>{
     const { id } = req.params;
     const { title, contents } = req.body;
     const newPost = { title, contents};
-    db.update(id, newUser)
-        .then(user => {
+    db.update(id, newPost)
+        .then(post => {
             console.log(post);
             res.status(200).json(post);
         })
