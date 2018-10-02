@@ -19,13 +19,12 @@ server.post('/api/posts', (req, res) => {
       const { id } = postId;
       db.findById(id)
         .then(post => {
-          console.log(post);
           if (!post) {
             return res
             .status(422)
             .send({Error: `User id: ${postId} does not exist`})
           }
-          res.status(201).json(post);
+          res.status(201).json(newUser);
         })
     })
     .catch(err => res.status(500).json({ error: "There was an error while saving the post to the database" }))
@@ -34,13 +33,16 @@ server.post('/api/posts', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params
-  if (!id){return res.status(404).json({ message: "The post with the specified ID does not exist." })}
   db.remove(id)
     .then(removedPost => {
-      console.log(removedPost);
-      res.status(200).json(removedPost)
+      if (removedPost){
+        res.status(200).json({message: "successfully removed!"})
+      } else {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+      }
     })
     .catch(err => {
+      console.log(err);
       res.status(500).json({ error: "The post could not be removed" })
     })
   // res.send(req.params)
@@ -50,11 +52,14 @@ server.put('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   const { title, contents } = req.body;
   const newPost = { title, contents };
-  if (!id){return res.status(404).json({ message: "The post with the specified ID does not exist." })}
   if(!title || !contents) { return res.status(400).json({ errorMessage: "Please provide title and contents for the post." })}
   db.update(id, newPost)
     .then(post => {
-      res.status(200).json(post)
+      if (post) {
+        res.status(200).json(newPost)
+      } else {
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
+      }
     })
     .catch(err => {
       res.status(500).json({ error: "The post information could not be modified." })
@@ -89,10 +94,9 @@ server.get('/api/posts', (req, res) => {
 
 server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params
-  if (!id){return res.status(404).json({ message: "The post with the specified ID does not exist." })}
   db.findById(id)
     .then(post => {
-      res.status(200).json(post);
+      res.status(200).json({ message: "The post with the specified ID does not exist." });
     })
     .catch(err => {
       res.status(500).json({ error: "The post information could not be retrieved." })
