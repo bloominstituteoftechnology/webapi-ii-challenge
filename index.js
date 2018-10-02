@@ -22,16 +22,16 @@ server.get("/api/posts", (req, res) => {
 server.post("/api/posts", (req, res) => {
   const { title, contents } = req.body;
   const newPost = { title, contents };
+  if (!title || !contents) {
+    return res
+      .status(400)
+      .send({ Error: `Please provide title and contents for the post.` });
+  }
   db.insert(newPost)
     .then(postId => {
       const { id } = postId;
       db.findById(id).then(post => {
         console.log(post);
-        if (!post) {
-          return res
-            .status(422)
-            .send({ Error: `Post does not exist by that id ${id}` });
-        }
         res.status(201).json(post);
       });
     })
