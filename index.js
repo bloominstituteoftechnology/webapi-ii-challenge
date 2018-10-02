@@ -1,5 +1,4 @@
 // import your node modules
-
 const db = require('./data/db.js');
 const express = require('express');
 const cors = require('cors');
@@ -7,9 +6,10 @@ const cors = require('cors');
 // add your server code starting here
 const server = express();
 server.use(cors());
+server.use(express.json());
 
 const port = 8000;
-server.listen(port, () => 
+server.listen(port, () =>
     console.log(`Server is listening to Port ${port}`)
 )
 
@@ -31,25 +31,38 @@ server.get('/api/posts/:id', (request, response) => {
         .catch(error => response.send(error))
 });
 
-server.post('api/posts/', (request, response) => {
+server.post('/api/posts', (request, response) => {
     const { title, contents } = request.body;
     const newPost = { title, contents };
 
     db.insert(newPost)
         .then(postID => {
             const { id } = postID;
-            db.findById(id).then( post => {
-                if(!post) {
-                    return response
-                        .status(422)
-                        .send({Error: `Post does not exist at ID ${id}`});
-                } else if (!newPost.title || !newPost.contents) {
-                    return response
-                        .status(422)
-                        .send({Error: `Post missing title or contents`});
-                }
-                response.status(201).json(user);
-            });
+            db.findById(id)
+                .then(post => {
+                    if (!post) {
+                        return response
+                            .status(422)
+                            .send({ Error: `Post does not exist at ID ${id}` });
+                    } else if (!newPost.title || !newPost.contents) {
+                        return response
+                            .status(422)
+                            .send({ Error: `Post missing title or contents` });
+                    }
+                    response.status(201).json(post);
+                });
+        })
+        .catch(error => response.send(error));
+})
+
+server.put('/api/posts/:id', (request, response) => {
+    const id = request.params.id;
+    const { title, contents } = request.body;
+    const updatedPost = { title, contents };
+
+    db.update(id, updatedPost)
+        .then(post => {
+            response.status(200).json(post);
         })
         .catch(error => response.send(error));
 })
