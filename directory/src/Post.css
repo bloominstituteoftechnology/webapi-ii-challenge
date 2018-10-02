@@ -1,9 +1,23 @@
 .title {
-    color: yellow;
+    margin-top: 5%;
+    color: #282c34;
+    background-color: lightblue;
+    -webkit-box-shadow: -1px 6px 14px 0px rgba(235,17,89,1);
+    -moz-box-shadow: -1px 6px 14px 0px rgba(235,17,89,1);
+    box-shadow: -1px 6px 14px 0px rgba(235,17,89,1);
 }
 
 .who {
     font-size: 1.5em;
     padding-bottom: 5%;
-    padding-top: 1%;
+    padding-top: 3%;
+    border: 10px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    width: 50%;
 }

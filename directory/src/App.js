@@ -15,9 +15,8 @@ class App extends Component {
         title: '',
         contents: '',
       },
-      post:''
     };
-    console.log(this.state);
+    // console.log(this.state);
   }
 
   componentDidMount() {
@@ -38,13 +37,18 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p> */}
-          {this.state.posts.map(post => 
-        <Post key={post.id} post={post} />
-        )}
+        <div className="newPost">
+        <form>
+        New Post Title: <input type="text"/><br/>
+        New Post Contents: <input type="text"/><br/>
+        <button>Submit</button>
+        </form>
+        </div>
+        <div className="postList">
+       {this.state.posts.map(post => 
+     <Post key={post.id} post={post} />
+     )}
+      </div>
         </header>
       </div>
     );
