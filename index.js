@@ -10,16 +10,7 @@ const db = require('./data/db.js');
 const server = express();
 server.use(cors());
 
-server.post('/api/posts');
-
-// server.get('/api/posts', (req, res) => {
-//     db.find()
-// 	.then(posts => {
-// 	    console.log(`\n ** posts ** \n`, posts);
-// 	res.json(posts);
-//     })
-// 	.catch(err => res.send(err));
-// });
+// server.post('/api/posts');
 
 server.get('/api/posts', (req, res) => {
     db.find()
@@ -27,16 +18,14 @@ server.get('/api/posts', (req, res) => {
 	    console.log(`\n ** posts ** \n`, posts);
 	res.json(posts);
     })
-	.catch(err => res.send(err));
+	.catch(err => res.status(500).send(err));
 });
 
 server.get('/api/posts/:id', (req, res) => {
-    const id = req.params.id;
-    db.findById(id)
+    db.findById(req.params.id)
 	.then(posts => {
 	    console.log(`\n ** posts ** \n`, posts);
-	    res.status(200).json(posts)
-	    ;
+	    res.json(posts);
     })
 	.catch(err => res.send(err));
 });
