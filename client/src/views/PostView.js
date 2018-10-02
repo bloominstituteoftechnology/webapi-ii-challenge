@@ -6,7 +6,6 @@ import PostPage from '../components/Posts/PostPage';
 
 class PostView extends Component {
     componentDidMount() {
-        console.log('POSTVIEW', this.props);
         if(this.props.posts.length === 0) {
             this.props.getPosts();
         }
@@ -18,7 +17,7 @@ class PostView extends Component {
 
     handleUpdate = (e, id) => {
         e.preventDefault();
-        this.props.setUpdatePost(id);
+        this.props.updatePost(id);
         this.props.history.push('/form');
     }
 

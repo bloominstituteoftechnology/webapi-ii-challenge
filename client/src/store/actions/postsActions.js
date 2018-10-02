@@ -46,7 +46,7 @@ export const addPost = post => dispatch => {
 export const deletePost = id => dispatch => {
     dispatch({ type: DELETE_POST_START });
 
-    axios.get(`http://localhost:8000/api/posts/${id}`)
+    axios.delete(`http://localhost:8000/api/posts/${id}`)
         .then(() => getPosts()(dispatch))
         .then(res => {
             dispatch({ type: DELETE_POST_COMPLETE });
