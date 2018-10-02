@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './Styles/styles.css';
 import Posts from './components/container/Posts';
 import axios from 'axios';
 
