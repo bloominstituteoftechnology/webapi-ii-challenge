@@ -8,7 +8,7 @@ export const fetchPosts = () => {
     return dispatch => {
         dispatch({ type: FETCHING_POSTS });
         axios
-            .get('http://localhost:8100/')
+            .get('http://localhost:8100/api/posts')
             .then(res => {
                 dispatch({ type: POSTS_FETCHED, payload: res.data })
             })
