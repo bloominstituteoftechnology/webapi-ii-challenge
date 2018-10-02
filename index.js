@@ -59,7 +59,18 @@ server.delete('/api/posts/:id', (req, res) => {
             }
       })
       .catch(err => console.error(err))
-})
+});
+
+server.put('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    const {title, contents} = req.body;
+    const existingPost = {title, contents};
+    db.update(id, existingPost)
+      .then(updatedPost => {
+          res.status(200).json(updatedPost)
+      })
+      .catch(err => console.error(err))
+});
 
 
 
