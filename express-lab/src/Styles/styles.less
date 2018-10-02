@@ -1,3 +1,66 @@
-a {
-    font-size: 100px;
+@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great|Josefin+Slab|Niconne');
+
+* {
+    box-sizing: border-box;
+}
+
+html, body, .app {
+    background-color: ghostwhite;
+}
+
+p {
+    margin: 0;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+    font-family: 'Niconne', cursive;
+}
+
+.post { // Main post body
+    width: 60%;
+    margin: 0 auto;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items:  flex-start;
+    margin-top: 20px;
+    border-bottom: 5px solid maroon; 
+    box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.9);
+
+
+    .name { // Name block
+        font-size: 25px;
+        font-family: 'Niconne', cursive;
+        background-color: darkolivegreen;
+        width: 100%;
+        padding: 5px 1rem;
+        color: goldenrod;
+
+        span {
+            font-family: 'Josefin Slab', serif;
+            margin-left: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            color: lightgray;
+        }
+    }
+
+    .quote { // Quote block
+        font-size: 30px;
+        font-family: 'Fredericka the Great', cursive;
+        padding-left: 1rem;
+        background-color: burlywood;
+        width: 100%;
+        color: maroon;
+        border-top: 5px double darkolivegreen; 
+        border-bottom: 5px double maroon;
+
+        em {
+            font-weight: normal;
+        }
+    }
+
 }
