@@ -28,13 +28,24 @@ server.get("api/posts/:id", (req, res) => {
 
 // POST //
 server.post("/api/posts", (req, res) => {
-  res.status(201).json({  });
+  const {postTitle, postContent} = req.body;
+
+    if(!postTitle || !postContent) {
+        res.status(400).json({errorMessage: "Please provide title and contents for the post."})
+    }
+
+    const newPost = {postTitle, postContent};
+    db.insert(newPost)
+        .then(post => {
+                res.status(201).json(post);
+        })
+        .catch(() => res.status(500).json({error: "There was an error while saving the post to the database"}))
 });
 //////////
 
 // DELETE //
 server.delete("/api/posts:id", (req, res) => {
-  const {id} = req.params;
+  const id = req.params.id;
   db.remove(id)
       .then(deletedPost => {
           res.status(200).json(deletedPost);
@@ -49,7 +60,7 @@ server.put("/api/posts", (req, res) => {
 });
 //////////
 
-// Port Listening
+// **Port Listening** //
 const port = 5000;
 server.listen(port, () =>
   console.log(`Server is listening on Port ${port}`)
