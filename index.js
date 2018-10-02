@@ -3,13 +3,16 @@ const express = require('express');
 const server = express();
 const knex = require('knex');
 const knexConfig = require('./knexfile.js');
+const cors = require('cors');
 
 const db = require('./data/db.js');
 
-// add your server code starting here
+server.use(cors());
+server.use(express.json());
 
 // quick text display to make sure everything loads properly
 
+// general get statements
 server.get('/', (req, res) => {
   console.log('test');
   res.send('Testing server.');
@@ -23,6 +26,34 @@ server.get('/posts', (req, res) => {
   .catch(err => res.send(err));
 });
 
+// create a new post
+
+server.post('/posts', (req, res) => {
+  const { title, contents } = req.body;
+  const newPost = { title, contents };
+  db.insert(newPost)
+    .then(id => {
+      db.findById(id)
+        .then(post => {
+          res.status(201).json(post);
+        });
+    })
+    .catch(err => console.error(err));
+});
+
+
+
+
+
+
+
+
+// find a specific post by id
+
+server.get('/posts/:id', (req, res) => {
+  db.findById(id.id)
+    .then
+})
 // listen on port 8000
 
 server.listen(8000, () => console.log('Server listening on port 8000.'));
