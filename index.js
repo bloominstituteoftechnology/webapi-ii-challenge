@@ -11,7 +11,7 @@ server.use(express.json());
 server.use(cors());
 
 server.get('/', (req, res) => {
-    res.send('Go to http://localhost:8001/api/posts to see the list of posts.')
+    res.send('Go to http://localhost:9000/api/posts to see the list of posts.')
 });
 
 
@@ -24,7 +24,16 @@ server.get('/api/posts', (req, res) => {
       .catch(err => res.send(err));
 });
 
-const port = 8001;
+server.get('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    db.findById(id)
+      .then(post => {
+          res.json(post);
+      })
+      .catch(err => console.error(err) )
+});
+
+const port = 9000;
 server.listen(port, () => 
     console.log(`\n=== API running on port ${port} ===\n`)
 );
