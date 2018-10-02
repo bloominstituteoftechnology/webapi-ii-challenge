@@ -28,7 +28,8 @@ export const rootReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 fetching: false, 
                 fetched: true, 
-                posts: action.payload
+                posts: action.payload,
+                currentNote: {}
             })
 
         case POSTING:
@@ -52,6 +53,17 @@ export const rootReducer = (state = initialState, action) => {
                 fetching_single: false,
                 fetched_single: true,
                 currentNote: action.payload
+            })
+
+        case DELETING:
+            return Object.assign({}, state, {
+                deleting: true
+            })
+
+        case DELETED:
+            return Object.assign({}, state, {
+                deleting: false,
+                deleted: true
             })
 
         default:

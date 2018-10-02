@@ -34,6 +34,7 @@ export const addPost = (post) => {
         dispatch({type: POSTING})
 
         postRequest.then(res => {
+            console.log(res);
             dispatch({type: POSTED})
         }).catch(err => {
             console.log(err);
@@ -50,6 +51,22 @@ export const fetchSinglePost = (id) => {
 
         fetchSingleRequest.then(res => {
             dispatch({type: FETCHED_SINGLE, payload: res.data})
+        }).catch(err => {
+            console.log(err);
+            dispatch({type: ERROR})
+        })
+    }
+}
+
+export const deletePost = (id) => {
+    const deleteRequest = axios.delete(`http://localhost:8000/api/posts/${id}`);
+
+    return dispatch => {
+        dispatch({type: DELETING})
+
+        deleteRequest.then(res => {
+            console.log(res);
+            dispatch({type: DELETED})
         }).catch(err => {
             console.log(err);
             dispatch({type: ERROR})
