@@ -7,6 +7,7 @@
     "emotion": "^9.2.12",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-emotion": "^9.2.12",
     "react-scripts": "1.1.5"
   },
   "scripts": {
