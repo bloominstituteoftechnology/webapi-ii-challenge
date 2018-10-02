@@ -26,23 +26,53 @@ server.get("/", (req, res) =>
 `)
 );
 
-// GET Listener
+// GET Listeners
 server.get("/api/posts", (req, res) => {
+  // Route Hanlder callback
+  console.log("\n=== /api/posts ===\n");
   db.find()
     .then(posts => res.json(posts))
-    .catch(err => res.status(500).send(`The posts information could not be retrieved.`));
+    .catch(err =>
+      res.status(500).send(`The posts information could not be retrieved.`)
+    );
 });
 
-// POST Listener
+// POST Listeners
 server.post("/api/posts", (req, res) => {
-  console.log(req.body);
-  const { title } = req.body;
-  const newPost = {title};
-  console.log(newPost);
+  const { title, contents } = req.body;
+  const newPost = { title, contents };
   db.insert(newPost)
-  .then(posts => res.json(posts))
-  .catch(err => res.send(err));
-})
+    .then(post => {
+      db.findById(post.id)
+        .then(foundPost => res.json(foundPost))
+        .catch(err => console.error(err));
+    })
+    .catch(err => console.error(err));
+});
+
+// DELETE Listners
+server.delete("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  db.remove(id)
+    .then(removedPost => res.status(200).json(`Post at ${id} deleted.`))
+    .catch(err => console.error(err));
+});
+
+// PUT Listners
+server.put("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const { title, contents } = req.body;
+  const newPost = { title, contents };
+  db.update(id, newPost)
+    .then(post => {
+      console.log(post);
+      // res.status(200).json(post);
+      db.findById(id)
+        .then(foundPost => res.json(foundPost))
+        .catch(err => console.error(err));
+    })
+    .catch(err => console.error(err));
+});
 
 // set up server to listen to w/e number port is
 server.listen(parseInt(port, 10), () =>
