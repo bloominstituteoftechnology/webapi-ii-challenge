@@ -31,8 +31,7 @@ class Posts extends Component {
                     return (
                         <div className = 'forPosts' key={post.id}>
                             <h2>{post.title}</h2>
-                            <p className = 'thePosts'>{post.contents}</p>
-                            <p>{post.create_at}</p>
+                            <p className = 'thePosts'>{post.contents}</p>                    
                         </div>
                     )
                 })}
