@@ -4,7 +4,6 @@ const cors = require('cors');
 const db = require('./data/db.js');
 
 // Instatiate Server
-
 const server = express();
 server.use(cors());
 server.use(express.json());
@@ -78,7 +77,7 @@ server.put('/api/posts/:id', (request, response) => {
     // Destructuring Request Body For Validation
     const {title, contents} = request.body;
 
-     // Unique Error Messages
+    // Unique Error Messages
      const error500 = { errorMessage: "The post information could not be modified." };
 
     // Error Handling Conditionals
@@ -110,10 +109,11 @@ server.put('/api/posts/:id', (request, response) => {
 
 // ##### DELETE Existing Post #####
 server.delete('/api/posts/:id', (request, response) => {
-    let postDeleted = {};
+    
     // Unique Error Messages
     const error500 = { errorMessage: "The post could not be removed" };
 
+    // Database Promise Methods
     db.findById(request.params.id)
     .then(post => 
         {if (post.length > 0) {
@@ -131,5 +131,6 @@ server.delete('/api/posts/:id', (request, response) => {
     .catch(() => response.status(500).send(single500))
 });
 
+// Activate Server on Port
 const port = 7777;
 server.listen(port, console.log(`=-=-= Server Active On Port ${port} =-=-=`));
