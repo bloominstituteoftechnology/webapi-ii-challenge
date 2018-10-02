@@ -22,7 +22,7 @@ server.get('/api/posts', (request, response) => {
     .then(posts => response.json(posts))
     .catch(
         error => {
-            response.status(500).send(JSON.stringify(error500))
+            response.status(500).json(error500)
         })
 });
 
@@ -32,7 +32,7 @@ server.get('/api/posts/:id', (request, response) => {
     .then(post => 
         {   if (post.length > 0) {
             response.json(post)}
-            else response.status(404).send(JSON.stringify(error404));
+            else response.status(404).json(error404);
         })
     .catch(error => response.send(error))
 });
