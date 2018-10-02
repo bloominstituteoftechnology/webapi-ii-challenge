@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import { fetchPosts, addPost } from './actions';
-import PostForm from './components/PostForm';
+import PostFormView from './components/PostForm';
 import PostsListView from './components/PostList';
 import Home from './components/Home';
 
@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    fetchPosts();
+    this.props.fetchPosts();
   }
 
   addNewPost = () => {
@@ -23,7 +23,7 @@ class App extends Component {
       title: this.state.titleInput,
       contents: this.state.contentsInput
     };
-    this.props.addPost
+    
   }
 
   render() {
@@ -40,7 +40,8 @@ class App extends Component {
       <div className="Page-Window">
       <Route exact path="/" component={Home} />
       <Route exact path="/posts" component={PostsListView} />
-      <Route exact path="/addPost" component={PostForm} />
+      <Route exact path="/addPost" component={PostFormView} />
+      <Route exact path="/posts/:postId" component={PostView} />
       
       </div>
         

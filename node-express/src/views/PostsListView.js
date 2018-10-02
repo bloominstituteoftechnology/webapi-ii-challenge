@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { fetchPosts } from '../actions';
 
-import PostsList from '../components/PostsList';
+import PostList from '../components/PostsList';
 
 class PostsListView extends React.Component {
     componentDidMount() {
@@ -13,7 +13,7 @@ class PostsListView extends React.Component {
     render() {
         return (
             <Fragment>
-                <PostsList {...this.props} posts={this.props.posts} />
+                <PostList {...this.props} posts={this.props.posts} />
             </Fragment>
         )
     }
