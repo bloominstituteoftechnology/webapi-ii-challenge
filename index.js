@@ -22,6 +22,16 @@ server.get('/api/posts', (req, res) => {
     .catch(err => res.send(err));
 });
 
+server.get('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.findById(id)
+    .then(post => {
+      console.log('\n** post **', post);
+      res.status(500).json(post);
+    })
+    .catch(err => res.send(err));
+});
+
 server.post('/api/posts', (req, res) => {
   // console.log(req.body);
   // res.send('success!');
