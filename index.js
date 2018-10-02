@@ -1,14 +1,10 @@
-// import your node modules
-
-
-// add your server code starting here
 const express = require("express");
 
 const db = require("./data/db.js");
 const cors = require("cors");
  
 const server = express(); //creates the server
-server.use(cors()); //connect to react
+server.use(cors({ origin: 'http://localhost:3000' })) //connect to react
 server.use(express.json());
 const port = 3333;
 server.listen(port, () =>
