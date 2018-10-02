@@ -54,6 +54,18 @@ server.delete('/api/posts/:id', (req, res) => {
     .catch(err => res.status(500).send({ error: "The post could not be removed" }));
 });
 
+server.put('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  const { title, contents } = req.body;
+ 
+  const newPost = { title, contents };
+  db.update(id, newPost)
+    .then(post => {
+      res.status(200).json(post);
+    })
+    .catch(err => res.status(500).send({ error: "The post information could not be modified." }));
+});
+
 const port = 9000;
 server.listen(port, () => 
   console.log(`\n=== API running on port ${port} ===\n`)
