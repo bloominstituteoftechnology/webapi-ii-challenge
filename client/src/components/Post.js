@@ -98,8 +98,8 @@ class Post extends React.Component {
                         <button onClick={() => {this.editPost(this.props.post.id)}}>Submit</button>
                     </div>) : null
                 }
-                <button onClick={this.toggleEdit}>toggle Edit Form </button>
-				<button onClick={() => {this.deleteNote(this.props.post.id)}}>Delete Post</button>
+                <button onClick={this.toggleEdit}>Edit</button>
+				<button onClick={() => {this.deleteNote(this.props.post.id)}}>Delete</button>
 				<EditError><p>{this.state.editError.errorMessage}</p></EditError>
 			</PostDiv>
         )
