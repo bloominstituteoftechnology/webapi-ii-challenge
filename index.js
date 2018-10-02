@@ -37,12 +37,27 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts', (req, res) => {
+  if(!req.body.title || !req.body.contents) {
+   return res.status(400).send({ errorMessage: "Please provide title and contents for the post." });
+  }
   if(req.body.title && req.body.contents) {
-    db.insert({title: req.body.title, contents: req.body.contents})
-      .then(postId => res.json(postId))
-      .catch(err => res.status(400).send({ errorMessage: "Please provide title and contents for the post." }))
-  } 
-});
+    const { title, contents } = req.body;
+  const newPost = { title, contents };
+  db.insert(newPost)
+    .then(postId => {
+      const { id } = postId;
+      db.findById(id)
+        .then(post => {
+        console.log(post);
+        if (!post) {
+          return res.status(422).send({ Error: `Post does not exist by that id ${id}` });
+        }
+        res.status(201).json(post);
+      });
+    })
+    .catch(err => res.status(500).send({ error: "There was an error while saving the post to the database" }));
+
+  }});
 
 server.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params;
