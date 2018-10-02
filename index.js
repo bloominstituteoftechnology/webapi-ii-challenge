@@ -23,7 +23,7 @@ server.get("/", (req, res) => {
 // ref try, catch: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch
 
 /* 
-  add post : TODO: add logic
+  add post
   --------
   If the request body is missing the title or contents property:
     cancel the request.
@@ -99,7 +99,7 @@ server.get("/api/posts/:id", async (req, res) => {
 });
 
 /*
-  delete a single post besed upon id TODO: fill in logic
+  delete a single post besed upon id
   ----------------------------------
   If the post with the specified id is not found:
     return HTTP status code 404 (Not Found).
@@ -126,7 +126,7 @@ server.delete("/api/posts/:id", async (req, res) => {
 });
 
 /*
-  edit a single post based upon id TODO: fill in logic
+  edit a single post based upon id
   --------------------------------
   If the post with the specified id is not found:
     return HTTP status code 404 (Not Found).
