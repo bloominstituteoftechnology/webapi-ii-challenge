@@ -5,6 +5,7 @@ const express = require('express');
 const server = express();
 cors = require('cors');
 server.use(cors());
+server.use(express.json());
 
 // add your server code starting here
 const port = 8000;
@@ -19,7 +20,7 @@ server.get('/', (req, res)=>{
 server.get('/api/posts', (req, res)=>{
     db.find()
         .then(posts =>{
-            console.log('posts:{', posts, '}');
+            // console.log('posts:{', posts, '}');
             res.status(200).json(posts);
         })
         .catch(err => res.status(400).send(err));
@@ -34,3 +35,13 @@ server.get('/api/posts/:id', (req,res)=>{
         })
         .catch(err => res.status(400).send({error:"The posts information could not be retrieved."},err));
 });
+
+server.post('/api/posts', (req,res)=>{
+    const {title, contents} = req.body;
+    const post = {title, contents};
+    db.insert(post)
+        .then(post =>{
+            res.status(200).send('posted');
+        })
+        .catch(err => res.status(400).send(err));
+})
