@@ -72,16 +72,15 @@ server.put('/api/posts/:id', (req, res) => {
 		db
 		.update(id, {title, contents})
 		.then(post => {
-
-			//0 for no post there at request link
+			console.log(post)
 			if (post === 0){
-				res.status(404).json({ message: "The post with the specified ID does not exist." })
+				res.status(404).json({message: "The post with the specificed ID does not exist"})
 			}
 
-			//1 for there is a post there at request link
-			if (post === 1) {
-				res.status(400).json({ errorMessage: "Please provide title and contents for editing the post." });
+			if (post === 1){
+				res.status(200).json(post)
 			}
+
 		})
 		.catch(error => {
 			console.log(error);

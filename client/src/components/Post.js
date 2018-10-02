@@ -46,7 +46,7 @@ class Post extends React.Component {
 			showEdit: !this.state.showEdit,
 		})
 	}
-
+// {title, contents}
 	editPost = (id) => {
 		const editedPost = {
 			title: this.state.title,
