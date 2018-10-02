@@ -6,6 +6,7 @@ import {fetchPosts} from './actions/index';
 import PostsList from './components/PostsList';
 import PostForm from './components/PostForm';
 import PostDetails from './components/PostDetails';
+import PostEdit from './components/PostEdit';
 import {Switch, Route, Link, withRouter} from 'react-router-dom';
 
 class App extends Component {
@@ -18,18 +19,26 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-
+      <Switch>
         <Route exact path = '/' render={(props) => 
         <div>
         <PostForm />
-        <PostsList />
+        <PostsList  />
         </div>
         } />
 
-        <Route exact path = '/posts/:id' render = {(props) => 
-        <PostDetails />
+        <Route exact path = '/posts/:id' render = {(props) =>
+           <PostDetails/>
+        
         } />
 
+        <Route exact path = '/posts/edit/:id' render = {(props) => 
+
+           <PostEdit  />
+        } />
+
+        </Switch>
+        
       </div>
     );
   }

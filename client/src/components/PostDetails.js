@@ -11,7 +11,7 @@ class PostDetails extends React.Component {
     handleDelete = (event) => {
         event.preventDefault();
 
-        this.props.deletePost(this.props.currentNote.id);
+        this.props.deletePost(this.props.currentPost.id);
 
        
 
@@ -23,9 +23,10 @@ class PostDetails extends React.Component {
         return(
             <div>
                 This is the note details view
-                <h1>{this.props.currentNote.title}</h1>
-                <p>{this.props.currentNote.contents}</p>
+                <h1>{this.props.currentPost.title}</h1>
+                <p>{this.props.currentPost.contents}</p>
                 <button onClick={this.handleDelete}>DELETE</button>
+                <Link to = {`/posts/edit/${this.props.currentPost.id}`}><button>EDIT</button></Link>
             </div>
         )
     }
@@ -35,7 +36,7 @@ const mapStateToProps = state => {
     return {
         fetching_single: state.fetching_single,
         fetched_single: state.fetched_single,
-        currentNote: state.currentNote
+        currentPost: state.currentPost
     }
 }
 

@@ -73,3 +73,19 @@ export const deletePost = (id) => {
         })
     }
 }
+
+export const editPost = (id, newPost) => {
+    const editRequest = axios.put(`http://localhost:8000/api/posts/${id}`, newPost);
+
+    return dispatch => {
+        dispatch({type: EDITING})
+
+        editRequest.then(res => {
+            console.log(res);
+            dispatch({type: EDITED})
+        }).catch(err => {
+            console.log(err);
+            dispatch({type: ERROR})
+        })
+    }
+}

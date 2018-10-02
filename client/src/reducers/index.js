@@ -13,7 +13,7 @@ const initialState = {
     deleted: false,
     error: false,
     posts: [],
-    currentNote: {}
+    currentPost: {}
 }
 
 export const rootReducer = (state = initialState, action) => {
@@ -29,7 +29,7 @@ export const rootReducer = (state = initialState, action) => {
                 fetching: false, 
                 fetched: true, 
                 posts: action.payload,
-                currentNote: {}
+                currentPost: {}
             })
 
         case POSTING:
@@ -52,7 +52,7 @@ export const rootReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 fetching_single: false,
                 fetched_single: true,
-                currentNote: action.payload
+                currentPost: action.payload
             })
 
         case DELETING:
@@ -64,6 +64,17 @@ export const rootReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 deleting: false,
                 deleted: true
+            })
+
+        case EDITING:
+            return Object.assign({}, state, {
+                editing: true
+            })
+
+        case EDITED:
+            return Object.assign({}, state, {
+                editing: false,
+                edited: true,       
             })
 
         default:
