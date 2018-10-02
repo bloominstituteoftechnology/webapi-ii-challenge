@@ -41,7 +41,7 @@ server.post("/api/posts/", (req, res) => {
 				const { id } = postId;
 				db.findById(id)
 					.then(post => {
-						res.status(201).json(post);
+						res.status(201).json(post[0]);
 					})
 					.catch(() =>
 						res.status(500).json({
