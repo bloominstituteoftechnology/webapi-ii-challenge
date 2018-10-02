@@ -24,13 +24,15 @@ class Posts extends Component {
       return (
         <div className = 'posts-list'>
           {this.state.posts.map(post => {
-            <div key = {post.id}>
-              <h1>{post.title}</h1>
-              <p>{post.contents}</p>
-            </div>
+            return (
+              <div key = {post.id}>
+                <h1>{post.title}</h1>
+                <p>{post.contents}</p>
+              </div>
+            );
           })}
-        </div>
-      );
+       </div>
+     );
   }
 }
 
