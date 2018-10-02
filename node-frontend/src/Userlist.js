@@ -19,15 +19,11 @@ class UserList extends Component {
       axios.post("http://localhost:8000/api/posts", {
           title: this.state.titleInput,
           contents: this.state.contentsInput
-      }).then(res => {          
-        axios.get(`http://localhost:8000/api/posts/`).then(
-            res => {
-            this.setState({
-            posts:res.data
-        })}
-        )
-        
-    })
+      }).then(res => {
+        this.setState({
+          posts: res.data
+        })
+      })
     }else {
       this.updatePost(parseInt(this.state.idInput))
     }
@@ -36,31 +32,22 @@ class UserList extends Component {
 
   deletePost = id => {
       axios.delete(`http://localhost:8000/api/posts/${id}`)
-      .then(res => {          
-          axios.get(`http://localhost:8000/api/posts/`).then(
-              res => {
-              this.setState({
-              posts:res.data
-          })}
-          )
-          
+      .then(res => {
+        this.setState({
+          posts: res.data
+        })
       })
   }
 
-  updatePost = id => {
-    console.log('hi');
-    console.log(id);
+  updatePost = id => {    
     axios.put(`http://localhost:8000/api/posts/${id}`, {
       title: this.state.titleInput,
       contents: this.state.contentsInput
-    }).then(() => {
-      axios.get('http://localhost:8000/api/posts/').then(
-        res => {
-          this.setState({
-            posts:res.data
-          })
-        }
-      )
+    }).then(res => {
+      console.log(res.data);
+      this.setState({
+        posts: res.data
+      })
     })
   }
 
