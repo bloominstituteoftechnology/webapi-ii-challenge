@@ -16,12 +16,28 @@ server.get('/api/posts', (req, res) => {
         .then(posts => {
             res.json(posts);
         })
-        .catch(err => res.send(err))
+        .catch(() => res.status(500).json({error: "The posts information could not be retrieved."}))
+})
+
+//GET by id
+server.get('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    if(!id) {
+        res.status(404).json({message: "The post with the specified ID does not exist"});
+    }
+    db.findById(id)
+        .then(post => {
+            res.status(200).json(post);
+        })
+        .catch(() => res.status(500).json({error: "The post information could not be retrieved."}));
 })
 
 //POST
 server.post('/api/posts', (req, res) => {
     const {title, contents} = req.body;
+    if(!title || !contents) {
+        res.status(400).json({errorMessage: "Please provide title and contents for the post."})
+    }
     const newPost = {title, contents};
     db.insert(newPost)
         .then(postId => {
@@ -34,29 +50,38 @@ server.post('/api/posts', (req, res) => {
                     res.status(201).json(post);
                 })
         })
-        .catch(err => console.log(err))
+        .catch(() => res.status(500).json({error: "There was an error while saving the post to the database"}))
 })
 
 //DELETE
 server.delete('/api/posts/:id', (req, res) => {
     const {id} = req.params;
+    if(!id) {
+        res.status(404).json({message: "The post with the specified ID does not exist"});
+    }
     db.remove(id)
         .then(removedPost => {
             res.status(200).json(removedPost);
         })
-        .catch(err => console.error(err))
+        .catch(() => res.status(500).json({error: "The post could not be removed."}))
 })
 
 //PUT
 server.put('/api/posts/:id', (req, res) => {
     const {id} = req.params;
+    if(!id) {
+        res.status(404).json({message: "The post with the specified ID does not exist"});
+    }
     const {title, contents} = req.body;
+    if(!title || !contents) {
+        res.status(400).json({errorMessage: "Please provide title and contents for the post."})
+    }
     const updatedPost = {title, contents};
     db.update(id, updatedPost)
         .then(post => {
             res.status(200).json(post);
         })
-        .catch(err => console.error(err));
+        .catch(() => res.status(500).json({error: "The post information could not be modified."}));
 })
 
 
