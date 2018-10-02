@@ -34,16 +34,35 @@ const PostDiv = styled.div`
 		display: flex;
 		justify-content: center;
 
-		.delete-btn {
+		.btn {
 			border-radius: 5px;
 			padding: 5px 10px;
-			background: red;
-			color: white;
+
+			* {
+				padding: 0;
+			}
 
 			&:hover {
 				background: black;
-				color: red;
 				cursor: pointer;
+			}
+		}
+
+		.edit-btn {
+			background-color: blue;
+			color: white;
+
+			&:hover {
+				color: aqua;
+			}
+		}
+
+		.delete-btn {
+			background-color: red;
+			color: white;
+
+			&:hover {
+				color: red;
 			}
 		}
 	}
@@ -52,6 +71,11 @@ const PostDiv = styled.div`
 export default class SinglePost extends Component {
 	state = {
 		user: {},
+	}
+
+	editPost = e => {
+		e.preventDefault();
+		this.props.history.push(`/edit/${ this.props.id }`);
 	}
 
 	deletePost = e => {
@@ -85,7 +109,12 @@ export default class SinglePost extends Component {
 
 				<div className = 'button-wrapper'>
 					<button
-						className = 'delete-btn'
+						className = 'btn edit-btn'
+						onClick = { this.editPost }
+					>Edit</button>
+
+					<button
+						className = 'btn delete-btn'
 						onClick = { this.deletePost }
 					>Delete</button>
 				</div>

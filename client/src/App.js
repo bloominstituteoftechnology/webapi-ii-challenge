@@ -5,6 +5,7 @@ import { Route, Link } from 'react-router-dom';
 import Post from './components/Post.js';
 import SinglePost from './components/SinglePost.js';
 import CreatePost from './components/CreatePost.js';
+import EditPost from './components/EditPost.js';
 
 import styled from 'styled-components';
 
@@ -85,6 +86,8 @@ class App extends Component {
 				<Route path = '/post/:id' render = { props =>  <SinglePost history = { props.history } getPosts = { this.getPosts } id = { props.match.params.id } /> } />
 
 				<Route path = '/create' render = { props => <CreatePost getPosts = { this.getPosts } history = { props.history } /> } />
+
+				<Route path = '/edit/:id' render = { props => <EditPost history = { props.history } getPosts = { this.getPosts } id = { props.match.params.id } /> } />
 			</AppDiv>
 		);
 	}
