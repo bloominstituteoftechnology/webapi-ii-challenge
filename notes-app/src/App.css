@@ -1,0 +1,42 @@
+.App {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.posts-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.post {
+  width: 200px;
+  height: 200px;
+  margin: 20px;
+  color: white;
+  background-color: olivedrab;
+  border-radius: 5px;
+}
+
+.button {
+  width: 150px;
+  height: 30px;
+  margin: 50px;
+  padding-top: 10px;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  background-color: olivedrab;
+  border-radius: 2px;
+}
+
+.button:hover {
+  color: olivedrab;
+  background-color: white;
+  border: 2px solid olivedrab;
+}
+
+.post a {
+  text-decoration: none;
+  color: white;
+}

@@ -1,15 +1,17 @@
 // import your node modules
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 
 const db = require("./data/db.js");
 
 // add your server code starting here
 const server = express();
-const port = 8000;
-server.use(bodyParser.json());
+const port = 80;
+server.use(express.json());
 
+server.use(cors());
+console.log("hiiiii");
 server.listen(port, () => {
   console.log("API running");
 });
@@ -47,7 +49,7 @@ server.post("/api/posts", (req, res) => {
 });
 //GET all posts
 server.get("/", (req, res) => {
-  res.send("Hello Posts!");
+  // do something
 });
 
 //GET all posts
