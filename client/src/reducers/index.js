@@ -1,6 +1,18 @@
-import { GETTING_POSTS, GOT_POSTS, GET_POSTS_ERROR } from '../actions';
+import {
+	GETTING_POSTS,
+	GOT_POSTS,
+	GET_POSTS_ERROR,
+	GETTING_POST,
+	GOT_POST,
+	GET_POST_ERROR
+} from '../actions';
 
-const initialState = { posts: [], gettingPosts: false, error: null };
+const initialState = {
+	posts: [],
+	gettingPosts: false,
+	gettingPost: false,
+	error: null
+};
 
 const noteReducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -19,6 +31,23 @@ const noteReducer = (state = initialState, action) => {
 			return {
 				...state,
 				gettingPosts: false,
+				error: `${action.payload}`
+			};
+
+		case GETTING_POST:
+			return { ...state, gettingPost: true };
+
+		case GOT_POST:
+			return {
+				...state,
+				post: action.payload,
+				gettingPost: false
+			};
+
+		case GET_POST_ERROR:
+			return {
+				...state,
+				gettingPost: false,
 				error: `${action.payload}`
 			};
 

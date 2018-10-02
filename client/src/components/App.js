@@ -6,6 +6,7 @@ import styled from 'styled-components';
 // Components
 import HomePage from './HomePage';
 import PostsView from './PostsView';
+// import PostView from './PostView';
 
 const AppContainer = styled.div`
 	max-width: 880px;
@@ -18,7 +19,8 @@ const App = () => {
 	return (
 		<AppContainer>
 			<Route exact path="/" component={HomePage} />
-			<Route path={`/posts`} component={PostsView} />
+			<Route exact path="/posts" component={PostsView} />
+			{/* <Route path={`/posts/:id`} component={PostView} /> */}
 		</AppContainer>
 	);
 };
