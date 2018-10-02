@@ -4,6 +4,7 @@ const db = require('./data/db.js');
 const express = require('express');
 const server = express();
 cors = require('cors');
+server.use(cors());
 
 // add your server code starting here
 const port = 8000;
