@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-
+// import { connect } from 'react-redux';
+// import { withRouter } from 'react-router-dom';
 const PostWrapper = styled.div`
   max-width: 600px;
   min-width: 500px;
-  border: 1px solid black;
+  border-bottom: 1px solid black;
+  margin-top: 10px;
+  padding-bottom: 10px;
 `;
 class Post extends Component {
   render() {
@@ -18,5 +21,4 @@ class Post extends Component {
     );
   }
 }
-
 export default Post;
