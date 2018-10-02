@@ -20,16 +20,17 @@ server.get('/api/posts', (req, res)=>{
     db.find()
         .then(posts =>{
             console.log('posts:{', posts, '}');
-            res.json(posts);
+            res.status(200).json(posts);
         })
-        .catch(err => response.send(err));
+        .catch(err => res.status(400).send(err));
 });
 
-server.get('api/posts/:id', (req,res)=>{
-    db.findById(req)
+server.get('/api/posts/:id', (req,res)=>{
+    const {id} = req.params;
+    db.findById(id)
         .then(post =>{
             console.log('post:{', post, '}');
-            res.json(post);
+            res.status(200).json(post);
         })
-        .catch(err => response.send({error:"The posts information could not be retrieved."},err));
+        .catch(err => res.status(400).send({error:"The posts information could not be retrieved."},err));
 });
