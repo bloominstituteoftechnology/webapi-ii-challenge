@@ -8,7 +8,7 @@ server.use(cors())
 server.use(express.json());
 
 server.get('/', (req, res) => {
-	res.send('hello from express');
+	res.send('HELLO from SERVER');
 })
 
 server.post('/api/posts', (req, res) => {

@@ -42,7 +42,7 @@ class PostList extends React.Component {
 
 	componentDidMount() {
     axios
-      .get("http://localhost:5555/api/posts")
+      .get("http://localhost:8000/api/posts")
       .then(response => {
         this.setState({posts: response.data });
       })
@@ -57,7 +57,7 @@ class PostList extends React.Component {
 
   resetState = () => {
   	axios
-      .get("http://localhost:5555/api/posts")
+      .get("http://localhost:8000/api/posts")
       .then(response => {
         this.setState({posts: response.data });
       })
@@ -72,7 +72,7 @@ class PostList extends React.Component {
   		contents: this.state.createContents,
   	}
   	axios
-  		.post(`http://localhost:5555/api/posts/`, newPost)
+  		.post(`http://localhost:8000/api/posts/`, newPost)
   		.then(response => {
   			console.log(response.data)
   			console.log("post response: ", response);

@@ -46,7 +46,7 @@ class Post extends React.Component {
     toggleEdit = () => {
         this.state({
             showEdit: !this.state.showEdit
-        })
+        });
     }
 
     editPost = (id) => {
