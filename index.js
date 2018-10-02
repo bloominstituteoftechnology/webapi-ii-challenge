@@ -6,24 +6,34 @@ const cors = require('cors');
 // SERVER SETUP
 const server = express();
 server.use(cors());
-server.use(express.json())
+server.use(express.json());
 
 // API ENDPOINTS
 server.post('/api/posts', (req, res) => {
   const newPost = req.body;
   db.insert(newPost)
-    .then(posts => res.json(posts))
+    .then(posts => res.status(201).json(posts))
     .catch(err => res.status(400).json({ errorMessage: "Please provide title and contents for the post." }));
-})
+});
 
 server.get('/api/posts', (req, res) => {
   db.find()
     .then(posts => {
-      res.json(posts);
+      res.status(200).json(posts);
     })
     .catch(err => res.status(500).json({ error: "The posts information could not be retrieved." }));
-})
+});
+
+server.get('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.findById(id)
+    .then(post => {
+      if (!post) return res.status(404).json({ message: "The post with the specified ID does not exist." });
+      return res.status(200).json(post);
+    })
+    .catch(err => res.status(500).json({ error: "The post information could not be retrieved." }));
+});
 
 // PORT LISTENER
-const port = 8000
-server.listen(port, () => console.log(`=== ${port} active ===`))
+const port = 8000;
+server.listen(port, () => console.log(`=== ${port} active ===`));
