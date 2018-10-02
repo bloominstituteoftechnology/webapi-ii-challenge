@@ -17,7 +17,6 @@ class PostView extends Component {
 
     handleUpdate = (e, id) => {
         e.preventDefault();
-        console.log('UPDATE',id);
         this.props.setUpdatePost(id);
         this.props.history.push('/form');
     }

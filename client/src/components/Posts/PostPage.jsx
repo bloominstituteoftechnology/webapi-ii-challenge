@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import Styled from 'styled-components';
-import { Modal, ModalContainer, ModalButtons, ButtonDanger, Button, ModalBody, ModalFooter, ModalHeader } from 'mdbreact';
+import { Modal, Button, ModalBody, ModalFooter, ModalHeader } from 'mdbreact';
 
 const Wrapper = Styled.div`
     max-width: 880px;
