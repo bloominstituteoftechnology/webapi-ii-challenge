@@ -34,9 +34,9 @@ export default class Post extends Component {
       .get(`http://localhost:8000/api/posts/${this.id}`)
       .then(response => {
         this.setState({
-          post: { ...response.data },
-          title: response.data.title,
-          contents: response.data.contents
+          post: response.data[0],
+          title: response.data[0].title,
+          contents: response.data[0].contents
         });
       })
       .catch(error => console.log(error));

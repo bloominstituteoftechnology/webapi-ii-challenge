@@ -1,0 +1,12 @@
+.main-container .post {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.main-container .post-body {
+  width: 660px;
+  margin-bottom: 20px;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
