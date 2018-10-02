@@ -25,7 +25,7 @@ class Posts extends Component {
         <div className = 'posts-list'>
           {this.state.posts.map(post => {
             return (
-              <div key = {post.id}>
+              <div className = 'post-card' key = {post.id}>
                 <h1>{post.title}</h1>
                 <p>{post.contents}</p>
               </div>
