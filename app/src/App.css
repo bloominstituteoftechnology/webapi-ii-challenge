@@ -9,7 +9,7 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 300px;
   padding: 20px;
   color: white;
 }
@@ -25,4 +25,11 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.banner{
+  height: 300px;
+  width: 100%;
+  border: 1px grey solid;
+  border-radius: 5px;
 }
