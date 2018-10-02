@@ -4,9 +4,10 @@ import axios from 'axios';
 
 const PostDiv = styled.div`
     border: solid black 1px;
-    padding: 1%;
-    background-color: lightgrey;
+    padding: 2%;
+    background-color: #f2f2f2;
     font-size: 1.6rem;
+    margin: 2%;
 `
 
 const EditForm = styled.form`
