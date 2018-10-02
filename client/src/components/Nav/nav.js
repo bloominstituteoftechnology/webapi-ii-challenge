@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Styled from 'styled-components';
 
 const Nav = (props) => {
     return (
@@ -8,3 +9,5 @@ const Nav = (props) => {
         </div>
     );
 };
+
+export default Nav;
