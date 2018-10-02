@@ -11,7 +11,7 @@ const Wrapper = Styled.div`
 function PostsContainer(props) {
     return (
         <Wrapper>
-            <PostsList posts={props.posts} />
+            <PostsList {...props} posts={props.posts} />
         </Wrapper>
     )
 };

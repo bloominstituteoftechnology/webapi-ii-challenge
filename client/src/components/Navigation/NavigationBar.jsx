@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink, Fa } from 'mdbreact';
+
+import { toggleUpdatePost } from '../../store/actions';
 
 class NavigationBar extends Component {
     constructor(props) {
@@ -30,10 +33,13 @@ class NavigationBar extends Component {
                     <Collapse isOpen = { this.state.collapse } navbar>
                     <NavbarNav left>
                         <NavItem active={this.props.location.pathname === '/'} >
-                            <NavLink exact to="/">Home</NavLink>
+                            <NavLink exact to="/" onClick={this.props.toggleUpdatePost} >Home</NavLink>
                         </NavItem>
                         <NavItem active={this.props.location.pathname === '/posts'}>
-                            <NavLink to="/posts">Posts</NavLink>
+                            <NavLink to="/posts" onClick={this.props.toggleUpdatePost} >Posts</NavLink>
+                        </NavItem>
+                        <NavItem active={this.props.location.pathname === '/form'}>
+                            <NavLink to="/form" onClick={this.props.toggleUpdatePost} >Create Post</NavLink>
                         </NavItem>
                     </NavbarNav>
                     <NavbarNav right>
@@ -55,5 +61,9 @@ class NavigationBar extends Component {
       );
     }
   }
+
+  const mapStateToProps = state => ({
+
+  });
   
-  export default NavigationBar;
+  export default connect(mapStateToProps, { toggleUpdatePost })(NavigationBar);
