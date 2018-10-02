@@ -95,3 +95,28 @@ server.delete("/api/posts/:id", (req, res) => {
     })
     .catch(err => res.json({ error: "The post could not be removed" }));
 });
+
+server.put("/api/posts/:id", (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  const title = req.body.title;
+  const contents = req.body.contents;
+  const newPost = { title, contents };
+  db.update(id, newPost)
+    .then(updated => {
+      if (updated === 1) {
+        db.findById(id)
+          .then(post => res.status(200).json(post))
+          .catch(err => res.send(err));
+      } else {
+        res
+          .status(500)
+          .json({ error: "The post information could not be modified" });
+      }
+    })
+    .catch(err =>
+      res
+        .status(500)
+        .json({ error: "The post information could not be modified" })
+    );
+});
