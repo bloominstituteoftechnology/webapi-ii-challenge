@@ -10,7 +10,7 @@ class PostList extends Component {
   render() {
     return (
       <div className="PostList">
-        {/* {this.props.fetching ? (
+        {this.props.fetching ? (
           <p>Loading Posts...</p>
         ) : (
           <ul>
@@ -18,8 +18,7 @@ class PostList extends Component {
               return <Post key={post.id} post={post} />;
             })}
           </ul>
-        )} */}
-        {this.props.error ? <p>{this.props.error}</p> : null}
+        )}
       </div>
     );
   }
