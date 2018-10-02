@@ -41,7 +41,15 @@ server.post('/posts', (req, res) => {
     .catch(err => console.error(err));
 });
 
-
+server.delete('/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.remove(id)
+    .then(removedPost => {
+      console.log(removedPost);
+      res.status(200).json(removedPost);
+    })
+    .catch(err => console.error(err));
+});
 
 
 
