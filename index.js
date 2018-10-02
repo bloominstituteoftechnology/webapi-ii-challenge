@@ -45,3 +45,12 @@ server.post('/api/posts', (req,res)=>{
         })
         .catch(err => res.status(400).send(err));
 })
+
+server.delete('/api/posts/:id', (req, res)=>{
+    console.log(req);
+    db.remove(req.params.id)
+        .then(deleted =>{
+            res.status(200).json(deleted.body.title);
+        })
+        .catch(err => res.status(400).send(err));
+})
