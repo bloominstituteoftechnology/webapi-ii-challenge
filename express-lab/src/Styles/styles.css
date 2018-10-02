@@ -35,7 +35,7 @@ p {
 }
 .post {
   width: 60%;
-  margin: 0 auto;
+  margin: 0 5% 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,7 +54,6 @@ p {
 }
 .post .name span {
   font-family: 'Josefin Slab', serif;
-  margin-left: 5px;
   font-size: 15px;
   font-weight: bold;
   color: lightgray;
@@ -62,7 +61,7 @@ p {
 .post .quote {
   font-size: 30px;
   font-family: 'Fredericka the Great', cursive;
-  padding-left: 1rem;
+  padding: 0 1rem;
   background-color: burlywood;
   width: 100%;
   color: maroon;
@@ -71,4 +70,20 @@ p {
 }
 .post .quote em {
   font-weight: normal;
+}
+.add-post {
+  position: fixed;
+  width: 25%;
+  top: 114px;
+  left: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.add-post input,
+.add-post textarea {
+  margin-bottom: 20px;
+  max-width: 100%;
+  min-width: 100%;
+  width: 100%;
 }

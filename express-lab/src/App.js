@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import './App.css';
-import './Styles/styles.css';
-import Posts from './components/container/Posts';
 import axios from 'axios';
+import './Styles/styles.css';
+
+
+import Posts from './components/container/Posts';
+import AddForm from './components/presentational/AddForm';
+
 
 class App extends Component {
 
@@ -17,7 +20,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <Posts posts={this.state.posts}/>
+        <AddForm />
+        <Posts posts={this.state.posts}/>
       </div>
     );
   }
