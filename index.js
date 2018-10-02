@@ -62,8 +62,8 @@ server.delete('/posts/:id', (req, res) => {
 
 server.put('/posts/:id', (req, res) => {
   const { id } = req.params;
-  const { name, bio } = req.body;
-  const newPost = { name, bio };
+  const { title, contents } = req.body;
+  const newPost = { title, contents };
 
   console.log(newPost);
   db.update(id, newPost)
