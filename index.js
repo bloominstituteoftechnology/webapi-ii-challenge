@@ -21,9 +21,21 @@ server.use(bodyParser.json());
 // to stop cors errors when connecting from localhost (security)
 server.use(cors());
 
-// warning for home page route
+// home page route
 server.get("/", (req, res) => {
-  res.send("Unused Home Page");
+  res.send("<h1>Home Page</h1>");
+});
+
+// about page route
+server.get("/about", (req, res) => {
+  res.send("<h1>About Page</h1>");
+});
+
+// form page route
+server.get("/form", (req, res) => {
+  res.send(
+    "<h1>Form Page</h1><form action='/api/users'>Title:<br><input type='text' name='title'><br>Contents:<br><input type='text' name='contents'><br><br><input type='submit' value='Submit'></form>"
+  );
 });
 
 // endpoints
@@ -50,7 +62,7 @@ server.get("/", (req, res) => {
 
 server.post("/api/posts", async (req, res) => {
   if (!req.body.title || !req.body.contents) {
-    return res.status(400).json({ errorMessage: formError });
+    return res.status(422).json({ errorMessage: formError });
   }
   try {
     const { id } = await db.insert(req.body);
