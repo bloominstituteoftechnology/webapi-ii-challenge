@@ -36,6 +36,24 @@ server.get('/api/posts/:id', (req, res) => {
     .catch(err => res.status(500).send({ error: "The post information could not be retrieved." }));
 });
 
+server.post('/api/posts', (req, res) => {
+  if(req.body.title && req.body.contents) {
+    db.insert({title: req.body.title, contents: req.body.contents})
+      .then(postId => res.json(postId))
+      .catch(err => res.status(400).send({ errorMessage: "Please provide title and contents for the post." }))
+  } 
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.remove(id)
+    .then(removedPost => {
+      console.log(removedPost);
+      res.status(200).json(removedPost);
+    })
+    .catch(err => res.status(500).send({ error: "The post could not be removed" }));
+});
+
 const port = 9000;
 server.listen(port, () => 
   console.log(`\n=== API running on port ${port} ===\n`)
