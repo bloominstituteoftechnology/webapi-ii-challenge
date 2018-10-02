@@ -1,10 +1,17 @@
 import { FETCHING_POSTS, FETCHED_POSTS, FETCH_POSTS_ERRORS } from '../actions';
 
 const initialState = {
-  title: '',
-  contents: '',
-  created_at: '',
-  updated_at: '',
+  posts: [
+    {
+      contents: '',
+      created_at: '',
+      id: '',
+      title: '',
+      updated_at: '',
+      fetching: false,
+      error: ''
+    }
+  ],
   fetching: false,
   error: ''
 };
@@ -17,7 +24,7 @@ const rootReducer = (state = initialState, action) => {
     case FETCHED_POSTS:
       return {
         ...state,
-        friends: action.payload,
+        posts: action.payload,
         fetching: false
       };
 
