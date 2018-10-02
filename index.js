@@ -23,7 +23,8 @@ server.get('/posts', (req, res) => {
     console.log('\n** posts **', posts);
     res.json(posts);
   })
-  .catch(err => res.send(err));
+  .catch(err => res.status(500).send({ error: "The posts\'s information could not be retrieved. "})
+  );
 });
 
 // create a new post
@@ -35,15 +36,11 @@ server.post('/posts', (req, res) => {
     .then(id => {
       db.findById(id)
         .then(post => {
-          if(!req.body) {
-            return res
-              .status(400)
-              .send({ error: "Please provide title and contents for the post." });
-          }
           res.status(201).json(post);
         });
     })
-    .catch(err => console.error(err));
+    .catch(err => res.status(400).send({ error: "Please provide title and contents for the post." })
+    );
 });
 
 // delete a post
@@ -74,15 +71,16 @@ server.put('/posts/:id', (req, res) => {
     .catch(err => console.log(err));
 });
 
-
-
-
 // find a specific post by id
 
 server.get('/posts/:id', (req, res) => {
-  db.findById(id.id)
-    .then
+  const { id } = req.params;
+  db.findById(id).then(post => {
+    console.log('\n** post at specified id **', post);
+    res.json(post);
+  });
 })
+
 // listen on port 8000
 
 server.listen(8000, () => console.log('Server listening on port 8000.'));
