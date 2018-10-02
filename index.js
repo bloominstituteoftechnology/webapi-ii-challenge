@@ -35,11 +35,18 @@ server.post('/posts', (req, res) => {
     .then(id => {
       db.findById(id)
         .then(post => {
+          if(!req.body) {
+            return res
+              .status(400)
+              .send({ error: "Please provide title and contents for the post." });
+          }
           res.status(201).json(post);
         });
     })
     .catch(err => console.error(err));
 });
+
+// delete a post
 
 server.delete('/posts/:id', (req, res) => {
   const { id } = req.params;
@@ -51,7 +58,21 @@ server.delete('/posts/:id', (req, res) => {
     .catch(err => console.error(err));
 });
 
+// edit post with specified //
 
+server.put('/posts/:id', (req, res) => {
+  const { id } = req.params;
+  const { name, bio } = req.body;
+  const newPost = { name, bio };
+
+  console.log(newPost);
+  db.update(id, newPost)
+    .then(post => {
+      console.log(post);
+      res.status(200).json(post);
+    })
+    .catch(err => console.log(err));
+});
 
 
 
