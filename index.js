@@ -8,9 +8,7 @@ const server = express();
 server.use(cors());
 // server.use(express.json());
 
-// configures our server to execute a function for every GET request to "/api/posts"
-// the second argument passed to the .get() method is the "Route Handler Function"
-// the route handler function will run on every GET request to "/"
+// GET //
 server.get("/api/posts", (req, res) => {
   db.find()
 		.then(posts => res.json(posts))
@@ -26,6 +24,25 @@ server.get("api/posts/:id", (req, res) => {
           res.status(500).json({ error: "Post could not be found" });
       });
 });
+//////////
+
+// POST //
+server.post("/api/posts", (req, res) => {
+  res.status(201).json({  });
+});
+//////////
+
+// DELETE //
+server.delete("/api/posts", (req, res) => {
+  res.status(204);
+});
+//////////
+
+// PUT //
+server.put("/api/posts", (req, res) => {
+  res.status(200).json({  });
+});
+//////////
 
 // The port that the server we're creating will host the info on
 const port = 5000;
