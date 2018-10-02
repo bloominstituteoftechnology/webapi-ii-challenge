@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { fetchPosts } from '../actions';
 
-import PostList from '../components/PostsList';
+import PostList from '../components/PostList';
 
 class PostsListView extends React.Component {
     componentDidMount() {

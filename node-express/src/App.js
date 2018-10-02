@@ -4,28 +4,13 @@ import logo from './logo.svg';
 import './App.css';
 
 import { fetchPosts, addPost } from './actions';
-import PostFormView from './components/PostForm';
-import PostsListView from './components/PostList';
+import PostFormView from './views/PostFormView';
+import PostsListView from './views/PostsListView';
+import PostView from './views/PostView';
 import Home from './components/Home';
 
 class App extends Component {
-  state = {
-    titleInput: '',
-    contentsInput: ''
-  }
-
-  componentDidMount = () => {
-    this.props.fetchPosts();
-  }
-
-  addNewPost = () => {
-    const post = {
-      title: this.state.titleInput,
-      contents: this.state.contentsInput
-    };
-    
-  }
-
+  
   render() {
     return (
       <div className="App">
