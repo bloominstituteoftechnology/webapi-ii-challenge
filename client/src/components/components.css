@@ -13,17 +13,18 @@ a {
 }
 
 button {
-  background: #352bc4;
+  background: #f02b3c;
   height: 40px;
   width: 200px;
   color: #ffffff !important;
   cursor: pointer;
-  border: 1px solid #979797;
+  border: 1px solid #5ba1fd;
   font-size: 16px;
 }
 
 button:hover {
-  background: #4359d6;
+  background: #fff;
+  color: #f02b3c !important;
 }
 
 button a {
@@ -40,13 +41,13 @@ button a:visited {
   width: 1000px;
   margin: 20px auto;
   font-family: "Raleway", sans-serif;
-  border: 1px solid #979797;
+  border: 1px solid #5ba1fd;
   min-height: 600px;
 }
 
 .main-container {
   width: 750px;
-  background: #f3f3f3;
+  background: #f1e5cb;
   display: flex;
   flex-direction: column;
   padding: 20px 35px 20px 35px;
@@ -79,7 +80,7 @@ button a:visited {
   font-weight: bold;
 }
 .overlay {
-  background-color: rgba(207, 207, 207, 0.8);
+  background-color: rgba(212, 54, 54, 0.8);
   position: fixed;
   top: 0;
   left: 0;
@@ -111,9 +112,17 @@ button a:visited {
 }
 
 .modal-buttons button:first-child {
-  background: #d0021b;
+  background: #d0021b !important;
+  color: #fff !important;
+}
+
+.modal-buttons button:first-child:hover {
+  color: #d0021b !important;
+  background: #fff !important;
 }
 
 .modal-buttons button:last-child {
   margin-left: 20px;
+  background: #fff;
+  color: #d0021b !important;
 }
