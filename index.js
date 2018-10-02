@@ -33,8 +33,13 @@ server.post("/api/posts", (req, res) => {
 //////////
 
 // DELETE //
-server.delete("/api/posts", (req, res) => {
-  res.status(204);
+server.delete("/api/posts:id", (req, res) => {
+  const {id} = req.params;
+  db.remove(id)
+      .then(deletedPost => {
+          res.status(200).json(deletedPost);
+      })
+      .catch(err => console.error(err))
 });
 //////////
 
@@ -44,8 +49,9 @@ server.put("/api/posts", (req, res) => {
 });
 //////////
 
-// The port that the server we're creating will host the info on
+// Port Listening
 const port = 5000;
 server.listen(port, () =>
   console.log(`Server is listening on Port ${port}`)
 );
+//////////
