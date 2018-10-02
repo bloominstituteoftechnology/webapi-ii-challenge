@@ -7,7 +7,7 @@ class UpdatePost extends React.Component {
     title: ""
   };
   onSubmitHandler = e => {
-    this.props.updatePost(this.props.id, this.state.title);
+    this.props.updatePost(this.props.id, this.state);
   };
   onChangeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
