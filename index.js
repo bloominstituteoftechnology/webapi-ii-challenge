@@ -94,3 +94,4 @@ server.get("/posts", (req, res) => {
             .catch(err => res.status(500).json({ message: "update failed" }));
     })
 })
+
