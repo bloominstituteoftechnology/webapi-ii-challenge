@@ -14,6 +14,7 @@
     "express": "^4.16.3",
     "knex": "^0.15.2",
     "react-modal": "^3.6.1",
+    "react-router-dom": "^4.3.1",
     "sqlite3": "^4.0.2"
   },
   "devDependencies": {
