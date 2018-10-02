@@ -73,6 +73,8 @@ server.delete('api/posts/:id', (req, res) => {
     .catch(err => console.log(err))
 });
 
+////Observe the variable statements here. Understand why we are configuring as such.
+
 server.put('/api/posts/:id' , (req, res) => {
     const { id } = req.params;
     const { title, contents } = req.body;

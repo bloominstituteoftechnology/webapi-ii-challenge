@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {Fragment} from 'react';
+import './Post.css';
 
 function Post(props) {
-    console.log(props);
-    return <div>{props.posts.map(post => <p>{post}</p> )}</div>
+    // console.log(props);
+    return (
+        <div>
+           <div className="title">"{props.post.title}"</div> 
+           <div className="who">{props.post.contents}?</div>
+        </div>
+    )
 }
-
 export default Post
