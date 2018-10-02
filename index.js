@@ -3,9 +3,18 @@ const express = require('express');
 const db = require('./data/db.js');
 const cors = require('cors');
 
-// add your server code starting here
+/* DEPRECATED */
+// const bodyParser = require('body-parser');
+
 const server = express();
+// prevent CORS errors on localhost
 server.use(cors());
+// tell server to speak in JSON
+server.use(express.json());
+
+/* DEPRECATED */
+// server.use(bodyParser.json());
+// server.use(bodyParser.urlencoded({extended: true}));
 
 const port = 8000;
 server.listen(port, () => {
@@ -19,17 +28,36 @@ server.listen(port, () => {
 server.get('/api/posts', (req, res) => {
     db.find()
     .then(posts => {
-        res.json(posts)
+        res.status(200).json(posts)
     })
-    .catch(error => res.send(error));
+    .catch(err => res.send(err));
 })
 
 // POST
 
-// GET POSTS
+server.post('/api/posts', (req, res) => {
+    const { title, contents } = req.body;
+    const newPost = {title, contents};
+    db.insert(newPost)
+    .then(id => {
+        res.status(201).json({"New Post Added with ID#": id});
+    })
+    .catch(err => res.send(err));
+})
 
-// GET ID
+// GET POST BY ID
+server.get('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+    db.findById(id)
+    .then(post => {
+        res.status(200).json(post[0]);
+    })
+    .catch(err => res.send(err))
+
+})
 
 // DELETE
+
+
 
 // PUT

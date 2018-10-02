@@ -31,6 +31,29 @@ export const rootReducer = (state = initialState, action) => {
                 posts: action.payload
             })
 
+        case POSTING:
+            return Object.assign({}, state, {
+                posting: true
+            })
+
+        case POSTED:
+            return Object.assign({}, state, {
+                posting: false, 
+                posted: true
+            })
+        
+        case FETCHING_SINGLE:
+            return Object.assign({}, state, {
+                fetching_single: true
+            })
+
+        case FETCHED_SINGLE:
+            return Object.assign({}, state, {
+                fetching_single: false,
+                fetched_single: true,
+                currentNote: action.payload
+            })
+
         default:
             return state;
     }

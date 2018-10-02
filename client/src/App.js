@@ -4,6 +4,8 @@ import './App.css';
 import {connect} from 'react-redux';
 import {fetchPosts} from './actions/index';
 import PostsList from './components/PostsList';
+import PostForm from './components/PostForm';
+import PostDetails from './components/PostDetails';
 import {Switch, Route, Link, withRouter} from 'react-router-dom';
 
 class App extends Component {
@@ -16,7 +18,18 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <PostsList/>
+
+        <Route exact path = '/' render={(props) => 
+        <div>
+        <PostForm />
+        <PostsList />
+        </div>
+        } />
+
+        <Route exact path = '/posts/:id' render = {(props) => 
+        <PostDetails />
+        } />
+
       </div>
     );
   }
