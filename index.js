@@ -30,7 +30,7 @@ server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   db.findById(id)
     .then(post => {
-      if (!post) return res.status(404).json({ message: "The post with the specified ID does not exist." });
+      if (!post.length) return res.status(404).json({ message: "The post with the specified ID does not exist." });
       return res.status(200).json(post);
     })
     .catch(err => res.status(500).json({ error: "The post information could not be retrieved." }));
