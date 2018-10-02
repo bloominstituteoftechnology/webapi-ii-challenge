@@ -16,10 +16,10 @@ const PostList = props => {
       <div className="post-previews-container">
         {posts.map(post => {
           return (
-            <Link to={`/posts/${post._id}`} key={Math.random()}>
+            <Link to={`/posts/${post.id}`} key={Math.random()}>
               <div className="post-preview-container">
                 <h3>{post.title}</h3>
-                <p>{post.textBody}</p>
+                <p>{post.contents}</p>
               </div>
             </Link>
           );

@@ -20,7 +20,7 @@ import "./index.css";
 export default class Post extends Component {
   state = {
     isEditing: false,
-    Post: null,
+    post: null,
     title: "",
     contents: ""
   };
@@ -34,7 +34,7 @@ export default class Post extends Component {
       .get(`http://localhost:8000/api/posts/${this.id}`)
       .then(response => {
         this.setState({
-          Post: response.data,
+          post: { ...response.data },
           title: response.data.title,
           contents: response.data.contents
         });
@@ -62,7 +62,7 @@ export default class Post extends Component {
         this.props.refetchPosts();
         this.setState({
           isEditing: false,
-          Post: response.data,
+          post: response.data,
           title: response.data.title,
           contents: response.data.contents
         });
@@ -96,7 +96,7 @@ export default class Post extends Component {
         this.props.refetchPosts();
         this.setState({
           isEditing: false,
-          Post: null,
+          post: null,
           title: "",
           contents: ""
         });
@@ -107,7 +107,7 @@ export default class Post extends Component {
   };
 
   render() {
-    if (!this.state.Post) {
+    if (!this.state.post) {
       return <div className="main-container Post">Post is loading...</div>;
     }
     // if isEditing then render the form

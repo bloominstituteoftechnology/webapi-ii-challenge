@@ -20,9 +20,9 @@ const Form = props => {
         />
         <textarea
           type="text"
-          name="contants"
+          name="contents"
           placeholder="Post Content"
-          value={props.textBody}
+          value={props.contents}
           onChange={props.handleInputChange}
         />
         <button onClick={props.handleFormSubmit}>{buttonName}</button>
