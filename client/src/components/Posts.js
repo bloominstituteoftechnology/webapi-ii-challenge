@@ -40,8 +40,8 @@ class Posts extends React.Component {
                 <input type="text" name="contents" placeholder="Source" onChange={this.handlerInput} />
                 <input type="submit" onClick={this.createPost} />
                 {this.props.posts.map(post => 
-                    <div className="post">
-                        <h6 key={post.id}>{post.title} -{post.contents}</h6>
+                    <div key={post.id} className="post">
+                        <h6>{post.title} -{post.contents}</h6>
                         <button onClick={() => this.props.deletePost(post.id)}>Delete</button>
                     </div>
                 )}

@@ -47,6 +47,7 @@ export const deletePost = (id) => {
         axios
             .delete(`http://localhost:8100/api/posts/${id}`)
             .then(res => {
+                window.location.reload();
                 dispatch({ type: POST_DELETED })
             })
             .catch(err => {
