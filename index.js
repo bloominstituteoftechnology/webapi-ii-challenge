@@ -4,15 +4,24 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const server = express();
 
+// error constants
 const getError = "The information could not be retrieved.";
 const notExist = "The post with the specified ID does not exist.";
 const formError = "Please provide title and contents for the post.";
 const saveError = "There was an error while saving the post to the database";
 const editError = "The post information could not be modified.";
+const deleteError = "The post could not be removed";
 
+// server port constant
+const port = 8000;
+
+// always remember to parse your body
 server.use(bodyParser.json());
+
+// to stop cors errors when connecting from localhost (security)
 server.use(cors());
 
+// warning for home page route
 server.get("/", (req, res) => {
   res.send("Unused Home Page");
 });
@@ -115,13 +124,11 @@ server.delete("/api/posts/:id", async (req, res) => {
   try {
     const post = await db.remove(req.params.id);
     if (post === 0) {
-      return res
-        .status(404)
-        .json({ message: "The post with the specified ID does not exist." });
+      return res.status(404).json({ message: notExist });
     }
     res.status(200).json(post);
   } catch (error) {
-    res.status(500).json({ error: "The post could not be removed" });
+    res.status(500).json({ error: deleteError });
   }
 });
 
@@ -154,20 +161,16 @@ server.put("/api/posts/:id", async (req, res) => {
     try {
       const post = await db.findById(req.params.id);
       if (post.length === 0) {
-        return res
-          .status(404)
-          .json({ message: "The post with the specified ID does not exist." });
+        return res.status(404).json({ message: notExist });
       } else {
         return res.status(200).json(post);
       }
     } catch (error) {
-      return res
-        .status(500)
-        .json({ error: "Please provide title and contents for the post." });
+      return res.status(500).json({ error: formError });
     }
   } catch (error) {
     return res.status(500).json({ error: editError });
   }
 });
 
-server.listen(8000, () => console.log("API listenning on port 8000"));
+server.listen(port, () => console.log(`API listenning on port ${port}`));
