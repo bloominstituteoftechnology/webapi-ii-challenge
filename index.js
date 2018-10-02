@@ -13,7 +13,7 @@ const port = 8000;
 server.listen(port, () => `running on port: ${port}`);
 
 server.get("/api/posts", (req, res) => {
-  console.log(req);
+  console.log(req);  
   db.find()
     .then(posts => {
       res.json(posts);
@@ -23,49 +23,67 @@ server.get("/api/posts", (req, res) => {
 
 server.get("/api/posts/:id", (req, res) => {
   const { id } = req.params;
+  if(!id){
+    res.status(404).send({ message: "The post with the specified ID does not exist." })
+  }
   db.findById(id)
     .then(posts => {
       res.json(posts);
     })
-    .catch(err => res.send(err));
+    .catch(() => res.status(500).send({ error: "The post information could not be retrieved." }));
 });
 
 server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   const foundPost = db.findById(id);
-  if (foundPost) {
-    console.log("post found");
+  if (foundPost) {   
     db.remove(id).then(() => {
-      db.find().then(post => {
-        console.log(post);
-        res.json(post);
+      db.find().then(post => {        
+        res.json(post)
+        
       });
-    });
+    }).catch(() => {
+      res.status(500).send({ error: "The post could not be removed" })
+    });;
+  }else{
+    res.status(404).send({ message: "The post with the specified ID does not exist." })
   }
 });
 
 server.post("/api/posts", (req, res) => {
   const { title, contents } = req.body;
   const newPost = { title: title, contents: contents };
+  if(!title || !contents){
+    res.status(400).send({ errorMessage: "Please provide title and contents for the post." })
+  }
+
   db.insert(newPost).then(() => {
     db.find().then(post => {
       console.log(post);
-      res.json(post);
+      res.status(201).json(post);
     });
+  }).catch(() => {
+    res.status(500).send({ error: "There was an error while saving the post to the database" })
   });
 });
 
 server.put("/api/posts/:id", (req, res) => {
   const { id } = req.params;
-  console.log(req.body);
   const { title, contents } = req.body;
   const newPost = { title: title, contents: contents };
-  console.log(newPost);
+
+  if(!id){
+    res.status(404).send({ message: "The post with the specified ID does not exist." })
+  }
+  if(!title || !contents){
+    res.status(400).send({ errorMessage: "Please provide title and contents for the post." })
+  }
+
+
   db.update(id, newPost).then(() => {
-    db.find().then(post => {
-      console.log(post);
-      res.json(post);
+    db.find().then(post => {      
+      res.status(200).json(post);
     });
-  });
+  }).catch(err => res.status(500).send(err));
 });
 // add your server code starting here
