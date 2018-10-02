@@ -1,12 +1,35 @@
 import React, { Component } from "react";
-import "./App.css";
+
+// Components
 import PostList from "./components/PostList";
+
+
+// Auxillary
 import { connect } from "react-redux";
-import { getPosts } from "./actions";
+import { getPosts, newPost } from "./actions";
+
+// CSS
+import "./App.css";
+
 
 class App extends Component {
+
+  state = {
+    title: '',
+  }
+
   componentDidMount() {
     this.props.getPosts();
+  }
+
+  onChangeHandler = (e) => {
+    this.setState({[e.target.name]: e.target.value});
+    console.log(this.state.title);
+  }
+
+  onSubmitHandler = (e) => {
+    e.preventDefault();
+    this.props.newPost(this.state);
   }
 
   render() {
@@ -17,7 +40,13 @@ class App extends Component {
             <h4>{this.props.error} <a href="http://localhost:9000/">Root API Page</a></h4>
           </div>
         ) : (
-          <PostList posts={this.props.posts} />
+          <React.Fragment>
+            <form onSubmit={this.onSubmitHandler}>
+              <input onChange={this.onChangeHandler} type="text" name="title" placeholder="Title..." />
+              <button onClick={this.onSubmitHandler} type="submit">Submit</button>
+            </form>
+            <PostList posts={this.props.posts} />
+          </React.Fragment>
         )}
       </div>
     );
@@ -27,11 +56,12 @@ class App extends Component {
 const mapStateToProp = state => {
   return {
     posts: state.posts,
-    error: state.error
+    error: state.error,
+    postError: state.postError,
   };
 };
 
 export default connect(
   mapStateToProp,
-  { getPosts }
+  { getPosts, newPost }
 )(App);

@@ -9,8 +9,7 @@ const db = require("./data/db.js");
 
 // server initialization
 const server = express();
-
-// use cors on server
+server.use(express.json());
 server.use(cors());
 
 // port number initialization
@@ -27,12 +26,23 @@ server.get("/", (req, res) =>
 `)
 );
 
-// GET listener
+// GET Listener
 server.get("/api/posts", (req, res) => {
   db.find()
     .then(posts => res.json(posts))
     .catch(err => res.status(500).send(`The posts information could not be retrieved.`));
 });
+
+// POST Listener
+server.post("/api/posts", (req, res) => {
+  console.log(req.body);
+  const { title } = req.body;
+  const newPost = {title};
+  console.log(newPost);
+  db.insert(newPost)
+  .then(posts => res.json(posts))
+  .catch(err => res.send(err));
+})
 
 // set up server to listen to w/e number port is
 server.listen(parseInt(port, 10), () =>
