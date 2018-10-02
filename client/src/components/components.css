@@ -4,27 +4,27 @@ h3,
 h4,
 h5 {
   font-family: "Roboto", sans-serif;
-  color: #4a4a4a;
+  color: #dfe2f2;
 }
 
 a {
-  color: #4a4a4a;
+  color: #031641;
   text-decoration: none;
 }
 
 button {
-  background: #f02b3c;
+  background: #a63c3c;
   height: 40px;
   width: 200px;
   color: #ffffff !important;
   cursor: pointer;
-  border: 1px solid #5ba1fd;
+  border: 1px solid #2c3b50;
   font-size: 16px;
 }
 
 button:hover {
   background: #fff;
-  color: #f02b3c !important;
+  color: #06336c !important;
 }
 
 button a {
@@ -43,11 +43,12 @@ button a:visited {
   font-family: "Raleway", sans-serif;
   border: 1px solid #5ba1fd;
   min-height: 600px;
+  color: #fff;
 }
 
 .main-container {
   width: 750px;
-  background: #f1e5cb;
+  background: #9598bf;
   display: flex;
   flex-direction: column;
   padding: 20px 35px 20px 35px;
@@ -80,7 +81,7 @@ button a:visited {
   font-weight: bold;
 }
 .overlay {
-  background-color: rgba(212, 54, 54, 0.8);
+  background-color: rgba(34, 23, 23, 0.8);
   position: fixed;
   top: 0;
   left: 0;

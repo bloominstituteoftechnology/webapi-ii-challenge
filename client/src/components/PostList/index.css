@@ -7,7 +7,7 @@
 .post-preview-container {
   width: 200px;
   height: 200px;
-  border: 1px solid #979797;
+  border: 1px solid #2c3b50;
   box-sizing: border-box;
   padding: 5px 15px;
   margin: 10px 0;
@@ -17,11 +17,12 @@
 }
 
 .post-preview-container:hover {
-  border: 2px solid #979797;
+  border: 2px solid #2c3b50;
 }
 
 .post-preview-container h3 {
-  border-bottom: 1px solid #979797;
+  border-bottom: 1px solid #2c3b50;
+  color: #263248 !important;
   padding: 0 0 5px 0;
   margin: 5px 0 0 0;
 }

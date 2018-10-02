@@ -1,10 +1,12 @@
 .main-container .post {
+  color: #263248;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
 .main-container .post-body {
+  color: #263248;
   width: 660px;
   margin-bottom: 20px;
   overflow-wrap: break-word;

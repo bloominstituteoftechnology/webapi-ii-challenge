@@ -124,7 +124,7 @@ export default class Post extends Component {
     }
 
     return (
-      <div className="main-container Post">
+      <div className="main-container post">
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
