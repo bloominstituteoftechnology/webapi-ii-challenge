@@ -15,7 +15,7 @@ server.post('/api/posts', (req, res) => {
   if (!title || !contents) return res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
   db.insert(newPost)
     .then(post => {
-      return res.status(200).json(post);
+      return res.status(201).json(post);
     })
     .catch(err => res.status(500).json({ error: "There was an error while saving the post to the database" }));
 });
@@ -35,6 +35,16 @@ server.get('/api/posts/:id', (req, res) => {
     })
     .catch(err => res.status(500).json({ error: "The post information could not be retrieved." }));
 });
+
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.remove(id)
+    .then(removedPost => {
+      if (!removedPost) return res.status(404).json({ message: "The post with the specified ID does not exist." });
+      return res.status(202).json({ message: "The post was successfully deleted." })
+    })
+    .catch(err => res.status(500).json({ error: "The post could not be removed." }));
+})
 
 // PORT LISTENER
 const port = 8000;
