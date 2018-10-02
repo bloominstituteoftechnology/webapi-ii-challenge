@@ -19,17 +19,7 @@ server.get('/', (req, res) => {
   res.send('<h1>Hello FSW13!</h1>');
 });
 
-server.get('/api/about', (req, res) => {
-  res.status(200).send('<h1>About Us</h1>');
-});
-
-server.get('/api/contact', (req, res) => {
-  res
-    .status(200)
-    .send('<div><h1>Contact</h1><input placeholder="email" /></div>');
-});
-
-// #################### POST #######################
+// #################### POSTS #######################
 
 // #################### GET #######################
 server.get('/api/posts', (req, res) => {
@@ -61,8 +51,8 @@ server.get('/api/posts/:id', (req, res) => {
 
 // #################### POST #######################
 server.post('/api/posts', (req, res) => {
-  const { name, bio } = req.body;
-  const newPost = { name, bio };
+  const { title, contents } = req.body;
+  const newPost = { title, contents };
   db.insert(newPost)
     .then(postID => {
       const { id } = postID;
@@ -93,9 +83,9 @@ server.delete('/api/posts/:id', (req, res) => {
 // #################### PUT #######################
 server.put('/api/posts/:id', (req, res) => {
   const { id } = req.params;
-  const { name, bio } = req.body;
+  const { title, contents } = req.body;
   // ALWAYS CHECK YOUR UPDATES AND RESPOND ACCORDINGLY, THIS ENDPOINT ISNT FINISHED
-  const newPost = { name, bio };
+  const newPost = { title, contents };
   console.log(newPost);
   db.update(id, newPost)
     .then(post => {
