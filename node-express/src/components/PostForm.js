@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function NoteForm(props) {
+export default function PostForm(props) {
     return (
         <form>
             <input type="text"

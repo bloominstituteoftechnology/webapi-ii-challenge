@@ -1,37 +1,52 @@
 import React, { Component } from 'react';
+import { Route, NavLink, withRouter } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
 import { fetchPosts, addPost } from './actions';
-import NoteForm from './components/NoteForm';
-import NoteList from './components/Notelist';
-import { connect } from 'http2';
+import PostForm from './components/PostForm';
+import PostsListView from './components/PostList';
+import Home from './components/Home';
 
 class App extends Component {
   state = {
     titleInput: '',
     contentsInput: ''
   }
-  
+
+  componentDidMount = () => {
+    fetchPosts();
+  }
+
+  addNewPost = () => {
+    const post = {
+      title: this.state.titleInput,
+      contents: this.state.contentsInput
+    };
+    this.props.addPost
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="Navigation">
+      <NavLink to="/posts" activeClassName="activeNavButton">
+        Posts
+        </NavLink>
+        <NavLink to="/addPost" activeClassName="activeNavButton">
+        Add New Post
+        </NavLink>
+      </div>
+      <div className="Page-Window">
+      <Route exact path="/" component={Home} />
+      <Route exact path="/posts" component={PostsListView} />
+      <Route exact path="/addPost" component={PostForm} />
+      
+      </div>
+        
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    posts: state.posts
-  }
-}
-
-export default connect(mapStateToProps, { fetchPosts, addPost })(App);
+export default withRouter(App);
