@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import { fetchPosts, addPost } from './actions';
+import NoteForm from './components/NoteForm';
+import NoteList from './components/Notelist';
+import { connect } from 'http2';
+
 class App extends Component {
+  state = {
+    titleInput: '',
+    contentsInput: ''
+  }
+  
   render() {
     return (
       <div className="App">
@@ -18,4 +28,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    posts: state.posts
+  }
+}
+
+export default connect(mapStateToProps, { fetchPosts, addPost })(App);
