@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
+import {Route} from 'react-router-dom';
+import Posts from './components/posts/posts';
 
 class App extends Component {
   state= {
@@ -8,14 +10,14 @@ class App extends Component {
   }
 
   componentDidMount(){
-    getData();
+    this.getData();
   };
 
   getData(){
     axios
     .get(`http://localhost:8000/api/posts`)
     .then(response => {
-      this.setState({posts: res.data})
+      this.setState({posts: response.data})
     })
     .catch(err => {
       console.log(err);
@@ -26,13 +28,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+    <Route path='/posts' render={props => <Posts {...props} posts={this.state.posts}/>}/>
+      <Route path='/posts:id'  render={props => <Post {...props} posts={this.state.posts}/>}/>
       </div>
     );
   }
