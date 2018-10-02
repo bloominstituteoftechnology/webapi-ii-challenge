@@ -7,8 +7,9 @@ const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
-server.use(express.json());
 server.use(cors());
+server.use(express.json());
+
 
 server.get('/', (req, res) => {
     res.send('Go to http://localhost:9000/api/posts to see the list of posts.')
@@ -18,7 +19,6 @@ server.get('/', (req, res) => {
 server.get('/api/posts', (req, res) => {
     db.find()
       .then(posts => {
-          console.log('GET should have retrieved your posts!');
           res.json(posts);
       })
       .catch(err => res.send(err));
@@ -32,6 +32,23 @@ server.get('/api/posts/:id', (req, res) => {
       })
       .catch(err => console.error(err) )
 });
+
+server.post('/api/posts', (req, res) => {
+    const { title, contents } = req.body;
+    const newPost = { title, contents };
+    db.insert(newPost)
+      .then(post => {
+          db.findById(post.id)
+            .then(foundPost => {
+                res.status(201).json(foundPost)
+            })
+      })
+      .catch(err => console.error(err));
+});
+
+
+
+
 
 const port = 9000;
 server.listen(port, () => 
