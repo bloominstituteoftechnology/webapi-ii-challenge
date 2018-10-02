@@ -1,6 +1,7 @@
 // import your node modules
 
 const db = require('./data/db.js');
+const cors = require('cors')
 
 // add your server code starting here
 
@@ -8,6 +9,7 @@ const express = require('express');
 const port = 5555;
 const server = express();
 
+server.use(cors())
 server.use(express.json());
 
 server.get('/', (req, res) => {
@@ -35,7 +37,7 @@ server.get('/api/posts', (req, res) => {
 	db
 	.find()
 	.then(posts => {
-		res.status(200).json({ posts })
+		res.status(200).json(posts)
 	})
 	.catch(error => {
 		console.log(error)
@@ -51,7 +53,7 @@ server.get('/api/posts/:id', (req, res) => {
 		if (!post[0]){
 			res.status(404).json({ message: "The post with the specified ID does not exist." })
 		} else {
-			res.status(200).json({post})
+			res.status(200).json(post)
 		}
 	})
 	.catch(error => {
