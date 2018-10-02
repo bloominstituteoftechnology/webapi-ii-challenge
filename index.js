@@ -55,7 +55,7 @@ server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   db.remove(id)
     .then(removedPost => res.status(200).json(`Post at ${id} deleted.`))
-    .catch(err => console.error(err));
+    .catch(err => res.status(500).send(`Post at id ${id} not deleted...`));
 });
 
 // PUT Listners
@@ -63,6 +63,7 @@ server.put("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   const { title, contents } = req.body;
   const newPost = { title, contents };
+  console.log(newPost);
   db.update(id, newPost)
     .then(post => {
       console.log(post);
@@ -71,7 +72,7 @@ server.put("/api/posts/:id", (req, res) => {
         .then(foundPost => res.json(foundPost))
         .catch(err => console.error(err));
     })
-    .catch(err => console.error(err));
+    .catch(err => res.status(500).send(`Post at id ${id} failed to update...`));
 });
 
 // set up server to listen to w/e number port is

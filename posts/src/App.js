@@ -24,11 +24,9 @@ class App extends Component {
 
   onChangeHandler = (e) => {
     this.setState({[e.target.name]: e.target.value});
-    console.log(this.state.title);
   }
 
   onSubmitHandler = (e) => {
-    e.preventDefault();
     this.props.newPost(this.state);
   }
 
@@ -41,8 +39,9 @@ class App extends Component {
           </div>
         ) : (
           <React.Fragment>
-            <form onSubmit={this.onSubmitHandler}>
+            <form onSubmit={this.onSubmitHandler} style={{display: 'flex', flexDirection: 'column', width: '300px'}}>
               <input onChange={this.onChangeHandler} type="text" name="title" placeholder="Title..." />
+              <textarea onChange={this.onChangeHandler} name="contents" cols="30" rows="10" placeholder="Contents here..."></textarea>
               <button onClick={this.onSubmitHandler} type="submit">Submit</button>
             </form>
             <PostList posts={this.props.posts} />
@@ -57,7 +56,6 @@ const mapStateToProp = state => {
   return {
     posts: state.posts,
     error: state.error,
-    postError: state.postError,
   };
 };
 
