@@ -1,4 +1,5 @@
 import React from 'react';
+import '/Users/clintkunz/REST API/Node-Express-Lab/client/src/App.css';
 import { connect } from 'react-redux';
 import { fetchPosts, addPost, deletePost } from '../actions';
 
@@ -32,14 +33,14 @@ class Posts extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="main">
                 <h3>Lord of the Rings</h3> 
                 Post Quote: 
                 <input type="text" name="title" placeholder="Quote" onChange={this.handlerInput} />
                 <input type="text" name="contents" placeholder="Source" onChange={this.handlerInput} />
                 <input type="submit" onClick={this.createPost} />
                 {this.props.posts.map(post => 
-                    <div>
+                    <div className="post">
                         <h6 key={post.id}>{post.title} -{post.contents}</h6>
                         <button onClick={() => this.props.deletePost(post.id)}>Delete</button>
                     </div>
