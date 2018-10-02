@@ -37,8 +37,8 @@ server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body;
     const newPost = { title, contents };
     db.insert(newPost)
-      .then(post => {
-          db.findById(post.id)
+      .then(addedPost => {
+          db.findById(addedPost.id)
             .then(foundPost => {
                 res.status(201).json(foundPost)
             })
@@ -46,6 +46,20 @@ server.post('/api/posts', (req, res) => {
       .catch(err => console.error(err));
 });
 
+server.delete('/api/posts/:id', (req, res) => {
+    const {id} = req.params
+    db.remove(id)
+      .then(removedPost => {
+          if (removedPost === 1) {
+            console.log(`***Id ${id} has been deleted!`)
+            res.status(200).json(removedPost)
+          }else{
+              console.log(`***Id ${id} has already been deleted or never existed`)
+              res.status(204).json(removedPost)
+            }
+      })
+      .catch(err => console.error(err))
+})
 
 
 
