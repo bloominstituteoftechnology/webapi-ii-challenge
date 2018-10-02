@@ -26,7 +26,17 @@ server.get('/api/posts', (req, res)=> {
 });
 
 server.get('/api/posts/:id', (req, res)=> {
-   res.send('id:' + req.params.id);
+   db.findById(req.params.id)
+    .then(post=> {
+        if (post) {
+            res.status(200).json({post})
+        } else {
+            res.status(404).json('Post not found');
+        }
+    })
+    .catch(err=> {
+        res.send(err)
+    });
 });
 
 server.listen(port, ()=> {
