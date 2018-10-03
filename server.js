@@ -6,6 +6,8 @@ const cors = require('cors');
 // add your server code starting here
 const server = express();
 
+server.use(express.json());
+
 server.use(cors());
 
 const port = 8000;
@@ -47,7 +49,7 @@ server.post('/api/posts', (req, res)=> {
             const {id} = postId;
             db.findById(id)
                 .then(post=> {
-                    if (!req.body) {
+                    if (!req.body.title || !req.body.contents) {
                         res.status(400)
                             .json({errorMessage: "Please provide title and contents for the post." })
                     } 
