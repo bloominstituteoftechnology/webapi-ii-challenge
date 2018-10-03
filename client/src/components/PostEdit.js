@@ -35,10 +35,10 @@ class PostEdit extends React.Component {
         }
 
         this.props.editPost(this.props.currentPost.id, editedPost);
-
-
-        this.props.history.push('/');
         
+        setTimeout(() => {
+            this.props.history.replace('/');
+        }, 100);
     }
 
     render() {
@@ -61,6 +61,8 @@ class PostEdit extends React.Component {
 const mapStateToProps = state => {
     return {
       currentPost: state.currentPost,
+      edited: state.edited,
+      editing: state.editing
     }
   }
   

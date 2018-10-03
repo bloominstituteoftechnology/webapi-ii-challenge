@@ -12,10 +12,11 @@ class PostDetails extends React.Component {
         event.preventDefault();
 
         this.props.deletePost(this.props.currentPost.id);
-
+    
+        setTimeout(() => {
+            this.props.history.replace('/');
+        }, 100);
        
-
-        this.props.history.push('/');
         
     }
 
@@ -36,7 +37,9 @@ const mapStateToProps = state => {
     return {
         fetching_single: state.fetching_single,
         fetched_single: state.fetched_single,
-        currentPost: state.currentPost
+        currentPost: state.currentPost,
+        deleting: state.deleting,
+        deleted: state.deleted
     }
 }
 

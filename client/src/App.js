@@ -10,6 +10,7 @@ import PostEdit from './components/PostEdit';
 import {Switch, Route, Link, withRouter} from 'react-router-dom';
 
 class App extends Component {
+
   constructor (props) {
     super(props);
     this.state = {
@@ -20,11 +21,16 @@ class App extends Component {
     return (
       <div className="App">
       <Switch>
-        <Route exact path = '/' render={(props) => 
-        <div>
-        <PostForm />
-        <PostsList  />
-        </div>
+        <Route exact path = '/' render={(props) => {
+          
+          return (
+            <div>
+            <PostForm />
+            <PostsList />
+            </div>
+          )
+        }
+        
         } />
 
         <Route exact path = '/posts/:id' render = {(props) =>

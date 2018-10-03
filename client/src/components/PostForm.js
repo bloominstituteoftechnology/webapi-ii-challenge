@@ -27,18 +27,21 @@ class PostForm extends React.Component {
             contents: this.state.contents
         };
 
-        //refresh the list after 500ms, possibly add the refresh to do an if check on render for state.needsRefresh
         this.props.addPost(newPost);
+
+        this.setState({
+            title: '',
+            contents: ''
+        })
+        
         setTimeout(() => {
             this.props.fetchPosts();
-        }, 500)
-        
+        }, 100);
     }
 
     render(){
         return(
             <div>
-                This is the post input form
                 <form onSubmit={this.handleSubmit}>
                     <input onChange={this.handleInput} name = 'title' type = 'text' placeholder='title' value={this.state.title} ></input>
                     <input onChange={this.handleInput} name='contents' type = 'text' placeholder='contents' value={this.state.contents}></input>

@@ -82,10 +82,12 @@ export const editPost = (id, newPost) => {
 
         editRequest.then(res => {
             console.log(res);
-            dispatch({type: EDITED})
+            dispatch({type: EDITED});
         }).catch(err => {
             console.log(err);
             dispatch({type: ERROR})
         })
+
+        fetchPosts();
     }
 }

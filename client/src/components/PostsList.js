@@ -17,7 +17,6 @@ class PostsList extends React.Component {
     render() {
         return (
             <div>
-                Posts List
                 {this.props.posts.map(post => {
                     return <Link to={`/posts/${post.id}`} key={post.id}><Post {...post} /></Link>
                 })}
