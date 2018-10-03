@@ -27,7 +27,8 @@ server.get('/api/posts', (req, res) => {
     .then(posts => {
       res.json(posts);
     })
-    .catch(err => res.send(err));
+    .catch(() => res.status(500)
+    .json({error: 'The post information could not be retrieved.'}));
 });
 
 server.get('/api/posts/:id', (req, res) => {
@@ -44,8 +45,8 @@ server.get('/api/posts/:id', (req, res) => {
   })
   .catch(() => 
  //  Error
-    res.status(404)
-    .json({message: "The post with the specified ID does not exist."})
+    res.status(500)
+    .json({error: 'The post information could not be retrieved.'})
   )
 })
 
@@ -60,13 +61,15 @@ server.post('/api/posts', (req, res) => {
         console.log(post);
         if (!post) {
           return res
-            .status(422)
-            .send({ Error: `Post does not exist by that id ${id}` });
+            .status(400)
+            .send({ errorMessage: `Please provide title and contents for the user.` });
         }
         res.status(201).json(post);
       });
     })
-    .catch(err => console.error(err));
+    .catch(() => res.status(500)
+    .json({ error: 'There was an error while saving the post to the database.' })
+    );
 });
 
 // #################### DELETE #######################
@@ -75,16 +78,17 @@ server.delete('/api/posts/:id', (req, res) => {
   db.remove(id)
     .then(removedPost => {
       console.log(removedPost);
-      res.status(200).json(removedPost);
+      res.status(404).json(removedPost)
+    .json({ message: 'The post with the specified ID does not exist.' })
     })
-    .catch(err => console.error(err));
+    .catch(() => res.status(500)
+    .json({ error: 'The post could not be removed.' }));
 });
 
 // #################### PUT #######################
 server.put('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   const { title, contents } = req.body;
-  // ALWAYS CHECK YOUR UPDATES AND RESPOND ACCORDINGLY, THIS ENDPOINT ISNT FINISHED
   const newPost = { title, contents };
   console.log(newPost);
   db.update(id, newPost)
@@ -92,7 +96,8 @@ server.put('/api/posts/:id', (req, res) => {
       console.log(post);
       res.status(200).json(post);
     })
-    .catch(err => console.error(err));
+    .catch(() => res.status(500)
+    .json({ error: "The post information could not be modified." }));
 });
 // watch for traffic in a particular computer port
 const port = 8000;
