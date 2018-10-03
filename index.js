@@ -72,16 +72,36 @@ server.delete("/api/posts/:id", async (req, res) => {
   }
 });
 
-server.put('/api/posts/:id', (req, res) => {
-  const { id } = req.params;
-  const { title, contents } = req.body;
+// server.put('/api/posts/:id', (req, res) => {
+//   const { id } = req.params;
+//   const { title, contents } = req.body;
  
-  const newPost = { title, contents };
-  db.update(id, newPost)
-    .then(post => {
-      res.status(200).json(post);
-    })
-    .catch(err => res.status(500).send({ error: "The post information could not be modified." }));
+//   const newPost = { title, contents };
+//   db.update(id, newPost)
+//     .then(post => {
+//       res.status(200).json(post);
+//     })
+//     .catch(err => res.status(500).send({ error: "The post information could not be modified." }));
+// });
+
+server.put('/api/posts/:id', async (req, res) => {
+  if (!req.body.title || !req.body.contents) {
+    return res.status(400).send({ errorMessage: "Please provide title and contents for the post." });
+   } try {
+    await db.update(req.params.id, req.body);
+    try {
+    const post = await db.findById(req.params.id);
+    if (post.length === 0) {
+      return res.status(404).send({ message: "The post with the specified ID does not exist." });
+    } else {
+      return res.status(200).json(post);
+    }
+   } catch (error) {
+      return res.status(500).send({ error: "The post information could not be modified." });
+   }
+  } catch (error) {
+    return res.status(500).send({ error: "The post information could not be modified." });
+ }
 });
 
 const port = 9000;
