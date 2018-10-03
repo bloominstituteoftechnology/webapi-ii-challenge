@@ -58,7 +58,6 @@ server.post('/api/posts', (req, res) => {
     .then(postID => {
       const { id } = postID;
       db.findById(id).then(post => {
-        console.log(post);
         if (!post) {
           return res
             .status(400)
@@ -74,10 +73,8 @@ server.post('/api/posts', (req, res) => {
 
 // #################### DELETE #######################
 server.delete('/api/posts/:id', (req, res) => {
-  const { id } = req.params;
-  db.remove(id)
+  db.remove(req.params.id)
     .then(removedPost => {
-      console.log(removedPost);
       res.status(404).json(removedPost)
     .json({ message: 'The post with the specified ID does not exist.' })
     })
@@ -90,10 +87,8 @@ server.put('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   const { title, contents } = req.body;
   const newPost = { title, contents };
-  console.log(newPost);
   db.update(id, newPost)
     .then(post => {
-      console.log(post);
       res.status(200).json(post);
     })
     .catch(() => res.status(500)
