@@ -50,7 +50,7 @@ server.post('/api/posts', (req, res) => {
             console.log(post);
             if (!post) {
                 return res
-                .status(422)
+                .status(400)
                 .send({ Error: `Post of id ${id} does not exist`});
             }
             res.status(201).json(post);
@@ -80,7 +80,8 @@ server.put('/api/posts/:id' , (req, res) => {
     const { title, contents } = req.body;
     const newPost = { title, contents};
         console.log(newPost);
-    db.update(id, newPost)
+    db
+    .update(id, newPost)
     .then(user => {
         console.log(user);
         res.status(200).json(user);

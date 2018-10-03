@@ -8,10 +8,12 @@
 }
 
 .who {
-    font-size: 1.5em;
+    font-size: 2.2em;
     padding-bottom: 5%;
     padding-top: 3%;
     border: 10px;
+    font-family: 'Monofett', cursive;
+    letter-spacing: 2px;
 }
 
 .card {
