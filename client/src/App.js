@@ -5,14 +5,46 @@ import axios from 'axios'
 class App extends Component {
   state = {
     posts: [],
+    isGettingPosts: false,
+    isCreatingPost: false,
+    title: "",
+    contents: "",
   }
 
   getPosts = () => {
     axios.get('http://localhost:8000/api/posts')
       .then(res => {
-        this.setState({ posts: res.data })
+        this.setState({ posts: res.data, isGettingPosts: true })
       })
       .catch(err => console.log(err.response.data.error))
+    }
+    
+  createPost = () => {
+    this.setState({ isGettingPosts: false, isCreatingPost: true })
+  }
+
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const newPost = {
+      title: this.state.title,
+      contents: this.state.contents,
+    }
+    axios.post ('http://localhost:8000/api/posts', newPost)
+      .then(res => {
+        this.getPosts()
+        this.setState({ 
+          posts: [...this.state.posts, res.data],
+          isGettingPosts: true,
+          isCreatingPost: false,
+          title: "",
+          contents: "",
+        })
+      })
+      .catch(err => console.log(err))
   }
 
   render() {
@@ -24,18 +56,44 @@ class App extends Component {
         >
           GET request
         </Button1>
+        <Button1
+          onClick={this.createPost}
+        >
+          POST request
+        </Button1>
 
-        {
-          this.state.posts.map(post => {
-            return (
-              <Div2 className="Post" key={post.id}>
-                <H31>{post.title}</H31>
-                <P1>-{post.contents}</P1>
-              </Div2>
-            )
-          })
+        { this.state.isGettingPosts && (
+            this.state.posts.map(post => {
+              return (
+                <Div2 className="Post" key={post.id}>
+                  <H31>{post.title}</H31>
+                  <P1>-{post.contents}</P1>
+                </Div2>
+              )
+            })
+          )
         }
 
+        { this.state.isCreatingPost && (
+            <Form1 onSubmit={(e) => this.handleSubmit(e)}>
+              <Input1
+                name="title"
+                type="text"
+                value={this.state.title}
+                placeholder="Title"
+                onChange={this.handleChange}
+              />
+              <Input1
+                name="contents"
+                type="text"
+                value={this.state.contents}
+                placeholder="Contents"
+                onChange={this.handleChange}
+              />
+              <Button1>Submit</Button1>
+            </Form1>
+          )
+        }
         <GlobalStyle />
       </Div1>
     )
@@ -75,5 +133,7 @@ const H11 = styled.h1``
 const H31 = styled.h3``
 const P1 = styled.p``
 const Button1 = styled.button``
+const Form1 = styled.form``
+const Input1 = styled.input``
 
 export default App
