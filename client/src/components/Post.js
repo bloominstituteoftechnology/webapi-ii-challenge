@@ -59,6 +59,7 @@ class Post extends React.Component {
 				this.setState({
 					title: '',
 					contents: '',
+					editError: [],
 				})
 				this.props.resetState();
 			})
