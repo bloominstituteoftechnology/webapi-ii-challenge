@@ -10,8 +10,8 @@ class Posts extends Component {
     render() {
         return (
             <section className="posts">
-            <h1 className="title">LOTR Posts</h1>
-            { this.props.posts.map(post => <Post key={post.id} post={post}/>) }
+                <h1 className="title">LOTR Posts</h1>
+                { this.props.posts.map((post, index) => <Post key={post.id + "-" + index} post={post} deletePost={this.props.deletePost}/>).reverse() }
             </section>
         )
     }

@@ -8,20 +8,21 @@ html, body, .app {
     background-color: ghostwhite;
 }
 
-p {
+p, h1 {
     margin: 0;
 }
 
 .title {
     width: 100%;
-    text-align: center;
     font-size: 40px;
     font-family: 'Niconne', cursive;
+    margin: 10px;
+    margin-left: 50%;
 }
 
 .post { // Main post body
-    width: 60%;
-    margin: 0 5% 0 auto;
+    width: 35%;
+    margin: 0 15% 0 auto;
     display: flex; 
     flex-direction: column;
     justify-content: center;
@@ -38,6 +39,9 @@ p {
         width: 100%;
         padding: 5px 1rem;
         color: goldenrod;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
 
         span { // Shared a Post
             font-family: 'Josefin Slab', serif;
@@ -45,10 +49,23 @@ p {
             font-weight: bold;
             color: lightgray;
         }
+
+        .delete {
+            font-family: 'Josefin Slab', serif;
+            font-size: 15px;
+            font-weight: bold;
+            color: lightgray;
+            user-select: none;
+            cursor: pointer;
+
+            &:hover {
+                color: maroon;
+            }
+        }
     }
 
     .quote { // Quote block
-        font-size: 30px;
+        font-size: 25px;
         font-family: 'Fredericka the Great', cursive;
         padding: 0 1rem;
         background-color: burlywood;
@@ -66,17 +83,52 @@ p {
 
 .add-post {
     position: fixed;
-    width: 25%;
-    top: 114px;
-    left: 5%;
+    width: 30%;
+    top: 100px;
+    left: 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Josefin Slab', serif;
     
-    input, textarea {
+    input {
+        margin-bottom: 20px;
+        width: 100%;
+        height: 40px;
+        outline: none;
+        font-size: 20px;
+        padding-left: 20px;
+        font-family: 'Niconne', cursive;
+    }
+
+    textarea {
         margin-bottom: 20px;
         max-width: 100%;
         min-width: 100%;
         width: 100%;
+        min-height: 150px;
+        outline: none;
+        padding: 20px;
+        font-size: 25px;
+        font-family: 'Fredericka the Great', cursive;
+    }
+
+    .button {
+        background-color: burlywood;
+        border: 5px double maroon;
+        outline: 1px solid maroon;
+        width: 150px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+        cursor: pointer;
+        transition: outline .2s;
+        font-weight: bold;
+    
+            &:hover {
+                outline: 5px solid maroon;
+        }
     }
 }
