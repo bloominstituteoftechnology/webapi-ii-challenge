@@ -10,6 +10,7 @@ const server = express();
 server.use(cors());
 server.use(express.json());
 
+//Get all posts
 server.get("/api/posts", (req, res) => {
   db.find()
     .then(posts => {
@@ -22,6 +23,7 @@ server.get("/api/posts", (req, res) => {
     );
 });
 
+//Get post of a specific ID
 server.get("/api/posts/:id", (req, res) => {
   db.findById(req.params.id)
     .then(post => {
@@ -39,6 +41,7 @@ server.get("/api/posts/:id", (req, res) => {
     );
 });
 
+//Create a new Post
 server.post("/api/posts", (req, res) => {
   const { title, contents } = req.body;
   const newPost = { title, contents };
@@ -61,6 +64,7 @@ server.post("/api/posts", (req, res) => {
     );
 });
 
+//Delete a post
 server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   if (post.length < 1) {
@@ -79,6 +83,7 @@ server.delete("/api/posts/:id", (req, res) => {
     );
 });
 
+//Edit a post
 server.put("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   const { title, contents } = req.body;
@@ -104,6 +109,7 @@ server.put("/api/posts/:id", (req, res) => {
     );
 });
 
+//Port declaration
 const port = 8000;
 server.listen(port, () =>
   console.log(`\n=== API running on port ${port} ===\n`)
