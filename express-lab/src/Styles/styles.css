@@ -36,8 +36,8 @@ h1 {
   margin-left: 50%;
 }
 .post {
-  width: 35%;
-  margin: 0 15% 0 auto;
+  width: 40%;
+  margin: 0 10% 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -90,7 +90,7 @@ h1 {
 .add-post {
   position: fixed;
   width: 30%;
-  top: 100px;
+  top: 30%;
   left: 10%;
   display: flex;
   flex-direction: column;
