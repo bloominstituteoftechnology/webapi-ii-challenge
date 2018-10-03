@@ -58,7 +58,7 @@ server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     db.findById(id)
         .then((singlePost) => {
-            if(!Array.isArray(singlePost)) {
+            if(singlePost.length > 0) {
                 res.status(200).json(singlePost);
             } else {
                 console.error(`Error retrieving by ID: ${id}. Post not found.`)
@@ -180,7 +180,7 @@ server.put('/api/posts/:id', (req, res) => {
     if(title && contents) {
         db.findById(id)
             .then((foundPost) => {
-                if(!Array.isArray(foundPost)) {
+                if(foundPost.length > 0) {
                     const updatingPost = { title, contents };
                     db.update(id, updatingPost)
                         .then((updatedCount) => {
