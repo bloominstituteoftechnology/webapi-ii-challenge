@@ -6,6 +6,7 @@ const db = require('./data/db.js');
 // add your server code starting here
 const server = express();
 server.use(cors());
+server.use(express.json());
 
 server.get('/', (req, res) => {
     res.send('Nothing here...')
@@ -46,19 +47,18 @@ server.get('/api/posts', (req, res) => {
 // When the client makes a GET request to /api/posts/:id:
 
 // If the post with the specified id is not found:
-
 // return HTTP status code 404 (Not Found).
 // return the following JSON object: { message: "The post with the specified ID does not exist." }.
-// If there's an error in retrieving the post from the database:
 
+// If there's an error in retrieving the post from the database:
 // cancel the request.
 // respond with HTTP status code 500.
 // return the following JSON object: { error: "The post information could not be retrieved." }.
-server.get('/api/posts/:id', (res, req) => {
+server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     db.findById(id)
         .then((singlePost) => {
-            if(singlePost.length !== 0) {
+            if(!Array.isArray(singlePost)) {
                 res.status(200).json(singlePost);
             } else {
                 console.error(`Error retrieving by ID: ${id}. Post not found.`)
@@ -98,7 +98,7 @@ server.post('/api/posts', (req, res) => {
         const newPost = {title, contents};
         db.insert(newPost)
             .then((postId) => {
-                db.findById(postId)
+                db.findById(postId.id)
                     .then((returnedPost) => {
                         res.status(201).json(returnedPost);
                     })
@@ -112,6 +112,7 @@ server.post('/api/posts', (req, res) => {
                 res.status(500).json({ "error": "There was an error while saving the post to the database." });
             });
     } else {
+        console.error('Error: title and/or contents missing.')
         res.status(400).json({ "errorMessage": "Please provide title and contents for the post." });
     }
 });
@@ -137,7 +138,7 @@ server.delete('/api/posts/:id', (req, res) => {
         .then((numDeleted) => {
             if(numDeleted !== 0) {
                 // https://stackoverflow.com/questions/2342579/http-status-code-for-update-and-delete
-                res.status(204);
+                res.status(204).json();
             } else {
                 res.status(404).json({ "message": "The post with the specified ID does not exist." });
             }
@@ -179,7 +180,7 @@ server.put('/api/posts/:id', (req, res) => {
     if(title && contents) {
         db.findById(id)
             .then((foundPost) => {
-                if(!foundPost.isArray) {
+                if(!Array.isArray(foundPost)) {
                     const updatingPost = { title, contents };
                     db.update(id, updatingPost)
                         .then((updatedCount) => {
@@ -193,14 +194,16 @@ server.put('/api/posts/:id', (req, res) => {
                                         res.status(500).json({ "errorMessage": "It appears the post disappeared sometime after the update, but before the subsequent fetch and send. Sorry. :("});
                                     });
                             } else {
+                                console.error('Error: Post deleted after update, but before send.')
                                 res.status(500).json({"errorMessage": "That's odd... The post is there, and the data you sent appears good at first glance, but the DB didn't handle the update properly. Maybe try again and see what happens?"})
                             }
                         })
                         .catch((err) => {
-                            console.error(`Couldn't update the post.`)
+                            console.error(`Couldn't update the post. Error: ${err}`)
                             res.status(500).json({ "error": "The post information could not be modified." });
                         });
                 } else {
+                    console.error('Error: Post with that ID doesn\'t exist.');
                     res.status(404).json({ "message": "The post with the specified ID does not exist." });
                 }
             })
@@ -212,7 +215,6 @@ server.put('/api/posts/:id', (req, res) => {
         console.error(`Title or Contents missing from POST: ${err}.`)
         res.status(400).json({ "errorMessage": "Please provide title and contents for the post." });
     }
-    
 });
 
 
