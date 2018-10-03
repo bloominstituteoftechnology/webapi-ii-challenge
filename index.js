@@ -68,16 +68,15 @@ server.put('/api/posts/:id', (req, res) => {
   console.log(id);
   const { title, contents } = req.body;
   const newUser = { title, contents };
-  if(title !== undefined && contents !== undefined) {
+  if(!title || !contents) {
     db.update(id, newUser)
       .then(user => {
         db.findById(id) 
         .then(userId => {
-          console.log(userId)
-          if(userId.length !== 0) {
-            res.status(200).json(userId);
-          } else {
+          if(!userId[0]) {
             res.status(404).json({ message: "The post with the specified ID does not exist." })
+          } else {
+            res.status(200).json(userId);
           }
         })
       .catch(err => res.status(500).json({ error: "The post information could not be modified." }))
