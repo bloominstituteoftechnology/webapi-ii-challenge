@@ -17,56 +17,110 @@ server.get('/', (req, res) => {
 	res.send('<h1>WHO SAID IT?</h1>');
 });
 
+// get posts
 server.get('/api/posts', (req, res) => {
 	db.find()
 		.then(posts => {
 			console.log('\n=== HERE ARE THE POSTS AS REQUESTED, SIR ===\n\n', posts);
 			res.status(200).json(posts);
 		})
-		.catch(err => res.send(err));
+		.catch(err => {
+			console.log('\n=== RAN INTO A PROBLEM, SIR ===\n\n', err);
+			res
+				.status(500)
+				.json({ error: 'The posts information could not be retrieved.' });
+		});
 });
 
+// get post by id
 server.get('/api/posts/:id', (req, res) => {
-	const { id } = req.params;
-	db.findById(id)
+	db.findById(req.params.id)
 		.then(post => {
 			if (!post[0]) {
-				return res.status(422).send({ Error: `NO POSTS WITH ID ${id}` });
+				console.log("\n=== DON'T SEEM TO HAVE A POST BY THAT ID, SIR ===\n\n");
+				return res
+					.status(404)
+					.json({ message: 'The post with the specified ID does not exist.' });
 			}
-			console.log('\n=== I FOUND IT, SIR ===\n\n', post[0]);
+			console.log('\n=== FOUND THE POST YOU WANTED, SIR ===\n\n', post[0]);
 			res.status(200).json(post);
 		})
-		.catch(err => res.send(err));
+		.catch(err => {
+			console.log('\n=== RAN INTO A PROBLEM, SIR ===\n\n', err);
+			res
+				.status(500)
+				.json({ error: 'The post information could not be retrieved.' });
+		});
 });
 
+// add new post
 server.post('/api/posts', (req, res) => {
-	console.log(req.body);
-	const { title, contents } = req.body;
-	const newPost = { title, contents };
-	db.insert(newPost)
-		.then(postId => {
-			const { id } = postId;
+	if (!req.body.title || !req.body.contents) {
+		return res.status(400).json({
+			errorMessage: 'Please provide title and contents for the post.'
+		});
+	}
+	db.insert(req.body)
+		.then(({ id }) => {
 			db.findById(id).then(post => {
-				if (!post[0]) {
-					return res.status(422).send({ Error: `NO POSTS WITH ID ${id}` });
-				}
 				console.log('\n=== POST ADDED SUCCESSFULLY, SIR ===\n\n', post[0]);
-				res.status(200).json(post);
+				res.status(201).json(post[0]);
 			});
 		})
-		.catch(err => red.send(err));
+		.catch(err => {
+			console.log('\n=== RAN INTO A PROBLEM, SIR ===\n\n', err);
+			res.status(500).json({
+				error: 'There was an error while saving the post to the database'
+			});
+		});
 });
 
+// delete post by id
 server.delete('/api/posts/:id', (req, res) => {
-	const { id } = req.params;
-	db.remove(id)
+	db.remove(req.params.id)
 		.then(removedPost => {
-			console.log(removedPost);
-			res.status(200).json(removedPost);
+			if (!removedPost) {
+				console.log(`\n=== NO POST BY THAT ID TO DELETE, SIR ===\n\n`);
+				return res
+					.status(404)
+					.json({ message: 'The post with the specified ID does not exist.' });
+			}
+			console.log('\n=== POST ERADICATED, SIR ===\n\n');
+			res.status(204).json(removedPost);
 		})
-		.catch(err => console.error(err));
+		.catch(err => {
+			console.log('\n=== RAN INTO A PROBLEM, SIR ===\n\n', err);
+			res.status(500).json({ error: 'The post could not be removed' });
+		});
 });
 
+// update post by id
+server.put('/api/posts/:id', (req, res) => {
+	if (!req.body.title || !req.body.contents) {
+		return res.status(400).json({
+			errorMessage: 'Please provide title and contents for the post.'
+		});
+	}
+	db.findById(req.params.id).then(post => {
+		if (!post[0]) {
+			console.log("\n=== DON'T SEEM TO HAVE A POST BY THAT ID, SIR ===\n\n");
+			return res
+				.status(404)
+				.json({ message: 'The post with the specified ID does not exist.' });
+		}
+		db.update(req.params.id, req.body)
+			.then(post => {
+				console.log('\n=== POST UPDATED, SIR ===\n\n');
+				res.status(200).json(post);
+			})
+			.catch(err => {
+				console.log('\n=== RAN INTO A PROBLEM, SIR ===\n\n', err);
+				res.status(500).json({ error: 'The post could not be removed' });
+			});
+	});
+});
+
+// listen to port
 const port = 5000;
 server.listen(port, () =>
 	console.log(`\n=== WATCHING PORT ${port} FOR FURTHER INSTRUCTIONS, SIR ===\n`)
