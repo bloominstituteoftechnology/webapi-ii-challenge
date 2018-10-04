@@ -21,10 +21,11 @@ server.post('/api/posts', (req, res) => {
             const { id } = postId;
             db.findById(id)
             .then(post => {
+                console.log(post);
                 if (!post) {
                     return res.status(404).json({message: `The post with the specified ID does not exist ( ${id})`});
-                }
-                res.status(201).json(post);
+                } else
+                return res.status(201).json(post);
             })
             .catch(() => res.status(500).json({ error: "There was an error while saving the post to the database."}))
         })
@@ -59,23 +60,32 @@ server.get('/api/posts/:id', (req, res) => {
 })
 
 server.delete('/api/posts/:id', (req, res) => {
-    const { id } = req.params;
+    const id = req.params.id;
     db.remove(id)
-    .then(removedUser => {
-        res.status(200).json(removedUser)
+    .then(removedPost => {
+        console.log(removedPost);
+        if (removedPost === 0) {
+            return res.status(404).json({ message: "The post with the specified ID does not exist."})
+        } else
+        return res.status(200).json(removedPost);
     })
-    .catch(err => res.send(err));
-})
+    .catch(() => res.status(500).json({ error: "The post could not be removed" })
+)});
 
 server.put('/api/posts/:id', (req, res) => {
     const { id } = req.params;
-    const {title, contents} = req.body;
+    const { title, contents } = req.body;
     const newPost = { title, contents };
     db.update(id, newPost)
         .then(post => {
-            res.status(200).json(post);
+            console.log('post = ', post);
+            if (post === 0) {
+                return res.status(404).json({ message: "The post with the specified ID does not exist." })
+            } else
+            return res.status(200).json(post);
         })
-        .catch(err => res.send(err));
+        .catch(() => res.status(500).json({ error: "The post information could not be modified." }
+        ));
 })
 
 const port = 8000;
