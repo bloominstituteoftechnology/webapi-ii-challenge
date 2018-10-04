@@ -19,17 +19,17 @@ server.post('/api/posts', (req, res) => {
     db.insert(newPost)
         .then(postId => {
             const { id } = postId;
-            db.findById(id).then(post => {
+            db.findById(id)
+            .then(post => {
                 if (!post) {
-                    return res.status(422).send({Error: `Post does not exist by that id ${id}`});
+                    return res.status(404).json({message: `The post with the specified ID does not exist ( ${id})`});
                 }
                 res.status(201).json(post);
             })
+            .catch(() => res.status(500).json({ error: "There was an error while saving the post to the database."}))
         })
-        .catch(err => {
-            res.send(err);
+        .catch(() => res.status(400).json({ error: "Please provide title and contents for the post."}))
         });
-});
 
 server.get('/', (req,res) => {
     res.send('<h1>Michael Hacker - Node Express Lab Assignment</h1>');
@@ -48,9 +48,13 @@ server.get('/api/posts/:id', (req, res) => {
     const id = req.params.id;
     db.findById(id)
     .then(post => {
+        if (post.length === 0) {
+            return res.status(404).json({message: "The post with the specified ID does not exist."})
+        }
         console.log('\n** POST **', post);
         res.status(200).json(post);
     })
+    .catch(() => res.status(500).json({ error: "The post information could not be retrieved."}));
     
 })
 

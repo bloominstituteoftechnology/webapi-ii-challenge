@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 export default function PostList(props) {
     if (!props.posts || !props.posts.length) {
@@ -9,6 +10,7 @@ export default function PostList(props) {
                 {props.posts.map((post) => (
                     <div className="post-card"
                         key={post.id}
+                        onClick={() => props.history.push(`/posts/${post.id}`)}
                         >
                         <h2>{post.title}</h2>
                         <h3>{post.contents}</h3>
