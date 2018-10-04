@@ -12,70 +12,102 @@ server.use(cors());
 
 server.use(express.json());
 
-server.get('/', (request, response) => {response.send('<h1>Home Page</h1>');
-});
-
 server.get('/api/posts', (request, response) => {
     db.find()
     .then(posts => {
-        // console.log('\n** posts **', posts);
         response.json(posts);
     })
-    .catch(err => response.send(err));
+    .catch(err => {
+        res .status(500)
+            .json({ error: `The posts information could not be retrieved.` });
+    });
 });
 
-server.get('/api/posts/:id', (request, response) => {   console.log(request.params);
+server.get('/api/posts/:id', (request, response) => {   
     const id = request.params.id;
-    db.findById(id)
-    .then(post => {
-        // console.log('\n** users **', post);
-        response.json(post[0]);
-    })
-    .catch(err => response.send(err));
+    db  .findById(id)
+        .then(post => {
+            if (!post) {
+                return res .status(404)
+                           .send({ 
+                               message: `The post with the specified ID does not exist.`
+                            });        
+            }
+            response.json(post[0]);
+        })
+    .catch(err => {
+        res .status(500)
+            .json({ 
+                error: `The post information could not be retrieved.`
+            });
+    });
 });
 
 server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body;
     const newPost = { title, contents };
-    db.insert(newPost)
-      .then(postId => {
-        const { id } = postId;
-        db.findById(id).then(post => {
-        //   console.log(post);
-          if (!post) {
-            return res
-              .status(422)
-              .send({ Error: `User does not exist by that id ${id}` });
-          }
-          res.status(201).json(post);
-        });
-      })
-      .catch(err => console.error(err));
+    if (!title || !contents || title === "" || contents === ""){
+        res .status(400)
+            .json({ errorMessage: `Please provide title and contents for the user.` })
+    } else{ 
+        db  .insert(newPost)
+            .then(postId => {
+                const { id } = postId;
+                db  .findById(id)
+                    .then(post => {
+                        res .status(201)
+                            .json(post);
+                    });
+            })
+            .catch(err => {
+                res .status(500)
+                    .json({ error: `There was an error while saving the post to the database.`})
+            });       
+    }
   });
 
 server.delete('/api/posts/:id', (req, res) => {
-    // console.log(req.params);
     const { id } = req.params;
     db.remove(id)
         .then(removedUser => {
-        // console.log(removedUser);
-        res.status(200).json(removedUser);
+            if (!removedUser) {
+                return res .status(404)
+                           .send({ 
+                               message: `The post with the specified ID does not exist.`
+                            });        
+            }
+            res.status(200).json(removedUser);
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            res .status(500)
+                .json({ error: `The post could not be removed`})
+        });       
 });
 
 server.put('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     const { title, contents } = req.body;
-    // ALWAYS CHECK YOUR UPDATES AND RESPOND ACCORDINGLY, THIS ENDPOINT ISNT FINISHED
     const newPost = { title, contents };
-    console.log(newPost);
-    db.update(id, newPost)
-      .then(post => {
-        // console.log(post);
-        res.status(200).json(post);
-      })
-      .catch(err => console.error(err));
+    if (!title || !contents || title === "" || contents === ""){
+        return res  .status(400)
+                    .json({ 
+                        errorMessage: `Please provide title and contents for the post.` })
+    } else{ 
+        db.update(id, newPost)
+        .then(post => {
+            if (!post) {
+                return res  .status(404)
+                            .send({ 
+                                message: `The post with the specified ID does not exist.`
+                            });        
+            }
+            res .status(200).json(post);
+        })
+        .catch(err => {
+                res .status(500)
+                    .json({ error: `The post information could not be modified.`})
+        });   
+    }    
 });
 
 const port = 8000;
