@@ -5,3 +5,23 @@ const cors = require('cors');
 const db = require('./data/db.js');
 
 // add your server code starting here
+const server = express();
+
+server.use(cors());
+
+server.get('/', (req, res) => {
+  res.send('<h1>Welcome to posts!</h1>');
+});
+
+server.get('/api/posts', (req, res) => {
+  db.find().then(posts => {
+    console.log('\n** posts **', posts);
+    res.json(posts);
+  })
+  .catch(err => res.send(err));
+});
+
+const port = 5000;
+server.listen(port, () =>
+  console.log(`\n=== API running on port ${port} ===\n`)
+);
