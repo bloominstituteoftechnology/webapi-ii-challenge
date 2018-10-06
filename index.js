@@ -18,7 +18,19 @@ server.get('/api/posts', (req, res) => {
     console.log('\n** posts **', posts);
     res.json(posts);
   })
-  .catch(err => res.send(err));
+  .catch(err => res.json(err));
+});
+
+server.post('/api/posts', (req, res) => {
+  const { title, contents } = req.body;
+  db
+    .insert({ title, contents })
+    .then(response => {
+      res.json(response);
+    })
+    .catch(error => {
+      res.json(error);
+    });
 });
 
 const port = 5000;
