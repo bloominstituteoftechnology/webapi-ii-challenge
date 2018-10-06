@@ -21,6 +21,17 @@ server.get('/api/posts', (req, res) => {
   .catch(err => res.json(err));
 });
 
+server.get('/api/posts/:id', (req, res) => {
+  const id = req.params.id;
+  db.findById(id)
+    .then(post => {
+      res.json(post);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
 server.post('/api/posts', (req, res) => {
   const { title, contents } = req.body;
   db
