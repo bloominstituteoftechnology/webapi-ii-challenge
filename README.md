@@ -25,6 +25,7 @@ Database access will be done using the `db.js` file included inside the `data` f
 - `findById()`: this method expects an `id` as it's only parameter and returns the post corresponding to the `id` provided or an empty array if no post with that `id` is found.
 - `insert()`: calling insert passing it a `post` object will add it to the database and return an object with the `id` of the inserted post. The object looks like this: `{ id: 123 }`.
 - `update()`: accepts two arguments, the first is the `id` of the post to update and the second is an object with the `changes` to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
+
 - `remove()`: the remove method accepts an `id` as it's first parameter and upon successfully deleting the post from the database it returns the number of records deleted.
 
 Now that we have a way to add, update, remove and retrieve data from the provided database, it is time to work on the API.
@@ -59,7 +60,7 @@ Server.js already has `db.js` required and ready for you to use when building yo
 
 Configure the API to respond to the following routes:
 
-| Method | Endpoint       | Description                                                                                                                       |
+| Method | Endpoint       | Description                                                                                                                    |
 | ------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | POST   | /api/posts     | Creates a post using the information sent inside the `request body`.                                                              |
 | GET    | /api/posts     | Returns an array of all the post objects contained in the database.                                                               |
@@ -69,7 +70,7 @@ Configure the API to respond to the following routes:
 
 #### Endpoint Specifications
 
-When the client makes a `POST` request to `/api/posts`:
+!!!When the client makes a `POST` request to `/api/posts`:
 
 - If the request body is missing the `title` or `contents` property:
 
