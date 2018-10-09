@@ -1,18 +1,25 @@
 {
-  "name": "node-express",
-  "version": "0.0.1",
-  "description": "LambdaSchool Node.js and Express",
+  "name": "client",
+  "version": "0.1.0",
   "private": true,
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon index.js"
-  },
-  "license": "ISC",
   "dependencies": {
-    "knex": "^0.15.2",
-    "sqlite3": "^4.0.2"
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "2.0.4"
   },
-  "devDependencies": {
-    "nodemon": "^1.18.4"
-  }
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
