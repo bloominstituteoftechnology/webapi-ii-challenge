@@ -30,7 +30,7 @@ server.get('/api/posts/:id', (req, res) => {
         console.log(post);
         res.status(200).json(post);
         })
-        .catch(err => res.status(500).json({error: 'The post information could not be retrieved.'}));
+        .catch(err => res.status(500).json({message: 'The post information could not be retrieved.'}));
 });
 
 server.post('/api/posts', (req, res) => {
@@ -39,13 +39,35 @@ server.post('/api/posts', (req, res) => {
       .then(postID => {
         db.findById(postID).then(post => {
           if (!post) {
-            return res.status(400).send({ errorMessage: `Please provide title and contents for the user.` });
+            return res.status(400).send({ message: `Please provide title and contents for the user.` });
           }
           res.status(201).json(post);
         });
     })
-      .catch(() => res.status(500).json({ error: 'There was an error while saving the post to the database.' }));
+      .catch(() => res.status(500).json({ message: 'There was an error while saving the post to the database.' }));
 });
+
+server.delete('/api/posts/:id', (req, res) => {
+    const post = db.findById(id);
+    db.remove(req.params.id)
+      .then(post => {
+        if (post.length === 0) {
+            res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+        }
+      })
+      .catch(() => res.status(500).json({ message: 'The post could not be removed.' }));
+  });
+
+  server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const { title, contents } = req.body;
+    const newPost = { title, contents };
+    db.update(id, newPost)
+      .then(post => {
+        res.status(200).json(post);
+      })
+      .catch(() => res.status(500).json({ message: "The post information could not be modified." }));
+  });
 
 
 
