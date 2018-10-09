@@ -98,4 +98,28 @@ server.get("/api/posts", async (req, res) => {
   }
 });
 
+/*
+  get specific user based upon id
+  -------------------------------
+  If the user with the specified id is not found:
+    return HTTP status code 404 (Not Found).
+    return the following JSON object: { message: "The user with the specified ID does not exist." }.
+  If there's an error in retrieving the user from the database:
+    cancel the request.
+    respond with HTTP status code 500.
+    return the following JSON object: { error: "The user information could not be retrieved." }.
+*/
+
+server.get("/api/posts/:id", async (req, res) => {
+  try {
+    const post = await db.findById(req.params.id);
+    if (post.length === 0) {
+      return res.status(404).json({ message: notExist });
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ error: getError });
+  }
+});
+
 server.listen(port, () => console.log(`API listenning on port ${port}`));
