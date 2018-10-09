@@ -25,12 +25,15 @@ server.get('/api/posts', (req, res) => {
 
 server.get('/api/posts/:id', (req, res) => {
   const id = req.params.id;
+  if (!id) {
+    return res.status(404).json({ message: "The post with the specified ID does not exist." });
+  }
   db.findById(id)
     .then(post => {
       res.json(post);
     })
     .catch(err => {
-      res.json(err);
+      res.status(500).json({ error: "The post information could not be retrieved.", err });
     });
 });
 
@@ -44,7 +47,7 @@ server.post('/api/posts', (req, res) => {
       db.findById(id).then(post => {
         console.log(post);
         if (!post) {
-          return res.status(400).json({ error: "Please provide title and contents for the post." });
+          return res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
         }
         res.status(201).json(post);
       });
@@ -53,6 +56,22 @@ server.post('/api/posts', (req, res) => {
       res.status(500).json({ error: "There was an error while saving the post to the database", err });
     })
 });
+
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    res.status(404).json({ message: "The post with the specified ID does not exist." });
+  }
+  db.remove(id)
+    .then(removedPost => {
+      res.json(removedPost);
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The post could not be removed", err });
+    });
+});
+
+
 
 const port = 5000;
 server.listen(port, () =>
