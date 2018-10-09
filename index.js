@@ -20,8 +20,10 @@ server.get('/api/posts', (req, res) => {
 });
 
 server.get('/api/posts/:id', (req, res) => {
-    console.log(req);
-    db.findById(id);
-    //.then(posts )
+    const id = req.params.id;
+    db.findById(id)
+    .then(post => {res.status(200).json(post)
+    })
+    .catch(err => res.send(err));
 })
 
