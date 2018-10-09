@@ -22,6 +22,13 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  addPost = post => {
+    axios
+      .post('http://localhost:5000/api/posts', post)
+      .then(response => this.setState({ posts: response.data }))
+      .catch(err => console.log(err));
+  }
+
   render() {
     return (
       <div className="App">
