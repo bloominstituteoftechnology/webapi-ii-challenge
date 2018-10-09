@@ -8,4 +8,24 @@ class PostForm extends Component {
       contents: ''
     };
   }
+
+  render() {
+    return (
+      <div>
+        <form>
+          <input
+            name='title'
+            placeholder='title'
+            value={this.state.title}
+          />
+          <input
+            name='contents'
+            placeholder='contents'
+            value={this.state.contents}
+          />
+          <button type='submit'>Add post</button>
+        </form>
+      </div>
+    );
+  }
 }
