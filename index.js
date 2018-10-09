@@ -1,10 +1,8 @@
 // import your node modules
 const express = require("express");
 const cors = require("cors");
-
 const db = require("./data/db.js");
 
-// add your server code starting here
 const server = express();
 server.use(cors());
 server.use(express.json());
@@ -21,6 +19,11 @@ const postNotFound = {
 const single500 = {
   errorMessage: "The post information could not be retrieved"
 };
+
+// add your server code starting here
+server.get("/", (req, res) => {
+  res.status(200).send(`<h1>Post Server</h1>`);
+});
 
 // Returns an array of all the post objects contained in the database
 server.get("/api/posts", (req, res) => {
