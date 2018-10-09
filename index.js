@@ -12,6 +12,18 @@ server.get('/api/posts', (req, res) => {
     })
     .catch(err => res.send(err));
 })
+server.get('/api/posts/:id', (req, res) => {
+    res.send(req.params.id);
+});
+server.post('/api/posts', (req, res) => {
+    const {title, contents} = req.body;
+    db
+    .insert({title, contents})
+    .then(res => {
+        res.send(res);
+    })
+    .catch(err => res.send(err));
+});
 
 // add your server code starting here
 const port = 8000
