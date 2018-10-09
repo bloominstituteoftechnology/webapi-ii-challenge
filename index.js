@@ -12,7 +12,7 @@ server.get('/api/posts', (req,res)=>{
   db.find()
   .then(posts=>{
     console.log('success',posts);
-    res.json(posts)
+     res.status(200).json(posts);
   })
   .catch(err => res.send(err))
 })
