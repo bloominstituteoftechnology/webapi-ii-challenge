@@ -14,6 +14,13 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    axios
+      .get('http://localhost:5000/api/posts')
+      .then(response => this.setState({ posts: response.data }))
+      .catch(err => console.log(err));
+  };
+
   render() {
     return (
       <div className="App">
