@@ -13,11 +13,20 @@ class App extends Component {
       contents: ''
     };
   }
-  
+
   render() {
     return (
       <div className="App">
-
+        <nav>
+          <div>
+            <NavLink exact to='/'>Posts</NavLink>
+          </div>
+        </nav>
+        <Route
+          exact
+          path='/'
+          render={props => <Posts {...props} posts={this.state.posts} />}
+        />
       </div>
     );
   }
