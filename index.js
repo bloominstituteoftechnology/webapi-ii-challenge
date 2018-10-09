@@ -18,7 +18,8 @@ server.get('/api/posts', (req, res) => {
     console.log('\n** posts **', posts);
     res.json(posts);
   })
-  .catch(err => res.json(err));
+  .catch(err => 
+    res.status(500).json({ error: "The posts information could not be retrieved." }));
 });
 
 server.get('/api/posts/:id', (req, res) => {
