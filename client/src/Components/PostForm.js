@@ -9,19 +9,38 @@ class PostForm extends Component {
     };
   }
 
+  handleInputChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  addPost = event => {
+    event.preventDefault();
+    const newPost = {
+      title: this.state.title,
+      contents: this.state.contents
+    };
+    this.props.addPost(newPost);
+    this.setState({
+      title: '',
+      contents: ''
+    });
+  }
+
   render() {
     return (
       <div>
-        <form>
+        <form onSubmit={this.addPost}>
           <input
             name='title'
             placeholder='title'
             value={this.state.title}
+            onChange={this.handleInputChange}
           />
           <input
             name='contents'
             placeholder='contents'
             value={this.state.contents}
+            onChange={this.handleInputChange}
           />
           <button type='submit'>Add post</button>
         </form>
@@ -29,3 +48,5 @@ class PostForm extends Component {
     );
   }
 }
+
+export default PostForm;
