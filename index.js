@@ -34,4 +34,11 @@ server.get("/about", (req, res) => {
   res.send("<h1>About Page </h1>");
 });
 
+// form page route
+server.get("/form", (req, res) => {
+  res.send(
+    "<h1>Form Page</h1> <form > Title:<br> <input type='text' name='title'/> <br />Contents:<br / > <input type='text' name='contents' /> <br /> <br /> <input type='submit' value='Submit'/> </form>"
+  );
+});
+
 server.listen(port, () => console.log(`API listenning on port ${port}`));
