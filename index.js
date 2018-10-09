@@ -122,4 +122,26 @@ server.get("/api/posts/:id", async (req, res) => {
   }
 });
 
+// delete a single post besed upon id
+// ----------------------------------
+// If the post with the specified id is not found:
+//   return HTTP status code 404 (Not Found).
+//   return the following JSON object: { message: "The post with the specified ID does not exist." }.
+// If there's an error in removing the post from the database:
+//   cancel the request.
+//   respond with HTTP status code 500.
+//   return the following JSON object: { error: "The post could not be removed" }.
+
+server.delete("/api/posts/:id", async (req, res) => {
+  try {
+    const post = await db.remove(req.params.id);
+    if (post === 0) {
+      return res.status(404).json({ message: notExist });
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ error: deleteError });
+  }
+});
+
 server.listen(port, () => console.log(`API listenning on port ${port}`));
