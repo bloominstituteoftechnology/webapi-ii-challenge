@@ -17,7 +17,16 @@ server.get('/api/posts', (req,res)=>{
   .catch(err => res.send(err))
 })
 
+ server.get(`/api/posts/:id`, (req,res) =>{
+   db.findById(req.params.id)
+   .then(post =>{
+     console.log("success", post);
+     res.status(200).json(post);
+   })
+   .catch(err => res.send(err))
+ })
 
+ 
 
 
 
