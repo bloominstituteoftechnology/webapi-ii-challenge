@@ -4,6 +4,7 @@
  const cors = require('cors');
 
  server.use(cors());
+ 
  server.get('/', (req, res) => { //request/route handler
     res.send('Hello Chris');
 });
