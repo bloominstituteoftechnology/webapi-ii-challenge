@@ -79,7 +79,7 @@ server.put('/api/posts/:id', (req, res) => {
     res.status(404).json({ message: "The post with the specified ID does not exist." });
   }
   else if (!title || !contents) {
-    res.status(404).json({ errorMessage: "Please provide title and contents for the post." });
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
   }
   db.update(id, newPost)
     .then(post => {
