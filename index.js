@@ -10,5 +10,9 @@ const express = require('express');
 
 const server = express(); // Creates a server
 
-const port = 6000;
+const port = 8000;
 server.listen(port, () => console.log( `API is running on port ${port}`));
+
+server.get('/', (req, res) => {
+    res.send('API sent to port 6000');
+});
