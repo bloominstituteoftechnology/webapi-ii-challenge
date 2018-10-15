@@ -19,7 +19,7 @@ Use Node.js and Express to build an API that performs CRUD operations on posts.
 
 ### Database access
 
-Database access will be done using the `db.js` file included inside the `data` folder. This file publishes the following methods:
+Database access will be done using the `db.js` file included inside the `data` folder. This file publishes the following methods: The rest id the  
 
 - `find()`: calling find returns a promise that resolves to an array of all the `posts` contained in the database.
 - `findById()`: this method expects an `id` as it's only parameter and returns the post corresponding to the `id` provided or an empty array if no post with that `id` is found.

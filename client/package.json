@@ -1,5 +1,5 @@
 {
-  "name": "express-lab",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -23,5 +23,3 @@
     "not op_mini all"
   ]
 }
-
-

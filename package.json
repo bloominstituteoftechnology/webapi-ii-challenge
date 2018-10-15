@@ -18,3 +18,15 @@
     "nodemon": "^1.18.4"
   }
 }
+
+
+{
+  "name": "ChallengeNodeExpress",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/JGolden25/Sprint-Challenge-Node-Express",
+  "author": "Joseph Chretien <joechre@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
