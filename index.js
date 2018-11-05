@@ -6,7 +6,7 @@ const db = require('./data/db.js');
 const express = require('express');
 const server= express();
 
-server.get('/api/post',(req, res)=>{
+server.get('/api/posts',(req, res)=>{
     db.find()
         .then(posts =>{
             res.status(200).json(posts);
@@ -16,5 +16,8 @@ server.get('/api/post',(req, res)=>{
                 .status(500)
                 .json({message: 'Failed'})
         })
+})
+server.get('/', (req, res)=>{
+    res.json('works')
 })
 server.listen(8000,()=>console.log('API Running on port 8000') )
