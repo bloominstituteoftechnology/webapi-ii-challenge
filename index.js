@@ -1,11 +1,13 @@
 // import your node modules
 const express = require('express')
 const db = require('./data/db.js')
+const cors = require('cors')
 
 // add your server code starting here
 const server = express()
 
-server.use(express.json())
+server.use(express.json(), cors())
+
 
 server.get('/api/posts', (req, res) => {
     db

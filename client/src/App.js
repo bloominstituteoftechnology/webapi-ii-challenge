@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import './styles/App.css'
 import Posts from './components/Posts'
+import Post from './components/Post'
 import axios from 'axios'
+import { Route } from 'react-router-dom'
 
 class App extends Component {
     state = {
@@ -22,9 +24,11 @@ class App extends Component {
     }
 
     render() {
+        
         return (
             <div>
-                <Posts posts={this.state.posts} />
+                <Route exact path="/" render={props => <Posts {...props} posts={this.state.posts} />} />
+                <Route exact path="/:id" component={Post} />
             </div>
         )
     }
