@@ -25,7 +25,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="header">Welcome to LotR Quotes!</header>
+        <header className="header">LotR Quotes</header>
         <img
           src={headerImage}
           alt="The Journey Begins"
