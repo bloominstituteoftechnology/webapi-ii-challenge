@@ -19,7 +19,7 @@ server.get('/api/posts', (req, res) => {
 });
 
 server.get('/api/posts/:id', (req, res) => {
-    const id = req.params;
+    const { id } = req.params;
     db.findById(id)
         .then(post => {
             console.log('post',post);
