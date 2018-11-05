@@ -4,6 +4,7 @@ const db = require('./data/db.js')
 
 // add your server code starting here
 const server = express()
+
 server.use(express.json())
 
 server.get('/api/posts', (req, res) => {
