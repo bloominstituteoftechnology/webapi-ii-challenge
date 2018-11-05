@@ -20,15 +20,46 @@ db.find()
 server.get('/api/posts/:id', (req, res) => {   // Could also abstract away this function to another file and import it here as -- const greeter = require('./greeter.js')
 const { id } = req.params;
 db.findById(id)
-.then(user => {
-    if(user){
-        res.status(200).json(user)}
+.then(post => {console.log(post);  // returns and empty array if !present
+    if(post === true){
+        res.status(200).json(post)}
     else {
         res.status(400).json({ message: "The post with the specified ID does not exist." })
     }})
-.catch(err => res.status(500).json({ error: "The posts information could not be retrieved." }))
+.catch(err => res.status(500).json({ error: "The post's information could not be retrieved." }))
 });
 
+server.post('/api/posts', (req, res) => {  // In a post request, the desired data should generally be present within the body. 
+    const { title, contents } = req.body;
+    if(title && contents){
+        const post = {title, contents};
+        db.insert(post)
+        .then(post => {
+            res.status(201).json(post)
+        } )
+        .catch(err => res.status(500).json({ error: "There was an error while saving the post to the database" }))}
+    else{
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    }
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+        const {id} = req.params;
+        db.remove(id)
+        .then(post =>{ console.log("delete req",post)  // returns a 0 or 1 if !present or present
+           if(post) {
+            res.status(200).json({message: 'Post Deleted Successfully'})
+                }
+           else{
+                    res.status(404).json({ message: "The post with the specified ID does not exist." })
+                }
+    }
+            )
+        .catch(err => res.status(500).json({ error: "The post could not be removed" }))
+    
+    
+})
+/* 500{ error: "The post could not be removed" }404{ message: "The post with the specified ID does not exist." } */
 server.listen(9000, () => console.log(`Server running on Port 9000`))
 
 
