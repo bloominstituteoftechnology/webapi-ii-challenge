@@ -1,7 +1,9 @@
 const express = require("express");
 const db = require("./data/db.js");
+const cors = require("cors");
 
 const server = express();
+server.use(cors());
 server.listen(9000, () => console.log("Listening on port 9000."));
 
 server.get("/api/posts", (req, res) => {
