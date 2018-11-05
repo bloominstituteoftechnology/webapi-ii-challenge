@@ -40,24 +40,28 @@ server.get('/api/posts/:id', (req, res) => {
         
     })
     .catch(err => {
-        res
-        .status(500).json({message: "The post information could not be retrieved." })
+        res.status(500).json({message: "The post information could not be retrieved." })
     });
 });
 
 let postId = 1;
 
 server.post('/api/posts', (req, res) => {
-    const { title, contents } = req.body;
-    const newPost = { title, contents, id: postId };
+    db.insert(post).then(post => {
     if (!title || !contents) {
         res.status(400).json({message: "Please provide title and contents for the post."})
     } else {
-        posts.push(newPost);
-        postId++;
-        res.json(posts);
-    }
+        res.status(201).json({ url: '/api/posts', operation: 'POST' });
+    }          
+})
+    .catch(err => {
+        res.status(500).json({message: "There was an error while saving the post to the database"})
+    })
 });
+
+server.delete('/api/posts/:id', (req, res) => {
+
+})
 
 // server.get('/greet/:person', greeter);
 
