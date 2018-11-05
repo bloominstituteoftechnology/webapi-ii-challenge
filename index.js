@@ -17,9 +17,9 @@ server.get('/', (req, res) => {
 // request handlers.
 // GET
 server.get('/api/posts', (req, res) => {
-    db.find().then(users => {
-        console.log('\n** users **', users);
-        res.status(200).json(users);
+    db.find().then(post => {
+        console.log('\n** post **', post);
+        res.status(200).json(post);
     })
     .catch(err => res.status(500).json({ error: "The post information could not be retrieved."}));
 })
@@ -27,11 +27,11 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     db.findById(id)
-    .then(user => {
-        if (user.length === 0) {
+    .then(post => {
+        if (post.length === 0) {
             res.status(404).json({ error: "The post with the specified ID does not exist." });
         } else {
-        res.json(user);
+        res.json(post);
     }})
     .catch(err => res.status(500).json({ error: "The post information could not be retrieved." }));
 })
