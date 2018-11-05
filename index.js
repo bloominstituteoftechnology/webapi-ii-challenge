@@ -49,5 +49,20 @@ server.post("/api/posts/", (req, res) => {
         res.status(201).json(post);
       });
     })
-    .catch(err => res.send(err));
+    .catch(err => console.error(err));
+});
+
+server.delete("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  db.remove(id)
+    .then(removedPost => {
+      res
+        .status(200)
+        .json(
+          removedPost
+            ? `Post ${id} successfully deleted.`
+            : `Error attempting to delete post ${id}.`
+        );
+    })
+    .catch(err => console.error(err));
 });
