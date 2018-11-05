@@ -1,5 +1,6 @@
 // import your node modules
 const express = require('express');
+const cors = require('cors');
 
 const db = require('./data/db.js');
 
@@ -7,6 +8,7 @@ const server = express();
 const port = 9000;
 
 // add your server code starting here
+server.use(cors());
 
 // testing testing :D
 server.get('/', (_, res) => {
@@ -27,7 +29,6 @@ server.get('/api/posts', (_, res) => {
 
 server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
-  console.log(id)
 
   db.findById(id)
     .then(post => {
