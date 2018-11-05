@@ -1,6 +1,46 @@
 a * {
   text-decoration: none;
 }
+form input {
+  width: 60%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: #222222;
+  color: white;
+  font-family: "Trocchi", serif;
+  font-size: 1.2rem;
+}
+
+form textarea {
+  width: 60%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: #222222;
+  color: white;
+  font-family: "Trocchi", serif;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  height: 10rem;
+}
+
+form button {
+  padding: 0.5rem;
+  width: 10rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: rgb(102, 102, 102);
+  color: white;
+  font-family: "Poiret One", cursive;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+.PostForm h1 {
+  font-family: "Poiret One", cursive;
+  font-weight: bold;
+}
 body {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 300;
@@ -62,6 +102,7 @@ body {
   position: relative;
   overflow: hidden;
   text-align: center;
+  border-radius: 0.5rem;
 }
 .title {
   margin: 0 auto;
@@ -100,4 +141,65 @@ body {
   right: 0px;
   bottom: -200px;
   z-index: 0;
+}
+
+.note-view {
+  max-width: 1200px;
+  margin: 0 auto;
+  color: rgb(255, 163, 220);
+  background: white;
+  min-height: 50vh;
+  border: 1px solid rgb(202, 202, 202);
+  border-radius: 0.5rem;
+}
+
+.note-title {
+  text-decoration: none;
+  font-family: "Poiret One", cursive;
+  font-weight: bold;
+  font-size: 2.5rem;
+  margin: 2rem 4rem;
+  color: rgb(0, 0, 0);
+}
+
+.note-body {
+  text-decoration: none;
+  font-family: "Poiret One", cursive;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 2rem 4rem;
+  color: rgb(102, 102, 102);
+}
+
+.note-buttons button {
+  padding: 0.5rem;
+  width: 10rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: rgb(255, 163, 220);
+  color: white;
+  font-family: "Poiret One", cursive;
+  font-size: 1.5rem;
+  margin: 1rem;
+}
+
+.styles_modal__gNwvD {
+  width: 50vw;
+  height: 25vh;
+  text-align: center;
+  font-family: "Poiret One", cursive;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.styles_modal__gNwvD button {
+  padding: 0.5rem;
+  width: 10rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: rgb(255, 163, 220);
+  color: white;
+  font-family: "Poiret One", cursive;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 2rem 1rem;
 }

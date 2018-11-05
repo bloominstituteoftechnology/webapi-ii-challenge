@@ -131,23 +131,17 @@ class PostView extends Component {
 
     return (
       <div className="note-view">
-        <div className="note-header">
-          <div className="note-buttons">
-            <button className="edit-button" onClick={this.toggleEdit}>
-              edit
-            </button>
-
-            <button className="delete-button" onClick={this.openModal}>
-              delete
-            </button>
-          </div>
-        </div>
+        <div className="svg" />
         <div className="note-title">{this.state.title}</div>
 
         <div className="note-body">
           <p>{this.state.contents}</p>
         </div>
+        <div className="note-buttons">
+          <button onClick={this.toggleEdit}>edit</button>
 
+          <button onClick={this.openModal}>delete</button>
+        </div>
         <Modal
           open={open}
           onClose={this.closeModal}
