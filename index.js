@@ -1,9 +1,11 @@
 const express = require('express');
 const db = require('./data/db.js');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const server = express();
 
 server.use(bodyParser.json());
+server.use(cors({origin: 'http://localhost:3000'}));
 
 // ***** GET request to /api/posts: *****
 // If there's an error in retrieving the posts from the database:
