@@ -46,5 +46,29 @@ server.post('/api/posts', (req, res) => {
     })
 })
 
+server.delete('/api/posts/:id', (req, res) =>{
+    const {id} = req.params;
+    db.remove(id)
+    .then(response =>{
+        if (!response){
+            sendUserError(404,"The post with the specified ID does not exist.",res);
+            return;
+        }
+        res.json({ success: `User with id: ${id} removed from system` })
+    })
+})
+
+server.put('/api/posts/:id', (req, res) =>{
+    const {id} = req.params;
+    const { title, contents} = req.body;
+    if (!title || !contents){
+        sendUserError(400, "Please provide title and contents for the post.", res)
+        return;
+    }
+    db.update(id, {title,contents}).then(
+        db.
+        findById(id).then(post => res.json(post))
+        )
+})
 
 server.listen(port,()=> console.log(`I hear you ${port}`))
