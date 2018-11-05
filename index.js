@@ -58,8 +58,8 @@ server.delete('/api/posts/:id', (req, res) => {
         })
         .catch(err => {
             res
-                .status(404)
-                .json({ message: 'The post with the specified ID does not exist' });
+                .status(500)
+                .json({ message: '"The post could not be removed"' });
         });
 
 });
