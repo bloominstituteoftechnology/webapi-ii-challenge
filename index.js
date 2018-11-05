@@ -26,10 +26,10 @@ server.get('/api/posts/:id', (req, res) => {
 	db
 		.findById(id)
 		.then((post) => {
-			if (id) {
-				res.status(200).json(post);
-			} else {
+			if (post.length <= 0) {
 				res.status(404).json({ message: 'That post was not found' });
+			} else {
+				res.status(200).json(post);
 			}
 		})
 		.catch((err) => err.status(500).json({ message: "Can't get that post data!!" }));
