@@ -4,6 +4,9 @@ const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
+var cors = require('cors');
+
+server.use(cors());
 
 server.get('/api/posts', (req, res) => {
   db.find()
