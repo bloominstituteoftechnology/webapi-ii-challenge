@@ -43,9 +43,24 @@ server.post('/api/posts', (req, res) => {
     .then(post => {
         res.status(200).json(post)
     })
-    .catch(error => res.status(400).json({error: 'Please provide title and contents for the post.'}))
+    .catch(error => 
+        res.status(400).json({error: 'Please provide title and contents for the post.'}))
 })
 
+server.delete('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    db.remove(id)
+    .then(post => {
+        if (post && post.length) {
+            return res.status(404).json({message: 'The post with the specified ID does not exist.'})
+        } else {
+            res.status(200).json(post)
+        }
+    })
+    .catch(error => {
+        res.status(500).json({error: 'The post could not be removed.'})
+    })
+})
 
 
 
