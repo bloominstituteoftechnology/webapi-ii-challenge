@@ -14,4 +14,12 @@ server.get("/api/posts", (req, res) => {
     .catch(err => res.send(err));
 });
 
+server.get("/api/posts/:id", (req, res) => {
+  db.findById(req.params.id)
+    .then(posts => {
+      res.json(posts);
+    })
+    .catch(err => res.send(err));
+});
+
 server.listen(4000, () => console.log("Server is listening on port 4000"));
