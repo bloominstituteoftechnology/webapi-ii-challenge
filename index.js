@@ -15,7 +15,18 @@ server.get('/api/posts', (req, res) => {
     });
 });
 
-const db = require('./data/db.js');
+server.get('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.findById(id).then(post => {
+    if (post.length > 0) {
+      console.log("If true", post)
+      res.status(200).json({ post: post });
+    } else {
+      console.log("If flaes", post)
+      res.status(404).json({ message: "The post with the specified ID does not exist." })
+    }
+  })
+})
 
 server.listen(9000, () => {
   console.log('Server is up on 9000!');
