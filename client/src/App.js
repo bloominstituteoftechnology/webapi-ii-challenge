@@ -21,8 +21,12 @@ class App extends Component {
     if (this.state.posts !== null) {
       return (
         <div className="App">
-          {this.state.posts.map(post => <p className='quote' key={post.id}>{post.title}</p>)}
-        </div>
+          <h1>Lord of the Rings Quotes</h1>
+          <div className='quotes'>
+            {this.state.posts.map(post => <p className='quote' key={post.id}>{post.title}</p>)}
+            {/* While the above .map() is a bad dev pattern, it made my life easier vs. building components today */}
+          </div>
+      </div>
       );
     }
     else {
