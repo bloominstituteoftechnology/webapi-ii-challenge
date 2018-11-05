@@ -27,7 +27,7 @@ server.get("/api/users/:id", (req, res) => {
 
   db.findById(id)
     .then(user => {
-      if (user.id == id) {
+      if (user.length) {
         res.status(200).json(user);
       } else {
         res.status(404).json({ message: "user not found" });
