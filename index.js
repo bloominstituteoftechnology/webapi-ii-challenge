@@ -6,6 +6,7 @@ const db = require('./data/db.js');
 
 const express = require('express')
 const server = express()
+server.use(express.json())
 
 server.get('/', (req, res) => {
  res.json({message: 'No content here, please see /api/posts to begin'})
@@ -30,12 +31,19 @@ server.get('/api/posts/:id', (req, res) => {
         } else {
            return res.status(404).json({message: 'The post with the specified ID does not exist'})
         }
-
-        // console.log(URLid.id)
     })
     .catch(err => {
         res.status(500).json({error: 'The post information could not be retrieved.'})
     })
+})
+
+server.post('/api/posts', (req, res) => {
+    const {title, contents} = req.body;
+    db.insert({title, contents})
+    .then(post => {
+        res.status(200).json(post)
+    })
+    .catch(error => res.status(400).json({error: 'Please provide title and contents for the post.'}))
 })
 
 
