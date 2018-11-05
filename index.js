@@ -58,4 +58,23 @@ server.post('/api/posts', (req, res) => {
     });
 });
 
+server.delete('/api/posts/:id', (req, res) => {
+  const id = req.params.id;
+
+  db.remove(id)
+    .then(deletedPost => {
+      if (!deletedPost) {
+        return res.status(404).json({
+          message: 'The post with the specified ID does not exist.'
+        });
+      }
+      res
+        .status(200)
+        .json({ message: `The post with the id of ${id} was deleted.` });
+    })
+    .catch(error => {
+      res.status(500).json({ error: 'The post could not be removed' });
+    });
+});
+
 server.listen(8500, () => console.log('Server is running on port 8500...'));
