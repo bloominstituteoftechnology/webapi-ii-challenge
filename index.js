@@ -99,4 +99,44 @@ server.delete('/api/posts/:id', (req, res) => {
         });
 })
 
+// ***** PUT request to /api/posts/:id *****
+// If the post with the specified id is not found:
+// - return HTTP status code 404 (Not Found).
+// - return the following JSON object: { message: "The post with the specified ID does not exist." }.
+// If the request body is missing the title or contents property:
+// - cancel the request.
+// - respond with HTTP status code 400 (Bad Request).
+// - return the following JSON response: { errorMessage: "Please provide title and contents for the post." }.
+// If there's an error when updating the post:
+// - cancel the request.
+// - respond with HTTP status code 500.
+// - return the following JSON object: { error: "The post information could not be modified." }.
+// If the post is found and the new information is valid:
+// - update the post document in the database using the new information sent in the reques body.
+// - return HTTP status code 200 (OK).
+// - return the newly updated post.
+server.put('/api/posts/:id', (req, res) => {
+    const { title, contents } = req.body;
+    const updatedPost = { title, contents };
+
+    if(updatedPost.title && updatedPost.contents){
+        db.update(req.params.id, updatedPost)
+            .then(recordsUpdated => {
+                if(recordsUpdated){
+                    return db.findById(Number(req.params.id));
+                } else {
+                    res.status(404).json({ message: "The post with the specified ID does not exist." });
+                }
+            })
+            .then(updatedPost => {
+                res.status(200).json(updatedPost[0]);
+            })
+            .catch(err => {
+                res.status(500).json({ error: "The post information could not be modified." });
+            })
+    } else {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+    }
+});
+
 server.listen(9000);
