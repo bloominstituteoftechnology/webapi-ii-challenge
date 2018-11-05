@@ -1,60 +1,69 @@
-// import your node modules
-const http = require('http');
-const hostname = '127.0.0.1'
-const port = 9000;
-console.log('Hello Kat!')
+// 1. Inside folder: yarn
+// 2. Inside folder: yarn add express
+// 3. nodemon server.js
+const express = require('express');
+
 const db = require('./data/db.js');
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain')
-  res.end('Hello World from Node\n');
+const server = express();
+
+
+// root of our site
+// req is a requestHandler
+server.get('/', (req, res) => {
+  res.send('Hello Kat')
 })
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`)
+// server.get('/hobbits', (req, res) => {
+//   const hobbits = [
+//     {
+//       id: 1, 
+//       name: 'Samwise Gamgee'
+//     },
+//     { 
+//       id: 2,
+//       name: 'Frodo Baggins'
+//     }
+//   ]
+
+//   res.status(200).json(hobbits)
+// })
+
+server.get('/api/posts', (req, res) => {
+  db.find()
+    .then(posts => {
+      posts 
+      ? res.status(200).json(posts) 
+      : res.status(404).json({ message: 'posts not found'});
+      
+    })
+    .catch(err => {
+      res.status(500).json({ 
+        message: "The posts information could not be retrieved.",
+        error: err })
+    })
 })
 
-// const express = require('express');
-// const server = express();
-
-// const express = require('express');
-
-// const server = express();
-// server.listen(9000, () => console.log('the server is alive!'));
-// add your server code starting here
-// server.get('/', (req, res) => {
-// //   // res.send('<h1>Hello Kat</h1>');
-// //   // res.send('{api: alive}');
-//   res.json('alive');
-// }) 
-
-
-// server.listen(9000, () =>
-//   console.log('the server is alive!')
-// )
+server.get('/api/posts', (req, res) => {
+  db.find()
+    .then(posts => {
+      posts 
+      ? res.status(200).json(posts) 
+      : res.status(404).json({ message: 'posts not found'});
+      
+    })
+    .catch(err => {
+      res.status(500).json({ 
+        message: "The posts information could not be retrieved.",
+        error: err })
+    })
+})
 
 
-// {
-//   title: "The post title", // String, required
-//   contents: "The post contents" // String, required
-// }
 
-/*
-// When the client makes a GET request to /api/posts:
 
-// If there's an error in retrieving the posts from the database:
-// cancel the request.
-// respond with HTTP status code 500.
-// return the following JSON object: { error: "The posts information could not be retrieved." }.
-// When the client makes a GET request to /api/posts/:id:
 
-// If the post with the specified id is not found:
 
-// return HTTP status code 404 (Not Found).
-// return the following JSON object: { message: "The post with the specified ID does not exist." }.
-// If there's an error in retrieving the post from the database:
 
-// cancel the request.
-// respond with HTTP status code 500.
-// return the following JSON object: { error: "The post information could not be retrieved." }.
-*/
+
+
+server.listen(8000, () => {console.log('API running on port 8000')})
