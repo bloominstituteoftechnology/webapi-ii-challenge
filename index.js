@@ -51,4 +51,20 @@ server.delete('/api/posts/:id', (req, res) => {
         })
 })
 
+server.put('/api/posts/:id', (req, res) => {
+    if (!req.body.title || !req.body.contents) {
+        res.status(400).json({ errorMessage: 'Please provide title and contents for the post' })
+    }
+
+    db
+        .update(req.params.id, req.body)
+        .then(result => {
+            result > 0 ? res.status(200).send('done') : res.status(404).json({ message: 'ID NOT FOUND' })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({ error: 'The post could not be modified' })
+        })
+})
+
 server.listen(8000, () => console.log('Server is active on port 8000'))
