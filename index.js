@@ -2,10 +2,15 @@
 
 const express = require("express");
 const server = express();
+const cors = require("cors");
+
+server.use(cors());
 
 const db = require("./data/db.js");
 
 // add your server code starting here
+
+// GET Request for all posts
 
 server.get("/api/posts", (req, res) => {
   db.find()
@@ -19,6 +24,8 @@ server.get("/api/posts", (req, res) => {
       });
     });
 });
+
+// GET request for specific post
 
 server.get("/api/posts/:id", (req, res) => {
   const { id } = req.params;
