@@ -1,11 +1,12 @@
 // import your node modules
 const express = require('express');
-
+const cors = require('cors');
 const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
 server.use(express.json());
+server.use(cors());
 
 server.get('/api/posts', (req, res) => {
   db.find()
@@ -83,11 +84,9 @@ server.put('/api/posts/:id', (req, res) => {
   const updatedPost = { title, contents };
 
   if (!title || !contents) {
-    return res
-      .status(400)
-      .json({
-        errorMessage: 'Please provide title and contents for the post.'
-      });
+    return res.status(400).json({
+      errorMessage: 'Please provide title and contents for the post.'
+    });
   }
 
   db.update(id, updatedPost)
