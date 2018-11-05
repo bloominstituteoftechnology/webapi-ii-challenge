@@ -20,6 +20,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <h1>Blog</h1>
         {this.state.posts.map(post => (
           <div key={post.id}>
             <h2>{post.title}</h2>

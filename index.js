@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const server = express();
 server.use(cors());
+server.use(express.json());
 server.listen(9000, () => console.log("Listening on port 9000."));
 
 server.get("/api/posts", (req, res) => {
@@ -30,4 +31,23 @@ server.get("/api/posts/:id", (req, res) => {
     .catch(err => {
       res.status(500).json({ message: "Can't get post", err: err });
     });
+});
+
+server.post("/api/posts/", (req, res) => {
+  const { title, contents } = req.body;
+  const newPost = { title, contents };
+  db.insert(newPost)
+    .then(postId => {
+      const { id } = postId;
+      db.findById(id).then(post => {
+        console.log(post);
+        if (!post) {
+          return res
+            .status(422)
+            .send({ Error: `Post does not exist by that id ${id}` });
+        }
+        res.status(201).json(post);
+      });
+    })
+    .catch(err => res.send(err));
 });
