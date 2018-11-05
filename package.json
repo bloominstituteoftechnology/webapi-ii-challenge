@@ -1,18 +1,19 @@
 {
   "name": "node-express",
-  "version": "0.0.1",
-  "description": "LambdaSchool Node.js and Express",
+  "version": "1.0.0",
+  "description": "Lab for Introduction to Node.js and Express",
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "server": "nodemon index.js"
   },
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.4",
     "knex": "^0.15.2",
-    "sqlite3": "^4.0.2"
+    "sqlite3": "^4.0.3"
   },
   "devDependencies": {
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.6"
   }
 }
