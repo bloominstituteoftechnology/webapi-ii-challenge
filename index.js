@@ -18,6 +18,21 @@ server.get("/posts", (req, res) => {
       res.status(500).json({ message: "unexpected failure, my bad" });
     });
 });
+
+server.get("/posts/:id", (req, res) => {
+  const { id } = req.params;
+  db.findById(id)
+    .then(post => {
+      if (post) {
+        res.status(200).json(post);
+      } else {
+        res.status(404).json({ message: "post not found" });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: "sorry I couldnt get that post" });
+    });
+});
 server.listen(5000, () =>
   console.log("Server running on http://localhost:5000")
 );
