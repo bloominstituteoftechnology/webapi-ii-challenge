@@ -222,7 +222,7 @@ chalk@^2.0.1:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chokidar@^2.0.2:
+chokidar@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.4.tgz#356ff4e2b0e8e43e322d18a372460bbcf3accd26"
   dependencies:
@@ -1227,11 +1227,11 @@ node-pre-gyp@^0.10.0, node-pre-gyp@^0.10.3:
     semver "^5.3.0"
     tar "^4"
 
-nodemon@^1.18.3:
-  version "1.18.3"
-  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.18.3.tgz#46e681ee0dd1b590562e03019b4c5df234f906f9"
+nodemon@^1.18.6:
+  version "1.18.6"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.18.6.tgz#89b1136634d6c0afc7de24cc932a760e999e2c76"
   dependencies:
-    chokidar "^2.0.2"
+    chokidar "^2.0.4"
     debug "^3.1.0"
     ignore-by-default "^1.0.1"
     minimatch "^3.0.4"
@@ -1718,9 +1718,9 @@ split@0.3:
   dependencies:
     through "2"
 
-sqlite3@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/sqlite3/-/sqlite3-4.0.2.tgz#1bbeb68b03ead5d499e42a3a1b140064791c5a64"
+sqlite3@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/sqlite3/-/sqlite3-4.0.3.tgz#da8c167a87941657fd22e27b248aa371e192b715"
   dependencies:
     nan "~2.10.0"
     node-pre-gyp "^0.10.3"
