@@ -48,6 +48,20 @@ server.post('/api/posts', (req, res) => {
        .catch(err => (res.status(500).json({ error: 'There was an error while saving the post to the database.' })))
     })
 
+// DELETE
+server.delete('/api/posts/:id', (req, res) => {
+    console.log(req.params);
+    const { id } = req.params;
+    db.remove(id)
+    .then(removedPost => {
+        console.log(removedPost);
+        if(!id) {
+            return res.status(404).json({ message: "The post with the specified ID does not exist." });
+        }
+        res.status(200).json({ message: `The post with id ${ id } was successfully deleted.`});;
+    })
+    .catch(err => res.status(500).json({ error: "The post could not be removed" }));
+})
 
 const port = 8000;
 server.listen(port, () => console.log(`API running on port ${port}`))
