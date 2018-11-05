@@ -39,4 +39,16 @@ server.post('/api/posts', (req, res) => {
     }
 })
 
+server.delete('/api/posts/:id', (req, res) => {
+    db
+        .remove(req.params.id)
+        .then(result => {
+            result > 0 ? res.status(200).send('ok') : res.status(404).json({ message: 'ID NOT FOUND' })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({ errorMessage: 'Cannot be removed' })
+        })
+})
+
 server.listen(8000, () => console.log('Server is active on port 8000'))
