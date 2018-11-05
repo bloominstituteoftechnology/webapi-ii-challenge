@@ -13,7 +13,7 @@ server.use(express.json());
 server.use(cors());
 
 /*--- request handlers ---*/
-server.get('/api/posts', async (req, res) => {
+server.get('/api/posts', async (_, res) => {
   const posts = await db.find();
   res.status(200).json(posts);
 });
