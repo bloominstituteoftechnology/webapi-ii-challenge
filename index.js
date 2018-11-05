@@ -13,9 +13,10 @@ server.get("/api/posts", (req, res) => {
       res.status(200).json(posts);
     })
     .catch(err => {
-      res
-        .status(500)
-        .json({ message: "The posts information could not be retrieved" });
+      res.status(500).json({
+        message: "The posts information could not be retrieved",
+        error: err
+      });
     });
 });
 
@@ -24,7 +25,7 @@ server.get("/api/posts/:id", (req, res) => {
 
   db.findById(id)
     .then(post => {
-      if (post) {
+      if (post.length) {
         res.status(200).json(post);
       } else {
         res
@@ -33,9 +34,10 @@ server.get("/api/posts/:id", (req, res) => {
       }
     })
     .catch(err => {
-      res
-        .status(500)
-        .json({ message: "The post information could not be retrieved." });
+      res.status(500).json({
+        message: "The post information could not be retrieved.",
+        error: err
+      });
     });
 });
 
