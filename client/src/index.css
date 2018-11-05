@@ -1,0 +1,103 @@
+a * {
+  text-decoration: none;
+}
+body {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  text-decoration: none;
+  background: url("./assets/words.jpeg");
+  background-blend-mode: overlay;
+  background-color: #cccccc;
+  height: 1200px;
+  background-position: center;
+  background-repeat: repeat-y;
+  background-size: cover;
+}
+.header h1 {
+  font-family: "Trocchi", serif;
+  font-size: 10rem;
+  margin: 0;
+  padding: 0;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+.list {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row wrap;
+}
+.nav {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+.nav a {
+  text-decoration: none;
+  font-family: "Poiret One", cursive;
+  font-weight: bold;
+  font-size: 2.5rem;
+  margin: 2rem 4rem;
+  color: rgb(102, 102, 102);
+}
+.quote-card {
+  margin: 2rem auto 6rem auto;
+  width: 80%;
+  height: 80%;
+
+  overflow: hidden;
+}
+
+.list a {
+  text-decoration: none;
+  width: 30%;
+  height: 25rem;
+  margin: 1rem;
+  overflow: hidden;
+  background: rgb(255, 163, 220);
+  color: #222222;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(34, 34, 34, 0.12);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.title {
+  margin: 0 auto;
+}
+.quote-card p {
+  font-size: 1.5rem;
+  font-family: "Trocchi", serif;
+  color: rgb(46, 46, 46);
+  line-height: 1.5;
+  z-index: 3;
+  max-width: 80%;
+  margin: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quote-card:before {
+  font-family: Georgia, serif;
+  content: "“";
+  position: absolute;
+  top: 0px;
+  left: -1px;
+  font-size: 5em;
+  color: rgba(238, 238, 238, 0.8);
+  font-weight: normal;
+}
+.title:after {
+  font-family: Georgia, serif;
+  content: "”";
+  justify-self: last baseline;
+  align-self: flex-end;
+  font-size: 20em;
+  color: rgba(238, 238, 238, 0.8);
+  font-weight: normal;
+  position: absolute;
+  right: 0px;
+  bottom: -200px;
+  z-index: 0;
+}
