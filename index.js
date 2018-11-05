@@ -48,11 +48,19 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params;
-  db.remove(id).then(post => {
-    if (post) {
-      res.status();
-    }
-  });
+  db.remove(id)
+    .then(postDelete => {
+      postDelete
+        ? res.status(200).json('Success!')
+        : res
+            .status(404)
+            .json({
+              message: 'The post with the specified ID does not exist.'
+            });
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'The post cold not be removed' });
+    });
 });
 
 server.listen(5800, () => console.log('this is the server'));
