@@ -1,11 +1,13 @@
 // import your node modules
 
 const express = require('express');
-
+const cors = require('cors');
 const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
+
+server.use(cors({ origin: 'http://localhost:5800' }));
 
 server.get('/', (req, res) => {
   res.json('Welcome to Hobbiton!');
