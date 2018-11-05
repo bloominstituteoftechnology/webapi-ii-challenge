@@ -8,7 +8,9 @@ const server = express();
 const port = 9000;
 
 // add your server code starting here
-server.use(cors());
+// server.use(cors());
+// or
+server.use(cors({ origin: 'http://localhost:3000' }));
 
 // testing testing :D
 server.get('/', (_, res) => {

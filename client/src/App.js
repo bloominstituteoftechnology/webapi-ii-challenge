@@ -22,14 +22,17 @@ class App extends Component {
 
   render() {
     const { posts } = this.state;
+    const post = posts.map(post => {
+      return (
+        <div key={post.id}>
+          <p>{post.contents}: <strong>"{post.title}"</strong></p>
+        </div>
+      );
+    });
 
     return (
       <div className="App">
-        {posts.map(post => (
-          <div key={post.id}>
-            <p>{post.contents}: <strong>"{post.title}"</strong></p>
-          </div>
-        ))}
+        {post}
       </div>
     );
   }
