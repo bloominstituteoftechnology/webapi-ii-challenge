@@ -1,17 +1,16 @@
 // import your node modules
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
 
-server.use(cors({ origin: 'http://localhost:5800' }));
+server.use(bodyParser.json());
 
-server.get('/', (req, res) => {
-  res.json('Welcome to Hobbiton!');
-});
+server.use(cors());
 
 server.get('/api/posts', (req, res) => {
   db.find()
