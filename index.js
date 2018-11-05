@@ -19,6 +19,17 @@ server.get('/users', (req, res) =>
     })
 );
 
+server.get('/users/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const response = await db.findById(id);
+    res.status(200).json(response);
+  } catch {
+    res.status(404).json({ message: 'user is not found' });
+  }
+});
+
 server.post('/users', async (req, res) => {
   const user = req.body;
   if (user.title && user.contents) {
@@ -48,6 +59,16 @@ server.put('/users/:id', async (req, res) => {
     }
   } else {
     res.status(422).send('cannot be processed');
+  }
+});
+
+server.delete('/users/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await db.remove(id);
+    res.status(204).end();
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 
