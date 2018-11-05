@@ -43,8 +43,9 @@ server.get('/api/posts', (req, res) => {
     })
 })
 
-server.get('/api/posts', (req, res) => {
-  db.find()
+server.get('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.findById(id)
     .then(posts => {
       posts 
       ? res.status(200).json(posts) 
