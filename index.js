@@ -11,13 +11,13 @@ server.get('/', (req, res) => {
 });
 
 // get all posts
-server.get('/api/posts', (req, res) => {
+server.get('/api/posts/', (req, res) => {
 	db
 		.find()
 		.then((posts) => {
 			res.status(200).json(posts);
 		})
-		.catch((err) => res.status(500).json({ message: "Can't get post data!!" }));
+		.catch((err) => err.status(500).json({ message: "Can't get post data!!" }));
 });
 
 // get post by ID
@@ -26,13 +26,13 @@ server.get('/api/posts/:id', (req, res) => {
 	db
 		.findById(id)
 		.then((post) => {
-			if (post) {
+			if (id) {
 				res.status(200).json(post);
 			} else {
 				res.status(404).json({ message: 'That post was not found' });
 			}
 		})
-		.catch((err) => res.status(500).json({ message: "Can't get that post data!!" }));
+		.catch((err) => err.status(500).json({ message: "Can't get that post data!!" }));
 });
 
 // add a post
