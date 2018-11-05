@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from "axios"
+import PostContainer from './components/postContainer';
 
 class App extends Component {
   constructor(){
@@ -18,12 +19,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.posts.map(post => 
-          <div key={post.id}>
-            <p>{post.title}</p>
-            <h4>{post.contents}</h4>
-          </div>
-        )}
+        <PostContainer posts = {this.state.posts} />
       </div>
     );
   }
