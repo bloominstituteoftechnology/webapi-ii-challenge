@@ -1,14 +1,14 @@
 // import your node modules
 const express=require('express');
-
+const cors = require('cors');
 const db = require('./data/db.js');
 
 // add your server code starting here
 //creat server
 const server=express();
-
+server.use(cors());
 //GET request for /api/posts
-server.get('/api/posts', (req, res) => {
+server.get('/api/posts', (req, res, next) => {
     db.find()
     .then(posts =>{
         res.status(200)
@@ -21,7 +21,7 @@ server.get('/api/posts', (req, res) => {
 })
 
 //GET request for specific post
-server.get('/api/posts/:id', (req, res) => {
+server.get('/api/posts/:id', (req, res, next) => {
   //first define id based on url param
     const {id} =req.params;
 
