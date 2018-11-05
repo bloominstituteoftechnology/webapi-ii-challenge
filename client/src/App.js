@@ -22,7 +22,7 @@ class App extends Component {
   render() {
     console.log("++  ",this.state.posts);
     return (
-      <div>
+      <div className = "App">
         <h1>Hello...</h1>
         {this.state.posts.map(post => <Posts 
                                             key = {post.id}
