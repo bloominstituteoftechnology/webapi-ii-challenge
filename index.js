@@ -14,17 +14,19 @@ server.get('/api/posts', (req, res) => {
     .catch(err => {
       res
         .status(500)
-        .json({ message: 'find failed', error: err});
+        .json({ error: "The posts information could not be retrieved." });
     });
 });
 
 server.get('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+
   db.findById(id)
     .then(post => {
-      if(post) {
+      if(post.length > 0) {
         res.status(200).json(post);
       } else {
-        res.status(404).json({ message: 'post not found'})
+        res.status(404).json({ message: "The post with the specified ID does not exist." })
       }
     })
     .catch(err => {
@@ -34,7 +36,9 @@ server.get('/api/posts/:id', (req, res) => {
     });
 });
 
-
+// server.post('/api/posts', (req, res) => {
+//   .then
+// })
 
 
 
