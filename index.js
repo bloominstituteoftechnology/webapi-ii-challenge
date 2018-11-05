@@ -66,3 +66,20 @@ server.delete("/api/posts/:id", (req, res) => {
     })
     .catch(err => console.error(err));
 });
+
+server.put("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const { title, contents } = req.body;
+  const postToUpdate = { title, contents };
+  db.update(id, postToUpdate)
+    .then(updatedPost => {
+      res
+        .status(200)
+        .json(
+          updatedPost
+            ? `Post ${id} successfully updated.`
+            : `Error attempting to update post ${id}.`
+        );
+    })
+    .catch(err => console.error(err));
+});
