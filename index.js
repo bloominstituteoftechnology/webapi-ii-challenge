@@ -3,6 +3,7 @@
 const express = require('express');
 const server = express();
 const db = require('./data/db.js');
+const getPosts = require('./getPosts')
 
 // add your server code starting here
 //
