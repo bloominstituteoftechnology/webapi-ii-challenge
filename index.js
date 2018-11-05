@@ -16,7 +16,7 @@ server.get('/api/posts', (req, res) => {
         .catch(error => {
             res
                 .status(500)
-                .json({ message: "Sorry, failed to retrieve posts", error: error })
+                .json({ error: "The posts information could not be retrieved.", error: error })
         })
 })
 
@@ -28,16 +28,16 @@ server.get('api/posts/:id', (req, res) => {
             if (post) {
                 res.status(200).json(post)
             } else {
-                res.status(404).json({ message: "Post not found" })
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
             }
         })
         .catch(error => {
             res
                 .status(500)
-                .json({ message: "Sorry, failed to retrieve post", error: error })
+                .json({ error: "The post information could not be retrieved.", error: error })
         })
 })
 
 
 
-server.listen(8000, () => console.log('the server is alive!'));
+server.listen(8000, () => console.log('server is alive'));
