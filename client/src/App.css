@@ -1,3 +1,23 @@
 .App {
   text-align: center;
+  font-family: 'Cinzel', serif;
+  margin: 0 30px;
+}
+
+.header {
+  margin: 30px 0;
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+}
+
+.quote {
+  margin-bottom: 0;
+  margin-top: 35px;
+  color: white;
+}
+
+.character {
+  margin-top: 0;
+  color: white;
 }

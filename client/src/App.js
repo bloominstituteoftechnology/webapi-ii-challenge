@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import './App.css';
+import headerImage from './lotr.jpg';
 
 class App extends Component {
   constructor() {
@@ -24,11 +25,16 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">Welcome to LotR Quotes!</header>
+        <header className="header">Welcome to LotR Quotes!</header>
+        <img
+          src={headerImage}
+          alt="The Journey Begins"
+          className="header-image"
+        />
         {this.state.posts.map(post => (
           <div key={post.id}>
-            <h2>{post.title}</h2>
-            <p>{post.contents}</p>
+            <h2 className="quote">"{post.title}"</h2>
+            <p className="character">-{post.contents}</p>
           </div>
         ))}
       </div>
