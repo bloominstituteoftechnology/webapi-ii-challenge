@@ -26,7 +26,8 @@ server.get('/api/posts', (_, res) => {
 });
 
 server.get('/api/posts/:id', (req, res) => {
-  id = req.params.id;
+  const { id } = req.params;
+  console.log(id)
 
   db.findById(id)
     .then(post => {
