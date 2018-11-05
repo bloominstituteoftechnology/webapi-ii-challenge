@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import axios from 'axios'
+import Posts from './Posts'
 
 class App extends Component {
   constructor() {
@@ -9,10 +10,23 @@ class App extends Component {
       posts: []
     }
   }
+  componentDidMount() {
+    axios
+    .get('http://localhost:8000/api/posts')
+    .then(response => {
+      this.setState({
+        posts: response.data
+      })
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
   render() {
     return (
       <div className="App">
-        <h1> test </h1>
+      <Posts posts={this.state.posts} />
       </div>
     );
   }
