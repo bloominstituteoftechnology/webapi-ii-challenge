@@ -6,7 +6,11 @@ const express = require('express');
 // const greeter = require('./greeter.js');
 const db = require('./data/db.js');
 
+const cors = require('cors');
+
 const server = express();
+
+server.use(cors({origin: 'http://localhost:9000'}));
 
 server.get('/', (req, res) => {
     res.json('alive');
@@ -27,7 +31,6 @@ server.get('/api/posts', (req, res) => {
 
 server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
-
     db.findById(id).then(post => {
         if(post.id) {
            res.status(200).json(post); 
@@ -38,9 +41,22 @@ server.get('/api/posts/:id', (req, res) => {
     })
     .catch(err => {
         res
-        .status(500)
-        .json({message: "The post information could not be retrieved." })
+        .status(500).json({message: "The post information could not be retrieved." })
     });
+});
+
+let postId = 1;
+
+server.post('/api/posts', (req, res) => {
+    const { title, contents } = req.body;
+    const newPost = { title, contents, id: postId };
+    if (!title || !contents) {
+        res.status(400).json({message: "Please provide title and contents for the post."})
+    } else {
+        posts.push(newPost);
+        postId++;
+        res.json(posts);
+    }
 });
 
 // server.get('/greet/:person', greeter);
