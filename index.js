@@ -2,6 +2,7 @@
 
 const db = require('./data/db.js');
 const express = require('express');
+const cors = require('cors');
 const PORT = 9000;
 
 
@@ -9,21 +10,20 @@ const PORT = 9000;
 
 const server = express();
 
+server.use(cors({origin: 'http://localhost:3000'}));
+
 server.get('/api/posts', (req, res) => {
   db.find()
     .then(posts => {
-      console.log(posts);
-      const formatedPosts = posts.map( (post) => ({ 
-        title: post.title, 
-        contents: post.contents 
-      }));
-      console.log(formatedPosts);
-      res.status(200).json(formatedPosts);
+      res.status(200).json(posts);
     })
     .catch(err => {
-      res.status(500).json({ error: "The posts information could not be retrieved." });
+      res
+        .status(500)
+        .json({ 
+          message: "The posts could not be retrieved." 
+        });
     })
 });
 
 server.listen(PORT, () => console.log('Server is running on port: ' + PORT));
-
