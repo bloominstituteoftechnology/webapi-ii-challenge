@@ -27,9 +27,9 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   db.findById(id)
-    .then(user => {
-      if (user) {
-        res.status(200).json(user);
+    .then(post => {
+      if (post && post.length) {
+        res.status(200).json(post);
       } else {
         res
           .status(404)
@@ -42,6 +42,15 @@ server.get('/api/posts/:id', (req, res) => {
         error: err
       });
     });
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.remove(id).then(post => {
+    if (post) {
+      res.status();
+    }
+  });
 });
 
 server.listen(5800, () => console.log('this is the server'));
