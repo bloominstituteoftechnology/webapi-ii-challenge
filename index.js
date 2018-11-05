@@ -8,16 +8,18 @@ const server = express();
 // middleware - put when doing react app
 
 // starting point
-server.get('/', (Req, res) => {
-    res.send('Test');
+server.get('/', (req, res) => {
+    res.send('Home');
 })
 // request handlers.
+// GET
 server.get('/api/users', (req, res) => {
     db.find().then(users => {
         console.log('\n** users **', users);
-        res.json(users);
+        res.status(200).json(users);
     })
-    .catch(err => res.send(err))
+    .catch(err => res.send(err));
+    res.status(500).json({ error: "The post information could not be retrieved."});
 })
 
 const port = 8000;
