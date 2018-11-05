@@ -3,3 +3,4 @@
 const db = require('./data/db.js');
 
 // add your server code starting here
+console.log('is server werking?'); // yes
