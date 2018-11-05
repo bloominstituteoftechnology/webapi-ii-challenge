@@ -9,24 +9,26 @@ const db = require('./data/db.js');
 
 // add your server code starting here
 
-server.get('/users', (req, res) =>
-  db
-    .find()
-    .then(users => res.status(200).json(users))
-    .catch(err => {
-      console.log('Error', err);
-      res.status(500).json({ message: 'Error' });
-    })
-);
+server.get('/users', async (req, res) => {
+  try {
+    const response = await db.find();
+    res.status(200).json(response);
+  } catch {
+    res.status(400).json({ message: 'not accessible' });
+  }
+});
 
 server.get('/users/:id', async (req, res) => {
   const { id } = req.params;
-
-  try {
-    const response = await db.findById(id);
-    res.status(200).json(response);
-  } catch {
-    res.status(404).json({ message: 'user is not found' });
+  if (res.length > 0) {
+    try {
+      const response = await db.findById(id);
+      res.status(200).json(response);
+    } catch {
+      res.status(404).json({ message: 'user is not found' });
+    }
+  } else {
+    res.status(404).json({ message: 'cant find the user' });
   }
 });
 
