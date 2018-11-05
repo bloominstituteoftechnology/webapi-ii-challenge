@@ -17,4 +17,24 @@ server.get('/api/posts', (req, res) => {
     });
 });
 
+server.get('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+
+    db.findById(id).then(post => {
+        if (!post.length) {
+            console.log('fail', post)
+            res.status(404).json({message: 'User not found'})
+        } else {
+            res.status(200).json(post);
+            console.log('success', post)
+        }
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: 'Cant get user',
+            error: err
+        })
+    });
+});
+
 server.listen(9000, () => console.log('Server started'))
