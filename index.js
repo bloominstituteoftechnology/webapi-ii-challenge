@@ -58,3 +58,23 @@ server.delete('/api/posts/:id', async (req,res) => {
         res.status(500).json({message: "Post could not be removed"})
     }
 })
+
+server.put('/api/posts/:id', (req, res) => {
+        const {id} = req.params;
+        const content = req.body;
+        if(!content.title || !content.contents) {
+            res.status(400).json({errorMessage: "Please provide title and contents for the post." })
+        } else {
+            db.update(id, content)
+            .then(count => {
+                if(count) {
+                    res.status(200).json({message: `${count} post changed`});
+                } else {
+                    res.status(404).json({message: "The post with the specified ID does not exist."})
+                }
+            })
+            .catch(error => {
+                res.status(400).json({ errorMessage: "The post information could not be modified."})
+            })
+        }
+})
