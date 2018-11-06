@@ -32,8 +32,7 @@ server.get("/api/posts/:id", (req, res) => {
     });
 });
 
-// When the client makes a POST request to /api/posts:
-
+// Post
 server.post("/api/posts", (req, res) => {
   const { title, contents } = req.body;
   const newPost = { title, contents };
@@ -41,17 +40,27 @@ server.post("/api/posts", (req, res) => {
     .then(postId => {
       const { id } = postId;
       if (!post) {
-        return res
-          .status(422)
-          .send({
-            error: "There was an error while saving the post to the database"
-          });
+        return res.status(422).send({
+          error: "There was an error while saving the post to the database"
+        });
       }
       db.findById(id).then(post => {
         res.status(201).json(post);
       });
     })
     .catch(err => console.log(err));
+});
+
+// Update
+server.put("/api/posts/:id", (req, res) => {
+  const userData = req.body;
+  db.update(req.params.id, userData)
+    .then(count => {
+      res.status(200).json(count);
+    })
+    .catch(err => {
+      res.status(500).json({ message: "error updating post" });
+    });
 });
 
 // delete
