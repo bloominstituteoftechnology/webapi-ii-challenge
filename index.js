@@ -6,6 +6,9 @@ const server = express();
 
 // add your server code starting here
 
+//middleware
+server.use(express.json());
+
 //GET request for /api/posts
 
 server.get("/api/posts", (req, res) => {
@@ -41,5 +44,24 @@ server.get("/api/posts/:id", (req, res) => {
         .json({ message: "The post information could not be retrieved." });
     });
 });
+
+//POST request
+
+server.post("/api/posts", async (req, res) => {
+  try {
+    const postsData = req.body;
+    const postsId = await db.insert(postsData);
+    res.status(201).json(postsId);
+  } catch (error) {
+    res.status(500).json({ message: 'error grabbing the post', error })
+  }
+});
+
+//DELETE request
+
+//PUT request
+
+
+
 
 server.listen(8000, () => console.log("Server is listening on port 8000"));
