@@ -26,11 +26,9 @@ server.get('/api/post/:id', (req, res) => {
 
   db.findById(id)
     .then(post => {
-      if (post) {
-        res.status(200).json(post)
-      } else {
-        res.status(404).json({ message: "The post with the specified ID does not exist."})
-      }
+      post
+        ? res.status(200).json(post)
+        : res.status(404).json({ message: "The post with the specified ID does not exist."})
     })
     .catch( error => {
       res.status(500).json({error: "The post information could not be retrieved.", error: error})
@@ -45,39 +43,37 @@ server.post('/api/posts', async (req, res) => {
     res.status(201).json(post);
   } catch (error) {
     let message = 'There was an error while saving the post to the database'
-    if(error.errno === 19) {
-      message = "Please provide title and contents for the post."
-    }
-    res.status(500).json({ message, error})
+    (error.errno === 19)
+      ? message = "Please provide title and contents for the post."
+      : res.status(500).json({ message, error})
   }
 })
 
-// server.put('/api/users/:id', (req, res) => {
-//   const { id } = req.params;
-//   const changes = req.body;
-//   db.update(id, changes)
-//     .then(id => {
-//       if(id) {
-//         res.status(200).json({ message: "The post with the specified ID does not exist."})
-//       } else {
+server.put('/api/users/:id', (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  db.update(id, changes)
+  .then((count) => {
+    count
+      ? res.status(200).json({ message: 'Post updated successfully' })
+      : res.status(404).json({ message: 'That post was not found or already updated' });
+  })
+  .catch((error) => {
+    res.status(500).json({ message: 'error updating post', error });
+  });
+});
 
-//       }
-//     })
-// })
 
 
   server.delete('/api/posts/:id', (req, res) => {
     db.remove(req.params.id)
       .then(count => {
-        if(count){
-          res.status(200).json(count);
-        } else {
-          res.status(404).json({ message: "The post with the specified ID does not exist."})
-        }
-        
+        count
+          ? res.status(200).json(count) 
+          : res.status(404).json({ message: "The post with the specified ID does not exist."})
       })
       .catch( error => {
-        res.status(500).json({ error: "The post could not be removed" })
+        res.status(500).json({ error: "The post could not be removed", error })
       })
   })
 
