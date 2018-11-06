@@ -59,6 +59,16 @@ server.post("/api/posts", async (req, res) => {
 
 //DELETE request
 
+server.delete("/api/posts/:id", (req, res) => {
+  db.remove(req.params.id)
+    .then(count => {
+      res.status(200).json(count);
+    })
+    .catch(err => {
+      res.status(500).json({ message: '1000 years of shame, we failed to delete the post' })
+    })
+});
+
 //PUT request
 
 
