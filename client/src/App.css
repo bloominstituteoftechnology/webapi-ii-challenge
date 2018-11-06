@@ -1,0 +1,14 @@
+.App {
+  text-align: center;
+  background: cornflowerblue;
+}
+
+.LOTRCard {
+  border: 1px solid black;
+  margin: 0 30% 30px 30%;
+  background: white;
+}
+
+body {
+  background: cornflowerblue;
+}
