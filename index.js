@@ -63,6 +63,16 @@ server.put('/api/posts/:id', (req, res) => {
         .catch(err => {
             res.status(500).json({ message: 'error updating post', err });
         })
-})
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+    db.remove(req.params.id)
+        .then(count => {
+            res.status(200).json(count);
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'error deleting post', err });
+        })
+});
 
 server.listen(9000, () => console.log('The server is live!'));
