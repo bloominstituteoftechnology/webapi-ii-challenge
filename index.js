@@ -36,30 +36,67 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 // add a post
-server.post('/api/posts/', (req, res) => {
-	console.log(req.body);
-	const { title, content } = req.body;
-	const newPost = { title, content };
-	db
-		.insert(newPost)
-		.then((insertedPost) => {
-			res.status(201).json({ message: 'Post created', insertedPost });
-		})
-		.catch((err) => res.send(err));
+server.post('/api/posts/', async (req, res) => {
+	console.log('body', req.body);
+	//promises version
+	// db.insert(req.body).then(postData => {
+	// 	res.status(201).json(postData);
+	// })
+	// .catch(error => res.status(500).json({ message: 'error creating user', error }));
+
+	//async and await version
+	try {
+		const postData = req.body;
+		const post = await db.insert(postData);
+		res.status(201).json(postData);
+	} catch (err) {
+		res.status(500).json({ message: 'error creating post', error });
+	}
 });
 
 // delete a post
 
-// server.delete('/api/posts/:id', (req, res) => {
-// 	const { id } = req.params.id;
-// 	res
-// 		.status(200)
-// 		.json({
-// 			url: `/api/posts/${id}`,
-// 			operation: `Delete for post with id ${id}`
-// 		})
-// 		.catch((err) => err.status(500).json({ message: 'Could not delete that user' }));
-// });
+server.delete('/api/posts/:id', (req, res) => {
+	db
+		.remove(req.params.id)
+		.then((count) => {
+			count
+				? res.status(200).json({ message: 'Post deleted successfully' })
+				: res.status(404).json({ message: 'That post was not found or already deleted' });
+		})
+		.catch((err) => {
+			res.status(500).json({ message: 'error deleting post' });
+		});
+});
+
+// update a post
+
+server.put('/api/posts/:id', (req, res) => {
+	const { id } = req.params;
+	const changes = req.body;
+	db
+		.update(id, changes)
+		.then((count) => {
+			count
+				? res.status(200).json({ message: 'Post updated successfuly' })
+				: res.status(404).json({ message: 'That post was not found or already updated' });
+		})
+		.catch((err) => {
+			res.status(500).json({ message: 'error updating post', err });
+		});
+});
+
+// query search by id or post
+
+server.get('/posts/', (req, res) => {
+	const { id } = req.query;
+
+	if (id) {
+		db.findById(id).then((posts) => res.send(posts));
+	} else {
+		db.find().then((posts) => res.send(posts));
+	}
+});
 
 const port = 9000;
 
