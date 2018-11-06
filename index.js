@@ -66,7 +66,7 @@ server.put('/api/posts/:id', (req, res) => {
     db.update(id, changes)
         .then(post => {
             if (post) {
-                res.status(200).json({ message: `${post} was updated` });
+                res.status(200).json({ message: `${id} was updated` });
             } else {
                 res.status(404).json({ message: "The post with the specified ID does not exist." });
             }
