@@ -4,14 +4,14 @@ import Hobbit from './hobbit';
 
 const HobbitList = props => {
 
-    return(
+    return (
         <div>
-            {props.posts.map(post=>(
+            {props.posts.map(post => (
                 <div key={post.id}>
-                    <Hobbit post={post}/>
+                    <Hobbit post={post} />
                 </div>
             ))}
-        
+
         </div>
     )
 }

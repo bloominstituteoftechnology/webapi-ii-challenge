@@ -5,7 +5,7 @@ const express = require('express');
 const server = express();
 server.use(express.json());
 const cors = require('cors');
-server.use(cors({origin: 'http://localhost:3000'}));
+server.use(cors({ origin: 'http://localhost:3000' }));
 
 server.get('/', (req, res) => {
     res.json('hello');

@@ -7,11 +7,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <h1>
-            Hobbit Quotes
-          </h1>
-          <Hobbits />
-       
+        <h1>
+          Hobbit Quotes
+        </h1>
+        <Hobbits />
+
       </div>
     );
   }

@@ -2,12 +2,12 @@ import React from 'react';
 
 
 
-const Hobbit= props=>{
+const Hobbit = props => {
 
-    return(
+    return (
         <div>
-        {props.post.title};
-        {props.post.contents};
+            <h3>{props.post.title}</h3>
+            <p>{props.post.contents}</p>
         </div>
     )
 }
