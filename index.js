@@ -70,7 +70,7 @@ server.put('/api/posts/:id', (req, res) => {
             }
         })
         .catch(err => {
-            res.status(500).json({ message: 'error updating post', err });
+            res.status(500).json({ error: 'The post information could not be modified.', err });
         })
     }
 });
