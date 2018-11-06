@@ -8,7 +8,11 @@ const express = require('express');
 const server = express();
 
 server.get('api/posts', (req, res) => {
-  
+  db.find().then( posts => {
+    res.json(posts);
+  }).catch( error => {
+    res.stats(500).json({error: "The posts information could not be retrieved."})
+  })
 })
 
 server.get('/api/post/:id', (req, res) => {
