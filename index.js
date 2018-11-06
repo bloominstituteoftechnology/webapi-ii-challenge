@@ -65,7 +65,7 @@ server.put('/api/posts/:id', (req, res) => {
 server.delete('/api/posts/:id', (req, res) => {
     db.remove(req.params.id)
         .then(count => {
-            res.status(200).json(count);
+            res.status(200).json(req.body);
         })
         .catch(err => {
             res.status(500).json({ message: 'error deleting post'});
