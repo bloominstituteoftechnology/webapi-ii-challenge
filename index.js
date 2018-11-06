@@ -64,4 +64,21 @@ server.delete('/api/posts/:id', (req, res) => {
     });
 });
 
+server.put('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  db.update(id, changes)
+    .then(count => {
+      if (count) {
+        res.status(200).json({ message: `${count} users updated` });
+      } else {
+        console.log('the count is: ', count);
+        res.status(402).json({ message: `user not found` });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: 'The post could not be updated.' });
+    });
+});
+
 server.listen(9000, () => console.log('the server is alive!'));
