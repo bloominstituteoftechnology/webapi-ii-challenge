@@ -33,10 +33,11 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts', (req, res) => {
-  const { title, contents } = req.body;
-  if (title && contents) {
+  if (req.body.title && req.body.contents) {
     db.insert(req.body)
-      .then(res => db.findById(res.id).then(post => res.status(201).json(post)))
+      .then(addedPost => {
+        db.findById(adddedPost.id).then(post => res.status(201).json(post));
+      })
       .catch(err =>
         res.status(500).json({ error: 'There was an error while saving the post to the database' })
       );
@@ -50,7 +51,7 @@ server.delete('/api/posts/:id', (req, res) => {
     .then(
       post =>
         post
-          ? res.status(200).send('You sucessfully deleted the post.')
+          ? res.status(200).json({ message: 'Successfully deleted post' })
           : res.status(404).json({ message: 'The post with the specified ID does not exist.' })
     )
     .catch(err => res.status(500).json({ error: 'The post could not be removed' }));
