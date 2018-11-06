@@ -20,31 +20,35 @@ class Form extends React.Component {
     }
   }
 
-  // submitHandler = event => {
-  //   event.preventDefault();
-  //   if (this.props.post) {
-  //     const post = {
-  //       ...this.state,
-  //     }
-  //     this.props.submit(post);
-  //     this.setState({
-  //       id: null,
-  //       title: '',
-  //       contents: '',
-  //     })
-  //   } else {
-  //     const post = {
-  //       title: this.state.title,
-  //       contents: this.state.contents,
-  //     }
-  //     this.props.submit(post);
-  //     this.setState({
-  //       id: null,
-  //       title: '',
-  //       contents: '',
-  //     })
-  //   }
-  // }
+  submitHandler = event => {
+    event.preventDefault();
+    if (this.props.post) {
+      console.log('form and a post');
+      const post = {
+        ...this.state,
+      }
+      this.props.submit(post);
+      this.setState({
+        id: null,
+        title: '',
+        contents: '',
+      })
+      this.props.history.push('/');
+    } else {
+      console.log('form and adding')
+      const post = {
+        title: this.state.title,
+        contents: this.state.contents,
+      }
+      this.props.submit(post);
+      this.setState({
+        id: null,
+        title: '',
+        contents: '',
+      });
+      this.props.history.push('/');
+    }
+  }
 
   inputHandler = event => {
     this.setState({
@@ -54,7 +58,7 @@ class Form extends React.Component {
 
   render(){
     return (
-      <form>
+      <form onSubmit={this.submitHandler}>
         {this.props.add &&
         <input
           type='text'

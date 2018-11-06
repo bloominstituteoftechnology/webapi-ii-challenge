@@ -43,13 +43,18 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts', (req, res) => {
+  console.log(req);
   const post = req.body;
-  if ( !post.title || !post.contents || post.title === '' || post.contents === ''){
+  if ( !post.title || !post.contents || post.title.length === 0 || post.contents.length === 0){
     res
       .status(400)
       .json({ errorMessage: 'Please provide title and contents for the post.' })
   } else {
     db.insert(post)
+      .then(id => {
+        db.findById(id)
+      })
+      .then(console.log(post))
       .then(post => {
         res
           .status(201)

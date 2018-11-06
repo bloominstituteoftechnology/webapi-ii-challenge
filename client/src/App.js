@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Route, Switch } from 'react-router-dom';
 import { ListView, PostView, AddView } from './views';
 import { Header } from './components'
