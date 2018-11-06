@@ -74,4 +74,30 @@ server.delete('/api/posts/:id', async (req, res) => {
   }
 });
 
+// PUT update a single post
+server.put('/api/posts/:id', async (req, res) => {
+  const { id } = req.params;
+  const postData = req.body;
+  try {
+    const count = await db.update(id, postData);
+    const updatedPost = await db.findById(id);
+
+    if (!count) {
+      res
+        .status(404)
+        .json({ message: 'The post with the specified ID does not exist.' });
+    } else if (!postData.title || !postData.contents) {
+      res
+        .status(400)
+        .json({ message: 'Please provide title and contents for the post.' });
+    } else {
+      res.status(200).json({ ...updatedPost[0] });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: 'The post information could not be modified.' });
+  }
+});
+
 server.listen(4000, () => console.log('Server started on port 4000'));
