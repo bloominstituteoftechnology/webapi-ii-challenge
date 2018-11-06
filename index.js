@@ -23,7 +23,11 @@ server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     db.findById(id)
         .then(post => {
-            res.status(200).json(post);
+            if (post.length === 0) {
+                res.status(404).json({ message: `Couldn't find post ${id}`})
+            } else {
+                res.status(200).json(post[0]);
+            }
         })
         .catch(err => {
             res.status(500).json({message: `Couldn't find post ${id}`});
