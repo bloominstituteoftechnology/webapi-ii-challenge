@@ -7,7 +7,6 @@
 
 .posts {
   max-width: 100%;
-  border: 1px solid salmon;
   padding: 50px 10%;
   display: flex;
   flex-flow: row wrap;
@@ -20,4 +19,6 @@
   padding: 10px;
   margin: 20px;
   width: 30%;
+  color: black;
+  text-decoration: none;
 }

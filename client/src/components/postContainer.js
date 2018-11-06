@@ -5,7 +5,6 @@ export default class PostContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    
     }
   }
   
@@ -13,7 +12,7 @@ export default class PostContainer extends Component {
     return (
       <div className='posts'>
         {this.props.posts.map((post) => 
-          <Post className='posts' key={post.id}  post = {post} />
+          <Post key={post.id} post = {post} />
         )}
       </div>
     );
