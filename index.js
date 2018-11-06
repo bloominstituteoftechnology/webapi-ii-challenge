@@ -5,10 +5,9 @@ const cors = require('cors');
 
 // add your server code starting here
 const server = express();
-server.use(cors());
-
 //middleware
 server.use(express.json());
+server.use(cors());
 
 server.get('/api/posts', (req, res) => {
     db.find().then(posts => {
@@ -44,8 +43,13 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.post('/api/posts', async (req, res) => {
     try {
-        const user = await db.insert(req.body);
-        res.status(201).json({message: 'user succesfully created', user})
+        const post = req.body;
+        if (!('title' in post) || !('contents' in post)) {
+            res.status(400).json({message: 'Please provide title and contents for the post.'})
+        } else {   
+            const user = await db.insert(req.body);
+            res.status(201).json({message: 'user succesfully created', user})
+        }
     } catch(error) {
         res.status(500).json({message: 'error creating post', error})
     }
@@ -57,7 +61,7 @@ server.delete('/api/posts/:id', async (req, res) => {
         const count = await db.remove(id);
         count 
             ? res.status(200).json({message: `${count} users deleted`})
-            : res.status(404).json({message: 'user not found'})
+            : res.status(404).json({message:  'The post with the specified ID does not exist.'})
     } catch(error) {
         res.status(500).json({message: 'error deleting post', error})
     }
@@ -65,13 +69,18 @@ server.delete('/api/posts/:id', async (req, res) => {
 
 server.put('/api/posts/:id', async (req, res) => {
     try {
-        const { id } = req.params;
-        const count = await db.update(id, req.body);
-        count 
-            ? res.status(200).json({message: `${count} users updated`})
-            : res.status(404).json({message: 'user not found'})
+        const post = req.body;
+        if (('title' in post) || ('contents' in post)) {
+            const { id } = req.params;
+            const count = await db.update(id, req.body);
+            count 
+                ? res.status(200).json({message: `${count} users updated`})
+                : res.status(404).json({message: 'The post with the specified ID does not exist.'})
+        } else {   
+            res.status(400).json({message: 'Please provide title or contents for the post.'})
+        }
     } catch(error) {
-        res.status(500).json({message: 'error deleting post', error})
+        res.status(500).json({message: 'The post information could not be modified.', error})
     }
 })
 
