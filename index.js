@@ -18,7 +18,7 @@ server.get('/', (req, res) => {
   res.send('<h2>API running on localhost:8000</h2><p>To see all posts: localhost:8000/api/posts</p></h2><p>To see a specific post by id (e.g., id = 1): localhost:8000/api/posts/1</p>')
 })
 
-// GET ALL POSTS
+// GET/READ ALL POSTS
 server.get('/api/posts', (req, res) => {
   db.find()
     .then(posts => {
@@ -31,14 +31,14 @@ server.get('/api/posts', (req, res) => {
     })
 })
 
-// GET POSTS BY ID
+// GET/READ POSTS BY ID
 server.get('/api/posts/:id', (req, res) => {
   const id = req.params.id;     // const { id } = req.params
   console.log('params:', req.params); // params: { id: '1' }
 
   db.findById(id)
     .then(post => {
-      console.log(post) // logs id, title, contents, create_at, updated_at
+      // console.log(post) // logs id, title, contents, create_at, updated_at
       !(post.length) // fixed issue of empty array
         ? res.status(404).json({ message: "The post with the specified ID does not exist."})
         : res.status(200).json(post[0]);
@@ -50,23 +50,39 @@ server.get('/api/posts/:id', (req, res) => {
     })
 })
 
-// POST
+// POST/CREATE
 server.post('/api/posts', async (req, res) => {
-  console.log('req:', req)
-  // console.log('body:', req.body);
   try {
-    const userData = req.body;
-    console.log(userData);
-    const userId = await db.insert(userData);
-    const user = await db.findById(userId.id)
-    res.status(201).json(user)
+    const postBody = req.body;
+    // console.log('postBody:', postBody);
+    const postId = await db.insert(postBody);
+    // console.log('postId:', postId)
+    const addPost = await db.findById(postId.id);
+    // console.log('addPost', addPost)
+    res.status(201).json(addPost)
   } catch (error) {
-    res.status(500).json({ message: 'error creating post' })
+    res.status(500).json({ error: "There was an error while saving the post to the database" })
   }
 })
 
+// PUT/UPDATE
 
 
+
+
+// DELETE
+server.delete('/api/posts/:id', (req, res) => {
+  db.remove(req.params.id)
+
+  .then(count => {
+    count
+    ? res.status(200).json(count)
+    : res.status(404).json( { message: "The post with the specified ID does not exist." } );
+  })
+  .catch(err => {
+    res.status(500).json({ error: "The post could not be removed" })
+  })
+})
 
 
 
