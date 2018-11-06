@@ -38,7 +38,7 @@ server.post('/api/posts/', async (req, res) => {
     if (req.body.title !== undefined && req.body.contents !== undefined) {
         try {
             const postId = await db.insert(req.body);
-            res.status(201).json(postId);
+            db.findById(postId.id).then(post => res.status(201).json(post)).catch(err => res.status(404).json({message: "The post with the specified ID does not exist."}));
         }
         catch (err) {
             res.status(500).json({error: "There was an error while saving the post to the database"})
@@ -66,7 +66,7 @@ server.put('/api/posts/:id', (req,res) => {
     if (req.body.title !== undefined && req.body.contents !== undefined) {
         db.update(req.params.id, req.body).then(count => {
                 if (count) {
-                    res.status(200).json(count);
+                    db.findById(req.params.id).then(post => res.status(200).json(post)).catch(err => res.status(404).json({message: "The post with the specified ID does not exist."}));
                 }
                 else {
                     res.status(404).json({message: "The post with the specified ID does not exist."});
