@@ -58,7 +58,7 @@ server.delete('/api/posts/:id', (req, res) => {
     })
 })
 
-server.put('api/posts/:id', (req, res) => {
+server.put('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     const changes = req.body;
     db.update(id, changes)
