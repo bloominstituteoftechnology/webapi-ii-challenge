@@ -79,12 +79,12 @@ server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   db.remove(id)
     .then(post => {
-      if (post && post.length) {
+      if (post === 0) {
         return res
           .status(404)
           .json({ message: "The post with the specified ID does not exist." });
       } else {
-        res.status(200).json(post);
+        res.status(200).json(`You successfully deleted ${post} item(s)`);
       }
     })
     .catch(error => {
@@ -106,7 +106,7 @@ server.put("/api/posts/:id", (req, res) => {
           .status(404)
           .json({ message: "The post with the specified ID does not exist." });
       } else {
-        res.status(200).json(post);
+        res.status(200).json(`You successfully updated ${post} item(s)`);
       }
     });
   } else {
