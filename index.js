@@ -38,18 +38,20 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.post('/api/posts', (req, res) => {
   const post = req.body
-  db.insert(post)
+  db.find()
     .then(userId => {
-      if (!req.body.title || !req.body.contents === '') {
+      if (!req.body.title || !req.body.contents) {
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
         return;
-      } else {
-      res.status(201).json(userId)
-      }
-    })
-    .catch(err => {
-      res.status(500).json({ error: "There was an error while saving the post to the database", err })
-    })
+    } else {
+      db.insert(req.body)
+        .then(id => {
+          res.status(201).json(post)
+        })
+        .catch(err => {
+          res.status(500).json({ error: "There was an error while saving the post to the database", err })
+        })
+    }}) 
 })
 
 server.delete('/api/posts/:id', (req, res) => {
@@ -70,7 +72,7 @@ server.put('/api/posts/:id', (req, res) => {
   const body = req.body
   db.find()
     .then(userId => {
-    if (!req.body.title || !req.body.contents === '') {
+    if (!req.body.title || !req.body.contents) {
     res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
     return;
   } else { 
