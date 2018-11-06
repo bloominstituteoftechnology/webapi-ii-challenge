@@ -44,4 +44,27 @@ server.post('/api/posts', async (req, res) => {
     }
 })
 
+//puts an update according too id
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+    db.update(id,changes)
+    .then(count => {
+        if (count) {
+            res.status(200).json({
+                message: `${count} post(s) was updated`
+            });
+        } else {
+            res.status(404).json({
+                message: 'Post not found'
+            })
+        }
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: 'Error updating post'
+        })
+    })
+})
+
 server.listen(8000, () => console.log( 'This server is alive and breathing!'))
