@@ -15,7 +15,7 @@ const Contents = styled.div`
 const Post = props =>{
     return(
         <WrapperDiv>
-            <Link to={`/api/post/${props.post.id}`}><Title>{props.post.title}</Title></Link>
+            <Link to={`/posts/${props.post.id}`}><Title>{props.post.title}</Title></Link>
             <Contents>{props.post.contents}</Contents>
         </WrapperDiv>
     )

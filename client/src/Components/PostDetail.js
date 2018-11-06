@@ -29,11 +29,11 @@ class PostDetail extends React.Component{
         Axios.get(`http://localhost:5050/api/posts/${this.props.match.params.id}`)
              .then((response)=>{
                     this.setState({
-                                      id:response.data[0].id,
-                                      title:response.data[0].title,
-                                      contents:response.data[0].contents,
-                                      created:response.data[0].created_at,
-                                      updated:response.data[0].updated_at
+                                      id:response.data.id,
+                                      title:response.data.title,
+                                      contents:response.data.contents,
+                                      created:response.data.created_at,
+                                      updated:response.data.updated_at
                                   })
             })
             .catch(error =>console.log("An Error has occurred.",error))

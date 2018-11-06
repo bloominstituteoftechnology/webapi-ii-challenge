@@ -13,7 +13,6 @@ class PostsList extends React.Component{
       componentDidMount(){
         Axios.get('http://localhost:5050/api/posts')
              .then(response => {
-                console.log('response...',response)
                 this.setState({posts:response.data})
                 })
              .catch(error => console.log('error occured fetching data. ',error))
