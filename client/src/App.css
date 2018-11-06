@@ -1,0 +1,23 @@
+.posts{
+  border:1px solid black;
+  width:100%;
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: center;
+}
+.post{
+  width:300px;
+  border:1px solid rgb(227, 227, 227);
+  padding:10px;
+  margin:10px;
+  transition: .1s;
+}
+.post:hover{
+  -webkit-box-shadow: 1px 5px 15px 5px rgba(0,0,0,0.32); 
+box-shadow: 1px 5px 15px 5px rgba(0,0,0,0.32);
+}
+.post h3{
+  border-bottom:1px solid rgb(218, 218, 218);
+  padding-bottom:20px;
+}
+
