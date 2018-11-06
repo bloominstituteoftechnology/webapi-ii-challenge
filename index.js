@@ -91,11 +91,7 @@ server.put('/api/posts/:id', (req, res) => {
 server.get('/posts/', (req, res) => {
 	const { id } = req.query;
 
-	if (id) {
-		db.findById(id).then((posts) => res.send(posts));
-	} else {
-		db.find().then((posts) => res.send(posts));
-	}
+	id ? db.findById(id).then((posts) => res.send(posts)) : db.find().then((posts) => res.send(posts));
 });
 
 const port = 9000;
