@@ -1,9 +1,6 @@
 const express = require('express');
-
 const db = require('./data/db.js');
-
 const cors = require('cors');
-
 const server = express();
 
 // server.use(cors({origin: 'http://localhost:9000'}));
@@ -31,7 +28,6 @@ server.get('/api/posts/:id', (req, res) => {
         } else {
             res.status(404).json({message: "The post with the specified ID does not exist."  });
         }
-        
     })
     .catch(err => {
         res.status(500).json({message: "The post information could not be retrieved." })
@@ -63,7 +59,7 @@ server.post('/api/posts', async (req, res) => {
     } catch (error) {
         let message = 'error creating post';
         if (error.errno === 19) {
-            message = "Please provide title and contents for the post."
+            res.status(400).json({ message: "Please provide title and contents for the post." })
         }
         res.status(500).json({ message, error})
     }
@@ -73,10 +69,14 @@ server.post('/api/posts', async (req, res) => {
 server.delete('/api/posts/:id', (req, res) => {
     db.remove(req.params.id)
     .then(count => {
-        res.status(200).json(count);
+        if (count) {
+            res.status(200).json(count);
+        } else {
+            res.status(404).json({message: "The post with the specified ID does not exist." })
+        }
     })
     .catch(err => {
-        res.status(500).json({ message: 'error deleting user' });
+        res.status(500).json({ message: 'The post could not be removed' });
     })
 })
 
@@ -88,7 +88,7 @@ server.put('/api/posts/:id', (req, res) => {
         if (count) {
            res.status(200).json({ message: `${count} post updated` }); 
         } else {
-            res.status(404).json({ message: 'post not found' })
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
         }  
     })
     .catch(err => {
