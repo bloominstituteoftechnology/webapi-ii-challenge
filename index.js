@@ -115,11 +115,18 @@ server.put("/api/posts/:id", (req, res) => {
       if (count) {
         res.status(200).json({ message: `${count} post(s) updated` });
       } else {
-        res.status(404).json({ message: "post not found" });
+        res
+          .status(404)
+          .json({ message: "The  post with the specified ID does not exist." });
       }
     })
     .catch(err => {
-      res.status(500).json({ message: "error with updating post", error: err });
+      res
+        .status(500)
+        .json({
+          message: "The post information could not be modified.",
+          error: err
+        });
     });
 });
 
