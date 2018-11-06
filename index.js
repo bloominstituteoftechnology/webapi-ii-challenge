@@ -5,26 +5,27 @@ const cors = require('cors');
 
 // add your server code starting here
 const server = express();
-//middleware
+
+// middleware
 server.use(express.json());
 server.use(cors());
 
-server.get('/api/posts', (req, res) => {
-    db.find().then(posts => {
-        res.status(200).json(posts)
-    })
-    .catch(err => {
+server.get('/api/posts', async (req, res) => {
+    try {
+        const posts = await db.find();
+        res.status(200).json(posts);
+    } catch(error) {
         res.status(500).json({
             message: "The posts information could not be retrieved.",
             error: err
         }) 
-    });
+    }
 });
 
-server.get('/api/posts/:id', (req, res) => {
-    const { id } = req.params;
-
-    db.findById(id).then(post => {
+server.get('/api/posts/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const post = await db.findById(id);
         if (!post.length) {
             console.log('fail', post)
             res.status(404).json({message: "The post with the specified ID does not exist."})
@@ -32,13 +33,12 @@ server.get('/api/posts/:id', (req, res) => {
             res.status(200).json(post);
             console.log('success', post)
         }
-    })
-    .catch(err => {
+    } catch(error) {
         res.status(500).json({
             message: 'Cant get user',
             error: err
         })
-    });
+    }
 });
 
 server.post('/api/posts', async (req, res) => {
