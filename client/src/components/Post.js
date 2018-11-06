@@ -2,7 +2,7 @@ import React from 'react';
 
 const Post = props => {
     return (
-        <div className='singlePostWrapper' key={props.post.id}>
+        <div>
             <p>{props.post.title}</p>
             <p>{props.post.contents}</p>
         </div>

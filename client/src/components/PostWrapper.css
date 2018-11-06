@@ -1,0 +1,13 @@
+.postWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+.singlePostWrapper {
+    max-width: 25%;
+    padding: 2rem;
+    margin: 1.5rem 1rem;
+    border: 1px solid black;
+}
