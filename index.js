@@ -17,11 +17,11 @@ server.get('/', (_, res) => {
   res.json({ message: 'Go to /api/posts' });
 });
 
-// GET users
+// GET posts
 server.get('/api/posts', (_, res) => {
   db.find('posts')
-    .then(users => {
-      res.status(200).json(users);
+    .then(posts => {
+      res.status(200).json(posts);
     })
     .catch(_ => {
       res
@@ -30,7 +30,7 @@ server.get('/api/posts', (_, res) => {
     })
 });
 
-// GET user by ID
+// GET post by ID
 server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
 
@@ -57,15 +57,15 @@ server.get('/api/posts/:id', (req, res) => {
 // or an empty {} if no body to parse
 server.use(express.json());
 
-// POST new user
+// POST new post
 server.post('/api/posts', (req, res) => {
-  const newUser = req.body;
-  console.log("post newUser", newUser);
+  const post = req.body;
+  console.log("post newPost", post);
 
-  db.insert(newUser)
-    .then(user => {
-      if (user) {
-        res.status(201).json(newUser);
+  db.insert(post)
+    .then(post => {
+      if (post) {
+        res.status(201).json(post);
       } else {
         res
           .status(400)
@@ -79,22 +79,44 @@ server.post('/api/posts', (req, res) => {
     })
 });
 
-// DELETE an existing user
-server.delete('/api/posts/:id', (req, res) => {
-  const userID = req.params.id;
-  console.log('delete userID', userID);
+// PUT(UPDATE) an existing post
+server.put('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  const post = req.body;
 
-  db.remove(userID)
+  db.update(id, post)
     .then(count => {
       if (count) {
-        res.status(200).json({ message: `${count} user(s) deleted.` });
+        res.status(200).json({ message: `${count} post(s) updated` });
       } else {
-        res.status(404).json({ message: "The post with the specified ID does not exist." });
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(_ => {
+      res.status(500).json({ error: "The post information could not be modified." });
+    });
+});
+
+// DELETE an existing post
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  console.log('delete postID', id);
+
+  db.remove(id)
+    .then(count => {
+      if (count) {
+        res.status(200).json({ message: `${count} post(s) deleted.` });
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
       }
     })
     .catch(_ => {
       res.status(500).json({ error: "The post could not be removed" });
-    })
+    });
 });
 
 server.listen(port, () => {
