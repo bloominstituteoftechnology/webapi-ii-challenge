@@ -32,6 +32,7 @@ code {
 .quote {
   display: flex;
   align-items: center;
+  text-align: center;
   background: lightgrey;
   color: #0d0d0d;
   padding: 40px;
@@ -39,8 +40,15 @@ code {
   width: 300px;
   height: 250px;
   border-radius: 10px;
+  position: relative;
 }
 
-.quote:hover {
-  background: grey;
+.delete {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.delete:hover {
+  color: crimson;
 }
