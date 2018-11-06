@@ -42,7 +42,7 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.post('/api/posts', (req, res) => {
   const { title, contents } = req.body;
-  const newPost = { title, contents };
+  const newPost = req.body;
   if (!title || !contents) {
     res
       .status(400)
@@ -63,8 +63,8 @@ server.delete('/api/posts/:id', (req, res) => {
   const id = req.params.id;
 
   db.remove(id)
-    .then(deletedPost => {
-      if (!deletedPost) {
+    .then(count => {
+      if (!count) {
         return res.status(404).json({
           message: 'The post with the specified ID does not exist.'
         });
@@ -81,9 +81,9 @@ server.delete('/api/posts/:id', (req, res) => {
 server.put('/api/posts/:id', (req, res) => {
   const id = req.params.id;
   const { title, contents } = req.body;
-  const updatedPost = { title, contents };
+  const updatedPost = req.body;
 
-  if (!title || !contents) {
+  if (!req.body) {
     return res.status(400).json({
       errorMessage: 'Please provide title and contents for the post.'
     });
@@ -92,9 +92,10 @@ server.put('/api/posts/:id', (req, res) => {
   db.update(id, updatedPost)
     .then(post => {
       if (!post) {
-        return res.status(404).json({
+        res.status(404).json({
           message: 'The post with the specified ID does not exist.'
         });
+        return console.log(post);
       }
       res.status(200).json(`Post with the ID of ${id} has been updated`);
     })
