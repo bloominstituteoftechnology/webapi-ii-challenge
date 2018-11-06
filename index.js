@@ -33,28 +33,25 @@ server.get("/api/posts/:id", (req, res) => {
 });
 
 // When the client makes a POST request to /api/posts:
-// server.post("/api/posts/", (req, res) => {
-//   const { title } = req.body.title;
-//   const { contents } = req.body.contents;
-//   db.insert(title, contents)
-//     .then(post => {
-//       res.status(200).json(post);
-//     })
-//     .catch(err => {
-//       res.status(400).json({
-//         errorMessage: "Please provide title and contents for the post."
-//       });
-//     });
-// });
 
-server.post("/api/posts", async (req, res) => {
-  try {
-    const postData = req.body;
-    const postId = await db.insert(postData);
-    res.status(201).json(postId);
-  } catch (error) {
-    res.status(500).json({ message: "error creating post" });
-  }
+server.post("/api/posts", (req, res) => {
+  const { title, contents } = req.body;
+  const newPost = { title, contents };
+  db.insert(newPost)
+    .then(postId => {
+      const { id } = postId;
+      if (!post) {
+        return res
+          .status(422)
+          .send({
+            error: "There was an error while saving the post to the database"
+          });
+      }
+      db.findById(id).then(post => {
+        res.status(201).json(post);
+      });
+    })
+    .catch(err => console.log(err));
 });
 
 // delete
