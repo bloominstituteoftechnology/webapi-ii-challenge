@@ -1,24 +1,18 @@
-// import your node modules
-// import axios from 'axios'; ES2015 modules
-
 const express = require('express');
 
-// const greeter = require('./greeter.js');
 const db = require('./data/db.js');
 
 const cors = require('cors');
 
 const server = express();
 
-server.use(cors({origin: 'http://localhost:9000'}));
+// server.use(cors({origin: 'http://localhost:9000'}));
+
+server.use(express.json()); //teaches express how to parse the json request body
 
 server.get('/', (req, res) => {
     res.json('alive');
 });
-
-// server.get('/greet', (req, res) => {
-//     res.json({ hello: 'stranger' });
-// });
 
 server.get('/api/posts', (req, res) => {
     db.find().then(posts => {
@@ -44,27 +38,43 @@ server.get('/api/posts/:id', (req, res) => {
     });
 });
 
-let postId = 1;
+// server.post('/api/posts', (req, res) => {
+//     const postData = req.body;
+//     db.insert(post)
+//     .then(post => {
+//     if (!title || !contents) {
+//         res.status(400).json({message: "Please provide title and contents for the post."})
+//     } else {
+//         res.status(201).json({ url: '/api/posts', operation: 'POST' });
+//     }          
+// })
+//     .catch(err => {
+//         res.status(500).json({message: "There was an error while saving the post to the database"})
+//     })
+// });
 
-server.post('/api/posts', (req, res) => {
-    db.insert(post).then(post => {
-    if (!title || !contents) {
-        res.status(400).json({message: "Please provide title and contents for the post."})
-    } else {
-        res.status(201).json({ url: '/api/posts', operation: 'POST' });
-    }          
+server.post('/api/posts', async (req, res) => {
+    console.log('body', req.body)
+    try {
+        const postData = req.body;
+        const postId = await db.insert(postData);
+        const post = await db.findById(postId.id)
+        res.status(201).json(post)
+    } catch (error) {
+        let message = 'error creating post';
+        if (error.errno === 19) {
+            message = "Please provide title and contents for the post."
+        }
+        res.status(500).json({ message, error})
+    }
 })
-    .catch(err => {
-        res.status(500).json({message: "There was an error while saving the post to the database"})
-    })
-});
 
-server.delete('/api/posts/:id', (req, res) => {
 
-})
+// server.delete('/api/posts/:id', (req, res) => {
+//     db.remove(id).then()
 
-// server.get('/greet/:person', greeter);
+// })
+
 
 server.listen(9000, () => console.log('the server is alive!'));
 
-// add your server code starting here
