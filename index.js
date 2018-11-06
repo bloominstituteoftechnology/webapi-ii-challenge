@@ -37,8 +37,8 @@ server.get('/api/posts/:id', (req,res) => {
 server.post('/api/posts/', async (req, res) => {
     if (req.body.title !== undefined && req.body.contents !== undefined) {
         try {
-            const newPost = await db.insert(req.body);
-            res.status(201).json(newPost);
+            const postId = await db.insert(req.body);
+            res.status(201).json(postId);
         }
         catch (err) {
             res.status(500).json({error: "There was an error while saving the post to the database"})
@@ -47,6 +47,19 @@ server.post('/api/posts/', async (req, res) => {
     else {
         res.status(400).json({errorMessage: "Please provide title and contents for the post."})
     }
+})
+
+server.delete('/api/posts/:id', (req,res) => {
+    db.remove(req.params.id).then(count => {
+        if (count) {
+            res.status(200).json(count);
+        }
+        else {
+            res.status(404).json({message: "The post with the specified ID does not exist."});
+        }
+    }).catch(err => {
+        res.status(500).json({error: "The post could not be removed"});
+    })
 })
 
 server.listen(9000, () => console.log('live'));
