@@ -7,8 +7,25 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      post: []
+      post: [],
+      title: '',
+      contents: ''
+
     }
+  }
+
+  inputChangeHandler = (ev) => {
+    this.setState({[ev.target.name]: ev.target.value})
+  }
+
+  post = (ev) => {
+    ev.preventDefault();
+    axios
+    .post(`http://localhost:5000/api/posts`, {title: this.state.title, 
+                                              contents: this.state.contents})
+    .then(response => {
+      this.componentDidMount()})
+    .catch(error => console.log(error))
   }
 
   componentDidMount() {
@@ -29,7 +46,11 @@ class App extends Component {
               <p>{post.contents}</p>
             </div>
           );
+          
         })}
+        <input name='title' onChange={this.inputChangeHandler}></input>
+        <input name='contents' onChange={this.inputChangeHandler}></input>
+        <button onClick={this.post}>Post</button>
       </div>
     );
   }
