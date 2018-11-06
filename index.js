@@ -1,7 +1,6 @@
 // import your node modules
 
 const express = require('express');
-
 const cors = require('cors');
 const db = require('./data/db.js');
 
@@ -45,16 +44,23 @@ server.get('/api/posts/:id', (req, res) => {
     });
 });
 
-server.post('/api/posts', async (req, res) => {
-  try {
-    const postData = req.body;
-    const postId = await db.insert(postData);
-    res.status(201).json(postId);
-  } catch (error) {
-    res.status(500).json({
-      message: 'There was an error while saving the post to the database'
-    });
+server.post('/api/posts', (req, res) => {
+  const { title, contents } = req.body;
+  const addPost = req.body;
+  if (!title || !contents) {
+    res
+      .status(400)
+      .json({ error: 'Please provide title and contents for the post.' });
   }
+  db.insert(addPost)
+    .then(post => {
+      res.status(201).json(post);
+    })
+    .catch(error => {
+      res.status(500).json({
+        error: 'There was an error while saving the post to the database.'
+      });
+    });
 });
 
 server.delete('/api/posts/:id', (req, res) => {
