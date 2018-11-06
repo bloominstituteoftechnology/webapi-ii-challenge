@@ -7,7 +7,9 @@ const express = require('express');
 
 const server = express();
 
-server.get('api/posts', (req, res) => {
+server.use(express.json());
+
+server.get('/api/posts', (req, res) => {
   db.find()
     .then( posts => {
       res.status(200).json(posts);
@@ -33,6 +35,21 @@ server.get('/api/post/:id', (req, res) => {
     .catch( error => {
       res.status(500).json({error: "The post information could not be retrieved.", error: error})
     })
+})
+
+server.post('/api/posts', async (req, res) => {
+  try{
+    const postData = req.body;
+    const postId = await db.insert(postData);
+    const post =  await db.findById(postId.id);
+    res.status(201).json(post);
+  } catch (error) {
+    let message = 'There was an error while saving the post to the database'
+    if(error.errno === 19) {
+      message = "Please provide title and contents for the post."
+    }
+    res.status(500).json({ message, error})
+  }
 })
 
 server.listen(8000)
