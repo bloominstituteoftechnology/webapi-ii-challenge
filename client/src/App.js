@@ -36,13 +36,22 @@ class App extends Component {
         {this.state.posts.length < 1 ? (
             <div>loading</div>
           ) : (
-            this.state.posts.map( post => (
-              <PostCard key={post.id} post={post} />
-            ))
+            <PostCardView posts={this.state.posts} />
           )}
       </div>
     );
   }
+}
+
+const PostCardView = props => {
+  const { posts } = props;
+  return (
+    <div className="post-card-view">
+      {posts.map( post => (
+                <PostCard key={post.id} post={post} />
+              ))}
+    </div>
+  )
 }
 
 const PostCard = props => {

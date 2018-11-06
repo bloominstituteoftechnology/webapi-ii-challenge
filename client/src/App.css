@@ -30,3 +30,24 @@
     transform: rotate(360deg);
   }
 }
+
+.post-card-view {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.post-card {
+  margin: 2rem;
+  padding: 4rem;
+  max-width: 300px; 
+  border: 1px solid black;
+  border-radius: 30px;
+}
+
+.post-card h2 {
+  font-size: 1.4rem;
+}
+
+.post-card p {
+  font-size: 1rem;
+}
