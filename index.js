@@ -13,6 +13,20 @@ const server = express(); //creates the server
 server.use(cors()) // needed to connect from React
 server.use(express.json())
 
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params
+    const { title, contents } = req.body;
+    const updatedPost = {  title, contents }
+    db.update(id, updatedPost)
+    .then(post => {
+       if(post) { res.status(200).json({message: `${post} post updated `})
+       } else{
+           res.status(404).json({message: 'error user not found'})
+       }
+    })
+    .catch(err => console.log(err, 'error'))
+})
+
 server.post('/api/posts', (req, res) => {
   const { title, contents } = req.body;
   const newPost = { title, contents};
@@ -38,6 +52,21 @@ server.delete(`/api/posts/:id`, (req, res) => {
   })
   .catch(err => console.error(err))
 })
+// get by id
+server.get("/api/posts/:id", (req, res) => {
+    const { id } = req.params;
+     db.findById(id)
+      .then(post => {
+        if (post.length) {
+          res.status(200).json(post);
+        } else {
+          res.status(404).json({ message: "post not found" });
+        }
+      })
+      .catch(err => {
+        res.status(500).json({ message: "failed", error: err });
+      });
+  });
 
 server.get("/api/posts", (req, res) => { // cb is Route Handler
   db.find()
@@ -49,4 +78,4 @@ server.get("/api/posts", (req, res) => { // cb is Route Handler
 
 // watch for traffic in a particular port
 const port = 8000;
-server.listen(port, () => console.log(`==API running on ${port}==`));
+server.listen(port, () => console.log(`\n==^_^==API running on ${port}==^_^==\n`));
