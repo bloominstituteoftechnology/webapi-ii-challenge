@@ -70,10 +70,16 @@ server.post('/api/posts', async (req, res) => {
 })
 
 
-// server.delete('/api/posts/:id', (req, res) => {
-//     db.remove(id).then()
+server.delete('/api/posts/:id', (req, res) => {
+    db.remove(req.params.id)
+    .then(count => {
+        res.status(200).json(count);
+    })
+    .catch(err => {
+        res.status(500).json({ message: 'error deleting user' });
+    })
 
-// })
+})
 
 
 server.listen(9000, () => console.log('the server is alive!'));
