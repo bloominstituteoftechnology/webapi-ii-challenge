@@ -2,6 +2,9 @@
 
 //==============================================================================
 
+//-- Global Values -------------------------------
+const PORT = 8001;
+
 //-- Dependencies --------------------------------
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -16,4 +19,6 @@ server.use(bodyParser.urlencoded({extended: false}));
 server.use('/api/posts', posts);
 
 //-- Configure server to accept requests ---------
-server.listen(8081);
+server.listen(PORT, () => {
+    console.log(`Node-Express-Lab server started on port ${PORT}`)
+});

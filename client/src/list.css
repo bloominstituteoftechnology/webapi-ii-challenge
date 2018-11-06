@@ -1,0 +1,32 @@
+
+
+/*== Not as sensible configuration ===========================================*/
+
+body {
+    background: #100;
+    color: #ff8;
+}  
+  
+
+/*== List Component ==========================================================*/
+
+.list {
+    margin: 1rem;
+}
+.list h1 {
+    font-size: 4rem;
+}
+.list-item {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border: 1px dotted #88f;
+    border-radius: 3px;
+    margin: 1rem 0;
+}
+.list-item_pair {}
+.list-item_name {
+    font-weight: bold;
+    color: #080;
+}
+.list-item_value {}
