@@ -1,6 +1,6 @@
 // 1. Inside folder: yarn
 // 2. Inside folder: yarn add express
-// 3. nodemon server.js
+// 3. nodemon index.js (or current file, e.g., nodemon server.js)
 const express = require('express');
 
 const db = require('./data/db.js');
