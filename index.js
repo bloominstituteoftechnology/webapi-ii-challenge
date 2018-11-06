@@ -52,6 +52,9 @@ server.post('/api/posts', (req, res) => {
           res.status(500).json({ error: "There was an error while saving the post to the database", err })
         })
     }}) 
+    .catch(err => {
+      res.status(500).json({ error: "There was an error while saving the post to the database", err })
+    })
 })
 
 server.delete('/api/posts/:id', (req, res) => {
