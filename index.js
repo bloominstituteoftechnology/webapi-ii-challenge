@@ -14,21 +14,23 @@ server.use(cors({ origin: 'http://localhost:3000' }));
 
 // testing testing :D
 server.get('/', (_, res) => {
-  res.json({ message: 'Introduction to NodeJS and Express' });
+  res.json({ message: 'Go to /api/posts' });
 });
 
+// GET users
 server.get('/api/posts', (_, res) => {
   db.find('posts')
     .then(users => {
       res.status(200).json(users);
     })
-    .catch(err => {
+    .catch(_ => {
       res
         .status(500)
         .json({ error: "The posts information could not be retrieved." });
     })
 });
 
+// GET user by ID
 server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
 
@@ -42,12 +44,37 @@ server.get('/api/posts/:id', (req, res) => {
         res.status(200).json(post);
       }
     })
-    .catch(err => {
+    .catch(_ => {
       res
         .status(500)
         .json({ error: "The post information could not be retrieved." });
     })
 });
+
+// parses the JSON request body
+server.use(express.json());
+
+// POST new user
+server.post('/api/posts', (req, res) => {
+  const newUser = req.body;
+  console.log("newUser", newUser);
+
+  db.insert(newUser)
+    .then(user => {
+      if (user) {
+        res.status(201).json(newUser);
+      } else {
+        res
+          .status(400)
+          .json({ errorMessage: "Please provide title and contents for the post." });
+      }
+    })
+    .catch(_ => {
+      res
+        .status(500)
+        .json({ error: "There was an error while saving the post to the database" });
+    })
+})
 
 server.listen(port, () => {
   console.log(`server listening on port ${port}`);
