@@ -44,39 +44,67 @@ server.get('/api/posts/:id', (req, res) => {
         })
 })
 
-// server.post('/api/posts', async (req, res) => {
-//     try {
-//         const postData = req.body
-//         const postId = await db.insert(postData)
-//         const post = await db.findById(postId.id)
-//         res
-//             .status(201)
-//             .json(post)
-//     } catch (error) {
-//         let message = 
-//     }
-// })
+server.post('/api/posts', (req, res) => {
+    const { title, contents } = req.body
+    if (!title || !contents) {
+        res
+            .status(400)
+            .json({ errorMessage: "Please provide title and contents for the post." })
+    }
+    db.insert({ title, contents })
+        .then(post => {
+            res
+                .status(201)
+                .json(post)
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({ message: "There was an error while saving the post to the database", error: error })
+        })
+})
 
 server.delete('/api/posts/:id', (req, res) => {
     db.remove(req.params.id)
-        .then(count => {
-            if (count) {
+        .then(post => {
+            if (post) {
                 res
                     .status(200)
-                    .json(count)
+                    .json(post)
             } else {
                 res
                     .status(404)
                     .json({ message: "The post with the specified ID does not exist." })
             }
         })
-        .catcj(error => {
+        .catch(error => {
             res
                 .status(500)
                 .json({ message: "The post could not be removed", error: error })
         })
 })
 
-
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params
+    const { title, contents } = req.body
+    const changes = { title, contents }
+    db.update(id, changes)
+        .then(post => {
+            if (post) {
+                res
+                    .status(200)
+                    .json({ message: `${post} posts updated` })
+            } else {
+                res
+                    .status(404)
+                    .json({ message: "The post with the specified ID does not exist." })
+            }
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({ message: "The post information could not be modified.", error: error })
+        })
+})
 
 server.listen(8000, () => console.log('server is alive'));
