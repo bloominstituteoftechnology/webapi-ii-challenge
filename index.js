@@ -71,7 +71,7 @@ server.delete('/api/posts/:id',async (req,res)=>{
             res.status(200).json(data)
         }
         else {
-            res.status(404).json({message: ("Error occured while deleting. " + error)})
+            res.status(404).json({message: ("Error occured while deleting. The record does not exist")})
         }
         
     } catch (error) {
