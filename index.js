@@ -50,7 +50,7 @@ server.get('/api/posts/:id', (req, res, next) => {
 });
 
 //POST
-server.post('/api/posts', async (req, res, next) =>{
+server.post('/api/posts', async (req, res) =>{
 
     //deconstructing instead of req.body.{prop}
     const {title, contents} = req.body;
@@ -70,11 +70,12 @@ server.post('/api/posts', async (req, res, next) =>{
 })
 
 //DELETE
-server.delete('/api/posts/:id', (req, res, next) =>{
+server.delete('/api/posts/:id', (req, res) =>{
     const {id} = req.params;
 let body;   
+    //first find the content and store it inside variable 'body' so it can be returned by the delete function after being removed
     db.findById(id)
-.then(post => {
+    .then(post => {
     if (post && post.length) {
      body=post;
 
@@ -90,10 +91,34 @@ let body;
         res.status(404)
         .json({message: "The post with the specified ID does not exist."});
     }
-});
+    });
+})
 
-
+//UPDATE
+server.put('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    const changes = req.body;
     
+if (!changes.title || !changes.contents) {
+    res.status(400).json({errorMessage: "Please provide title and contents for the post."})
+} else {
+    db.update(id, changes)
+    .then(count=>{
+    //find post's updated body if successful and returns that     
+        if (count) {
+            db.findById(id)
+            .then(post=> {
+            res.status(200).json(post);
+            });
+        //404 returned if count doesn't exist (meaning no post exists with the id )
+        } else {
+            res.status(404).json({message: "The post with the specified ID does not exist."})
+        }
+    })
+    .catch(error=>{
+        res.status(500).json({error: "The post information could not be modified."})
+    })
+}
 })
 
 
