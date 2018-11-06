@@ -41,8 +41,22 @@ server.get('/api/posts/:id', (req, res) => {
             }
         })
         .catch(error => {
-            res.status(500).json({ error: 'The post information could not be retrieved.' });
+            res.status(500).json({ error: 'The post information could not be retrieved.', 'error':error });
         });
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.remove(id)
+        .then(id => {
+            if(!id){
+                res.status(404).json({ message: "The post with the specified ID does not exist." });
+            }
+        })
+        .catch(error => {
+            res.status(500).json({ error: "The post could not be removed", 'error':error});
+        })
 })
 
 server.listen(8000, () => console.log("Server running on port 8000"));
