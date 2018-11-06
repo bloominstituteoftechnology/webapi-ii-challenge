@@ -13,7 +13,7 @@ const server = express(); //creates the server
 server.use(cors()) // needed to connect from React
 server.use(express.json())
 
-server.post('/api/users', (req, res) => {
+server.post('/api/posts', (req, res) => {
   const { title, contents } = req.body;
   const newPost = { title, contents};
   db.insert(newPost)
