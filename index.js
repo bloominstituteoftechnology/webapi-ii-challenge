@@ -6,6 +6,8 @@ const db = require('./data/db.js');
 
 const server = express();
 
+server.use(express.json()); // formatting our req.body obj to json
+
 server.get('/', (req, res) => {
 	res.json('alive');
 });
@@ -36,25 +38,30 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 // add a post
-server.put('/api/posts', (req, res) => {
-	const post = req.body;
-	const posts = db.posts;
-	posts.push(post);
-	req.status(201).json(posts);
+server.post('/api/posts/', (req, res) => {
+	console.log(req.body);
+	const { title, content } = req.body;
+	const newPost = { title, content };
+	db
+		.insert(newPost)
+		.then((insertedPost) => {
+			res.status(201).json({ message: 'Post created', insertedPost });
+		})
+		.catch((err) => res.send(err));
 });
 
 // delete a post
 
-server.delete('/api/posts/:id', (req, res) => {
-	const { id } = req.params.id;
-	res
-		.status(200)
-		.json({
-			url: `/api/posts/${id}`,
-			operation: `Delete for post with id ${id}`
-		})
-		.catch((err) => err.status(500).json({ message: 'Could not delete that user' }));
-});
+// server.delete('/api/posts/:id', (req, res) => {
+// 	const { id } = req.params.id;
+// 	res
+// 		.status(200)
+// 		.json({
+// 			url: `/api/posts/${id}`,
+// 			operation: `Delete for post with id ${id}`
+// 		})
+// 		.catch((err) => err.status(500).json({ message: 'Could not delete that user' }));
+// });
 
 const port = 9000;
 
