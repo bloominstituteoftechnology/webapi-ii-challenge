@@ -3,9 +3,9 @@ const express = require ('express')
 const db = require('./data/db.js');
 const server = express();
 var cors = require ('cors')
-server.use(cors());
-server.use(express.json())
 
+server.use(express.json())
+server.use(cors());
 
 // add your server code starting here
 
@@ -63,6 +63,19 @@ server.put('/api/posts/:id', (req, res) => {
     .catch(err => {
         res.status(500).json({
             message: 'Error updating post'
+        })
+    })
+})
+
+//deletes a post according to the id
+server.delete('/api/posts/:id', (req, res) => {
+    db.remove(req.params.id)
+    .then(count => {
+        res.status(200).json(count);
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: 'Error deleting post', err
         })
     })
 })
