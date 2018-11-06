@@ -45,13 +45,13 @@ server.post('/api/posts', (req, res) => {
             res.status(201).json(postId);
         })
         .catch(err => {
-            let message = 'error creating the post';
+            let errorMessage = 'error creating the post';
 
             if (err.errno === 19) {
-                message = 'please provide both title and contents fields';
+                errorMessage = "Please provide title and contents for the post." ;
             }
 
-            res.status(500).json({ message, err });
+            res.status(500).json({ errorMessage, err });
         })
 });
 
@@ -74,7 +74,11 @@ server.put('/api/posts/:id', (req, res) => {
 server.delete('/api/posts/:id', (req, res) => {
     db.remove(req.params.id)
         .then(count => {
-            res.status(200).json(count);
+            if (count) {
+                res.status(200).json(count);
+            } else {
+                res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+            }
         })
         .catch(err => {
             res.status(500).json({ message: 'error deleting post', err });
