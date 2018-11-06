@@ -49,8 +49,28 @@ server.post('/api/posts', async (req, res) => {
         res.status(201).json(post);
     } catch(error) {
         let message = 'There was an error while saving the post to the database'
+
+        if (error.errno === 19) {
+            message = 'Please provide title and contents for the post.'
+        }
         res.status(500).json(message);
     }
 })
+
+server.delete('/api/posts/:id', (req, res) => {
+    db.remove(req.params.id)
+        .then(count => {
+            if (count) {
+            res.status(200).json(count);
+            } else {
+                res.status(404).json({message: "The post with the specified ID does not exist."})
+            }
+        })
+        .catch(err => {
+            res.status(500).json({error: "The post could not be removed"})
+        })
+})
+
+
 
 server.listen(9000, () => console.log('server is runner'));
