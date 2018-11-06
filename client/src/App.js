@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PostCard from './components/PostCard/PostCard.js';
+import NewPostButton from './components/NewPost/NewPostButton.js';
+import NewPost from './components/NewPost/NewPost.js';
 import './App.css';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      posts: []
+      posts: [],
+      displayModal: false
     }
   }
 
@@ -20,17 +24,22 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
+  addNewPostToState = (newPost) => {
+    this.setState(prevState => ({
+      posts: [...prevState.posts, newPost]
+    }))
+  }
+
+  toggleModal = () => {
+    this.setState(prevState => ({ displayModal: !prevState.displayModal }));
+  }
+
   render() {
     return (
       <div className="App">
-        {this.state.posts.map(post => {
-          return (
-            <div>
-              <h1>{post.title}</h1>
-              <p>{post.contents}</p>
-            </div>
-          );
-        })}
+        <NewPostButton toggleModal={this.toggleModal} displayModal={this.state.displayModal} />
+        {this.state.displayModal ? <NewPost toggleModal={this.toggleModal} addNewPostToState={this.addNewPostToState}/> : null}
+        {this.state.posts.map(post => <PostCard post={post} key={post.id}/>)}
       </div>
     );
   }

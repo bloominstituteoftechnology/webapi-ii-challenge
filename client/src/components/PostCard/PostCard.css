@@ -1,0 +1,39 @@
+.post-card-wrapper {
+    background: #E0E1DD;
+    border: 1px solid #0D1B2A;
+    width: 100%;
+    height: auto;
+    margin: 0 0 20px;
+    padding: 30px;
+    font-family: LotRFont;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    z-index: -2;
+    display: inline-block;
+}
+
+.post-card-title {
+    font-size: 24px;
+    width: 100%;
+    justify-self: center;
+    position: relative;
+    color: #1B263B;
+    z-index: 1;
+}
+
+.post-card-title:before {
+    content: '\201C';
+    position: absolute;
+    color: #778DA9;
+    font-size: 120px;
+    top: -20px;
+    left: -20px;
+    z-index: -1;
+ }
+
+.post-card-contents {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #415A77;
+}
