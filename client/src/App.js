@@ -3,17 +3,17 @@ import Posts from './components/Posts'
 import Post from './components/Post'
 import axios from 'axios'
 import { Route } from 'react-router-dom'
-import PostForm from './components/PostForm'
+import Form from './components/Form'
 
 import './app.css'
 
 class App extends Component {
   state = {
     posts: [],
+    post: {},
     title: '',
     contents: '',
-    postDeleted: false,
-    deleteConfirmed: false
+    countDeleted: 0
   }
 
   componentDidMount() {
@@ -45,30 +45,25 @@ class App extends Component {
       .delete(`http://localhost:8000/api/posts/${id}`)
       .then(res => {
         this.setState({
-          postDeleted: res.data,
-          deleteConfirmed: true
+          countDeleted: res.data
         })
       })
       .catch(err => {
         console.log(err, 'error')
       })
-    axios
-      .get('http://localhost:8000/api/posts')
-      .then(res => this.setState({ posts: res.data }))
-      .catch(e => console.log(e))
   }
 
   render() {
     return (
       <div className="app-container">
-   
+        <Route exact path="/form/postform" component={Form} />
         <Route
           exact
-          path="/"
+          path="/posts"
           render={props => <Posts {...props} posts={this.state.posts} getById={id => this.getById(id)} />}
         />
         <Route
-          path="/:id"
+          path="/posts/:id"
           render={props => <Post {...props} posts={this.state.posts} deletePost={id => this.deletePost(id)} />}
         />
       </div>
