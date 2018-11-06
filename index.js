@@ -1,4 +1,5 @@
 // import your node modules
+const cors = require('cors');
 
 const db = require('./data/db.js');
 
@@ -7,6 +8,14 @@ const express = require("express");
 const server = express();
 
 server.use(express.json())
+server.use(cors());
+
+server.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
 
 server.listen(5000, () => 
 console.log("Server is running on http://localhost:5000"));
