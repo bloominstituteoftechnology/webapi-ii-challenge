@@ -62,6 +62,22 @@ server.get('/api/posts', (req, res) => {
     }
   });
 
+  server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+    db.update(id, changes)
+      .then(post => {
+        if (post) {
+          res.status(200).json(req.body);
+        } else {
+          res.status(404).json({ message: 'post not found' })
+        }
+      })
+      .catch(error => {
+        res.status(500).json({ message: 'error updating post', error });
+      });
+  });
+
   server.delete('/api/posts/:id', (req, res) => {
     //const { id } = req.params;
     db.remove(req.params.id)
