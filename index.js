@@ -3,9 +3,11 @@ const express = require("express");
 const server = express();
 const db = require("./data/db.js");
 const cors = require("cors");
+const logger = require("morgan");
 
 //middleware
 server.use(express.json());
+server.use(logger("dev"));
 server.use(cors({ origin: "http://localhost:3000" }));
 
 // add your server code starting here
@@ -43,7 +45,7 @@ server.post("/api/posts", async (req, res) => {
     const post = await db.findById(postId.id);
     res.status(201).json(post);
   } catch (error) {
-    let message = "error creating the post";
+    let message = "There was an error while saving the post to the database";
 
     if (error.errno === 19) {
       message = "please provide both the title and the contents";
@@ -52,7 +54,7 @@ server.post("/api/posts", async (req, res) => {
   }
 });
 
-server.put("/api/posts/:id", async (req, res) => {
+server.put("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   const changes = req.body;
   db.update(id, changes)
@@ -65,6 +67,17 @@ server.put("/api/posts/:id", async (req, res) => {
     })
     .catch(err => {
       res.status(500).json({ message: "error updating the post", err });
+    });
+});
+
+server.delete("/api/posts/:id", (req, res) => {
+  console.log(req.params.id);
+  db.remove(req.params.id)
+    .then(count => {
+      res.status(200).json(count);
+    })
+    .catch(err => {
+      res.status(500).json({ message: "error deleting post", err });
     });
 });
 
