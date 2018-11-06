@@ -73,18 +73,26 @@ server.post('/api/posts', async (req, res) => {
     }
   }
   catch(error) {
-    res.status(400).json({ errorMessage: "error creating post" });
+    res.status(400).json({ errorMessage: "error creating post", error: error });
   }
-})
+});
 
 
 
-// server.put('/api/posts/:id', (req, res) => {
-//   res.status(200).json({ url: '/api/posts', operation: 'PUT' });
-// });
+server.put('/api/posts/:id', (req, res) => {
+  
+});
 
-// server.delete('/api/posts/:id', (req, res) => {
-//   res.status(204);
-// });
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+
+  db.remove(id)
+    .then(count => {
+      res.status(200).json(count);
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'error deleting post', error: err });
+    });
+});
 
 server.listen(9000, () => console.log('Listening on 9000'));
