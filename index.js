@@ -4,6 +4,7 @@ var cors = require('cors')
 
 const server = express();
 server.use(cors());
+server.use(express.json());
 
 const db = require('./data/db.js');
 
@@ -31,6 +32,21 @@ server.get('/api/posts/:id', (req,res) => {
         .catch(err => {
             res.status(500).json({error: "The post information could not be retrieved."})
         })
+})
+
+server.post('/api/posts/', async (req, res) => {
+    if (req.body.title !== undefined && req.body.contents !== undefined) {
+        try {
+            const newPost = await db.insert(req.body);
+            res.status(201).json(newPost);
+        }
+        catch (err) {
+            res.status(500).json({error: "There was an error while saving the post to the database"})
+        }
+    }
+    else {
+        res.status(400).json({errorMessage: "Please provide title and contents for the post."})
+    }
 })
 
 server.listen(9000, () => console.log('live'));
