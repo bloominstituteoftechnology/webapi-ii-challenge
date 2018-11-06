@@ -1,0 +1,13 @@
+* {
+	box-sizing: border-box;
+}
+
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+body {
+	width: 880px;
+	margin: 0 auto;
+}
