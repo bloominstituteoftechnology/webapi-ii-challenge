@@ -34,7 +34,7 @@ server.post('/api/posts', (req, res) => {
     if (!req.body.hasOwnProperty('title') || !req.body.hasOwnProperty('contents')) {
         res.status(400).json({ errorMessage: 'Pleae provide title and contents for the post.' })
     } else {
-        Ï
+        
         db
             .insert(req.body)
             .then(res.status(201).json(req.body))

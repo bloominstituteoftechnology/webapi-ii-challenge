@@ -8,6 +8,11 @@
 }
 
 body {
-	width: 880px;
-	margin: 0 auto;
+	background: white;
+	font-family: sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	max-height: 100vh;
+	background: linear-gradient(180deg, white 50%, #33ccdd);
+	background-attachment: fixed;
 }
