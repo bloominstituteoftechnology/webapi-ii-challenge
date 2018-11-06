@@ -1,12 +1,14 @@
 import React from 'react';
-import { PostsContainer, Posts, PostContent } from "../Styles";
+import { PostsContainer, Posts, PostContent, Title } from "../Styles";
 
 const PostsList = (props) => {
     return(
         <PostsContainer>
             <Posts>Id: {props.post.id}</Posts>
-            <Posts>Title: "{props.post.title}"</Posts>
-            <PostContent>Content: {props.post.contents}</PostContent>
+            <Title>Title:</Title>
+            <Posts>"{props.post.title}"</Posts>
+            <Title>Content:</Title>
+            <PostContent>{props.post.contents}</PostContent>
         </PostsContainer>
     );
 }
