@@ -5,11 +5,14 @@ const express = require('express');
 const db = require('./data/db.js');
 
 const server = express();
+
+server.use(express.json());
+
+// add your server code starting here
+
 server.get('/', (req, res) => {
     res.json('active');
 });
-
-// add your server code starting here
 
 server.get('/api/posts', (req, res) => {
     db.find()
@@ -40,5 +43,24 @@ server.get('/api/posts', (req, res) => {
           .json({ message: "The post information could not be retrieved.", error: err });
       });
   });
+
+  server.post('/api/posts', async (req, res) => {
+    console.log('body', req.body);
+    try {
+      const postData = req.body;
+      const userId = await db.insert(postData);
+      const post = await db.findById(userId.id);
+      res.status(201).json(post);
+    } catch (error) {
+      let message = 'error creating the user';
+  
+      if (error.errno === 19) {
+        res.status(400).json({ message: 'please provide both the name and the bio'});
+      } else {
+        res.status(500).json({ message, error });
+      }
+    }
+  });
+
 
 server.listen(9000, () => console.log('the server is active'));
