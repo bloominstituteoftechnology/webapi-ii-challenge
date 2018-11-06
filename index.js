@@ -82,10 +82,10 @@ server.delete("/api/posts/:id", (req, res) => {
   db.findById(id)
     .then(post => {
       if (post.length > 0) {
-        db.remove(id).then(removedPost => {
+        db.remove(id).then(count => {
           res
             .status(200)
-            .json(removedPost ? `Post ${id} successfully deleted.` : null);
+            .json(`Deleted ${count} post. Post id ${id} successfully deleted.`);
         });
       } else {
         res
@@ -111,10 +111,10 @@ server.put("/api/posts/:id", (req, res) => {
     .then(post => {
       const postToUpdate = { title, contents };
       if (post.length > 0) {
-        db.update(id, postToUpdate).then(updatedPost => {
+        db.update(id, postToUpdate).then(count => {
           res
             .status(200)
-            .json(updatedPost ? `Post ${id} successfully updated.` : null);
+            .json(`Updated ${count} post. Post id ${id} successfully updated.`);
         });
       } else {
         res
@@ -130,4 +130,15 @@ server.put("/api/posts/:id", (req, res) => {
         err
       )
     );
+});
+
+server.get("/posts", (req, res) => {
+  console.dir(req, { depth: 1 });
+  const { id } = req.query;
+
+  if (id) {
+    db.findById(id).then(posts => res.send(posts));
+  } else {
+    db.find().then(posts => res.send(posts));
+  }
 });
