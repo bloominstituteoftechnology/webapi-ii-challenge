@@ -53,7 +53,21 @@ server.delete('/api/posts/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const count = await db.remove(id);
-        res.status(200).json({message: `${count} user's deleted`})
+        count 
+            ? res.status(200).json({message: `${count} users deleted`})
+            : res.status(404).json({message: 'user not found'})
+    } catch(error) {
+        res.status(500).json({message: 'error deleting post', error})
+    }
+})
+
+server.put('/api/posts/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const count = await db.update(id, req.body);
+        count 
+            ? res.status(200).json({message: `${count} users updated`})
+            : res.status(404).json({message: 'user not found'})
     } catch(error) {
         res.status(500).json({message: 'error deleting post', error})
     }
