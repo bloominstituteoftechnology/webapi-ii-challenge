@@ -22,7 +22,7 @@ class PostCard extends React.Component {
             <div className="post-card-wrapper" onDoubleClick={this.toggleModal}>
                 <blockquote className="post-card-title">{this.props.post.title}</blockquote>
                 <h3 className="post-card-contents">{this.props.post.contents}</h3>
-                {this.state.displayModal ? <PostCardModal toggleModal={this.toggleModal}/> : null}
+                {this.state.displayModal ? <PostCardModal id={this.props.post.id} toggleModal={this.toggleModal} deletePost={this.props.deletePost}/> : null}
             </div>
         );
     }

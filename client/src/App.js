@@ -17,9 +17,9 @@ class App extends Component {
   componentDidMount() {
     axios.get('http://localhost:9000/api/posts')
       .then(response => {
-        this.setState(({
+        this.setState({
           posts: response.data
-        }))
+        })
       })
       .catch(err => console.log(err));
   }
@@ -30,6 +30,22 @@ class App extends Component {
     }))
   }
 
+  resetState = () => {
+    axios.get('http://localhost:9000/api/posts')
+      .then(response => {
+        this.setState({
+          posts: response.data
+        })
+      })
+      .catch(err => console.log(err));
+  }
+
+  deletePost = (id) => {
+    axios.delete(`http://localhost:9000/api/posts/${id}`)
+      .then(() => this.resetState())
+      .catch(err => alert('Post not deleted'));
+  }
+
   toggleModal = () => {
     this.setState(prevState => ({ displayModal: !prevState.displayModal }));
   }
@@ -38,8 +54,8 @@ class App extends Component {
     return (
       <div className="App">
         <NewPostButton toggleModal={this.toggleModal} displayModal={this.state.displayModal} />
-        {this.state.displayModal ? <NewPost toggleModal={this.toggleModal} addNewPostToState={this.addNewPostToState}/> : null}
-        {this.state.posts.map(post => <PostCard post={post} key={post.id}/>)}
+        {this.state.displayModal ? <NewPost toggleModal={this.toggleModal} addNewPostToState={this.addNewPostToState} /> : null}
+        {this.state.posts.map(post => <PostCard post={post} deletePost={this.deletePost} key={post.id} />)}
       </div>
     );
   }
