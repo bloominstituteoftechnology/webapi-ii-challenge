@@ -1,23 +1,65 @@
 .App {
 }
 
-.App h1 {
+.App .Nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  background: #2e2f35;
+  margin-bottom: 3rem;
+  border-bottom: 4px solid #2d2e33;
+}
+
+.App .Nav h1 {
   text-transform: uppercase;
-  margin-top: 0;
+  margin: 0;
   color: #f9db42;
+  font-size: 3rem;
 }
 
 .Posts {
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.Posts p {
+  width: 100%;
+  font-style: italic;
 }
 
 .Post {
   border: 1px solid #9d863e;
+  background: #232428;
   margin: 1rem;
   width: 200px;
   height: 200px;
   padding: 1rem;
   border-radius: 5px;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Post .PostTitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.Target {
+  height: 50px;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 100ms;
+}
+
+.Target i {
+  font-size: 3rem;
 }
