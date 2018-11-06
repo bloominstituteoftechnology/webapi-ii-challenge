@@ -37,7 +37,6 @@ server.get('/api/posts/:id', (req, res) => {
   });
 
 server.post('/api/posts', (req, res) => {
-  console.log(req.body)
   const post = req.body
   db.insert(post)
     .then(userId => {
@@ -65,6 +64,28 @@ server.delete('/api/posts/:id', (req, res) => {
     .catch(err => {
       res.status(500).json({ error: "The post could not be removed", err })
     })
+})
+
+server.put('/api/posts/:id', (req, res) => {
+  const body = req.body
+  db.find()
+    .then(userId => {
+    if (!req.body.title || !req.body.contents === '') {
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    return;
+  } else { 
+    db.update(req.params.id, req.body)
+      .then(id => {
+        if(!id) {
+          res.status(404).json({ message: "The post with the specified ID does not exist." })
+        } else {
+          res.status(200).json({ message: 'note updated', body })
+        }
+      })
+  } })
+  .catch(err => {
+    res.status(500).json({ error: "The post information could not be modified.", err })
+  })
 })
 
 server.listen(9000)
