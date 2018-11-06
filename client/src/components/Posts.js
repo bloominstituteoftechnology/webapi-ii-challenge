@@ -1,6 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Redirect } from 'react-router-dom'
+const Add = styled.button`
+  align-self: center;
+  position: absolute;
+  left: 20%;
+`
 
 const Container = styled.div`
   width: 100%;
@@ -20,19 +24,20 @@ const Container = styled.div`
     width: 50px;
     height: 20px;
     border: 1px solid black;
+    margin: 50px 0;
   }
 `
 
 const Posts = props => {
   return (
     <Container>
-      <button
+      <Add
         onClick={() => {
           props.history.push('/form/postform')
         }}
       >
         ADD
-      </button>
+      </Add>
       {props.posts.map(post => {
         return (
           <div key={post.id}>
@@ -46,7 +51,6 @@ const Posts = props => {
             >
               VIEW
             </button>
-            <button>EDIT</button>
           </div>
         )
       })}

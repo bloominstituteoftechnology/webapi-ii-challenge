@@ -7,15 +7,29 @@ import { Link } from 'react-router-dom'
  * Styled-Components
  */
 
-const PostCard = styled.div``
+const PostCard = styled.div`
+  text-align: center;
+  display: flex;
+  flex-flow: column nowrap;
+
+  h2 {
+    font-size: 38px;
+  }
+
+  p {
+    font-size: 24px;
+  }
+`
 
 const Button = styled.button`
-  width: 120px;
-  height: 20px;
+  width: 60px;
+  height: 30px;
+  padding: 6px 0;
   font-family: 'Open Sans';
-  font-size: 10px;
-  border: 1px solid black;
+  font-size: 14px;
+  border: 2px solid black;
   border-radius: 5px;
+  margin: 40px auto;
 `
 
 class Post extends React.Component {
@@ -31,10 +45,18 @@ class Post extends React.Component {
         <p>{post.contents}</p>
         <Button
           onClick={() => {
-            this.props.deletePost(post.id) && this.props.history.push('/posts')
+            this.props.history.push('/posts')
+          }}
+        >
+          Edit
+        </Button>
+        <Button
+          onClick={() => {
+            this.props.deletePost(post.id)
             this.setState({
               postDeleted: true
             })
+            this.props.history.push('/posts')
           }}
         >
           Delete
@@ -46,7 +68,6 @@ class Post extends React.Component {
         >
           Back
         </Button>
-        <Link to="/form/postform">Add</Link>
       </PostCard>
     )
   }
