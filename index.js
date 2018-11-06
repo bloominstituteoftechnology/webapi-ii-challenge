@@ -61,17 +61,19 @@ server.use(express.json());
 server.post('/api/posts', (req, res) => {
   const post = req.body;
   const { title, contents } = post;
-  console.log("post newPost", post);
+  console.log('title:', title);
+  console.log('contents:', contents)
+
+  if (!title || !contents) {
+    res
+      .status(400)
+      .json({ errorMessage: "Please provide title and contents for the post." });
+    return;
+  }
 
   db.insert(post)
     .then(post => {
-      if (!post.title || !post.contents === "") {
-        res
-          .status(400)
-          .json({ errorMessage: "Please provide title and contents for the post." });
-      } else {
-        res.status(201).json(post);
-      }
+      res.status(201).json(post);
     })
     .catch(_ => {
       res
