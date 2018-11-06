@@ -36,10 +36,26 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 // add a post
-// server.put('/api/posts/:id', (req, res) => {
-// 	const { id } = req.params;
+server.put('/api/posts', (req, res) => {
+	const post = req.body;
+	const posts = db.posts;
+	posts.push(post);
+	req.status(201).json(posts);
+});
 
-// 	db.insert((title, content) => {});
-// });
+// delete a post
 
-server.listen(9000, () => console.log('The server is live'));
+server.delete('/api/posts/:id', (req, res) => {
+	const { id } = req.params.id;
+	res
+		.status(200)
+		.json({
+			url: `/api/posts/${id}`,
+			operation: `Delete for post with id ${id}`
+		})
+		.catch((err) => err.status(500).json({ message: 'Could not delete that user' }));
+});
+
+const port = 9000;
+
+server.listen(port, () => console.log(`The port is OVER ${port}!!`));
