@@ -51,4 +51,15 @@ server.post('/api/posts', (request, response) => {
            }) 
 })
 
+//DELETE /api/posts/:id	Removes the post with the specified id and returns the deleted post.
+server.delete('/api/posts/:id', (request, response) => {
+        db.remove(request.params.id)
+          .then(count => {
+                response.status(200).json(count);
+           })
+          .catch(error => {
+                response.status(500).json({message : 'error deleting user'})
+           })
+})
+
 server.listen(9000, () => console.log('server is live'));
