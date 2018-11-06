@@ -96,6 +96,16 @@ server.put('/api/posts/:id', (req, res) => {
     })
 })
 
+server.get('/posts', (req, res) => {
+    const { id } = req.query;
+    
+    if (id) {
+        db.findById(id).then(post => res.send(post))
+    } else {
+        db.find().then(posts => res.send(posts))
+    }
+})
+
 
 server.listen(9000, () => console.log('the server is alive!'));
 
