@@ -22,7 +22,8 @@ class App extends Component {
     const { posts } = this.state;
     return (
       <div className="App">
-        {posts.length === 0 ? <h1>Loading...</h1> : <Posts posts={posts} />}
+        <h1>Lord of the Rings</h1>
+        {posts.length === 0 ? <h2>Loading...</h2> : <Posts posts={posts} />}
       </div>
     );
   }
