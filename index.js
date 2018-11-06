@@ -50,23 +50,50 @@ server.get('/api/posts/:id', (req, res, next) => {
 });
 
 //POST
-server.post('/api/posts', async (req, res) =>{
+server.post('/api/posts', async (req, res, next) =>{
 
-//deconstructing instead of req.body.{prop}
-const {title, contents} = req.body;
+    //deconstructing instead of req.body.{prop}
+    const {title, contents} = req.body;
 
-//sends a failed 400 response if title or contents are missing
-if (!title || !contents) {
-res.status(400).json({errorMessage: "Please provide title and contents for the post."})
-} else {
-try {
+    //sends a failed 400 response if title or contents are missing
+    if (!title || !contents) {
+        res.status(400).json({errorMessage: "Please provide title and contents for the post."})
+    } else {
+    try {
         const userData = req.body;
         const userId = await db.insert(userData);
         res.status(201).json(userId);
-    } catch (error) {
-        res.status(500).json({error: "There was an error while saving the post to the database"})
+        } catch (error) {
+            res.status(500).json({error: "There was an error while saving the post to the database"})
+        }
     }
-}
+})
+
+//DELETE
+server.delete('/api/posts/:id', (req, res, next) =>{
+    const {id} = req.params;
+let body;   
+    db.findById(id)
+.then(post => {
+    if (post && post.length) {
+     body=post;
+
+     db.remove(id)
+     .then(count=>{
+         res.status(200).json(body);
+     })
+     .catch(error=>{
+         res.status(500).json({error: "The post could not be removed"})
+     })
+
+    } else {
+        res.status(404)
+        .json({message: "The post with the specified ID does not exist."});
+    }
+});
+
+
+    
 })
 
 
