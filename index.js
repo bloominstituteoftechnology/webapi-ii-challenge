@@ -5,6 +5,9 @@ const db = require('./data/db.js');
 // add your server code starting here
 const server = express();
 
+//middleware
+server.use(express.json());
+
 server.get('/api/posts', (req, res) => {
     db.find().then(posts => {
         res.status(200).json(posts)
@@ -37,4 +40,23 @@ server.get('/api/posts/:id', (req, res) => {
     });
 });
 
-server.listen(9000, () => console.log('Server started'))
+server.post('/api/posts', async (req, res) => {
+    try {
+        const user = await db.insert(req.body);
+        res.status(201).json({message: 'user succesfully created', user})
+    } catch(error) {
+        res.status(500).json({message: 'error creating post', error})
+    }
+})
+
+server.delete('/api/posts/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const count = await db.remove(id);
+        res.status(200).json({message: `${count} user's deleted`})
+    } catch(error) {
+        res.status(500).json({message: 'error deleting post', error})
+    }
+})
+
+server.listen(9000, () => console.log('\n== the server is alive! on port 9000 ==\n'));
