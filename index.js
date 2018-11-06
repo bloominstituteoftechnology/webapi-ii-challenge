@@ -45,7 +45,13 @@ server.post('/api/posts', (req, res) => {
             res.status(201).json(postId);
         })
         .catch(err => {
-            res.status(500).json({ message: 'error creating post', err });
+            let message = 'error creating the post';
+
+            if (err.errno === 19) {
+                message = 'please provide both title and contents fields';
+            }
+
+            res.status(500).json({ message, err });
         })
 });
 
