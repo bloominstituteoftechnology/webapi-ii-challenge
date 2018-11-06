@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const db = require('./data/db.js');
+const port = 8250;
 
 // add your server code starting here
 const server = express();
@@ -48,4 +49,4 @@ server.get('/api/posts/:id', (req, res) => {
         })
 })
 
-server.listen(8250, () => console.log('we are listening...'))
+server.listen(port, () => console.log(`we are listening on port ${port}...`))
