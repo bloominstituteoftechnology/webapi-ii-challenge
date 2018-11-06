@@ -114,10 +114,22 @@ server.delete('/api/posts/:id', async (req, res) => {
  *
   * */
 server.put('/api/posts/:id', (req, res) => {
-  res.status(500).json({
-    params: req.params.id,
-    body: req.body
-  })
+  db.update(req.params.id, req.body)
+    .then(count => {
+      if (count !== 0) {
+        res.status(200).json({ message: `post with id: ${req.params.id} updated` });
+      } else {
+        res.status(404).json({
+          message: `Post with id: ${req.params.id} could not be updated`
+      })
+
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: `Internal server error could not update post with id: ${req.params.id}`
+      })
+    }) 
 });
 
 server.listen(PORT, () => console.log('Server is running on port: ' + PORT));
