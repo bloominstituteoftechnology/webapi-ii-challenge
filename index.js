@@ -3,9 +3,10 @@ const db = require('./data/db.js');
 const cors = require('cors');
 const server = express();
 
-// server.use(cors({origin: 'http://localhost:9000'}));
 
 server.use(express.json()); //teaches express how to parse the json request body
+
+server.use(cors());
 
 server.get('/', (req, res) => {
     res.json('alive');
