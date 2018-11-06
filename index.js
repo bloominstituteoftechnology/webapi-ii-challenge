@@ -52,7 +52,7 @@ server.put('/api/posts/:id', (req, res) => {
     db.update(id, changedPost)
         .then(count => {
             if (count) {
-                res.status(200).json({ message: `${count} posts updated`});
+                res.status(200).json(changedPost);
             } else {
                 res.status(404).json({ message: 'post not found'});
             }
