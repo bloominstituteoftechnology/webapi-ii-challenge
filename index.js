@@ -2,24 +2,61 @@
 const express = require('express');
 const db = require('./data/db.js');
 const PORT = 9000;
+const cors = require('cors');
 
+server.use(express.json());
+server.use(cors());
 // add your server code starting here
 const server = express();
 
-server.get('api/posts/', (req, res) => {
+server.get('/api/posts', (req, res) => {
     db.find()
-    .then(posts => {
-        console.log(posts);
-        const formattedPosts = posts.map(post => ({
-            title: post.title,
-            contents: post.contents
-        }));
-        console.log(formattedPosts);
-        res.status(200).json(formattedPosts);
-    })
-    .catch(error => {
-        res.status(500).json({error: "Could not retrieve post information"});
-    })
-});
+        .then(posts => {
+            res.status(200).json(posts)
+        })
+        .catch(err => {
+            res.status(500).json({ error: "The posts information could not be retrieved." })
+        })
+})
 
-server.listen(PORT, () => console.log('Server is running on port: ' + PORT));
+server.get('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    db.findById(id)
+        .then(post => {
+            post.length > 0 ?
+            res.status(200).json(post) :
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
+        })
+        .catch(err => {
+            res.status(500).json({ error: "The post information could not be retrieved." })
+        })
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    db.remove(id)
+        .then(deletedPost => {
+            deletedPost ?
+            res.status(200).send('Post deleted.') :
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
+        })
+        .catch(err => {
+            res.status(500).json({ error: "The post information could not be removed." })
+        })
+})
+
+server.post('/api/posts', (req, res) => {
+    if (req.body.title && req.body.contents) {
+        db.insert(req.body)
+        .then(addedNote => {
+            db.findById(addedNote.id).then(post => res.status(201).json(post))
+        })
+        .catch(err => {
+            res.status(500).json({ error: "There was an error while saving the post to the database" })
+        })
+    } else {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    }
+})
+
+server.listen(PORT, () => console.log('Server up & running on port: '+ PORT))
