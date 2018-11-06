@@ -1,6 +1,6 @@
 // import your node modules
 const express = require('express');
-const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const db = require('./data/db.js');
 const port = 8250;
@@ -8,6 +8,7 @@ const port = 8250;
 // add your server code starting here
 const server = express();
 server.use(express.json());
+server.use(cors());
 
 server.post('/api/posts', async (req, res) => {
     try {
