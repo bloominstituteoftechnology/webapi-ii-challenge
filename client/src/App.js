@@ -13,7 +13,7 @@ class App extends Component {
   componentDidMount() {
     axios
       .get('http://localhost:5000/api/posts')
-      .then((res) => console.log(res))
+      .then((res) => this.setState({posts: res.data}))
       .catch((err) => console.log(err))
   }
 
@@ -21,6 +21,13 @@ class App extends Component {
     return (
       <div className="App">
       should see posts
+      {this.state.posts.map(item => (
+            <div key={item.id}>
+              <h4>{item.title}</h4>
+              <p>{item.contents}</p>
+            </div>
+            ))}
+
 
       </div>
     );
