@@ -31,7 +31,7 @@ server.post('/api/posts', async (req, res) => {
             message = 'please provide both the title and the contents section';
         }
 
-        res.status(500).json({ message, error });
+        res.status(500).json({ error: "There was an error while saving the post to the database" });
     }
 });
 
@@ -65,6 +65,22 @@ server.delete('/api/posts/:id', (req, res) => {
     .catch(err => {
         res.status(500).json({ message: 'error deleting post' });
     });
+});
+
+server.put('/api/users/:id', (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+    db.update(id, changes)
+        .then(count => {
+            if (count) {
+                res.status(200).json({ message: `${count} posts updated` });
+            } else {
+                res.status(404).json({ message: 'post is non-existant or something like that, I dont make the rules, wait... yes I do' });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'error updating the post - do it right' });
+        });
 });
 
 server.listen(5000,() => console.log("server is running"));
