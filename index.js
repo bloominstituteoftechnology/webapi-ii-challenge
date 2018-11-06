@@ -4,7 +4,7 @@ const db = require('./data/db.js');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const logger = require('morgan');
+//const logger = require('morgan');
 
 const PORT = 9000;
 
@@ -16,7 +16,7 @@ const server = express();
 server.use(helmet());
 server.use(cors({origin: 'http://localhost:3000'}));
 server.use(express.json());
-server.use(logger('short'));
+//server.use(logger('short'));
 
 /*
  * POST - /api/posts 	
@@ -66,13 +66,19 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req, res) => {
   db.findById(req.params.id)
     .then(post => {
-      res.status(200).json(post);
+      if (post.length !== 0) {
+        res.status(200).json(post[0]);
+      } else {
+        res.status(404).json({ 
+          message: `The post with id: ${req.params.id} does not exist`
+        });      
+      }
     })
     .catch(err => {
       res
         .status(500)
         .json({ 
-          message: "The posts could not be retrieved." 
+          message: `The post with id: ${req.params.id} could not be retrieved.`
         });
     })
 })
@@ -82,44 +88,21 @@ server.get('/api/posts/:id', (req, res) => {
  * Removes the post with the specified id and returns the deleted post. 
  *
   * */
-server.delete('/api/posts/:id', (req, res) => {
+server.delete('/api/posts/:id', async (req, res) => {
   const { id } = req.params;
-  let deletedPost = {};
-  let responseObj = {};
-  db.findById(id).then(post => {
-    console.log(post)
-    if (post === []) { 
-      res.status(404);
-      responseObj = {
-        message: req.params.id + ' does not exist'
-      }
-    }
-    deletedPost = post;
-    db.remove(req.params.id)
-      .then(data => {
-        res.status(500);
-        responseObj = deletedPost;
+  try {
+    const recordsDeleted = await db.remove(id);
+    if (recordsDeleted === 1) {
+      res.status(200).json(recordsDeleted);
+    } else {
+      res.status(404).json({ 
+        message: `Could not delete record because it does not exist`
       })
-      .catch(err => {
-        console.log(err)
-        res.status(500);
-        responseObj = { 
-          message: 'Could not access server',
-          error: err
-        }
-      })
-  })
-  .catch(err => {
-    res.status(500)
-    responseObj = { 
-      message: 'Could not access server',
-      error: err
     }
-  });
-  console.log(responseObj)
-  //res.json(response)
-  res.send(responseObj)
-
+  } catch (error) {
+    res.status(500).json({ message: 'error deleting post', error })
+  }
+  
   /* remove(): the remove method accepts an id as it's first parameter and upon successfully deleting the post from the database it returns the number of records deleted. */
 
 });
