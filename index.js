@@ -51,13 +51,16 @@ server.get('/api/posts/:id', (req, res) => {
     })
 });
 
-// parses the JSON request body
+// parses incoming requests with JSON and is based on body-parser
+// A new body object containing the parsed data is populated on
+// the request object after the middleware => req.body
+// or an empty {} if no body to parse
 server.use(express.json());
 
 // POST new user
 server.post('/api/posts', (req, res) => {
   const newUser = req.body;
-  console.log("newUser", newUser);
+  console.log("post newUser", newUser);
 
   db.insert(newUser)
     .then(user => {
@@ -74,7 +77,25 @@ server.post('/api/posts', (req, res) => {
         .status(500)
         .json({ error: "There was an error while saving the post to the database" });
     })
-})
+});
+
+// DELETE an existing user
+server.delete('/api/posts/:id', (req, res) => {
+  const userID = req.params.id;
+  console.log('delete userID', userID);
+
+  db.remove(userID)
+    .then(count => {
+      if (count) {
+        res.status(200).json({ message: `${count} user(s) deleted.` });
+      } else {
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(_ => {
+      res.status(500).json({ error: "The post could not be removed" });
+    })
+});
 
 server.listen(port, () => {
   console.log(`server listening on port ${port}`);
