@@ -24,7 +24,11 @@ server.use(express.json());
  *
   * */
 server.post('/api/posts/', (req, res) => {
-  console.log(req.body);
+  if (req.body.title === undefined || req.body.contents === undefined) {
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+    return;
+  }
+
   db.insert(req.body)
     .then(data => {
       res.status(200).json(data);
@@ -32,9 +36,7 @@ server.post('/api/posts/', (req, res) => {
     .catch(err => {
       res
         .status(500)
-        .json({ 
-          message: "The posts could not be posted." 
-        });
+        .json({ error: "There was an error while saving the post to the database" });
     })
 })
 
@@ -92,7 +94,7 @@ server.delete('/api/posts/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const recordsDeleted = await db.remove(id);
-    if (recordsDeleted === 1) {
+    if (recordsDeleted > 0) {
       res.status(200).json(recordsDeleted);
     } else {
       res.status(404).json({ 
@@ -100,7 +102,7 @@ server.delete('/api/posts/:id', async (req, res) => {
       })
     }
   } catch (error) {
-    res.status(500).json({ message: 'error deleting post', error })
+    res.status(500).json({ message: "The post could not be removed", error })
   }
   
   /* remove(): the remove method accepts an id as it's first parameter and upon successfully deleting the post from the database it returns the number of records deleted. */
@@ -114,22 +116,34 @@ server.delete('/api/posts/:id', async (req, res) => {
  *
   * */
 server.put('/api/posts/:id', (req, res) => {
-  db.update(req.params.id, req.body)
-    .then(count => {
-      if (count !== 0) {
-        res.status(200).json({ message: `post with id: ${req.params.id} updated` });
-      } else {
-        res.status(404).json({
-          message: `Post with id: ${req.params.id} could not be updated`
-      })
+    if (req.body.title === undefined || req.body.contents === undefined) {
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+    return;
+  }
 
-      }
-    })
-    .catch(err => {
-      res.status(500).json({
-        message: `Internal server error could not update post with id: ${req.params.id}`
+  db.update(req.params.id, req.body).then(count => {
+    console.log(count)
+
+    if (count > 0) {
+      db.findById(req.params.id).then(post => {
+        console.log(post, post.hasOwnProperty('length'), post.length > 0)
+        if ((post.hasOwnProperty('length') && post.length > 0)) {
+          res.status(200).json(post);
+        } else {
+          res.status(404).json({
+            message: `The post with the specified ID ${req.params.id} does not exist.`
+          })
+        }
+      });
+    } else {
+      res.status(404).json({
+        message: `The post with the specified ID ${req.params.id} does not exist.`
       })
-    }) 
+    }
+  })
+  .catch(err => {
+    res.status(500).json({ error: "The post information could not be modified." })
+  })
 });
 
 server.listen(PORT, () => console.log('Server is running on port: ' + PORT));
