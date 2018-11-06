@@ -37,22 +37,47 @@ server.get('/api/posts/:id', (req, res)=> {
 })
 
 server.delete('/api/posts/:id', (req, res) => {
-  db.remove(req.params.id)
-    .then(count => { res.status(201).json(count) })
-    .catch(err => {
-      res.status(500).json({message: 'error deleting user'})
-    })
+  const {id} = req.params;
+  db.remove(id).then(count => {
+    if(count) {
+      res.status(200).json({message: `${count} post deleted`})
+    } else {
+      res.status(404).json({message: 'Post not found'})
+    }
+  }).catch(error => {
+    res.status(500).json({message: 'there was a problem deleting the post'})
+  });
+
 })
 
+server.put('/api/posts/:id', (req, res) => {
+  const {id} = req.params;
+  const changes = req.body;
+  db.update(id, changes).then(count => {
+    console.log(count)
+    if(count) {
+      res.status(200).json({message: `${count} users updated`})
+    } else {
+      res.status(404).json({message: 'user not found'})
+    }
+  }).catch(error => {
+    res.status(500).json({message: 'The post could not be modified'})
+  })
+
+
+})
 
 
 server.post('/api/posts', async (req, res) => {
   try {
     const postData = req.body;
-    const postId = await db.insert(postData)
-    const post = await db.findById(postId.id)
-    res.status(201).json(post)
-
+    if(postData.title.length === 0 || postData.contents.length === 0) {
+      res.status(500).json({message: "No empty stings"})
+    } else {
+      const postId = await db.insert(postData)
+      const post = await db.findById(postId.id)
+      res.status(201).json(post)
+    }
   } catch(error) {
     let message = 'error creating user'
       if(error.errno === 19) {
@@ -60,9 +85,7 @@ server.post('/api/posts', async (req, res) => {
       }
     res.status(500).json({message, error})
   }
-
- })
-
+})
 
 server.listen(5000, (res, req) => {
   console.log('the server is listening on 5000')
