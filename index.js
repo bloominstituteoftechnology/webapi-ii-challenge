@@ -7,31 +7,28 @@ server.use(express.json());
 // add your server code starting here
 console.log('hello');
 
-server.get('/api/posts', (req, res) => {
-  db.find()
-    .then(posts => {
-      res.status(200).json(posts);
-    })
-    .catch(error => {
-      res.status(500).json({ message: " error: 'The posts information could not be retrieved'", error: error });
-    });
+server.get('/api/posts', async (req, res) => {
+  try {
+    const posts = await db.find();
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({ message: " error: 'The posts information could not be retrieved'", error: error });
+  }
 });
 
-server.get('/api/posts/:id', (req, res) => {
+server.get('/api/posts/:id', async (req, res) => {
   const { id } = req.params;
   console.log(id);
-
-  db.findById(id)
-    .then(post => {
-      if (post.length === 0) {
-        res.status(404).json({ error: 'The post with the specified ID does not exist.' });
-      } else {
-        res.status(200).json(post);
-      }
-    })
-    .catch(err => {
-      res.status(500).json({ error: 'The post information could not be retrieved.' });
-    });
+  try {
+    let foundPostId = await db.findById(id);
+    {
+      foundPostId.length
+        ? res.status(200).json(foundPostId)
+        : res.status(404).json({ error: 'The post with the specified ID does not exist.' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'The post information could not be retrieved.' });
+  }
 });
 
 server.post('/api/posts/', async (req, res) => {
@@ -69,11 +66,15 @@ server.put('/api/posts/:id', (req, res) => {
   const changes = req.body;
   db.update(id, changes)
     .then(count => {
-      if (count) {
+      if (!changes.title || !changes.contents) {
+        return;
+
+        res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
+      } else if (count) {
         res.status(200).json({ message: `${count} users updated` });
       } else {
         console.log('the count is: ', count);
-        res.status(402).json({ message: `user not found` });
+        res.status(404).json({ message: `error: The post with the specified ID does not exist.` });
       }
     })
     .catch(err => {
