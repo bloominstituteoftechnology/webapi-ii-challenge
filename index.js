@@ -13,31 +13,33 @@ server.use(cors());
 // Requests
 
 // GET all posts
-server.get('/api/posts', (req, res) => {
-  db.find()
-    .then(posts => res.status(200).json(posts))
-    .catch(err =>
-      res
-        .status(500)
-        .json({ message: 'The posts information could not be retrieved', err })
-    );
+server.get('/api/posts', async (req, res) => {
+  try {
+    const posts = await db.find();
+    res.status(200).json(posts);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'The posts information could not be retrieved' });
+  }
 });
 
 // GET single post
-server.get('/api/posts/:id', (req, res) => {
+server.get('/api/posts/:id', async (req, res) => {
   const { id } = req.params;
-  db.findById(id)
-    .then(post => {
-      if (!post.length) {
-        res.status(404).json({ message: 'That post does not exist' });
-      } else {
-        res.status(200).json({ ...post[0] });
-      }
-    })
-    .catch(err => res.status(500).json({ message: 'There was an error', err }));
+  try {
+    const post = await db.findById(id);
+    if (!post.length) {
+      res.status(404).json({ message: 'That post does not exist' });
+    } else {
+      res.status(200).json({ ...post[0] });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'There was an error' });
+  }
 });
 
-// Add new post
+// POST add new post
 server.post('/api/posts', async (req, res) => {
   const postData = req.body;
   try {
