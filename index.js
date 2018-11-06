@@ -1,27 +1,43 @@
 // import your node modules
-
 const db = require('./data/db.js');
-
-// add your server code starting here
-
 const express = require('express'); // import the express package
 const server = express(); // creates the server
+
+server.use(express.json()); // middleware ---- teaches express how to parse the JSON request body
 server.listen(5000, () =>
   console.log('Server running on http://localhost:5000')
 );// assigns a port
 
-server.post('/api/posts', (req, res) => {
-    res.status(201).json({ url: '/api/posts', operation: 'POST' });
+//----- POST -----
 
+server.post('/api/posts', async (req, res) => {
+    try {
+        const postData = req.body;
+        const postId = await db.insert(postData);
+        const post = await db.findById(postId.id);
+        res.status(201).json(post);
+         if (post.title === undefined ||  post.title === '' || post.contents === undefined || post.contents === '' ) {
+           const errorMessage = "Please provide title and contents for the post"; 
+         throw res.status(400).json({ errorMessage, error });
+         }
+    } catch (error) {
+        res.status(500).json({ error: "There was an error while saving the post to the database" }.);
+    }
   });
+
+//----- PUT -----
 
 server.put('/api/posts', (req, res) => {
     res.status(200).json({ url: '/api/posts', operation: 'PUT' });
   });
 
+//----- DELETE -----
+
 server.delete('/api/posts', (req, res) => {
     res.status(204);
 });
+
+//----- DELETE -----
 
 server.delete('/api/posts/:id', (req, res) => {
     const id = req.params.id;
@@ -31,6 +47,8 @@ server.delete('/api/posts/:id', (req, res) => {
       operation: `DELETE for post with id ${id}`,
     });
   });
+
+//----- GET -----
 
 server.get('/api/posts', (req, res) => {
     db.find() //calling find method from db.js file 
@@ -43,6 +61,8 @@ server.get('/api/posts', (req, res) => {
           .json({ error: "The posts information could not be retrieved." });
       });//if you 'catch' an error as defined by status 500 - let the client know
   });
+
+//----- GET -----
 
 server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params; //pull the id off the request 
@@ -63,19 +83,20 @@ server.get('/api/posts/:id', (req, res) => {
 /*
 When the client makes a POST request to /api/posts:
 
-If the request body is missing the title or contents property:
-if (req.body.title === undefined || req.body.contents === undefined || req.body.title === '' || req.body.contents === '' )
-cancel the request.
-respond with HTTP status code 400 (Bad Request).
+CATCH 
+If the request body is missing the title or contents property: 
+cancel the request. respond with HTTP status code 400 (Bad Request).
 return the following JSON response: 
 { errorMessage: "Please provide title and contents for the post." }.
 If the information about the post is valid:
 
+TRY 
 save the new post the the database.
 return HTTP status code 201 (Created).
 return the newly created post.
-If there's an error while saving the post:
 
+CATCH 
+If there's an error while saving the post:
 cancel the request.
 respond with HTTP status code 500 (Server Error).
 return the following JSON object: 
