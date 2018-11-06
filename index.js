@@ -54,11 +54,28 @@ server.post('/api/posts', (request, response) => {
     } else {
         response.status(400).json({ errorMessage: "Please provide title and contents for the post." })
     }
-})
+}) 
+
+//POST  USING  Async and await...
+/* server.post('/api/posts/', async (request, response) => {
+    if (request.body.title !== undefined && request.body.contents !== undefined) {
+        try {
+            const newPost = await db.insert(request.body);
+            response.status(201).json(newPost);
+        }
+        catch (err) {
+            response.status(500).json({error: "There was an error while saving the post to the database"})
+        }
+    }
+    else {
+        response.status(400).json({errorMessage: "Please provide title and contents for the post."})
+    }
+}) */
 
 //DELETE /api/posts/:id	
 //Removes the post with the specified id and returns the deleted post.
 server.delete('/api/posts/:id', (request, response) => {
+        const deletedUser = db.findById(request.params.id)
         db.remove(request.params.id)
           .then(count => {
                 response.status(200).json(count);
