@@ -12,7 +12,7 @@ server.get('/api/posts', (req, res) => {
         })
         .catch(err => {
             res.status(500)
-                .json({error: "There was an error while saving the post to the database" },
+                .json({error: "The posts information could not be retrieved." },
                 console.log(err))
         })
 })
