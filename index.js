@@ -71,6 +71,19 @@ server.delete("/api/posts/:id", (req, res) => {
 
 //PUT request
 
+server.put('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  db.update(id, changes).then(count => {
+    if (count) {
+      res.status(200).json({ message: `${count} post updated` });
+    } else {
+      res.status(500).json({ message: 'error updating post' })
+    }
+  })
+})
+
+
 
 
 
