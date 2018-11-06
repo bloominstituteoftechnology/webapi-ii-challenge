@@ -15,10 +15,11 @@ export default class SinglePost extends Component {
     this.singleNote(id);
   }
   singleNote(id) {
+    console.log('this is the single note id', id)
     axios
       .get(`http://localhost:9000/api/posts/${id}`)
       .then(response => {
-        console.log(response.data)
+        console.log('this is my response: ', response.data)
         // this.setState(() => ({ post: response.data }));
       })
       .catch(err => {console.log(err)});
@@ -26,7 +27,7 @@ export default class SinglePost extends Component {
   render() {
     return (
       <div>
-        <h1>GOod SrsijSfg</h1>
+        <h1>{this.state.post}</h1>
         {/* <p>{this.state.post.title}</p> */}
       </div>
     );
