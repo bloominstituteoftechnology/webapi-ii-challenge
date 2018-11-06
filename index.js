@@ -42,24 +42,42 @@ server.get('/api/posts/:id', (req, res) => {
     });
 });
 
-server.post('/api/posts', (req, res) => {
-  const { title, contents } = req.body;
-  const newPost = { title, contents };
+// This way works - going to try an async/await style
+// server.post('/api/posts', (req, res) => {
+//   const { title, contents } = req.body;
+//   const newPost = { title, contents };
 
-  if(!newPost || !newPost.title || !newPost.contents){
-    res
-      .status(400)
-      .json({ errorMessage: "Please provide title and contents for the post." });
-  } else {
-    db.insert(newPost)
-      .then(insertedPost => {
-        res.status(201).json({ 'Post Created!': insertedPost });
-      })
-      .catch(err => {
-        res.send(err);
-      })
+//   if(!newPost || !newPost.title || !newPost.contents){
+//     res
+//       .status(400)
+//       .json({ errorMessage: "Please provide title and contents for the post." });
+//   } else {
+//     db.insert(newPost)
+//       .then(insertedPost => {
+//         res.status(201).json({ 'Post Created!': insertedPost });
+//       })
+//       .catch(err => {
+//         res.send(err);
+//       })
+//   }
+// });
+
+server.post('/api/posts', async (req, res) => {
+  try {
+    const postData = req.body;
+    if(!postData || !postData.title || !postData.contents) {
+      res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+    } else {
+      const postId = await db.insert(postData);
+      res.status(201).json(postId);
+    }
   }
-});
+  catch(error) {
+    res.status(400).json({ errorMessage: "error creating post" });
+  }
+})
+
+
 
 // server.put('/api/posts/:id', (req, res) => {
 //   res.status(200).json({ url: '/api/posts', operation: 'PUT' });
