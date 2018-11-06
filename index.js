@@ -47,7 +47,33 @@ server.post('/api/posts', async (req, res) => {
     res.status(400).json({ message, err });
   }
 });
-})
+
+server.put('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  db.update(id, changes)
+    .then((count) => {
+      if (count) {
+        res.status(200).json(`${count} posts updated`);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'The post with the specified ID does not exist.' });
+      }
+    })
+    .catch((err) => {
+      if (err.errno === 19) {
+        res.status(400).json({
+          errorMessage: 'Please provide title and contents for the post.',
+        });
+      } else {
+        res
+          .status(500)
+          .json({ error: 'The post information could not be modified.', err });
+      }
+    });
+});
+
 server.delete('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   db.remove(id)
