@@ -37,8 +37,8 @@ server.get('/api/posts/:id', (req, res) => {
 server.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     db.remove(id)
-        .then(deletedPost => {
-            deletedPost ?
+        .then(deletedCount => {
+            deletedCount ?
             res.status(200).send('Post deleted.') :
             res.status(404).json({ message: "The post with the specified ID does not exist." })
         })
@@ -48,17 +48,33 @@ server.delete('/api/posts/:id', (req, res) => {
 })
 
 server.post('/api/posts', (req, res) => {
-    if (req.body.title && req.body.contents) {
+    req.body.title && req.body.contents ?
         db.insert(req.body)
-        .then(addedNote => {
-            db.findById(addedNote.id).then(post => res.status(201).json(post))
+        .then(addedPost => {
+            db.findById(addedPost.id).then(post => res.status(201).json(post))
         })
         .catch(err => {
             res.status(500).json({ error: "There was an error while saving the post to the database" })
         })
-    } else {
+    :
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
-    }
+})
+
+
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    req.body.title && req.body.contents ?
+        db.update(id, req.body)
+        .then(updatedCount => {
+            updatedCount ?
+            res.status(200).json({ message: "Post updated." }) :
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
+        })
+        .catch(err => {
+            res.status(500).json({ message: 'Error updating post.' })
+        })
+    :
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
 })
 
 server.listen(9000, () => console.log('Server up & running!'))
