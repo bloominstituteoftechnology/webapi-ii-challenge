@@ -48,8 +48,8 @@ server.get('/api/posts', (req, res) => {
     console.log('body', req.body);
     try {
       const postData = req.body;
-      const userId = await db.insert(postData);
-      const post = await db.findById(userId.id);
+      const postId = await db.insert(postData);
+      const post = await db.findById(postId.id);
       res.status(201).json(post);
     } catch (error) {
       let message = 'error creating the user';
@@ -60,6 +60,21 @@ server.get('/api/posts', (req, res) => {
         res.status(500).json({ message, error });
       }
     }
+  });
+
+  server.delete('/api/posts/:id', (req, res) => {
+    //const { id } = req.params;
+    db.remove(req.params.id)
+      .then(count => {
+        if (count) {
+          res.status(200).json(count);
+        } else {
+          res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+        }
+      })
+      .catch(err => {
+        res.status(500).json({ message: 'error deleting user', err });
+      });
   });
 
 
