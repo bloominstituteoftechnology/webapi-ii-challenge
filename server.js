@@ -15,7 +15,8 @@ server.use(cors());
 /*--- request handlers ---*/
 server.get('/api/posts', async (_, res) => {
   try {
-    res.status(200).json(await db.find());
+    const posts = await db.find();
+    res.status(200).json(posts);
   } catch (err) {
     res.status(500).json({ error: 'The posts information could not be retrieved.' });
   }
@@ -32,21 +33,15 @@ server.get('/api/posts/:id', async (req, res) => {
   }
 });
 
-// server.post('/api/posts', async (req, res) => {
-//   if (req.body.title && req.body.contents) {
-//     db.insert(req.body);
-//   }
-// });
-
-server.post('/api/posts', (req, res) => {
+server.post('/api/posts', async (req, res) => {
   if (req.body.title && req.body.contents) {
-    db.insert(req.body)
-      .then(addedPost => {
-        db.findById(addedPost.id).then(post => res.status(201).json(post));
-      })
-      .catch(err =>
-        res.status(500).json({ error: 'There was an error while saving the post to the database.' })
-      );
+    try {
+      const addedPost = await db.insert(req.body);
+      const post = await db.findById(addedPost.id);
+      res.status(201).json(post);
+    } catch (err) {
+      res.status(500).json({ error: 'There was an error while saving the post to the database.' });
+    }
   } else {
     res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
   }
@@ -67,9 +62,12 @@ server.put('/api/posts/:id', async (req, res) => {
   if (req.body.title && req.body.contents) {
     try {
       const count = await db.update(req.params.id, req.body);
-      count
-        ? res.status(200).json({ message: 'Sucessfully updated post.' })
-        : res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+      if (count) {
+        const post = await db.findById(req.params.id);
+        res.status(200).json(post);
+      } else {
+        res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+      }
     } catch (err) {
       res.status(500).json({ error: 'The post information could not be modified.' });
     }
