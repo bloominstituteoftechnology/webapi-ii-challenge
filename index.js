@@ -6,6 +6,7 @@ const db = require('./data/db.js');
 
 const express = require('express');
 const server = express();
+server.use(express.json());
 
 server.get('/api/posts',(req,res) => {
     db.find()
@@ -16,9 +17,23 @@ server.get('/api/posts',(req,res) => {
             res.status(500).json({message : "I done messed up this request"})
         })
 })
-server.post('/api/posts',(req,res) => {
-    db.insert(req.body)
-})
+server.post('/api/posts', async (req, res) => {
+    console.log('body', req.body);
+    try {
+        const postData = req.body;
+        const postId = await db.insert(postData);
+        const post = await db.findById(postId.id);
+        res.status(201).json(post);
+    } catch (error) {
+        let message = 'error creating the post you ding-a-ling';
+
+        if (error.errno === 19) {
+            message = 'please provide both the title and the contents section';
+        }
+
+        res.status(500).json({ message, error });
+    }
+});
 
 server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
