@@ -6,6 +6,8 @@ const db = require('./data/db.js');
 const express = require('express');
 const server= express();
 
+server.use(express.json());
+
 server.get('/api/posts',(req, res)=>{
     db.find()
         .then(posts =>{
@@ -19,5 +21,20 @@ server.get('/api/posts',(req, res)=>{
 })
 server.get('/', (req, res)=>{
     res.json('works')
+})
+server.post('/api/posts', async (req, res)=>{
+    console.log('body', req.body);
+    try {
+        const postData= req.body;
+        const postId = await db.insert(postData);
+        const post= await db.findById(postId.id)
+        res.status(201).json(post);
+    } catch (error) {
+        let message='error creating the post';
+        if(error.errno===19){
+            message= 'please provide both the name and the bio';
+        }
+        res.status(400).json({message, error})
+    }
 })
 server.listen(8000,()=>console.log('API Running on port 8000') )
