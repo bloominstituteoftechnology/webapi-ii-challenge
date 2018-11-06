@@ -49,7 +49,7 @@ server.post('/api/posts', async (req, res) => {
   }
 })
 
-server.put('/api/users/:id', (req, res) => {
+server.put('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   const changes = req.body;
   db.update(id, changes)
