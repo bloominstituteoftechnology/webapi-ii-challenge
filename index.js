@@ -40,7 +40,8 @@ server.get('/api/posts/:id', (req, res) => {
 server.post("/api/posts", async (req, res) => {
     try {
         const postData = req.body;
-        await postData.title === "" || postData.contents === "" ?
+        await db.insert(postData);
+        postData.title === "" || postData.contents === "" ?
             res.status(400).json({ errorMessage: "Please provide title and contents for the post." }):
             res.status(201).json(postData);
     } catch (error) {
