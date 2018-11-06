@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
+import { Route } from "react-router-dom";
+import List from "./components/List";
+import Post from "./components/Post";
 
 class App extends Component {
   constructor(props) {
@@ -21,12 +24,12 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Blog</h1>
-        {this.state.posts.map(post => (
-          <div key={post.id}>
-            <h2>{post.title}</h2>
-            <p> {post.contents} </p>
-          </div>
-        ))}
+        <Route
+          exact
+          path="/"
+          render={props => <List {...props} posts={this.state.posts} />}
+        />
+        <Route path="/:id" component={Post} />
       </div>
     );
   }

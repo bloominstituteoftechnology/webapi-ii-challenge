@@ -8,7 +8,8 @@ server.use(express.json());
 server.listen(9000, () => console.log("Listening on port 9000."));
 
 const sendUserError = (status, msg, res, err) => {
-  res.status(status).json({ error: msg, err: err });
+  res.status(status).json({ error: msg });
+  console.error(err);
   return;
 };
 
