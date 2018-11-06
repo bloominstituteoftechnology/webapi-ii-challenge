@@ -24,7 +24,13 @@ class PostDetail extends React.Component{
             updated:'',
         };
     }
+    deleteHandler = (event,id) =>{
+        event.preventDefault();
+        Axios.delete(`http://localhost:5050/api/posts/${id}`)
+             .then(response=>{this.props.history.push('/')})
+             .catch(error => console.log('An Error has occurred. ', error))
 
+    }
     componentDidMount(){
         Axios.get(`http://localhost:5050/api/posts/${this.props.match.params.id}`)
              .then((response)=>{
@@ -46,6 +52,10 @@ class PostDetail extends React.Component{
                 <Contents>{this.state.contents}</Contents>
                 <p>{this.state.created}</p>
                 <p>{this.state.updated}</p>
+
+                <button onClick={(event)=>{this.deleteHandler(event,this.state.id) }}>Delete</button>
+
+
             </WrapperDiv>
         )
     
