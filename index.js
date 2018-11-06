@@ -34,23 +34,19 @@ server.get('/api/posts/:id', (req, res) => {
     });
 });
 
-server.post('/api/posts/', (req, res) => {
+server.post('/api/posts/', async (req, res) => {
   console.log(req.body);
-  // res.send('success');
-  let newpost = req.body;
-
-  if (!newpost.title || !newpost.contents) {
+  const userPostData = req.body;
+  if (!userPostData.title || !userPostData.contents) {
     res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
   } else {
-    db.insert(newpost)
-      .then(addedPost => {
-        res.status(201).json(newpost);
-      })
-      .catch(error => {
-        res
-          .status(500)
-          .json({ error: 'There was an error while saving the post to the database. The error is ', error });
-      });
+    try {
+      const newPost = await db.insert(userPostData);
+      res.status(201).json(newPost);
+    } catch (error) {
+      console.log('There was an error while saving the post to the database. The error is ', error);
+      res.status(500).json({ error: 'There was an error while saving the post to the database. The error is ', error });
+    }
   }
 });
 
