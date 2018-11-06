@@ -45,9 +45,10 @@ server.get("/api/posts/:id", (req, res) => {
 server.post("/api/posts", (req, res) => {
   db.insert(req.body)
     .then(postId => {
-      res.status(201).json(postId);
-      db.getById(postId.id)
-        .then(post => {})
+      return db.findById(postId.id)
+        .then(post => {
+          res.status(201).json(post);
+        })
         .catch(error => {
           res.status(500).json({
             error: "There was an error while saving the post to the database"
@@ -62,7 +63,8 @@ server.post("/api/posts", (req, res) => {
 });
 
 server.delete("/api/posts/:id", (req, res) => {
-  db.remove(req.params.id)
+    db.remove(req.params.id)
+    //  Promise.reject(new Error('testing'))
     .then(count => {
       if (count) {
         res.status(200).json(count);
@@ -89,10 +91,16 @@ server.put("/api/posts/:id", (req, res) => {
           .status(404)
           .json({ message: "The post with the specified ID does not exist." });
       }
-      res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+      res
+        .status(400)
+        .json({
+          errorMessage: "Please provide title and contents for the post."
+        });
     })
     .catch(error => {
-        res.status(500).json({ error: "The post information could not be modified." });
+      res
+        .status(500)
+        .json({ error: "The post information could not be modified." });
     });
 });
 
