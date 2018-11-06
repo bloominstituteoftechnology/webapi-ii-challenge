@@ -23,7 +23,8 @@ server.get('/api/posts', (request, response) => {
         })
 })
 
-//GET	'/api/posts/:id' 	Returns the post object with the specified id.
+//GET	'/api/posts/:id' 	
+//Returns the post object with the specified id.
 server.get('/api/posts/:id', (request, response) => {
     const id = request.params.id;
     db.findById(id)
@@ -39,19 +40,24 @@ server.get('/api/posts/:id', (request, response) => {
        })
 })
 
-//POST	/api/posts	Creates a post using the information sent inside the request body
+//POST	/api/posts	
+//Creates a post using the information sent inside the request body
 server.post('/api/posts', (request, response) => {
-        const userData = request.body;
-        db.insert(userData)
+    if(request.body.title !== undefined && request.body.contents !== undefined) {
+        db.insert(request.body)
           .then(userId => {
                 response.status(201).json(userId);
            })
           .catch(error => {
                 response.status(500).json({message : 'error creating user', error});
            }) 
+    } else {
+        response.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    }
 })
 
-//DELETE /api/posts/:id	Removes the post with the specified id and returns the deleted post.
+//DELETE /api/posts/:id	
+//Removes the post with the specified id and returns the deleted post.
 server.delete('/api/posts/:id', (request, response) => {
         db.remove(request.params.id)
           .then(count => {
@@ -61,5 +67,27 @@ server.delete('/api/posts/:id', (request, response) => {
                 response.status(500).json({message : 'error deleting user'})
            })
 })
+
+//PUT	/api/posts/:id	
+//Updates the post with the specified id using data from the request body. 
+//Returns the modified document, NOT the original.
+server.put('/api/posts/:id', (request, response) => {
+    if(request.body.title !== undefined && request.body.contents !== undefined) {
+        db.update(request.params.id, request.body)
+          .then(count => {
+                if(count) {
+                    response.status(200).json(count);
+                } else {
+                    response.status(404).json({ message: "The post with the specified ID does not exist." })
+                }
+           })
+          .catch(error => {
+                response.status(500).json({ error: "The post information could not be modified." })
+           })
+    } else {
+        response.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    }
+})
+
 
 server.listen(9000, () => console.log('server is live'));
