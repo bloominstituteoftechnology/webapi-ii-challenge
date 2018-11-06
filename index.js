@@ -7,20 +7,20 @@ const port = 8250;
 
 // add your server code starting here
 const server = express();
-server.use(bodyParser.json());
+server.use(express.json());
 
-server.post('/api/posts', (req, res) => {
-    const { title, contents } = req.body;
-    if (!title || !contents) {
-        res.status(400).json({ errorMessage: "Please provide title and contents for the post."})
-    } else {
-        db.insert({ title, contents })
-            .then(post => {
-                res.status(201).json({ title, contents })
-            })
-            .catch(error => {
-                res.status(500).json({ errorMessage: "There was an error while saving the post to the database"})
-            })
+server.post('/api/posts', async (req, res) => {
+    try {
+        const { title, contents } = req.body;
+        if(!title || !contents) {
+            res.status(400).json({ errorMessage: 'Please provide title and contents for the post.'})
+        } else {
+            const postId = await db.insert({ title, contents })
+            const post = await db.findById(postId.id)
+            res.status(201).json(post)
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'error creating user', error })
     }
 })
 
