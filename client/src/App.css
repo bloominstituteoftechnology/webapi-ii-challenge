@@ -82,7 +82,6 @@ p {
   font-size: 1.8rem;
   background: #B39968;
   color: #4C632F;
-  width: 50%;
   padding: 10px;
   border-radius: 5px;
   margin-top: 1%;
@@ -126,6 +125,10 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.post-review p {
+  width: 50%; 
 }
 
 .button {

@@ -2,9 +2,11 @@
 const express = require('express');
 const db = require('./data/db.js');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const server = express();
 server.use(cors());
+server.use(bodyParser());
 
 server.get('/api/posts', (req, res) => {
   db.find()
@@ -43,7 +45,6 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts', (req, res) => {
-  console.log(req);
   const post = req.body;
   if ( !post.title || !post.contents || post.title.length === 0 || post.contents.length === 0){
     res
@@ -52,13 +53,16 @@ server.post('/api/posts', (req, res) => {
   } else {
     db.insert(post)
       .then(id => {
-        db.findById(id)
+        db.findById(id.id)
+          .then(post => {
+            res
+              .status(201)
+              .json(post)
+          })
+          return res
       })
-      .then(console.log(post))
-      .then(post => {
+      .then(res => {
         res
-          .status(201)
-          .json(post)
       })
       .catch(err => {
         res
@@ -68,16 +72,30 @@ server.post('/api/posts', (req, res) => {
   }
 })
 
-// server.delete('/api/posts/:id', (req, res) => {
-//   const { id } = req.params.id;
-//   const removing = db.remove(id)
-//     .then(
-//       if (removing === 0) {
-//         res
-//           .status()
-//       }
-//     )
-// })
+server.delete('/api/posts/:id', (req, res) => {
+  const id = req.params.id
+  console.log(id);
+  db.remove(id)
+    .then(res => {
+      console.log(res)
+      if (res === 1) {
+        res
+          .status()
+          .json({ message: 'deleted!'})
+        } else {
+
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." })
+
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: "The post could not be removed" })
+    })
+})
 
 // server.put('/api/posts/:id', (req, res) => {
 // const { id } = req.params.id;

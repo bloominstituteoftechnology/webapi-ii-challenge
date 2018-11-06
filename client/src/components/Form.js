@@ -47,6 +47,7 @@ class Form extends React.Component {
         contents: '',
       });
       this.props.history.push('/');
+      window.location.reload(); 
     }
   }
 

@@ -20,7 +20,14 @@ class ListView extends React.Component {
         })
       })
       .catch(error => console.log(error));
+
+      if (this.props.newPost) {
+        this.setState({
+          posts: [...this.state.posts, ...this.props.newPost,]
+        })
+      }
   }
+
   render() {
     if (this.state.posts.length === 0){
       return (

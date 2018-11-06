@@ -6,12 +6,14 @@ import { Form } from '../components';
 class AddView extends React.Component{
 
   addPost = post => {
+    console.log('addform props', this.props);
     axios
       .post('http://localhost:9000/api/posts', post)
       .then(response => {
-        console.log(response)
+        this.props.saveHelper(response.data)
       })
       .catch(error => console.log(error));
+
   }
   render(){
     return (

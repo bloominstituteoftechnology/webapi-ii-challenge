@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { Post } from '../components';
 
-
 class PostView extends React.Component {
   constructor(){
     super();
@@ -22,6 +21,7 @@ class PostView extends React.Component {
       })
       .catch(error => console.log(error));
   }
+
   render(){
     if (this.state.post.length === 0) {
       return (
@@ -31,7 +31,7 @@ class PostView extends React.Component {
         )
     }
     return(
-      <Post post={this.state.post[0]} />
+      <Post post={this.state.post[0]} history={this.props.history}/>
     )
   }
 }
