@@ -97,3 +97,51 @@
     cursor: pointer;
     transition: all 0.5s ease;
 }
+
+.post-card-edit-modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    background: rgba(182, 0, 167, 0.9);
+    color: #E0E1DD;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
+}
+
+.post-card-edit-modal .post-card-edit-back {
+    font-size: 20px;
+    margin: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+
+.post-card-edit-modal .post-card-edit-form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 70%;
+}
+
+.post-card-edit-modal .post-card-edit-form textarea {
+    resize: none;
+    width: 100%;
+    height: 100px;
+}
+
+.post-card-edit-modal .post-card-edit-form input {
+    width: 100%;
+    padding: 2px;
+    margin: 5px 0;
+}
+
+.post-card-edit-modal .post-card-edit-form button {
+    width: 100%;
+}
