@@ -12,3 +12,42 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+.App {
+  text-align: center;
+  background-image: url("https://wallpapercave.com/wp/73ccJn5.jpg");
+}
+
+.quotes {
+  display: flex;
+  margin: 30px auto;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  
+}
+.quote {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  background: rgb(22, 22, 22);
+  color: #f8f1f1;
+  padding: 40px;
+  margin: 20px;
+  width: 300px;
+  height: 250px;
+  border-radius: 10px;
+  position: relative;
+  
+}
+.quote:hover {
+  box-shadow: 10px 10px 8px 10px #888888;
+}
+.delete {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+.delete:hover {
+  color:red;
+  cursor: pointer
+}
