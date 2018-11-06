@@ -10,6 +10,28 @@ server.listen(5000, () =>
   console.log('Server running on http://localhost:5000')
 );// assigns a port
 
+server.post('/api/posts', (req, res) => {
+    res.status(201).json({ url: '/api/posts', operation: 'POST' });
+
+  });
+
+server.put('/api/posts', (req, res) => {
+    res.status(200).json({ url: '/api/posts', operation: 'PUT' });
+  });
+
+server.delete('/api/posts', (req, res) => {
+    res.status(204);
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+    // or we could destructure it like so: const { id } = req.params;
+    res.status(200).json({
+      url: `/api/posts/${id}`,
+      operation: `DELETE for post with id ${id}`,
+    });
+  });
+
 server.get('/api/posts', (req, res) => {
     db.find() //calling find method from db.js file 
       .then(posts=> { 
@@ -39,25 +61,23 @@ server.get('/api/posts/:id', (req, res) => {
       });
   });
 /*
+When the client makes a POST request to /api/posts:
 
------When the client makes a GET request to /api/posts:
-
-*If there's an error in retrieving the posts from the database:
+If the request body is missing the title or contents property:
+if (req.body.title === undefined || req.body.contents === undefined || req.body.title === '' || req.body.contents === '' )
 cancel the request.
-respond with HTTP status code 500.
+respond with HTTP status code 400 (Bad Request).
+return the following JSON response: 
+{ errorMessage: "Please provide title and contents for the post." }.
+If the information about the post is valid:
+
+save the new post the the database.
+return HTTP status code 201 (Created).
+return the newly created post.
+If there's an error while saving the post:
+
+cancel the request.
+respond with HTTP status code 500 (Server Error).
 return the following JSON object: 
-{ error: "The posts information could not be retrieved." }.
-
------When the client makes a GET request to /api/posts/:id:
-
-*If the post with the specified id is not found:
-
-return HTTP status code 404 (Not Found).
-return the following JSON object: { message: 
-"The post with the specified ID does not exist." }.
-If there's an error in retrieving the post from the database:
-
-*cancel the request.
-respond with HTTP status code 500.
-return the following JSON object: 
-{ error: "The post information could not be retrieved." }.*/
+{ error: "There was an error while saving the post to the database" }.
+*/
