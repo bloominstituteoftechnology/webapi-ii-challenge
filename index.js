@@ -26,7 +26,6 @@ server.get('/api/posts', (req, res) => {
 
 server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
-
   db.findById(id)
     .then(post => {
       if (post) {
@@ -48,13 +47,16 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts', async (req, res) => {
+  if(!req.body.title || !req.body.contents){
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+  }
   try {
     const postData = req.body;
     const userId = await db.insert(postData);
     res.status(201).json(userId);
   } catch (error) {
     res.status(500).json({
-      message: 'error adding post',
+      error: "There was an error while saving the post to the database",
       error
     })
   }
@@ -77,8 +79,8 @@ server.delete('/api/posts/:id', (req, res) => {
   db.remove(req.params.id).then(count => {
     res.status(200).json(count)
   }).catch(error => {
-    res.status(500).json({
-      message: 'error deleting message',
+    res.status(404).json({
+      message: "The post with the specified ID does not exist.",
       error
     })
   })
