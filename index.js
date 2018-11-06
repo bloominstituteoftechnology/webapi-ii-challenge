@@ -10,31 +10,14 @@ const server = express();
 // root of our site
 // req is a requestHandler
 server.get('/', (req, res) => {
-  res.send('Hello Kat')
+  // console.log(db.find());
+  res.send('<h2>Welcome to the Home Page (aka localhost:8000)</h2><p>To see all posts: localhost:8000/api/posts</p></h2><p>To see a specific post by id (e.g., id = 1): localhost:8000/api/posts/1</p>')
 })
-
-// server.get('/hobbits', (req, res) => {
-//   const hobbits = [
-//     {
-//       id: 1, 
-//       name: 'Samwise Gamgee'
-//     },
-//     { 
-//       id: 2,
-//       name: 'Frodo Baggins'
-//     }
-//   ]
-
-//   res.status(200).json(hobbits)
-// })
 
 server.get('/api/posts', (req, res) => {
   db.find()
     .then(posts => {
-      posts 
-      ? res.status(200).json(posts) 
-      : res.status(404).json({ message: 'posts not found'});
-      
+      res.status(200).json(posts)       
     })
     .catch(err => {
       res.status(500).json({ 
@@ -44,27 +27,22 @@ server.get('/api/posts', (req, res) => {
 })
 
 server.get('/api/posts/:id', (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
+  console.log('params:', req.params); // params: { id: '1' }
+
   db.findById(id)
     .then(posts => {
-      posts 
-      ? res.status(200).json(posts) 
-      : res.status(404).json({ message: 'posts not found'});
-      
+      console.log(posts) // logs id, title, contents, create_at, updated_at
+      !(posts.length) 
+        ? res.status(404).json({ message: "The post with the specified ID does not exist."})
+        : res.status(200).json(posts);
     })
     .catch(err => {
       res.status(500).json({ 
-        message: "The posts information could not be retrieved.",
+        message: "The post information could not be retrieved.",
         error: err })
     })
 })
-
-
-
-
-
-
-
 
 
 server.listen(8000, () => {console.log('API running on port 8000')})
