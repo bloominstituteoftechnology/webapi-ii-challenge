@@ -2,6 +2,11 @@
 const express = require("express");
 const server = express();
 const db = require("./data/db.js");
+const cors = require("cors");
+
+//middleware
+server.use(express.json());
+server.use(cors({ origin: "http://localhost:3000" }));
 
 // add your server code starting here
 server.get("/api/posts", (req, res) => {
@@ -30,4 +35,37 @@ server.get("/api/posts/:id", (req, res) => {
     });
 });
 
-server.listen(8000, () => console.log("server is running"));
+server.post("/api/posts", async (req, res) => {
+  console.log("post", req.body);
+  try {
+    const postData = req.body;
+    const postId = await db.insert(postData);
+    const post = await db.findById(postId.id);
+    res.status(201).json(post);
+  } catch (error) {
+    let message = "error creating the post";
+
+    if (error.errno === 19) {
+      message = "please provide both the title and the contents";
+    }
+    res.status(500).json({ message: message, error });
+  }
+});
+
+server.put("/api/posts/:id", async (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  db.update(id, changes)
+    .then(count => {
+      if (count) {
+        res.status(200).json({ message: `${count} posts updated` });
+      } else {
+        res.status(404).json({ message: "post not found" });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: "error updating the post", err });
+    });
+});
+
+server.listen(8000, () => console.log("\n== the server is alive! ==\n"));
