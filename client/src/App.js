@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+
+import PostWrapper from './components/PostWrapper';
 import './App.css';
 
 class App extends Component {
@@ -23,7 +25,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>THIS IS THE CONNECTING REACT APP</h1>
+        <h1>Here are your post</h1>
+        <PostWrapper posts={this.state.posts}/>
       </div>
     );
   }
