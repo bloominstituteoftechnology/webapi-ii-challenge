@@ -1,8 +1,12 @@
 // import your node modules
 const db = require('./data/db.js');
 const express = require('express');
+
 var cors = require('cors');
 const server = express();
+// middleware
+server.use(express.json()); // teaches express how to parse the JSON request body
+
 
 server.use(cors());
 
@@ -33,6 +37,18 @@ server.get('/api/posts/:id', (request, response) => {
       .catch(error => {
             response.status(500).json({error : 'The post could not be retrieved'});
        })
+})
+
+//POST	/api/posts	Creates a post using the information sent inside the request body
+server.post('/api/posts', (request, response) => {
+        const userData = request.body;
+        db.insert(userData)
+          .then(userId => {
+                response.status(201).json(userId);
+           })
+          .catch(error => {
+                response.status(500).json({message : 'error creating user', error});
+           }) 
 })
 
 server.listen(9000, () => console.log('server is live'));
