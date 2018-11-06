@@ -4,7 +4,6 @@ class Form extends React.Component {
   constructor(props){
     super(props);
     this.state = ({
-      id: null,
       title: '',
       contents: '',
     })
@@ -13,7 +12,6 @@ class Form extends React.Component {
   componentDidMount(){
     if (this.props.post){
       this.setState({
-        id: this.props.post.id,
         title: this.props.post.title,
         contents: this.props.post.contents,
       })
@@ -21,33 +19,27 @@ class Form extends React.Component {
   }
 
   submitHandler = event => {
+    const post = {
+      ...this.state,
+    }
     event.preventDefault();
     if (this.props.post) {
-      console.log('form and a post');
-      const post = {
-        ...this.state,
-      }
+      console.log('editing ', post); 
       this.props.submit(post);
       this.setState({
-        id: null,
         title: '',
         contents: '',
       })
-      this.props.history.push('/');
+            this.props.history.push('/');
+
     } else {
-      console.log('form and adding')
-      const post = {
-        title: this.state.title,
-        contents: this.state.contents,
-      }
       this.props.submit(post);
       this.setState({
-        id: null,
         title: '',
         contents: '',
       });
       this.props.history.push('/');
-      window.location.reload(); 
+      window.location.reload();
     }
   }
 

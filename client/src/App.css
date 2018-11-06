@@ -128,7 +128,7 @@ a {
 }
 
 .post-review p {
-  width: 50%; 
+  width: 50%;
 }
 
 .button {
@@ -184,4 +184,18 @@ button {
   width: 100px;
   padding: 10px;
   font-size: 1.6rem;
+}
+
+.post-container input {
+	width: 100%;
+	padding: 15px;
+	margin-top: -40px;
+}
+
+.post-container form button {
+	background: #B39968;
+	width: 100%;
+	margin-top: 20px; 
+  color: #4C632F;
+	border: 1px solid #B39968;
 }
