@@ -34,10 +34,12 @@ server.get("/api/posts/:id", (req, res) => {
 });
 
 server.post("/api/posts", (req, res) => {
+  console.log(req.body);
   db.insert(req.body)
     .then(post => {
       if (post) {
-        res.status(201).json(post);
+        // return the newly created post
+        res.status(201).json(req.body);
       } else {
         res.status(400).json({
           errorMessage: "Please provide title and contents for the post."
@@ -64,6 +66,36 @@ server.delete("/api/posts/:id", (req, res) => {
     })
     .catch(err => {
       res.status(500).json({error: "The post could not be removed"});
+    });
+});
+
+server.put("/api/posts/:id", async (req, res) => {
+  const {id} = req.params;
+  const changes = req.body;
+  const post = await db.findById(id);
+
+  db.update(id, changes)
+    .then(count => {
+      if (!id) {
+        res
+          .status(404)
+          .json({message: "The post with the specified ID does not exist."});
+      }
+      if (!changes.title || !changes.contents) {
+        res.status(400).json({
+          errorMessage: "Please provide title and contents for the post."
+        });
+      } else {
+        console.log(post);
+        // return the updated pos
+        // db.findById(id).then(post => {res.status(200).json(post)})
+        res.status(200).json(post);
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({error: "The post information could not be modified."});
     });
 });
 
