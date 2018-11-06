@@ -66,7 +66,7 @@ server.put("/api/posts/:id", (req, res) => {
     db.update(req.params.id, req.body)
       .then(count => {
         count
-          ? db.findById(req.params.id).then(post => res.send(200).json(post))
+          ? db.findById(req.params.id).then(post => res.status(200).json(post))
           : res.status(404).json({
               message: "The post with the specified ID does not exist."
             });
