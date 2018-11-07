@@ -54,19 +54,20 @@ server.get("/api/posts/:id", (req, res) => {
         }
     })
     .catch(err => {
-        res.status(500).json({ message: "We failed you, we ca't get the user" });
+        res.status(500).json({ message: "We failed you, we can't get the user" });
     })
 });
 
-server.post("/api/users", async(req, res) => {
-    console.log("body: ", req.body);
-    try {
-        const userData = req.body;
-        const userId = await db.insert(userData);
-        res.status(201).json(userId);
-    } catch (error) {
-        res.status(500).json({ message: "error creating user", error });
-    }
+server.post("/api/posts", (req, res) => {
+    const userData = req.body;
+    db.insert(userData)
+        .then(feedback => {
+            const post = db.findById(feedback.id);
+            res.status(201).json(post);
+        })
+        .catch(err => {
+            res.status(500).json({ message: err });
+        });
 });
 
 server.listen(9000, () => console.log("the server is alive!"));
