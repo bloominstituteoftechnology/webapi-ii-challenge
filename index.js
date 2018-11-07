@@ -26,9 +26,9 @@ server.get('/api/post/:id', (req, res) => {
 
   db.findById(id)
     .then(post => {
-      post
-        ? res.status(200).json(post)
-        : res.status(404).json({ message: "The post with the specified ID does not exist."})
+      !(post.length)
+        ? res.status(404).json({ message: "The post with the specified ID does not exist."})
+        : res.status(200).json(post) 
     })
     .catch( error => {
       res.status(500).json({error: "The post information could not be retrieved.", error: error})
@@ -36,7 +36,7 @@ server.get('/api/post/:id', (req, res) => {
 })
 
 server.post('/api/posts', async (req, res) => {
-  try{
+  try {
     const postData = req.body;
     const postId = await db.insert(postData);
     const post =  await db.findById(postId.id);
