@@ -70,4 +70,18 @@ server.post("/api/posts", (req, res) => {
         });
 });
 
+server.delete("/api/posts/:id", (req, res) => {
+  db.remove(req.params.id)
+    .then(count => {
+        if (count) {
+            res.status(200).json(count);
+        } else {
+            res.status(404).json({ message: "post not found" });
+        }
+    })
+    .catch(err => {
+      res.status(500).json({ message: "error deleting user" });
+    })
+});
+
 server.listen(9000, () => console.log("the server is alive!"));
