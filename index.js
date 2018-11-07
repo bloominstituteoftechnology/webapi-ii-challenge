@@ -45,19 +45,23 @@ server.post('/api/posts', (req, res) => {  // In a post request, the desired dat
     }
 })
 
-server.delete('/api/posts/:id', (req, res) => {
+server.delete('/api/posts/:id', async (req, res) => {
         const {id} = req.params;
-        db.remove(id)
-        .then(post =>{  // returns a 0 or 1 if !present or present
-           if(post) {
-            res.status(200).json({message: 'Post Deleted Successfully'})
-                }
-           else{
-                    res.status(404).json({ message: "The post with the specified ID does not exist." })
-                }
-    }
-            )
-        .catch(err => res.status(500).json({ error: "The post could not be removed" }))
+
+        const post = await db.findById(id);
+        const delStatus = await db.remove(id);
+        try{
+            if(delStatus) {
+                res.status(200).json(post)
+                    }
+            else{
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
+            }
+        }
+         catch(er) {
+            res.status(500).json({ error: "The post could not be removed" })
+         }
+        
     
     
 })
@@ -71,7 +75,7 @@ server.put('/api/posts/:id', (req, res)  => {
             res.status(404).json({ message: "The post with the specified ID does not exist." })
         }
         else{
-            title && contents ? 
+            title || contents ? 
             db.update(id, newPost)
             .then(post => {                  
                 db.findById(id).then(r => res.status(200).json(r))
