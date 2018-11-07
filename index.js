@@ -11,7 +11,6 @@ server.listen(5000, () =>
 //----- POST -----
 
 server.post('/api/posts', async (req, res) => {
-  console.log('body', req.body.title);
     const postData = req.body;
     let post;
     if (!postData.title && postData.contents ||postData.title==="" || postData.contents==="" ) {
@@ -31,26 +30,25 @@ server.post('/api/posts', async (req, res) => {
   });
   
 //----- PUT -----
-
 server.put('/api/posts/:id', async (req, res) => {
-  console.log('body', req.body.title);
   const { id } = req.params;
   const postChanges = req.body;
-  if (!postChanges.title && postChanges.contents||postData.title==="" || postData.contents==="" ) {
+  let post;
+  if (!postChanges.title && postChanges.contents||postChanges.title==="" || postChanges.contents==="" ) {
     const errorMessage = "Please provide title and contents for the post"; 
-    res.status(400).json({ errorMessage, error });
+    res.status(400).json({ errorMessage });
     return
-}
+  } 
   try {
-        await db.update(id, postChanges);
-    } catch (error) {
-      res.status(500).json({ error: "There was an error while saving the post to the database" });
-      return      
-  }
-    res.status(201).json(postChanges);
-    return
-  });
-  
+    await db.update(id, postChanges)
+    post = await db.findById(id)
+  } catch (error) {
+  res.status(500).json({ error: "There was an error while saving the post to the database" });
+  return      
+}
+res.status(201).json(post);
+return
+});
 
 //----- DELETE -----
 
