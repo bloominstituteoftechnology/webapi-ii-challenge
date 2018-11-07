@@ -145,7 +145,7 @@ When the client makes a `PUT` request to `/api/posts/:id`:
 
 - If the post is found and the new information is valid:
 
-  - update the post document in the database using the new information sent in the `reques body`.
+  - update the post document in the database using the new information sent in the `request body`.
   - return HTTP status code `200` (OK).
   - return the newly updated _post_.
 
