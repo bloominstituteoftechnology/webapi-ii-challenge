@@ -7,14 +7,16 @@ server.listen(5000, () =>
   console.log('Server running on http://localhost:5000')
 );// assigns a port
 
+
 //----- POST -----
 
 server.post('/api/posts', async (req, res) => {
-    const post;
+  console.log('body', req.body.title);
     const postData = req.body;
-    if (postData.title === undefined ||  postData.title === '' || postData.contents === undefined || postData.contents === '' ) {
+    let post;
+    if (!postData.title && postData.contents) {
         const errorMessage = "Please provide title and contents for the post"; 
-        res.status(400).json({ errorMessage, error });
+        res.status(400).json({ errorMessage});
         return
     }
     try {
@@ -25,6 +27,7 @@ server.post('/api/posts', async (req, res) => {
             return      
     }
     res.status(201).json(post);
+    return
   });
   
 //----- PUT -----
@@ -45,6 +48,7 @@ server.put('/api/posts/:id', async (req, res) => {
       return      
   }
     res.status(201).json(post);
+    return
   });
   
 
