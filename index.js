@@ -32,6 +32,7 @@ db.findById(id)
 
 server.post('/api/posts', (req, res) => {  // In a post request, the desired data should generally be present within the body. 
     const { title, contents } = req.body;
+    console.log(req.body)
     if(title && contents){
         const post = {title, contents};
         db.insert(post)
