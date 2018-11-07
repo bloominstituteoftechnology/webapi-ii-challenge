@@ -13,7 +13,7 @@ server.listen(5000, () =>
 server.post('/api/posts', async (req, res) => {
     const postData = req.body;
     let post;
-    if (!postData.title && postData.contents ||postData.title==="" || postData.contents==="" ) {
+    if (!postData.title || !postData.contents ||postData.title==="" || postData.contents==="" ) {
         const errorMessage = "Please provide title and contents for the post"; 
         res.status(400).json({ errorMessage});
         return
@@ -34,6 +34,20 @@ server.put('/api/posts/:id', async (req, res) => {
   const { id } = req.params;
   const postChanges = req.body;
   let post;
+   db.findById(id)
+    .then(post => { 
+     if (!post ||!post.length) { 
+      res.status(404).json({ message: "The post with the specified ID does not exist." });
+      return  
+     }
+   })
+   .catch(err => {
+    res //if data can't be retrieved ... 
+      .status(500)
+      .json({ error: "The post information could not be retrieved." });
+   });
+    
+
   if (!postChanges.title && postChanges.contents||postChanges.title==="" || postChanges.contents==="" ) {
     const errorMessage = "Please provide title and contents for the post"; 
     res.status(400).json({ errorMessage });
