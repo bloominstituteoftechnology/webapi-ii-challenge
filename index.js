@@ -42,24 +42,40 @@ server.get("/api/posts/:id", (req, res) => {
         .json({ error: "The post information could not be retrieved." });
     });
 });
-server.post("/api/posts", (req, res) => {
-  db.insert(req.body)
-    .then(postId => {
-      return db.findById(postId.id)
-        .then(post => {
-          res.status(201).json(post);
-        })
-        .catch(error => {
-          res.status(500).json({
-            error: "There was an error while saving the post to the database"
-          });
-        });
-    })
-    .catch(error => {
-      res.status(400).json({
-        errorMessage: "Please provide title and contents for the post."
-      });
-    });
+
+// server.post("/api/posts", (req, res) => {
+//   db.insert(req.body)
+//     .then(postId => {
+//       return db.findById(postId.id)
+//         .then(post => {
+//           res.status(201).json(post);
+//         })
+//         .catch(error => {
+//           res.status(500).json({
+//             error: "There was an error while saving the post to the database"
+//           });
+//         });
+//     })
+//     .catch(error => {
+//       res.status(400).json({
+//         errorMessage: "Please provide title and contents for the post."
+//       });
+//     });
+// });
+
+server.post('/api/posts', async (req, res) => {
+  try {
+    const postData = req.body;
+    const postId = await db.insert(postData);
+    const post = await db.findById(postId.id);
+    res.status(201).json(post);
+  } catch (error) {
+    if (error.errno === 19) {
+      res.status(400).json({ message: "There was an error while saving the post to the database" });
+    }
+
+    res.status(500).json({ message: "Please provide title and contents for the post." });
+  }
 });
 
 server.delete("/api/posts/:id", (req, res) => {
