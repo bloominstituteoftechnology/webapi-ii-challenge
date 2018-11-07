@@ -25,8 +25,9 @@ class Post extends Component {
   render() {
     const { post, isDragging, connectDragSource } = this.props;
     const opacity = isDragging ? 0 : 1;
+    const width = isDragging ? '50px' : '200px';
     return connectDragSource(
-      <div className="Post" style={{ opacity }}>
+      <div className="Post" style={{ opacity, width }}>
         <div>{post.contents}:</div>
         <h3 className="PostTitle">{post.title}</h3>
       </div>

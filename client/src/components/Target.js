@@ -11,11 +11,11 @@ const collect = (connect, monitor) => {
 
 class Target extends Component {
   render() {
-    const { conncectDropTarget, hovered, post } = this.props;
+    const { conncectDropTarget, hovered } = this.props;
     const color = hovered ? '#f9db42' : '#9d863e';
     return conncectDropTarget(
       <div className="Target">
-        <i style={{ color }} class="fas fa-trash" />
+        <i style={{ color }} className="fas fa-trash" />
       </div>
     );
   }
