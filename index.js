@@ -1,8 +1,10 @@
 // import your node modules
 const db = require('./data/db.js');
+const cors = require('cors');
 
 const express = require('express');
 const server = express();
+server.use(cors());
 server.use(express.json());
 // add your server code starting here
 console.log('hello');
@@ -61,25 +63,25 @@ server.delete('/api/posts/:id', (req, res) => {
     });
 });
 
-server.put('/api/posts/:id', (req, res) => {
-  const { id } = req.params;
-  const changes = req.body;
-  db.update(id, changes)
-    .then(count => {
-      if (!changes.title || !changes.contents) {
-        return;
+server.put('/api/posts/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const changes = req.body;
 
-        res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
-      } else if (count) {
-        res.status(200).json({ message: `${count} users updated` });
-      } else {
-        console.log('the count is: ', count);
+    if (!changes.title || !changes.contents) {
+      res.status(400).json({ errorMessage: 'Please provide title and contents for the post.' });
+    } else {
+      const foundPost = await db.findById(id);
+      if (!foundPost) {
         res.status(404).json({ message: `error: The post with the specified ID does not exist.` });
+      } else {
+        const count = await db.update(id, changes);
+        res.status(200).json({ message: `${count} users updated` });
       }
-    })
-    .catch(err => {
-      res.status(500).json({ error: 'The post could not be updated.' });
-    });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'The post could not be updated.' });
+  }
 });
 
 server.listen(9000, () => console.log('the server is alive!'));
