@@ -52,9 +52,15 @@ server.get('/api/posts/:id', (req, res) => {
 
 // POST/CREATE
 server.post('/api/posts', async (req, res) => {
+
   try {
     const postBody = req.body;
-    // console.log('postBody:', postBody);
+    console.log('postBody:', postBody);
+
+    if (!postBody.title || !postBody.contents) {
+      return res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+      } 
+      
     const postId = await db.insert(postBody);
     // console.log('postId:', postId)
     const addPost = await db.findById(postId.id);
@@ -66,7 +72,17 @@ server.post('/api/posts', async (req, res) => {
 })
 
 // PUT/UPDATE
+server.put('/api/users/:id', (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
 
+  db.update(id, changes)
+    .then(count => {
+      count 
+        ? res.status(200).json({ message: `${count} posts updated`})
+        : res.status(404).json({ message: "The post with the specified ID does not exist." })
+    })
+})
 
 
 
@@ -76,7 +92,7 @@ server.delete('/api/posts/:id', (req, res) => {
 
   .then(count => {
     count
-    ? res.status(200).json(count)
+    ? res.status(200).json(count) // don't return count return deleted post
     : res.status(404).json( { message: "The post with the specified ID does not exist." } );
   })
   .catch(err => {
