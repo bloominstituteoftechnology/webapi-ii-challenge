@@ -33,10 +33,10 @@ server.post('/api/posts', async (req, res) => {
 //----- PUT -----
 
 server.put('/api/posts/:id', async (req, res) => {
+  console.log('body', req.body.title);
   const { id } = req.params;
   const postChanges = req.body;
-
-  if (postChanges.title === undefined ||  postChanges.title === '' || postChanges.contents === undefined || postChanges.contents === '' ) {
+  if (!postChanges.title && postChanges.contents) {
     const errorMessage = "Please provide title and contents for the post"; 
     res.status(400).json({ errorMessage, error });
     return
@@ -47,7 +47,7 @@ server.put('/api/posts/:id', async (req, res) => {
       res.status(500).json({ error: "There was an error while saving the post to the database" });
       return      
   }
-    res.status(201).json(post);
+    res.status(201).json(postChanges);
     return
   });
   
@@ -59,12 +59,15 @@ server.delete('/api/posts/:id', (req, res) => {
         .then(post => {
         if (post && post.length) {
          res.status(200).json(post);
+         return
         } else { // or oops - if we could retrieve it, we would but it's not here, status 404
         res.status(404).json({ message: "The post with the specified ID does not exist." });
+        return
       }
     })
         .catch(err => {
          res.status(500).json({ error: "The post could not be removed" });
+         return
         });
       });
       
