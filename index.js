@@ -23,7 +23,8 @@ server.get('/api/posts', (req, res) => {
     db.find()
         .then(users => {
             res.json(users);
-        }).catch(err => {
+        })
+        .catch(err => {
             res.status(500).json({ message: 'The posts information could not be retrieved.' });
         });
 });
