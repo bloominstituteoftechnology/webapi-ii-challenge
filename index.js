@@ -33,8 +33,8 @@ server.get('/api/posts', (req, res) => {
 
 // GET/READ POSTS BY ID
 server.get('/api/posts/:id', (req, res) => {
-  const id = req.params.id;     // const { id } = req.params
-  console.log('params:', req.params); // params: { id: '1' }
+  const { id } = req.params; 
+  console.log('id:', id); // params: { id: '1' }
 
   db.findById(id)
     .then(post => {
@@ -44,9 +44,7 @@ server.get('/api/posts/:id', (req, res) => {
         : res.status(200).json(post[0]);
     })
     .catch(err => {
-      res.status(500).json({ 
-        message: "The post information could not be retrieved.",
-        error: err })
+      res.status(500).json({ error: "The post information could not be retrieved." })
     })
 })
 
@@ -72,15 +70,18 @@ server.post('/api/posts', async (req, res) => {
 })
 
 // PUT/UPDATE
-server.put('/api/users/:id', (req, res) => {
+server.put('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   const changes = req.body;
-
+  console.log (changes)
   db.update(id, changes)
     .then(count => {
       count 
-        ? res.status(200).json({ message: `${count} posts updated`})
+        ? res.status(200).json({ message: `updated post: { 'title': '${!changes.title ? 'title was not updated': changes.title}', 'contents': '${!changes.contents ? 'contents was not updated': changes.contents}' }`})
         : res.status(404).json({ message: "The post with the specified ID does not exist." })
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'error deleting user' })
     })
 })
 
