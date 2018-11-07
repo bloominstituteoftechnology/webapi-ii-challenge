@@ -11,20 +11,23 @@ server.listen(5000, () =>
 //----- POST -----
 
 server.post('/api/posts', async (req, res) => {
-    try {
-        const postData = req.body;
-        const postId = await db.insert(postData);
-        const post = await db.findById(postId.id);
-        res.status(201).json(post);
-         if (post.title === undefined ||  post.title === '' || post.contents === undefined || post.contents === '' ) {
-           const errorMessage = "Please provide title and contents for the post"; 
-         throw res.status(400).json({ errorMessage, error });
-         }
-    } catch (error) {
-        res.status(500).json({ error: "There was an error while saving the post to the database" });
+    const post;
+    const postData = req.body;
+    if (postData.title === undefined ||  postData.title === '' || postData.contents === undefined || postData.contents === '' ) {
+        const errorMessage = "Please provide title and contents for the post"; 
+        res.status(400).json({ errorMessage, error });
+        return
     }
+    try {
+        const postId = await db.insert(postData);
+        post = await db.findById(postId.id);
+    } catch (error) {
+            res.status(500).json({ error: "There was an error while saving the post to the database" });
+            return      
+    }
+    res.status(201).json(post);
   });
-
+  
 //----- PUT -----
 
 server.put('/api/posts', async (req, res) => {
@@ -95,15 +98,5 @@ server.get('/api/posts/:id', (req, res) => {
       });
   });
 /*
-When the client makes a DELETE request to /api/posts/:id:
 
-If the post with the specified id is not found:
-
-return HTTP status code 404 (Not Found).
-return the following JSON object: { message: "The post with the specified ID does not exist." }.
-If there's an error in removing the post from the database:
-
-cancel the request.
-respond with HTTP status code 500.
-return the following JSON object: { error: "The post could not be removed" }.
 */
