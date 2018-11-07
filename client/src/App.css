@@ -1,0 +1,129 @@
+.App {
+  text-align: center;
+  font-family: 'Source Sans Pro', sans-serif;
+  background-color: whitesmoke;
+}
+
+.post {
+  border: 1px solid black;
+  padding: 10px;
+  width: 300px;
+  margin: 20px;
+}
+
+.title {
+  font-size: 1.8rem;
+}
+
+.contents {
+  font-size: 1.6rem;
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+}
+
+.post-list {
+  margin: auto;
+  padding: 40px 0 10px;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+.post-list-title {
+  font-weight: 400;
+  border-bottom: 4px double black;
+  margin: auto;
+  width: 110px;
+}
+
+.add-post {
+  margin: auto;
+  padding: 40px 0;
+}
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2.4rem;
+  font-weight: 300;
+  margin-top: 20px;
+}
+
+.input-add {
+  font-size: 1.8rem;
+  padding: 10px;
+  margin: 10px 0;
+  width: 300px;
+}
+
+.submit-add {
+  font-size: 1.8rem;
+  padding: 10px;
+  width: 200px;
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-top: 10px;
+  background-color: white;
+}
+
+.submit-add:hover {
+  background-color: #f6c4d2;
+}
+
+.post-btns {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.post-btn {
+  font-size: 1.4rem;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 10px;
+  text-align: center;
+  width: 50px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.post-btn:hover {
+  background-color: #f6c4d2;
+}
+
+.editing-form {
+  display: flex;
+  margin: 5px auto 20px;
+}
+
+.edit-input {
+  font-size: 1.4rem;
+  margin: 5px;
+  padding: 5px;
+  width: 150px;
+}
+
+.submit-edit {
+  font-size: 1.2rem;
+  font-weight: 400;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 15px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.submit-edit:hover {
+  background-color: #f6c4d2;
+}
+
+.hidden {
+  display: none;
+}
