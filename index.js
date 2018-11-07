@@ -76,4 +76,20 @@ server.delete('/api/posts/:id', (req, res)=>{
     })
     
 })
+server.put('/api/posts', (req, res)=>{
+    res.status(200).json({url:'/api/posts', operation:'PUT'})
+});
+server.put('/api/posts/:id', (req, res)=>{
+    res.status(200).json({url:'/api/posts', operation:'PUT'});
+
+});
+server.put('/api/posts/:id',(req, res)=>{
+    const post= posts.findById(p=>p.id==req.params.id);
+    if(!post){
+        res.status(404).json({message:'Post doesnt exist'});
+    }else{
+        Object.assign(post, req.body);
+        res.status(200).json(post);
+    }
+})
 server.listen(8000,()=>console.log('API Running on port 8000') )
