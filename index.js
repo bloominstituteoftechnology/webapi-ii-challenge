@@ -7,6 +7,16 @@ const cors = require("cors");
 server.use(express.json());
 server.use(cors());
 
+server.get("/", (req, res) => {
+  db.find()
+    .then(posts => {
+      res.json(posts);
+    })
+    .catch(err =>
+      res.send({ error: "The posts information could not be retrieved." })
+    );
+});
+
 server.get("/api/posts", (req, res) => {
   db.find()
     .then(posts => {
