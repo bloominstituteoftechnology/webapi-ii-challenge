@@ -25,7 +25,7 @@ class PostView extends Component {
   //Fetches an individual note by id and sets its values to state of this component.
   fetch = id => {
     axios
-      .get(`http://localhost:8000/api/posts/${id}`)
+      .get(`https://node3-practice.herokuapp.com/api/posts/${id}`)
       .then(res => {
         console.log("PostView", res);
         this.setState(() => ({

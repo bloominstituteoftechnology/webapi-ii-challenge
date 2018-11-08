@@ -22,7 +22,7 @@ class PostForm extends Component {
     //Adds new note, renders the notes list, sets to top of page
     else {
       axios
-        .post("http://localhost:8000/api/posts", this.state)
+        .post("https://node3-practice.herokuapp.com/api/posts", this.state)
         .then(() =>
           this.setState({
             title: "",

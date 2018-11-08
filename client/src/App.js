@@ -29,7 +29,7 @@ class App extends Component {
   //Gets all Posts from database
   fetchPosts = () => {
     axios
-      .get("http://localhost:8000/api/posts")
+      .get("https://node3-practice.herokuapp.com/api/posts")
       .then(res => this.setState({ posts: res.data }))
       .catch(err => console.log(err));
   };
@@ -40,7 +40,7 @@ class App extends Component {
     console.log(index);
 
     axios
-      .put(`http://localhost:8000/api/posts/${obj.id}`, obj)
+      .put(`https://node3-practice.herokuapp.com/api/posts/${obj.id}`, obj)
       .then(res => {
         this.setState({
           posts: this.state.posts.splice(index, 1, res.data)
@@ -53,7 +53,7 @@ class App extends Component {
   //Deletes post by id
   deletePost = id => {
     axios
-      .delete(`http://localhost:8000/api/posts/${id}`)
+      .delete(`https://node3-practice.herokuapp.com/api/posts/${id}`)
       .then(res => {
         console.log("deleted", res);
       })
