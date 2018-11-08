@@ -111,4 +111,5 @@ server.put("/api/posts/:id", (req, res) => {
   });
 });
 
-server.listen(8000, () => console.log("API running on port 8000"));
+const port = process.env.PORT || 9000;
+server.listen(port, () => console.log(`\nAPI running on port ${port}\n`));
