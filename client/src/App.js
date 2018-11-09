@@ -44,6 +44,7 @@ class App extends Component {
         console.log("edited", res);
       })
       .catch(err => console.dir(err));
+    this.fetchPosts();
   };
 
   //Deletes post by id
