@@ -22,9 +22,9 @@ class App extends Component {
     this.fetchPosts();
   }
 
-  componentDidUpdate() {
-    this.fetchPosts();
-  }
+  // componentDidUpdate() {
+  //   this.fetchPosts();
+  // }
 
   //Gets all Posts from database
   fetchPosts = () => {
@@ -99,7 +99,13 @@ class App extends Component {
             <Route
               exact
               path="/create"
-              render={props => <PostForm {...props} posts={this.state.posts} />}
+              render={props => (
+                <PostForm
+                  {...props}
+                  posts={this.state.posts}
+                  fetchPosts={this.fetchPosts}
+                />
+              )}
             />
 
             <Route

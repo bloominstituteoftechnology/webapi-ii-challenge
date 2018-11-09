@@ -30,6 +30,7 @@ class PostForm extends Component {
           })
         )
         .catch(error => console.log(error));
+      this.props.fetchPosts();
       this.props.history.push("/");
       window.scrollTo(0, 0);
     }

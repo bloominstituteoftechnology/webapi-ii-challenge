@@ -114,11 +114,13 @@ server.put("/api/posts/:id", (req, res) => {
         .json({ error: "The post information could not be modified." });
     });
 
-  db.findById(id).then(post => {
-    if (post) {
-      res.status(200).json(post);
-    }
-  });
+  db.find()
+    .then(posts => {
+      res.json(posts);
+    })
+    .catch(err =>
+      res.send({ error: "The posts information could not be retrieved." })
+    );
 });
 
 const port = process.env.PORT || 9000;
