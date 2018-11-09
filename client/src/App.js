@@ -45,6 +45,8 @@ class App extends Component {
       })
       .catch(err => console.dir(err));
     this.fetchPosts();
+    window.history.push("/");
+    window.scrollTo(0, 0);
   };
 
   //Deletes post by id
