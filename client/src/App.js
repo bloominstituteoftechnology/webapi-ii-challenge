@@ -21,7 +21,7 @@ class App extends Component {
   componentDidMount() {
     this.fetchPosts();
   }
-
+  //
   //Gets all Posts from database
   fetchPosts = () => {
     axios
