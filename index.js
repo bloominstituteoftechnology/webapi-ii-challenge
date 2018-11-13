@@ -8,19 +8,6 @@ const db = require('./data/db.js');
 server.use(express.json());
 
 // add your server code starting here
-server.post('/api/posts', (req, res) => {
-  const newPost = req.body;
-
-  db
-    .insert(newPost)
-    .then(response => {
-      res.status(201).json(response);
-    })
-    .catch(err => {
-      res.status(500).json({ error: err });
-    });
-});
-
 server.get('/', (req, res) => {
   res.send('<a href="localhost:8000/api/posts">All Posts</a><br/><a href="localhost:8000/api/posts/1">Post by id<a/>')
 })
