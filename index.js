@@ -3,4 +3,6 @@
 const db = require('./data/db.js');
 
 // add your server code starting here
-const = firstCommit;
+
+const express = require("express");
+const server = express();
