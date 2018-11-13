@@ -60,7 +60,7 @@ server.put('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   const changes = req.body;
   db.update(id, changes)
-    .then( count => {
+    .then(count => {
       if(count) {
         res.status(200).json({ message: `${count} post updated`})
       } else {
