@@ -4,23 +4,39 @@ const db = require('./data/db.js');
 
 const server = express();
 
-server.get('/', (req, res) => {
+server.use(express.json());
+
+server.get('/api/posts', (req, res) => {
     db.find().then(user => {
         res.json(user)})
         .catch(err => {
             res.status(500).json({ message: "we failed"})
         });
 });
-server.get('/user/:id', (req, res) => {
+server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     db.findById(id).then(user => {
-        res.json(user)
+        if(user) {
+            res.status(200).json(user)
+        } else {
+            res.status(404).json({ message: "No user found"})
+        }
     }).catch(err => {
-        res.status(500).json({ message: "oopsies"})
+        res.status(500).json({ message: "data not found"})
     });
 });
-server.listen(3000, () => 
-console.log('Server is running at port 3000')
+server.post('/api/posts', async (req, res) => {
+    try {
+        const userData = req.body;
+        const user = await db.insert(userData);
+        res.status(201).json(user);
+    } catch (error) {
+        res.status(500).json({ message: "error creating the user"})
+    }
+});
+
+server.listen(8000, () => 
+console.log('Server is running at port 8000')
 );
 
 
