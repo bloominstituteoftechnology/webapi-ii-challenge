@@ -32,12 +32,48 @@ server.get('/api/posts/:id', (req, res) => {
   db
     .findById(id)
     .then(post => {
-      !(post.length) 
+      post.length === 0
         ? res.status(404).json({ message: "The post with that ID doesn't exist."})
         : res.status(200).json(post[0]);
     })
     .catch(err => {
       res.status(500).json({ error: "The post cannot be found." })
+    })
+})
+
+server.post('/api/posts', (req, res) => {
+  const postInfo = req.body;
+  console.log('post info', postInfo);
+
+  db
+    .insert(postInfo)
+    .then(response => {
+      res.status(201).json(response)
+    })
+    .catch(err => {
+      if (err.errno === 19) {
+        res.status(400).json({ msg: "Please provide all required fields" })
+      } else {
+        res.status(500).json({ error: err })
+      }
+    })
+})
+
+server.delete('/api/posts', function(req, res) {
+  const { id } = req.query;
+  let post;
+  db
+    .findById(id)
+    .then(foundPost => {
+      post = { ...foundPost[0] };
+  db
+    .remove(id)
+    .then(response => {
+      res.status(200).json(post);
+    })
+  })
+    .catch(err => {
+      res.status(500).json({ error: err })
     })
 })
 
