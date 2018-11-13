@@ -59,6 +59,24 @@ server.post('/api/posts', (req, res) => {
     })
 })
 
+server.put('/api/posts/:id', function(req, res) {
+  const { id } = req.params;
+  const update = req.body;
+
+  db
+    .update(id, update)
+    .then(count => {
+      if (count > 0) {
+        res.status(200).json({ msg: 'Updated Successfully' })
+      } else {
+        res.status(404).json({ msg: 'Post not found' })
+      }
+    })
+    .catch(err => {
+      res.status(500).json(err)
+    })
+})
+
 server.delete('/api/posts', function(req, res) {
   const { id } = req.query;
   let post;
