@@ -84,4 +84,4 @@ server.get('/posts', (req, res) => {
 
 // add your server code starting here
 
-server.listen(9000, () => console.log("Wussup Buttercup"));
+server.listen(9000, () => console.log("\n ==Wussup Buttercup: api running on port 9000== \n"));
