@@ -58,6 +58,18 @@ server.post('/api/posts', async (req, res) => {
   }
 });
 
+server.put('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  db.update(id, changes)
+    .then(count => {
+      res.status(200).json(count);
+    })
+    .catch(error => {
+      res.status(500).json({ message: 'error updating the post!!!!', error })
+    });
+});
+
 server.delete('/api/posts/:id', (req, res) => {
   db.remove(req.params.id)
     .then(count => {
