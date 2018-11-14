@@ -2,12 +2,12 @@
 const express = require('express');
 const cors = require('cors');
 const server = express();
-
-server.use((request, response, next) => {
-  response.header("Access-Control-Allow-Origin", "*");
-  response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+server.use(cors());
+// server.use((request, response, next) => {
+//   response.header("Access-Control-Allow-Origin", "*");
+//   response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 server.use(express.json());
 
 const db = require('./data/db.js');
@@ -29,15 +29,43 @@ server.get('/api/posts', (req, res) => {
     })
 });
 
+server.get('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.findById(id)
+    .then(post => {
+      if (post) {
+        res.status(200).json(post);
+      } else {
+        res.status(404).json({ message: "post not found!!!" });
+      }
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ message: "Sorry, we're having trouble getting that post...", error: error })
+    })
+})
+
 server.post('/api/posts', async (req, res) => {
   console.log('body:', req.body);
   try {
     const postData = req.body;
     const postId = await db.insert(postData);
-    res.status(201).json(postId);
+    const post = await db.findById(postId.id)
+    res.status(201).json(post);
   } catch (error) {
     res.status(500).json({ message: 'error creating post!!!', error });
   }
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+  db.remove(req.params.id)
+    .then(count => {
+      res.status(200).json(count);
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'error deleting post!!!' })
+    })
 });
 
 server.listen(7777, () => console.log('server is operational'));
