@@ -25,7 +25,7 @@ server.get('/api/posts', (req, res) => {
     .catch(err => {
       res
         .status(500)
-        .json({ message: "Sorry, we're having some trouble getting the posts..." })
+        .json({ message: "Sorry, we're having some trouble getting the posts...", error: err })
     })
 });
 
@@ -54,7 +54,7 @@ server.post('/api/posts', async (req, res) => {
     const post = await db.findById(postId.id)
     res.status(201).json(post);
   } catch (error) {
-    res.status(500).json({ message: 'error creating post!!!', error });
+    res.status(500).json({ message: "There was an error while saving the post to the database", error });
   }
 });
 
@@ -63,7 +63,11 @@ server.put('/api/posts/:id', (req, res) => {
   const changes = req.body;
   db.update(id, changes)
     .then(count => {
-      res.status(200).json(count);
+      if (count) {
+      res.status(200).json({ message: `Post number ${count} updated`});
+    } else {
+      res.status(404).json({ message: "Cannot edit a post that doesn't exist..."})
+    }
     })
     .catch(error => {
       res.status(500).json({ message: 'error updating the post!!!!', error })
