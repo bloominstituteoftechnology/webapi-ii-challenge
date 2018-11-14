@@ -38,10 +38,10 @@ server.post('/api/posts', async (req, res) => {
     try {
         const userData = req.body;
         const userId = await db.insert(userData);
-        const user = await bd.findById(userId.id);
+        const user = await db.findById(userId.id);
         res.status(201).json(user);
     } catch (error) {
-        res.status(500).json({ message: 'error creating post', error })
+        res.status(500).json({ message: 'error in creating post', error })
     }
 })
 
