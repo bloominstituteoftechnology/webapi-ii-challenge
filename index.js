@@ -92,5 +92,24 @@ server.delete('/api/posts/:id', (req, res) => {
         })
 });
 
+//PUT
+
+server.put('/api/posts/:id', (req, res) => {
+    const { title, contents } = req.body;
+    const { id } = req.params;
+    if (!title || !contents) {
+        sendUserError(400, "Please provide title and contents for the post.", res);
+        return;
+    }
+    server.put('/api/posts/:id', (req, res) => {
+        const { title, contents } = req.body;
+        const { id } = req.params;
+        if (!title || !contents) {
+            sendUserError(400, "Please provide title and contents for the post.", res);
+            return;
+        } //STOP
+    });
+});
+
 server.listen(port, () => console.log(`Server running on port ${port}`));
 
