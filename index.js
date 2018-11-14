@@ -27,9 +27,9 @@ server.get('/api/posts/:id', (req, res) => {
 });
 server.post('/api/posts', async (req, res) => {
     try {
-        const userData = req.body;
-        const user = await db.insert(userData);
-        res.status(201).json(user);
+        const postData = req.body;
+        const post = await db.insert(postData);
+        res.status(201).json(post);
     } catch (error) {
         res.status(500).json({ error: "There was an error while saving the post to the database"})
     }
@@ -54,13 +54,14 @@ server.put('/api/posts/:id', (req, res) => {
             res.status(200).json(count)}
          else {
             res.status(404).json({message: "The post with the specified ID does not exist."})
-         }}).catch( err => {
+         }})
+         .catch( err => {
         res.status(500).json({ message: "Unable to update"});
     })
 });
 
-server.listen(8000, () => 
-console.log('Server is running at port 8000')
+server.listen(9000, () => 
+console.log('Server is running at port 9000')
 );
 
 
