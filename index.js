@@ -20,13 +20,15 @@ server.get('/api/posts/:id', (req, res) => {
 
     db.findById(id)
     .then(post => {
-        if (!post) {
+        console.log(post[0].id);
+        console.log(id);
+        if (!post[0].id) {
             res.status(404).json({ message: "The post with the specified ID does not exist." })
         } else {res.status(200).json(post)}
     })
     .catch(err => {
         res
-        .status(500).json({ error: "The post information could not be retrieved." })
+        .status(500).json({ error: "The post information could not be retrieved.", err })
     })
 })
 // add your server code starting here
