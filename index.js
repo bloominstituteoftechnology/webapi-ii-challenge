@@ -1,8 +1,8 @@
 // import your node modules
 const express = require('express');
-const cors = require('cors');
+// const cors = require('cors');
 const server = express();
-server.use(cors());
+// server.use(cors());
 // server.use((request, response, next) => {
 //   response.header("Access-Control-Allow-Origin", "*");
 //   response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -25,32 +25,33 @@ server.get('/api/posts', (req, res) => {
     .catch(err => {
       res
         .status(500)
-        .json({ message: "Sorry, we're having some trouble getting the posts...", error: err })
+        .json({ error: "The posts information could not be retrieved." })
     })
 });
 
 server.get('/api/posts/:id', (req, res) => {
-  const { id } = req.params;
-  console.log(id)
+  const id = req.params.id;
   db.findById(id)
     .then(post => {
-      if (post !== []) {
+      console.log(post);
+      if (post) {
+        console.log('post exists')
         res.status(200).json(post);
       } else {
-        res.status(404).json({ message: "post not found!!!" });
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
       }
     })
     .catch(error => {
       res
         .status(500)
-        .json({ message: "Sorry, we're having trouble getting that post...", error: error })
+        .json({ error: "The post information could not be retrieved." })
     })
 })
 
 server.post('/api/posts', async (req, res) => {
   console.log(req.body);
   const post = req.body;
-  if(post.title && post.contents !== '') {
+  if(post.title && post.contents !== "") {
     try {
       const postId = await db.insert(post);
       const thisPost = await db.findById(postId.id);
@@ -64,7 +65,7 @@ server.post('/api/posts', async (req, res) => {
 });
 
 server.put('/api/posts/:id', (req, res) => {
-  const { id } = req.params;
+  const id = req.params.id;
   const changes = req.body;
   db.update(id, changes)
     .then(count => {
