@@ -31,9 +31,10 @@ server.get('/api/posts', (req, res) => {
 
 server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
+  console.log(id)
   db.findById(id)
     .then(post => {
-      if (post) {
+      if (post !== []) {
         res.status(200).json(post);
       } else {
         res.status(404).json({ message: "post not found!!!" });
@@ -47,14 +48,18 @@ server.get('/api/posts/:id', (req, res) => {
 })
 
 server.post('/api/posts', async (req, res) => {
-  console.log('body:', req.body);
-  try {
-    const postData = req.body;
-    const postId = await db.insert(postData);
-    const post = await db.findById(postId.id)
-    res.status(201).json(post);
-  } catch (error) {
-    res.status(500).json({ message: "There was an error while saving the post to the database", error });
+  console.log(req.body);
+  const post = req.body;
+  if(post.title && post.contents !== '') {
+    try {
+      const postId = await db.insert(post);
+      const thisPost = await db.findById(postId.id);
+      res.status(201).json(thisPost);
+    } catch (error) {
+      res.status(500).json({ error: 'There was an error while saving the post to the database' });
+    }
+  } else {
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post."})
   }
 });
 
