@@ -12,7 +12,7 @@
 Use Node.js and Express to build an API that performs _CRUD_ operations on `posts`.
 
 **This is a two day project.**
-
+ 
 - **Due Monday**: the server with the `GET` endpoints.
 - **Due Tuesday**: the `POST`, `PUT` and `DELETE` endpoints.
 
