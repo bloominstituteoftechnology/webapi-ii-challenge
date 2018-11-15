@@ -36,9 +36,13 @@ server.get('/api/posts/:id', (req, res) => {
       console.log(post);
       if (post) {
         console.log('post exists')
-        res.status(200).json(post);
+        res
+          .status(200)
+          .json(post);
       } else {
-        res.status(404).json({ message: "The post with the specified ID does not exist." });
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
       }
     })
     .catch(error => {
@@ -49,7 +53,6 @@ server.get('/api/posts/:id', (req, res) => {
 })
 
 server.post('/api/posts', async (req, res) => {
-  console.log(req.body);
   const post = req.body;
   if(post.title && post.contents !== "") {
     try {
@@ -89,5 +92,5 @@ server.delete('/api/posts/:id', (req, res) => {
       res.status(500).json({ message: 'error deleting post!!!' })
     })
 });
-
-server.listen(7777, () => console.log('server is operational'));
+const port = 7777;
+server.listen(port, () => console.log(`server is operational on port ${port}`));
