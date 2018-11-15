@@ -3,7 +3,7 @@ const express = require('express');
 const db = require('./data/db.js');
 // add your server code starting here
 
-const port = 8888;
+const port = 8888;  // nodemon index.js
 const server = express();
 server.use(express.json());
 
@@ -101,14 +101,19 @@ server.put('/api/posts/:id', (req, res) => {
         sendUserError(400, "Please provide title and contents for the post.", res);
         return;
     }
-    server.put('/api/posts/:id', (req, res) => {
-        const { title, contents } = req.body;
-        const { id } = req.params;
-        if (!title || !contents) {
-            sendUserError(400, "Please provide title and contents for the post.", res);
+    db.update(id, { title, contents })
+        .then(num => {
+            if (num === 0) {
+                sendUserError(404, "The post with the specified ID does not exist.", res);
+                return;
+            }
+            res.status(200).json({ num });
+        })
+        .catch(err => {
+            console.log(err);
+            sendUserError(500, "The post information could not be modified.", res);
             return;
-        } //STOP
-    });
+        })
 });
 
 server.listen(port, () => console.log(`Server running on port ${port}`));
