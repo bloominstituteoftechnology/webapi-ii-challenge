@@ -7,7 +7,6 @@ const express = require('express');
 const server = express();
 
 var Port = 5000;
-// var randomPort = Math.ceil(Math.random() * 3000);
 
 // add your server code starting here
 server.get('/api/posts', (req, res) => {
