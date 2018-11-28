@@ -19,7 +19,22 @@ server.get('/api/posts', (req, res) => {
 })
 
 server.get('/api/posts/:id', (req, res) => {
-  res.json({ Hello: 'message' })
+  const { id } = req.params; // destructuring
+  db.findById(id)
+    .then(post => {
+      if (post.length === 1) {
+        res.json(post)
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." })
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: "The post information could not be retrieved." })
+    })
 })
 
 //start watching for connections
