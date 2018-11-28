@@ -18,6 +18,22 @@ app.get('/api/posts', function(req, res) {
         });
 });
 
+app.get('/api/post/:id', function(req, res) {
+    const id = req.params.id;
+
+    db.findById(id)
+        .then(post => {
+            if (post[0]) {
+                res.json(post);
+            } else {
+                res.status(404).json({ message: "The post with the specified ID does not exist." });
+            }
+        })
+        .catch(() => {
+            res.status(500).json({ error: "The post information could not be retrieved." });
+        });
+});
+
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 });
