@@ -4,6 +4,9 @@ const express = require('express');
 
 const db = require('./data/db.js');
 
+const server = express();
+const PORT = 4000;
+
 // add your server code starting here
 
 // Ednpoints
@@ -44,3 +47,7 @@ server.get('/api/posts/:id', (req, res) => {
 })
 
 // Listen
+
+server.listen(PORT, () => {
+    console.log(`server is runnning on port ${PORT}`)
+})
