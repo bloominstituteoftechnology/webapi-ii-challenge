@@ -1,5 +1,7 @@
 // import your node modules
-
-const db = require('./data/db.js');
+const express = require("express");
+const db = require("./data/db.js");
 
 // add your server code starting here
+const server = express();
+const PORT = 5000;
