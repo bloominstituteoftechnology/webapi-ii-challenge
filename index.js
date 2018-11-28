@@ -9,7 +9,7 @@ const PORT = 5555;
 server.get("/api/posts", (req, res) => {
 db.find()
     .then(posts => {
-    res.json(posts);
+    res.status(200).json(posts);
     })
     .catch(err => {
     res
