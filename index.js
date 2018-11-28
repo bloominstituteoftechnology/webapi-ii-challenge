@@ -15,5 +15,17 @@ app.get("/api/posts", (req, res) => {
     });
 });
 
+app.get("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.findById(id)
+    .then(post => {
+      res.json(post);
+    })
+    .catch(error => {
+      res.status(404).json({ message: `User ${id} does not exist.` });
+    });
+});
+
 // Listen
 app.listen(PORT, () => console.log(`Server started on port ${PORT}...`));
