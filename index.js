@@ -27,5 +27,22 @@ app.get("/api/posts/:id", (req, res) => {
     });
 });
 
+app.post("/api/posts", (req, res) => {});
+
+app.delete("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.remove(id)
+    .then(post => {
+      res.json(post);
+    })
+    .catch(error => {
+      res.status(409).json({ message: `Problem deleting post ${id}.` });
+      // Most applicable status code: https://stackoverflow.com/questions/25122472/rest-http-status-code-if-delete-impossible
+    });
+});
+
+app.put("/api/posts/:id", (req, res) => {});
+
 // Listen
 app.listen(PORT, () => console.log(`Server started on port ${PORT}...`));
