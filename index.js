@@ -23,6 +23,25 @@ server.get('/api/posts', (req, res) => {
         });
 });
 
+server.get('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    db.findById(id)
+        .then(post => {
+            if (post) {
+                res
+                    .json(post)
+            }
+                res
+                    .status(404)
+                    .json({message: 'no post found'})
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .json({message: 'there was an error in retrieving the post'})
+        })
+})
+
 server.listen(PORT, err => {
     console.log(`server is still running for sure!`)
 });
