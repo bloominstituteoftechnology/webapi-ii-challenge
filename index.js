@@ -6,16 +6,35 @@ const server = express();
 
 const PORT = 4001;
 
-server.get('/api/users', (req, res) => {
+server.get('/api/posts', (req, res) => {
     db.find()
-        .then((users) => {
-            res.json(users)
+        .then((posts) => {
+            res.json(posts)
         })
         .catch(err => {
             res
                 .status(500)
-                .json({ message: "failed to get users" })
+                .json({ message: "failed to get posts" })
         });
+})
+
+server.get('/api/posts/:id', (req, res) => {
+
+    const { id } = req.params;
+    db.findById(id)
+        .then(posts => {
+            if (posts) {
+                res.json(posts);
+            } else {
+                res
+                .status("Posts not found")
+        }
+        })
+        .catch(err => {
+            res
+            .status(500)
+            .json({ message: "failed to get posts"})
+        })
 })
 
 server.listen(PORT, () => {
