@@ -32,7 +32,7 @@ server.get('/api/posts', (req, res) => {
         })
         .catch(err => {
             res
-                .status(404)
+                .status(500)
                 .json({ error: "The post information could not be retrieved."  })
         });
   });
