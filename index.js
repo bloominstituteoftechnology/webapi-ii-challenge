@@ -10,7 +10,9 @@ server.get('/api/posts', (req, res) => {
       .then((posts)=>{
         res.json(posts);
       })
-      .catch();
+      .catch(err => {
+          res.status(500).json({ error: "The posts information could not be retrieved." })
+      });
     
 });
 
