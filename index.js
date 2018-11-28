@@ -7,3 +7,6 @@ const server = express();
 // add your server code starting here
 
 
+server.listen(4000, () => {
+    console.log("horray! I work!")
+})
