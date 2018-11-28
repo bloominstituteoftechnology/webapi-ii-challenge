@@ -12,8 +12,8 @@ const PostsContainer = styled.div`
 
 const PostContainer = styled.div`
   flex: 0 1 20%;
-  min-width: 200px;
-  height: 225px;
+  min-width: 300px;
+  height: 300px;
   background-color: #f6f5f7;
   border: 0;
   border-radius: 3px;
@@ -28,7 +28,6 @@ class Posts extends Component {
   render() {
     return (
       <div>
-        <h1>Notes</h1>
         <PostsContainer>
           {this.props.posts.map(post => {
             return (

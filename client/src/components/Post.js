@@ -3,7 +3,7 @@ import React from "react";
 const Post = props => {
   return (
     <div>
-      <h3>{props.title}</h3>
+      <strong>{props.title}</strong>
       <p>{props.contents}</p>
       <em>{props.created_at}</em>
       <em>{props.updated_at}</em>
