@@ -45,13 +45,22 @@ const posts = [];
 server.post('/api/posts', (req, res) => {
     const posts = req.body.posts; 
     if (!posts) {
-        res.status(304)
-        res.json({ error: "Must provide post" });
+        res
+        .status()
+        .json({ error: "Must provide post" });
         return;
     }
 
     posts.push(posts);
+    res.json(
+        { posts }
+        .status(201)
+    )
 })
+
+server.put('/api/posts', (req, res) => {
+    res.status(200).json({ url: '/posts', operation: 'PUT' });
+});
  
 
 server.listen(PORT, () => {
