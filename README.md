@@ -1,3 +1,5 @@
+Link to notes from Julie: https://docs.google.com/document/d/1HJiNHxQw6oKXk4UMIcwHCR1AEpTCAk4Rr-r-A4yL5VA/edit?usp=sharing
+
 # Building RESTful APIs with Express
 
 ## Topics:
