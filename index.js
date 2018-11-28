@@ -1,5 +1,10 @@
-// import your node modules
+const express = require("express");
+const db = require("./data/db.js");
 
-const db = require('./data/db.js');
+const app = express();
+const PORT = 3000;
 
-// add your server code starting here
+// Endpoints
+
+// Listen
+app.listen(PORT, () => console.log(`Server started on port ${PORT}...`));
