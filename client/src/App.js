@@ -32,19 +32,11 @@ class App extends Component {
         <Route
           exact
           path="/"
-          render={props => (
-            <Posts
-              {...props}
-              posts={this.state.posts}
-              delete={this.deletePost}
-            />
-          )}
+          render={props => <Posts {...props} posts={this.state.posts} />}
         />
         <Route
           path="/add-post"
-          render={props => (
-            <Form {...props} posts={this.state.posts} add={this.addPost} />
-          )}
+          render={props => <Form {...props} posts={this.state.posts} />}
         />
       </div>
     );

@@ -28,7 +28,7 @@ class Posts extends Component {
   render() {
     return (
       <div>
-        <h1>Backend Notes</h1>
+        <h1>Notes</h1>
         <PostsContainer>
           {this.props.posts.map(post => {
             return (
