@@ -18,9 +18,9 @@ Use Node.js and Express to build an API that performs _CRUD_ operations on `post
 
 ### Download Project Files and Install Dependencies
 
-- **Fork** and **Clone** this repository.
-- **CD into the folder** where you cloned the repository.
-- Type `yarn` or `npm install` to download all dependencies listed inside `package.json`.
+- [x] **Fork** and **Clone** this repository.
+- [x] **CD into the folder** where you cloned the repository.
+- [x] Type `yarn` or `npm install` to download all dependencies listed inside `package.json`.
 
 ### Database access
 
