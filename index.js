@@ -29,3 +29,20 @@ server.get('/api/posts', (req, res) => {
         res.json(`Huh, can't find those posts`)
     })
 })
+
+server.get('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    db.findById(id)
+    .then(post => {
+        if(post) {
+            res.json(post);
+        } else {
+            status(404)
+            res.json('Error 404: Idk that post')
+        }
+    })
+    .catch(err => {
+        res.status(500)
+        res.json('Error 500: Idk that post')
+    })
+})
