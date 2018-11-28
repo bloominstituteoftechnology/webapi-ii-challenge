@@ -7,7 +7,9 @@ const db = require('./data/db.js');
 // add your server code starting here
 server.get('/api/posts', (req, res) => {
     db.find()
-      .then()
+      .then((posts)=>{
+        res.json(posts);
+      })
       .catch();
     
 });
