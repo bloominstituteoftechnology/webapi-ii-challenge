@@ -9,7 +9,13 @@ const server = express();
 const PORT =4000
 
 server.get('/api/posts', (req, res) =>{
-    
+    db.find()
+    .then((posts) =>{
+        res.json(posts);
+    })
+    .catch(err =>{
+        
+    });
 });
 
 server.get(`/api/posts/:id`, (req, res) =>{
