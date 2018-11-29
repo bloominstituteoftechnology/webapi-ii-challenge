@@ -69,12 +69,13 @@ server.delete('/api/posts/:id', (req, res) => {
 })
 
 server.put('/api/posts/:id', (req, res) => {
-    const id = req.params.id;
-    const post = req.body;
-    db.update(id, post)
+    const id = req.params.id
+    const {title, contents} = req.query
+    console.log(title,contents)
+    db.update(id, {"title": title, "contents":contents})
       .then(update => {
           if(update) {
-              res.status(200).json(update)
+              res.status(200).json({"title":title, "contents": contents, id:id})
           } else {
               res.status(404).json({message: "The post with the specified ID does not exist."})
           }
