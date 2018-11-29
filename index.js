@@ -3,6 +3,7 @@ const express = require('express');
 const db = require('./data/db.js');
 
 const server = express();
+server.use(express.json());
 const PORT = 4000;
 
 server.get('/api/posts', (req, res) => {
@@ -38,7 +39,7 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts', (req, res) => {
-    const {title, contents} = req.query
+    const {title, contents} = req.body
     console.log(title,contents)
     db.insert({"title": title, "contents":contents})
         .then(post => {
