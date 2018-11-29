@@ -8,6 +8,9 @@ const express = require('express');
 const PORT = 4001;
 const server = express();
 
+const cors = require('cors');
+server.use(cors());
+
 // get array of posts
 
 server.get('/api/posts', (req, res) => {

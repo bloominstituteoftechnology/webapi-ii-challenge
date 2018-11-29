@@ -15,11 +15,9 @@ class App extends Component {
     axios
       .get('http://localhost:4001/api/posts')
       .then(response => {
-        // UNCOMMENT TO SET STATE TO POSTS WITH RESPONSE
-        // // this.setState({
-        // //   posts: response.data
-        // // })
-        console.log(response)
+        this.setState({
+          posts: response.data
+        })
       })
       .catch(err => {
         console.log(err)
@@ -29,7 +27,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        {this.state.posts.map(post => <h1>{post.title}</h1>)}
+        {this.state.posts.map(post => <h1 key={post.id}>{post.title}</h1>)}
       </div>
     );
   }
