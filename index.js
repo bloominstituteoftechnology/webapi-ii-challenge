@@ -55,14 +55,23 @@ server.get('/api/posts/:id', (req, res) => {
 })
 
 server.post('/api/posts', (req, res) => {
-    // console.log(req.body, 'hey');
-    const createdPost = {...req.body};
-    db.insert(createdPost)
+    console.log(req.body, 'req.body check');
+    db.insert(req.body)
         .then(post => {
             console.log(post);
-            res
-                .status(201)
-                .json(post)
+            // res
+            //     .status(201)
+            //     .json(post)
+            if(req.body.title !== '') {
+                res
+                    .status(201)
+                    .json(post)
+            }
+            else {
+                res
+                    .status(400)
+                    .json({ errorMessage: "Please provide title and contents for the post." })
+            }
         })
         .catch(error => {
             console.log(error, 'server-error')
@@ -75,7 +84,27 @@ server.post('/api/posts', (req, res) => {
 server.delete('/api/posts/:id', (req, res) => {
     const thisId = req.params.id;
     db.remove(thisId)
-        .then()
+        .then(post => {
+            console.log(post);
+            // res
+            //     .status(200)
+            //     .json(post)
+            if(post){
+                res
+                    .status(200)
+                    .json(post)
+            }
+            else{
+                res
+                    .status(404)
+                    .json({ message: "The post with the specified ID does not exist." })
+            }
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({ error: "The post could not be removed" })
+        })
 })
 
 //ALWAYS AT BOTTOM

@@ -39,6 +39,7 @@
   margin: auto;
   margin-bottom: 2%;
   padding: 1%;
+  width:  90%;
 }
 .App .all-posts {
   display: flex;

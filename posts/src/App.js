@@ -20,13 +20,17 @@ class App extends Component {
         this.setState({posts: response.data})
       })
       .catch(error => {
-        console.log(error)
+        console.log(error, 'client-get-error')
       })
+  }
+  windowReload = (e) => {
+    window.location.reload();
   }
   onChangeHandler = e => {
     this.setState({[e.target.name]: e.target.value})
   }
   addNewPostHandler = e => {
+    // e.preventDefault();
     axios.post('http://localhost:5000/api/posts', {
       title: this.state.postTitle,
       contents: 'Guess who said this'
@@ -35,9 +39,20 @@ class App extends Component {
         this.setState({posts: response.data})
       })
       .catch(error => {
-        console.log(error, 'client-error')
+        console.log(error, 'client-post-error')
       })
-    console.log('action working');
+  }
+  deletePostHandler = e => {
+    // e.preventDefault();
+    console.log(e.target.parentNode.id);
+    axios.delete(`http://localhost:5000/api/posts/${e.target.parentNode.id}`)
+      .then(response => {
+        this.setState({posts: response.data})
+      })
+      .catch(error => {
+        console.log(error, 'client-delete-error')
+      })
+    window.location.reload();
   }
   render() {
     return (
@@ -56,7 +71,7 @@ class App extends Component {
                   <h3>"{eachPost.title}"</h3>
                   <input name="guessInput" onChange={this.onChangeHandler} placeholder={eachPost.contents}></input>
                 </div>
-                <button className='delete-button' type="submit">Delete</button>
+                <button className='delete-button' onClick={this.deletePostHandler}>Delete</button>
               </div>
             )
           })}
