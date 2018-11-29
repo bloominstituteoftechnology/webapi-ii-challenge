@@ -25,7 +25,7 @@ server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
 db.findById(id)
 .then((post) => {
-    if (post){
+    if (post.length === 1){
         res.json(post); 
     }
    else {
