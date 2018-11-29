@@ -3,6 +3,8 @@ import './App.css';
 
 import axios from 'axios';
 
+import Posts from './components/Posts';
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -27,7 +29,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-
+        <Posts posts={this.state.posts} />
       </div>
     );
   }
