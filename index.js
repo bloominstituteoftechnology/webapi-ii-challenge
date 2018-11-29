@@ -18,7 +18,7 @@ server.get('/api/posts', (req, res) => {
       .catch(err => {
         res
         .status(500)
-        .json({message: "The posts information could not be retrieved."});
+        .json({error: "The posts information could not be retrieved."});
       });
 });
 
@@ -27,12 +27,12 @@ server.get('/api/posts/:id', (req, res) => {
   db
     .findById(id)
       .then(post => {
-        if (post) {
+        if (post.length > 0) {
           res.json(post);
         } else {
           res
             .status(404)
-            .json({message: "The post with the specififed ID does not exist."});
+            .json({error: "The post with the specififed ID does not exist."});
         }
       })
       .catch(err => {
