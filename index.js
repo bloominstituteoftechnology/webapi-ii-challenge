@@ -4,19 +4,35 @@ const server = express();
 const db = require('./data/db.js');
 
 // add your server code starting here
+server.post('/api/posts', (req, res) => {
+    const { title, contents} = req.body;
+    if(!title || !content){
+        res.status(401).json({errorMessage:'Please provide title and contents for the post.'})
+    }
+    db.insert({title, content})
+    .then(response => {
+        res.status(201).json(response);
+    })
+    .catch( err => {
+        res
+        .status(500)
+        .json({errorMessage : 'There was an error while saving the post to the database'})
+    })
+})
+
 server.get('/', (req, res) => {
     res.json('HELLO!');
 });
 
 server.get('/api/posts', (req, res) => {
     db.find()
-    .then((posts) => {
-        res.json(posts);
+    .then((post) => {
+        res.json(post);
     })
     .catch( err => {
         res
         .status(500)
-        .json({message : 'post could not be retrieved'})
+        .json({errorMessage : 'post could not be retrieved'})
     })
 }) 
 
@@ -24,19 +40,19 @@ server.get('/api/posts/:id', (req, res) => {
     const {id} = req.params;
     db.findById(id)
     .then( post => {
-        if(post){
+        if(post[0]){
             res.json(post);
         }
         else {
             res
             .status(404)
-            .json({message: 'post does not exist'});
+            .json({errorMessage: 'post does not exist'});
         }
     } )
     .catch( err => {
         res
         .status(500)
-        .json({message : 'post could not be retrieved'})
+        .json({errorMessage : 'post could not be retrieved'})
     })
 })
 
