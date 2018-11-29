@@ -1,16 +1,13 @@
 // import your node modules
-
 const express = require("express")
 const db = require('./data/db.js');
-
 // add your server code starting here
-
 const server = express();
 const PORT = 4000; 
 
 server.get(`/api/posts`, (req, res) => {
-    db.find()
-        .then((posts) => {
+        db.find()
+            .then((posts) => {
             res.json(posts);
         })
         .catch( err => {
@@ -20,12 +17,13 @@ server.get(`/api/posts`, (req, res) => {
         })
 })
 
-server.get(`/api/posts/:id`, (req, res) => {
+server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     db.findById(id)
-        .then((posts) => {
-            if(post) {
-            res.jason(posts.id)
+        .then(( posts ) => {
+            if( posts.length > 0 ) {
+            res.status(200)
+            .send(posts)
             }
             else {
                 res
@@ -40,10 +38,12 @@ server.get(`/api/posts/:id`, (req, res) => {
         })
 })
 
+server.post('/api/post', (req, res) => {
+    
 
-
+})
 
 
 server.listen( PORT, ()=> {
-    console.log("is this working")
+    console.log("this is  working")
 })
