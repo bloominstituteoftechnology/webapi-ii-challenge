@@ -3,8 +3,12 @@ const express = require('express');
 const db = require('./data/db');
 const server = express();
 const PORT = 4000;
-
-
+var cors = require('cors')
+//const app = express()
+ 
+server.use(cors())
+ 
+//app.use(cors())
 
 // add your server code starting here
 
