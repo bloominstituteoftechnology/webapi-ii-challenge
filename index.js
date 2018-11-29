@@ -112,9 +112,10 @@ server.put('/api/posts/:id', (req, res) => {
     db.update(thisId, updatedPost)
         .then(response => {
             console.log(response, 'update-server-log')
-            res
-                .status(200)
-                .json(response)
+            // res
+            //     .status(200)
+            //     .json(response)
+            if()
         })
         .catch(error => {
             console.log(error, 'update-server-error')
