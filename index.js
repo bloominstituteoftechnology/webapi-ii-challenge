@@ -10,13 +10,32 @@ const PORT = 4000;
 
 server.get("/api/posts", (req, res) => {
   db.find()
-    .then(posts => {
+    .then(posts=> {
       res.json(posts);
     })
     .catch(err => {
       res
         .status(500)
-        .json({ error: "The posts information could not be retrived." });
+        .json({ error: "The posts information could not be retrieved." });
+    });
+});
+
+server.get("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  db.findById(id)
+    .then(posts => {
+      if (posts.length === 0) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        res.json(posts);
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: "The posts information could not be retrieved." });
     });
 });
 
