@@ -68,6 +68,26 @@ server.delete('/api/posts/:id', (req, res) => {
     })
 })
 
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params
+    const data = req.body
+    if(!data.title  || !data.contents){
+        res.status(404).json({errorMessage: "Please provide title and contents for the post."})
+    }
+    db.update(id, req.body)
+        .then(updated => {
+            if(updated){
+                res.status(200).json(updated)
+            }else {
+                res.status(404).json({message: "The post with the specified ID does not exist."})
+            }
+        })
+        .catch(err =>{
+            res.status(500).json({error: "The post information could not be modified."})
+        })
+})
+
+
 server.listen(PORT, ()=>{
     console.log(`Server works you did not break it, it's on port ${PORT}!`)
 })
