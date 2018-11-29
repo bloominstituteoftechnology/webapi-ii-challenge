@@ -21,7 +21,7 @@ const PostContainer = styled.div`
     0 2px 4px rgba(0, 0, 0, 0.24);
   cursor: pointer;
   margin: 10px;
-  padding: 5px;
+  padding: 15px;
 `;
 
 class Posts extends Component {
