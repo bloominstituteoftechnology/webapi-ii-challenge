@@ -1,8 +1,8 @@
 // import your node modules
 
 const express = require('express');
-
 const db = require('./data/db.js');
+const cors = require('cors');
 
 const server = express();
 const PORT = 4000;
@@ -10,6 +10,8 @@ const PORT = 4000;
 // add your server code starting here
 
 // Ednpoints
+
+server.use(cors())
 
 server.get('/api/posts', (req, res) => {
 
@@ -31,7 +33,7 @@ server.get('/api/posts/:id', (req, res) => {
 
     db.findById(id)
         .then(post => {
-            if (post) {
+            if (post.length) {
                 res.json(post)
             } else {
                 res.status(404)
