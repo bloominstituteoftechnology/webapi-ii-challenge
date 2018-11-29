@@ -95,22 +95,22 @@ When the client makes a `POST` request to `/api/posts`:
 
 When the client makes a `GET` request to `/api/posts`:
 
-- If there's an error in retrieving the _posts_ from the database:
-  - cancel the request.
-  - respond with HTTP status code `500`.
-  - return the following JSON object: `{ error: "The posts information could not be retrieved." }`.
+- [x] If there's an error in retrieving the _posts_ from the database:
+  - [x] cancel the request.
+  - [x] respond with HTTP status code `500`.
+  - [x] return the following JSON object: `{ error: "The posts information could not be retrieved." }`.
 
 When the client makes a `GET` request to `/api/posts/:id`:
 
-- If the _post_ with the specified `id` is not found:
+- [x] If the _post_ with the specified `id` is not found:
 
-  - return HTTP status code `404` (Not Found).
-  - return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
+  - [x] return HTTP status code `404` (Not Found).
+  - [x] return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
 
-- If there's an error in retrieving the _post_ from the database:
-  - cancel the request.
-  - respond with HTTP status code `500`.
-  - return the following JSON object: `{ error: "The post information could not be retrieved." }`.
+- [x] If there's an error in retrieving the _post_ from the database:
+  - [x] cancel the request.
+  - [x] respond with HTTP status code `500`.
+  - [x] return the following JSON object: `{ error: "The post information could not be retrieved." }`.
 
 When the client makes a `DELETE` request to `/api/posts/:id`:
 
