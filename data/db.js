@@ -11,6 +11,7 @@ module.exports = {
 };
 
 function find() {
+  console.log("getting");
   return db('posts');
 }
 
