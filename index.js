@@ -1,32 +1,46 @@
 // import your node modules
-const express = require('express');
+const express = require("express");
+const db = require("./data/db.js");
+
+// add your server code starting here
 const server = express();
-
-const db = require('./data/db.js');
-
- server.get('/api/posts', (req, res) => {
-    db.find()
+const PORT = 5555;
+server.disable('etag')
+server.get("/api/posts", (req, res) => {
+db.find()
     .then(posts => {
-        res.status(200).json(posts)
+        res
+            .status(200)
+            .json(posts);
     })
     .catch(err => {
-        res
-        .status(500).json({message: "This is probably your fault." })
-    })
+    res
+        .status(500)
+        .json({ error: "The posts information could not be retrieved." });
+    });
 });
 
- server.get('/api/posts/:id', (req, res) => {
-    const { id } = req.params;
-     db.findById(id)
+server.get("/api/posts/:id", (req, res) => {
+const { id } = req.params;
+
+db.findById(id)
     .then(post => {
-        if (!post) {
-            res.status(404).json({ message: "TThis is not the post you are looking for." })
-        } else {res.status(200).json(post)}
+        // res.json(post);
+    if (post.length) {
+        res.json(post);
+    } else {
+        res
+        .status(404)
+        .json({ message: "The post with the specified ID does not exist." });
+    }
     })
     .catch(err => {
-        res
-        .status(500).json({ error: "There's a cat in the server." })
-    })
-})
-// add your server code starting here
- server.listen(9000, () => console.log("Hello! Is there anybody in there?")); 
+    res
+        .status(500)
+        .json({ error: "The post information could not be retrieved." });
+    });
+});
+
+server.listen(PORT, () => {
+  console.log("server is up and running");
+});
