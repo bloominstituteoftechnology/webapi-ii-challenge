@@ -6,6 +6,18 @@ const db = require('./data/db.js');
 const server = express();     //express is a function
 const PORT = 5000;
 
+// CORS stuff
+const cors = require('cors')
+server.use(cors())
+
+// server.get('/api/posts/:id', function (req, res, next) {
+//     res.json({msg: 'This is CORS-enabled for all origins!'})
+// })
+
+// server.listen(80, function () {
+//     console.log('CORS-enabled web server listening on port 80')
+// })
+
 // add your server code starting here
 
 server.get('/api/posts', (req, res) => {
@@ -16,7 +28,7 @@ server.get('/api/posts', (req, res) => {
     .catch(err => {
         res 
         .status(500)
-        .json({message: "failed to get posts list"})
+        .json({error: "The posts information could not be retrieved."})
     });
 });
 
@@ -29,13 +41,13 @@ server.get('/api/posts/:id', (req, res) => {
         } else {
             res 
             .status(404)
-            .json({message: "This Post does not exist"})
+            .json({message: "The post with the specified ID does not exist."})
         }
     })
     .catch(err => {
         res 
         .status(500)
-        .json({message: "Failed to get that specific post"});
+        .json({error: "The post information could not be retrieved."});
     })
 });
 

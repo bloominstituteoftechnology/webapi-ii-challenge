@@ -25,13 +25,22 @@ class App extends Component {
   render() {
     console.log(this.state.posts)
     return (
-      <div className="App">
-          <h1>Post List</h1>
-          {this.state.posts.map(post => {
-            return (
-              <h2>{post.title}</h2>
-            )
-          })}
+      <div className="container">
+        <h1>Post List</h1>
+        <div className="App">
+            
+            {this.state.posts.map(post => {
+              return (
+            
+                  <div className="card" key={post.id}>
+                    <p>{post.title}</p>
+                    <h2>{post.contents}</h2>
+                  </div>
+           
+             
+              )
+            })}
+        </div>
       </div>
     );
   }
