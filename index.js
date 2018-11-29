@@ -3,8 +3,10 @@
 const db = require('./data/db.js');
 const express = require('express'); 
 const server = express(); 
-const PORT = 4000
-
+const PORT = 9000
+server.use(express.json());
+const cors = require('cors');
+server.use(cors())
 // add your server code starting here
 
 server.post('/api/posts', (req, res) => {
@@ -25,20 +27,18 @@ server.post('/api/posts', (req, res) => {
         })
     })
     .catch(err => {
-        res
-        .status(500)
+        res.status(500)
         .json({error: "There was an error while saving the post to the database", err})
     })   
 })
 
 server.get('/api/posts', (req, res) => {
     db.find()
-    .then( (post) => {
-        res.json(post);
+    .then( post => {
+        res.status(200).json(post);
     })
     .catch( err => {
-        res
-        .status(500)
+        res.status(500)
         .json({error: "The posts information could not be retrieved.", err})
     })
 })
@@ -46,9 +46,9 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params; 
     db.findById(id)
-    .then((post) => {
+    .then(post => {
         if(post.length > 0) {
-            res.json(post)
+            res.status(200).json(post[0])
       } else {
             res
             .status(404)
