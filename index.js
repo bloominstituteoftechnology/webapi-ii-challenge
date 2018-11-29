@@ -9,6 +9,14 @@ const PORT = 5000;
 
 // add your server code starting here
 
+//Allowing CORS so I could use it on my react app
+server.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+
 //grabbing a list of all posts
 server.get('/api/posts', (req, res) => {
   db.find()
@@ -27,7 +35,7 @@ server.get('/api/posts/:id', (req, res) => {
   const { id } = req.params;
   db.findById(id)
     .then( post => {
-      if (post.length !== 0) {
+      if (post.length > 0) {
         res.json(post)
       } else {
         res
