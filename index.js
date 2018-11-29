@@ -5,11 +5,13 @@ const db = require("./data/db.js");
 // add your server code starting here
 const server = express();
 const PORT = 5555;
-
+server.disable('etag')
 server.get("/api/posts", (req, res) => {
 db.find()
     .then(posts => {
-    res.status(200).json(posts);
+        res
+            .status(200)
+            .json(posts);
     })
     .catch(err => {
     res
