@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Post from './Post';
+import Post from "./Post";
 
 class Posts extends Component {
   render() {
@@ -23,6 +23,5 @@ class Posts extends Component {
     );
   }
 }
-
 
 export default Posts;
