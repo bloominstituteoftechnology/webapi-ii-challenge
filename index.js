@@ -15,6 +15,7 @@ server.get('/api/posts', (req, res) =>{
             res.json(posts)
         })
         .catch((err) =>{
+            res.status(500)
             res.json('Unable to retrieve the posts');
         })
 });
@@ -28,10 +29,12 @@ server.get('/api/posts/:id', (req, res) =>{
             if(post.length !== 0){
                 res.json(post)
             }else{
+                res.status(404)
                 res.json('The requested post does not exist')
             }
         })
         .catch((err) =>{
+            res.status(500)
             res.json('Unable to retrieve the post')
         })
 });
