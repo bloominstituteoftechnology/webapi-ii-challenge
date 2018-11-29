@@ -26,7 +26,7 @@ server.get('/api/posts/:id', (req, res) =>{
 
     db.findById(id)
         .then((post) =>{
-            if(post.length !== 0){
+            if(post[0]){  //check if post exists
                 res.json(post)
             }else{
                 res.status(404)
