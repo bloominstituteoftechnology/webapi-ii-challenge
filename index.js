@@ -30,6 +30,27 @@ server.get('/api/posts/:id', (req, res)=>{
         })
 })
 
+server.post('/api/posts', (req, res)=>{
+    const { title, contents } = req.query
+    db.insert({ title, contents })
+        .then((id =>{
+           !title||!contents?res.status(400)
+           .json({ errorMessage: "Please provide title and contents for the post." })
+           :res.json({id, title, contents})
+        }))
+        .catch(err=>{
+            res.status(500)
+                .json( { error: "There was an error while saving the post to the database" })
+        })
+})
+
+server.delete('/api/posts/:id', (req, res)=>{
+    const { id } = req.params
+    const post = db.findById(id)
+    db.remove(id)
+        .then(records)
+})
+
 server.listen(PORT, ()=>{
     console.log(`server is running on port: ${PORT}`);
 })
