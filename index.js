@@ -45,10 +45,32 @@ server.post('/api/posts', (req, res)=>{
 })
 
 server.delete('/api/posts/:id', (req, res)=>{
-    const { id } = req.params
+    const { id } = req.params;
     const post = db.findById(id)
     db.remove(id)
-        .then(records)
+        .then(records=>{
+            records?res.json(post):res.status(404).json({ message: "The post with the specified ID does not exist." })
+        })
+        .catch(err=>{
+            res.status(500)
+                .json({ error: "The post could not be removed" })
+        })
+})
+
+server.put('api/posts/:id', (req, res)=>{
+    const { id } = req.params;
+    const { title, contents} = req.query;
+    !title||!contents?res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    :db.update(id, { title, contents })
+        .then(record =>{
+            record?res.json({ id, title, contents })
+            :res.status(404)
+            .json({ message: "The post with the specified ID does not exist." })
+        })
+        .catch(err=>{
+            res.status(500)
+                .json({ error: "The post information could not be modified." })
+        })
 })
 
 server.listen(PORT, ()=>{
