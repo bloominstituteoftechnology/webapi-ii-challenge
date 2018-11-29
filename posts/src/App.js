@@ -9,8 +9,9 @@ class App extends Component {
     super(props);
     this.state = {
       posts: [],
-      postTitle: '',
       guessInput: '',
+      newPostTitle: '',
+      updatedPostTitle: '',
     }
   }
   componentDidMount() {
@@ -23,16 +24,13 @@ class App extends Component {
         console.log(error, 'client-get-error')
       })
   }
-  windowReload = (e) => {
-    window.location.reload();
-  }
   onChangeHandler = e => {
     this.setState({[e.target.name]: e.target.value})
   }
   addNewPostHandler = e => {
     // e.preventDefault();
     axios.post('http://localhost:5000/api/posts', {
-      title: this.state.postTitle,
+      title: this.state.newPostTitle,
       contents: 'Guess who said this'
     })
       .then(response => {
@@ -54,13 +52,27 @@ class App extends Component {
       })
     window.location.reload();
   }
+  updatePostHandler = e => {
+    // e.preventDefault();
+    console.log(e.target.parentNode);
+    axios.put(`http://localhost:5000/api/posts/${e.target.parentNode.id}`, {
+      title: this.state.updatedPostTitle,
+      contents: 'Guess who said this'
+    })
+      .then(response => {
+        this.setState({posts: response.data})
+      })
+      .catch(error => {
+        console.log(error, 'client-update-error')
+      })
+  }
   render() {
     return (
       <div className="App">
         <h1>Node-Express-Lab Practice:</h1>
         <form onSubmit={this.addNewPostHandler} className='add-new-post'>
           <h5>Add New Post:</h5>
-          <input name='postTitle' placeholder='type title here..' onChange={this.onChangeHandler}></input>
+          <input name='newPostTitle' placeholder='type title here..' onChange={this.onChangeHandler}></input>
           <button type="submit">Submit</button>
         </form>
         <div className='all-posts'>
@@ -71,6 +83,12 @@ class App extends Component {
                   <h3>"{eachPost.title}"</h3>
                   <input name="guessInput" onChange={this.onChangeHandler} placeholder={eachPost.contents}></input>
                 </div>
+                <form onSubmit={this.updatePostHandler} className='update-form'>
+                  <h5>Update Post here:</h5>
+                  <textarea name='updatedPostTitle' className='update-input' placeholder='update here' onChange={this.onChangeHandler}></textarea>
+                  <br />
+                  <button type="submit">Submit</button>
+                </form>
                 <button className='delete-button' onClick={this.deletePostHandler}>Delete</button>
               </div>
             )

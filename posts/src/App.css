@@ -51,8 +51,17 @@
   margin-bottom: 2%;
   padding: 1%;
   width: 40%;
-  height: 150px;
+  height: 250px;
   overflow: auto;
+}
+.App .all-posts .each-post .update-form {
+  border: 1px solid;
+  margin: auto;
+  margin-top: 5%;
+  padding-bottom: 5%;
+}
+.App .all-posts .each-post .update-form .update-input {
+  width: 80%;
 }
 .App .all-posts .each-post .delete-button {
   margin-top: 5%;

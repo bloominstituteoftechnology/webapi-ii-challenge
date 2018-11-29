@@ -106,6 +106,23 @@ server.delete('/api/posts/:id', (req, res) => {
                 .json({ error: "The post could not be removed" })
         })
 })
+server.put('/api/posts/:id', (req, res) => {
+    const thisId = req.params.id;
+    const updatedPost = req.body;
+    db.update(thisId, updatedPost)
+        .then(response => {
+            console.log(response, 'update-server-log')
+            res
+                .status(200)
+                .json(response)
+        })
+        .catch(error => {
+            console.log(error, 'update-server-error')
+            res
+                .status(500)
+                .json({ error: "The post information could not be modified." })
+        })
+})
 
 //ALWAYS AT BOTTOM
 server.listen(Port, () => {
