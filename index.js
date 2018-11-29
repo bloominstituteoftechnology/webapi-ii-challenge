@@ -5,10 +5,13 @@ const PORT = 4000;
 const db = require('./data/db');
 
 // add your server code starting here
+server.disable("etag");
 server.get('/api/posts', (req, res) => {
     db.find()
         .then(posts => {
-            res.json(posts);
+            res
+            .status(200)
+            .json(posts);
         })
         .catch(err => {
             res
@@ -21,13 +24,13 @@ server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     db.findById(id)
         .then(post => {
-            if (post) {
+            if (post.length) {
                 res.json(post);
-            } else {
+            }else{
                 res
-                    .status(404)
-                    .json({ message: "The post with the specified ID does not exist." })
-                console.log(res)
+                .status(404)
+                .json({ message: "The post with the specified ID does not exist." })
+                
             }
         })
         .catch(err => {
