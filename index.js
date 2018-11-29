@@ -3,6 +3,7 @@
 const db = require('./data/db.js');
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const server = express();
 
@@ -10,6 +11,7 @@ var Port = 5000;
 
 // add your server code starting here
 server.use(cors());
+server.use(bodyParser.json());
 server.get('/api/posts', (req, res) => {
     db.find()
         .then(posts => {
@@ -24,6 +26,7 @@ server.get('/api/posts', (req, res) => {
         })
 })
 server.get('/api/posts/:id', (req, res) => {
+    // console.log(req.params)
     const thisId = req.params.id;
     // console.log(thisId);
     db.findById(thisId)
@@ -33,7 +36,7 @@ server.get('/api/posts/:id', (req, res) => {
         //         .json(post)
         // })
         .then(post => {
-            if(user) {
+            if(post) {
                 res
                     .status(200)
                     .json(post)
@@ -52,18 +55,27 @@ server.get('/api/posts/:id', (req, res) => {
 })
 
 server.post('/api/posts', (req, res) => {
-    const {createdPost} = req.params
+    // console.log(req.body, 'hey');
+    const createdPost = {...req.body};
     db.insert(createdPost)
         .then(post => {
+            console.log(post);
             res
                 .status(201)
                 .json(post)
         })
         .catch(error => {
+            console.log(error, 'server-error')
             res
                 .status(500)
                 .json({ error: "There was an error while saving the post to the database" })
         })
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+    const thisId = req.params.id;
+    db.remove(thisId)
+        .then()
 })
 
 //ALWAYS AT BOTTOM
