@@ -7,6 +7,30 @@ const PORT = 4000
 
 // add your server code starting here
 
+server.post('/api/posts', (req, res) => {
+    const { title, contents } = req.body;
+    const newPost = { title, contents }; 
+    db.insert(newPost)
+    .then(postId => {
+        db.findById(postId)
+        .then( post => {
+            if(!post){
+                res
+                .status(400)
+                .json({errorMessage: "Please provide title and contents for the post."})
+            }
+            res
+            .status(201)
+            .json(post)
+        })
+    })
+    .catch(err => {
+        res
+        .status(500)
+        .json({error: "There was an error while saving the post to the database", err})
+    })   
+})
+
 server.get('/api/posts', (req, res) => {
     db.find()
     .then( (post) => {
@@ -15,7 +39,7 @@ server.get('/api/posts', (req, res) => {
     .catch( err => {
         res
         .status(500)
-        .json({error: "The posts information could not be retrieved."})
+        .json({error: "The posts information could not be retrieved.", err})
     })
 })
 
@@ -34,7 +58,7 @@ server.get('/api/posts/:id', (req, res) => {
     .catch( err => {
         res
         .status(500)
-        .json({error: "The posts information could not be retrieved."})
+        .json({error: "The posts information could not be retrieved.", err})
      })
  })
 
