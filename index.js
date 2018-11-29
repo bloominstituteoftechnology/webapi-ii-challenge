@@ -17,7 +17,7 @@ server.get('/api/posts', (req, res) => {
   })
   .catch(err => {
     res.status(500)
-    .json({message: 'failed to get posts'})
+    .json({message: 'The posts information could not be retrieved.'})
   });
 })
 
@@ -31,13 +31,13 @@ db.findById(id)
    else {
     res
     .status(404)
-    .json({message: 'user is not availble'}
+    .json({message: 'The post with the specified ID does not exist.'}
     )}
 })
 .catch(err => {
     res
     .status(500)
-    .json({message: 'failed to get user'})
+    .json({message: 'The post information could not be retrieved.'})
 });
 })
 
