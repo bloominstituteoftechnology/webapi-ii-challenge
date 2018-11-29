@@ -1,14 +1,15 @@
 // import your node modules
 
 const db = require('./data/db.js');
-
 const express = require('express');
+const cors = require('cors');
 
 const server = express();
 
 var Port = 5000;
 
 // add your server code starting here
+server.use(cors());
 server.get('/api/posts', (req, res) => {
     db.find()
         .then(posts => {
@@ -47,6 +48,21 @@ server.get('/api/posts/:id', (req, res) => {
             res
                 .status(500)
                 .json({ error: "The post information could not be retrieved." })  
+        })
+})
+
+server.post('/api/posts', (req, res) => {
+    const {createdPost} = req.params
+    db.insert(createdPost)
+        .then(post => {
+            res
+                .status(201)
+                .json(post)
+        })
+        .catch(error => {
+            res
+                .status(500)
+                .json({ error: "There was an error while saving the post to the database" })
         })
 })
 
