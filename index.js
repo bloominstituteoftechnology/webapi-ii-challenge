@@ -23,6 +23,8 @@ server.get('/api/posts', (req, res) => {
         });
 });
 
+// get individual post
+
 server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
     db.findById(id)
@@ -41,6 +43,8 @@ server.get('/api/posts/:id', (req, res) => {
                 .json({message: 'there was an error in retrieving the post'})
         })
 })
+
+// initiate listening
 
 server.listen(PORT, err => {
     console.log(`server is still running for sure!`)
