@@ -11,12 +11,22 @@ const PORT = 4000;
 
 //POST
 server.post('/api/posts', (req, res) => {
-    const { title, contents } = req.body;
+    const { title, contents } = req.query;
     const newPost = { title, contents };
     db.insert(newPost)
-        .then(post => {
-            res.status(201)
-                .json({ url: '/api/posts', operation: 'POST' })
+        .then(id => {
+            if (!title || !contents) {
+                res.status(400)
+                    .json({ errorMessage: "Please provide title and contents for the post." })
+            }
+            else {
+                res.status(201)
+                    .json({ ...newPost, ...id })
+            }
+        })
+        .catch(err => {
+            res.status(500)
+                .json({ error: "There was an error while saving the post to the database" })
         })
 })
 
@@ -56,6 +66,7 @@ server.get('/api/posts/:id', (req, res) => {
 //DELETE
 server.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params;
+    //hold the deleting post and return it later
     const deletedPost =
         db.findById(id)
             .then(post => {
