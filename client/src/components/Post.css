@@ -3,8 +3,7 @@
   border: 1px solid red;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  margin: .5%;
+  justify-content: space-evenly;
 }
 
 .post-container {
@@ -12,5 +11,7 @@
   width: 200px;
   padding: 3%;
   border-radius: 10px;
-  margin: 3%;
+  margin: auto;
+  margin-top: 6%;
+  margin-bottom: 3%;
 }
