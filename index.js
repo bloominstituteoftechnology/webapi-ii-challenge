@@ -52,16 +52,16 @@ server.get('/api/posts/:id', (req, res) => {
 // Post request
 
 server.post('/api/posts', (req, res) => {
-  const posts = req.body;
+  const post = req.body;
 
-  if (posts.title && posts.contents) {
+  if (post.title && post.contents) {
     db
-      .insert(posts)
+      .insert(post)
       .then(idInfo => {
         db.findById(idInfo.id).then(posts => {
           res
           .status(201)
-          .json(posts);
+          .json(post);
         })
       })
       .catch(err => {
@@ -97,6 +97,39 @@ server.delete('/api/posts/:id', (req, res) => {
         .status(500)
         .json({ message: "The post could not be removed." })
     })
+})
+
+// Put request
+
+server.put('/api/posts/:id', (req, res) => {
+  const posts = req.body;
+  const { id } = req.params;
+  if (posts.title && posts.contents) {
+    db
+      .update(id, posts)
+      .then(count => {
+        if (count) {
+          db.findById(id)
+          .then(posts => {
+            res
+              .json(posts);
+          });
+        } else {
+          res
+            .status(404)
+            .json({ message: "The post with the specified ID does not exist."})
+        }
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ message: "The post information could not be modified."})
+      })
+  } else {
+      res
+        .status(400)
+        .json({ message: "Please provide title and content for the post."})
+  }
 })
 
 // Always at the bottom!!!!!
