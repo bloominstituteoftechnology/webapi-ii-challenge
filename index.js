@@ -1,8 +1,8 @@
 // import your node modules
 const express = require('express');
 const db = require('./data/db');
-
 const server = express();
+server.use(express.json())
 const PORT = 4040;
 
 server.get('/api/posts',(req, res)=>{
@@ -20,9 +20,9 @@ server.get('/api/posts/:id', (req, res)=>{
     const { id } = req.params
     db.findById(id)
         .then((posts =>{
-            posts?res.json(posts):
-            res.status(404)
-            .json({ message: "The post with the specified ID does not exist." })
+            if(posts[0]){ res.json(posts)
+            }else{res.status(404)
+            .json({ message: "The post with the specified ID does not exist." })}
         }))
         .catch(err=>{
             res.status(500)
@@ -31,10 +31,10 @@ server.get('/api/posts/:id', (req, res)=>{
 })
 
 server.post('/api/posts', (req, res)=>{
-    const { title, contents } = req.query
+    const { title, contents } = req.body
     db.insert({ title, contents })
         .then((id =>{
-           !title||!contents?res.status(400)
+           (!title||!contents)?res.status(400)
            .json({ errorMessage: "Please provide title and contents for the post." })
            :res.json({id, title, contents})
         }))
@@ -49,7 +49,7 @@ server.delete('/api/posts/:id', (req, res)=>{
     const post = db.findById(id)
     db.remove(id)
         .then(records=>{
-            records?res.json(post):res.status(404).json({ message: "The post with the specified ID does not exist." })
+            records?res.json( post.name, post.title ):res.status(404).json({ message: "The post with the specified ID does not exist." })
         })
         .catch(err=>{
             res.status(500)
@@ -59,18 +59,23 @@ server.delete('/api/posts/:id', (req, res)=>{
 
 server.put('api/posts/:id', (req, res)=>{
     const { id } = req.params;
-    const { title, contents} = req.query;
-    !title||!contents?res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
-    :db.update(id, { title, contents })
-        .then(record =>{
-            record?res.json({ id, title, contents })
+    const post = req.body;
+    console.log(post.title, post.contents)
+    if(post.title && post.contents){
+    db.update(id, post)
+        .then(count=>{
+            count?db.findById(id)
+            .then(post =>{
+                res.json(post)
+            })
             :res.status(404)
-            .json({ message: "The post with the specified ID does not exist." })
+                .json({message: "The post with the specified ID does not exist."})
+            .catch(err=>{
+                res.status(400)
+                    .json({errorMessage:"Please provide title and contents"})
+            })
         })
-        .catch(err=>{
-            res.status(500)
-                .json({ error: "The post information could not be modified." })
-        })
+    }else{res.status(500).json({ error: "The post information could not be modified." })}
 })
 
 server.listen(PORT, ()=>{
