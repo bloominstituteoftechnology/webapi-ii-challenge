@@ -3,6 +3,7 @@ const express = require('express');
 const db = require('./data/db.js');
 
 const server = express();
+server.use(express.json());
 
 server.get('/api/posts', (req,res)=>{
     db.find()
@@ -31,16 +32,71 @@ server.get('/api/posts/:id', (req, res)=>{
 });
 
 server.put('/api/posts/:id', (req, res)=>{
-    res.status(200).json({message: 'Updating'});
+    const {id} = req.params;
+    const post = req.body;
+    if(post.title && post.contents){
+        db.update(id, post)
+        .then(count=>{
+            if(count){
+                db.findById(id)
+                .then(user=>{
+                    res.status(200).json(user);
+                })
+                .catch(error=>{
+                    res.status(404).json({message: 'The post with the specified ID does not exist'});
+                });
+            }
+        })
+        .catch(error=>{
+            res.status(500).json({error: 'The post information could not be modified.'})
+        });
+    }
+    else{
+        res.status(400).json({errorMessage: 'Please provide title and contents for the post.'})
+    }
 })
 
 server.post('/api/posts', (req, res)=>{
-    res.status(200).json({message: 'Posted'});
-    console.log('Posting');
+    const post = req.body;
+    if(post.title && post.contents){
+        db.insert(post)
+        .then(idObj=>{
+            db.findById(idObj.id)
+            .then(newPost=>{
+                res.status(201).json(newPost[0]);
+            })
+        })
+        .catch(error=>{
+            res.status(500).json({error: 'There was an error while saving the post to the database.'})
+        });
+    }
+    else{
+        res.status(400).json({errorMessage: 'Please provide title and contents for the posts.'});
+    }
 });
 
 server.delete('/api/posts/:id', (req, res)=>{
-    res.status(200).json({message: 'Deleted'});
+    const {id} = req.params;
+    db.findById(id)
+    .then(postToDelete=>{
+        if(postToDelete.length){
+            db.remove(id)
+            .then(count=>{
+                if(count){
+                    res.status(200).json(postToDelete[0]);
+                }
+            })
+            .catch(error=>{
+                res.status(500).json({error: 'The post could not be removed.'})
+            })
+        }
+        else{
+            res.status(404).json({message: 'The post with the specified ID does not exist.'});
+        }
+    })
+    .catch(error=>{
+        res.status(500).json({error: 'The post could not be removed.'})
+    })
 });
 
 server.listen(5000, ()=>{
