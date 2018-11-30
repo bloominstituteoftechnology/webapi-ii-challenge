@@ -2,21 +2,22 @@
 const express = require('express');
 const server = express();
 const db = require('./data/db.js');
+server.use(express.json());
 
 // add your server code starting here
 server.post('/api/posts', (req, res) => {
     const { title, contents} = req.body;
-    if(!title || !content){
-        res.status(401).json({errorMessage:'Please provide title and contents for the post.'})
+    if(!title || !contents){
+        res.status(401).json({errorMessage:'Please provide title and contents for the post.'});
     }
-    db.insert({title, content})
+    db.insert({title, contents})
     .then(response => {
         res.status(201).json(response);
     })
     .catch( err => {
         res
         .status(500)
-        .json({errorMessage : 'There was an error while saving the post to the database'})
+        .json({errorMessage : 'There was an error while saving the post to the database'});
     })
 })
 
