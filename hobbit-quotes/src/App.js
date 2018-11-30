@@ -26,11 +26,16 @@ class App extends Component {
 
   addNewPost = (obj) => {
     axios.post('http://localhost:3000/api/posts', obj)
-      .then(response => {
-        this.setState({
-          posts: response.data
+      .then(response=>{
+              axios.get('http://localhost:3000/api/posts')
+          .then( response => {
+            if(typeof response.data.message === 'string'){
+              Promise.reject("Error: posts are missing!")
+            }
+            this.setState({ posts: response.data })
+          })
+          .catch ( err=> console.log(err))
         })
-      })
       .catch( err => console.log(err))
   }
 
@@ -39,9 +44,14 @@ class App extends Component {
     return() => {
       axios.delete(`http://localhost:3000/api/posts/${id}`)
         .then(response=>{
-          this.setState({
-            posts: response.data
+              axios.get('http://localhost:3000/api/posts')
+          .then( response => {
+            if(typeof response.data.message === 'string'){
+              Promise.reject("Error: posts are missing!")
+            }
+            this.setState({ posts: response.data })
           })
+          .catch ( err=> console.log(err))
         })
         .catch(err=>console.log(err))
     }
