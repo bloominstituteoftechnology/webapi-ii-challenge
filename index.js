@@ -1,10 +1,12 @@
 // import your node modules
 const express = require('express');
+const db = require('./data/db.js');
 
 const server = express();
 const PORT = 4000;
 
-const db = require('./data/db.js');
+server.use(express.json());
+
 
 // GET	/api/posts	Returns an array of all the post objects contained in the database.
 server.get('/api/posts', (req, res) => {
@@ -40,8 +42,30 @@ server.get( '/api/posts/:id', (req, res) => {
 
 // POST	/api/posts	Creates a post using the information sent inside the request body.
 server.post( '/api/posts', (req, res) => {
-  console.log("req params:", req );
-  res.json({message: `${req.params.title}`});
+  const post = req.body;
+  console.log("req body:", post );
+  
+  if ( !post.title || !post.contents ){
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post"});
+  } else {
+    db.insert(post)
+      .then( postId => {
+        // 201 if good, 500 if bad
+        db.findById( postId.id )
+          .then( post => {
+            res.json(post);
+          })
+      })
+      .catch( err => {
+        res.status(500).json({ error: "There was an error while saving the post to the database"});
+      });
+  }
+
+  // status 201 - created
+  // db.insert
+  //   db.findById(idInfo.id).then();
+
+
   //const {title, contents} = req.params;
   // if( !req.params.title || !req.params.contents ){
   //   res.status(400).json({ errorMessage: "Please provide title and contents for the post."});
@@ -54,9 +78,12 @@ server.post( '/api/posts', (req, res) => {
 
 // PUT	/api/posts/:id	Updates the post with the specified id using data from the request body. 
 //      Returns the modified document, NOT the original.
+// const user = req.body;
+// const { id } = req.params;
+
 
 // DELETE	/api/posts/:id	Removes the post with the specified id and returns the deleted post object. You may need to make additional calls to the database in order to satisfy this requirement.
-
+// db.remove(id).then(count)
 // Listener:
 server.listen( PORT, () => {
   console.log( `Server started on port: ${PORT}`)
