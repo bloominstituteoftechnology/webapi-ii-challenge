@@ -46,10 +46,12 @@ server.post('/api/posts', (req, res)=>{
 
 server.delete('/api/posts/:id', (req, res)=>{
     const { id } = req.params;
-    const post = db.findById(id)
+    const post = db.findById(id).then(post=>post)
+    
     db.remove(id)
         .then(records=>{
-            records?res.json( post.name, post.title ):res.status(404).json({ message: "The post with the specified ID does not exist." })
+            console.log(records)
+            records?res.json(post):res.status(404).json({ message: "The post with the specified ID does not exist." })
         })
         .catch(err=>{
             res.status(500)
@@ -57,16 +59,16 @@ server.delete('/api/posts/:id', (req, res)=>{
         })
 })
 
-server.put('api/posts/:id', (req, res)=>{
+server.put('/api/posts/:id', (req, res)=>{
     const { id } = req.params;
     const post = req.body;
-    console.log(post.title, post.contents)
+    console.log(post.title, post.contents);
     if(post.title && post.contents){
     db.update(id, post)
         .then(count=>{
             count?db.findById(id)
             .then(post =>{
-                res.json(post)
+                res.status(201).json(post)
             })
             :res.status(404)
                 .json({message: "The post with the specified ID does not exist."})
