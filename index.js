@@ -10,7 +10,7 @@ const port = 3000;
 
 app.use(express.json());
 
-app.get('/api/posts', function(req, res) {
+app.get('/api/posts', (req, res) => {
     db.find()
         .then(posts => {
             res.json(posts);
@@ -20,7 +20,7 @@ app.get('/api/posts', function(req, res) {
         });
 });
 
-app.post('/api/posts', function(req, res) {
+app.post('/api/posts', (req, res) => {
     const post = req.body;
     if(post) {
         db.insert(post)
@@ -38,7 +38,7 @@ app.post('/api/posts', function(req, res) {
     }
 });
 
-app.get('/api/post/:id', function(req, res) {
+app.get('/api/post/:id', (req, res) => {
     const id = req.params.id;
 
     db.findById(id)
@@ -51,6 +51,25 @@ app.get('/api/post/:id', function(req, res) {
         })
         .catch(() => {
             res.status(500).json({ error: "The post information could not be retrieved." });
+        });
+});
+
+app.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+
+    db.findById(id)
+        .then(post => {
+            if (post[0]) {
+                db.remove(id)
+                    .then(count => {
+                        res.json({ message: "The post was deleted succesfully" })
+                    })
+            } else {
+                res.status(404).json({ message: "The post with the specified ID does not exist." });
+            }
+        })
+        .catch(() => {
+            res.status(500).json({ message: "The post with the specified ID does not exist." });
         });
 });
 
