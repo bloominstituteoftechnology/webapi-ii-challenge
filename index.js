@@ -43,7 +43,7 @@ server.get( '/api/posts/:id', (req, res) => {
 // POST	/api/posts	Creates a post using the information sent inside the request body.
 server.post( '/api/posts', (req, res) => {
   const post = req.body;
-  console.log("req body:", post );
+  // console.log("req body:", post );
   
   if ( !post.title || !post.contents ){
     res.status(400).json({ errorMessage: "Please provide title and contents for the post"});
@@ -60,26 +60,34 @@ server.post( '/api/posts', (req, res) => {
         res.status(500).json({ error: "There was an error while saving the post to the database"});
       });
   }
-
-  // status 201 - created
-  // db.insert
-  //   db.findById(idInfo.id).then();
-
-
-  //const {title, contents} = req.params;
-  // if( !req.params.title || !req.params.contents ){
-  //   res.status(400).json({ errorMessage: "Please provide title and contents for the post."});
-  // }
-  // else {
-  //   res.json({message: "Success"})
-  // }
 });
 
 
 // PUT	/api/posts/:id	Updates the post with the specified id using data from the request body. 
 //      Returns the modified document, NOT the original.
-// const user = req.body;
-// const { id } = req.params;
+server.put( '/api/posts/:id', (req, res) => {
+  const post = req.body;
+  const { id } = req.params;
+
+  // Body is missing title or contents: 400
+  if( !post.title || !post.contents ){
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post."});
+  } else {
+    // Insert will return a count of 1 if updated.
+    db.update(id, post)
+      .then( count => {
+        // Check to see if it updated/found the ID
+        if( count < 1 ){
+          res.status(404).json({ message: "The post with the specified ID does not exist."});
+        } else {
+          console.log( "count", count );
+        }
+      })
+      .catch( err => {
+        console.log( "error", err );
+      });
+  }
+});
 
 
 // DELETE	/api/posts/:id	Removes the post with the specified id and returns the deleted post object. You may need to make additional calls to the database in order to satisfy this requirement.
