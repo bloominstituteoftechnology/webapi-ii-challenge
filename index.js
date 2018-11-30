@@ -17,16 +17,21 @@ server.use(express.json());
 server.post('/api/posts', (req, res) => {
     const { title, contents } = req.body;
     const newPost = { title, contents };
+    //return new post after posting
+    const findPost = idInfo =>
+    db.findById(idInfo.id)
+        .then(post => {
+            res.status(201)
+                .json(post)
+        })
+    //posting new post
     db.insert(newPost)
-        .then(id => {
+        .then(idInfo => {
             if (!title || !contents) {
                 res.status(400)
                     .json({ errorMessage: "Please provide title and contents for the post." })
             }
-            else {
-                res.status(201)
-                    .json({ ...newPost, ...id })
-            }
+            else { findPost(idInfo) }
         })
         .catch(err => {
             res.status(500)
