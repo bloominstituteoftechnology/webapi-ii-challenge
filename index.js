@@ -59,7 +59,7 @@ server.post('/api/posts', (req, res) => {
             .catch(err => {
                 res
                 .status(500)
-                .json({ message: "Cannot add this new post" })
+                .json({ message: "Cannot add this new post. It's too stubborn to join." })
             })
     } else if (post.title) {
         res
@@ -72,15 +72,25 @@ server.post('/api/posts', (req, res) => {
     } else {
         res
         .status(400)
-        .json({message: "New posts need a title and content"})
+        .json({message: "New posts need a title and content, obviously."})
     }
 })
 
 server.delete('/api/posts/:id', (req, res) => {
     const {id} = req.params;
+    const post = res.body;
     db.remove(id)
         .then(count => {
-            console.log(count)
+            console.log(count);
+            if (count){
+                console.log(post);
+                res
+                .json({message: "This post was successfully deleted. You have conquered your foe."})
+            } else {
+                res
+                .status(404)
+                .json({ message: "Invalid ID. Are you sure that's who you were looking to vanquish?" })
+            }
         })
         .catch(err => {
             res
@@ -88,6 +98,7 @@ server.delete('/api/posts/:id', (req, res) => {
             .json({ message: "Post is invulnerable to your attack and cannot be deleted." })
         })
 })
+
 
 server.listen(3000, ()=> {
     console.log('Server works. Go. Awesome.')
