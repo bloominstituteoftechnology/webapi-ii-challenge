@@ -4,14 +4,18 @@ const express = require('express')
 const db = require('./data/db.js');
 
 // add your server code starting here
+
 const server = express();
 const PORT = 4000;
+
+//parsing JSON
+server.use(express.json());
 
 //endpoints
 
 //POST
 server.post('/api/posts', (req, res) => {
-    const { title, contents } = req.query;
+    const { title, contents } = req.body;
     const newPost = { title, contents };
     db.insert(newPost)
         .then(id => {
@@ -45,8 +49,7 @@ server.get('/api/posts', (req, res) => {
 //GET one post
 server.get('/api/posts/:id', (req, res) => {
     const { id } = req.params;
-    db
-        .findById(id)
+    db.findById(id)
         .then(post => {
             if (post.length > 0) {
                 res.json(post);
@@ -62,6 +65,14 @@ server.get('/api/posts/:id', (req, res) => {
                 .json({ message: "failed to get post" })
         })
 });
+
+//PUT
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const { title, contents } = req.query;
+    const updatedPost = { title, contents }
+    db.update(id, updatedPost)
+})
 
 //DELETE
 server.delete('/api/posts/:id', (req, res) => {
