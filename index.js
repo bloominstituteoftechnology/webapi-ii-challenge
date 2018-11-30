@@ -76,15 +76,17 @@ server.put( '/api/posts/:id', (req, res) => {
     // Insert will return a count of 1 if updated.
     db.update(id, post)
       .then( count => {
-        // Check to see if it updated/found the ID
+        // Check to see if it updated/found the ID, otherwise 404
         if( count < 1 ){
           res.status(404).json({ message: "The post with the specified ID does not exist."});
         } else {
-          console.log( "count", count );
+          // Inserted correctly. Return newly updated post.
+          db.findById( id ).then( post => { res.json(post); });
         }
       })
+      // Insert failed completely: 500 error
       .catch( err => {
-        console.log( "error", err );
+        res.status(500).json({ error: "The post information could not be modified."});
       });
   }
 });
