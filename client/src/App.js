@@ -17,13 +17,21 @@ class App extends Component {
   componentDidMount() {
     axios
     .get('http://localhost:4000/api/posts')
-    .then(res => {
+    
+     
+      .then(res => {
+        const arr = res;
+       console.log(res);
+     
+        this.setState({ posts: arr });
+     
+      })
+     // let obj = JSON.parse(res)
 
-      
-      console.log(res.data)
-      this.setState(() => ({ posts: res.data }));
-      console.log(this.state.posts)
-    })
+      //console.log(obj)
+     // this.setState(() => ({ posts: res.data }));
+    //  console.log(this.state.posts)
+    
     .catch(error => {
       console.error('Server Error', error);
     }); 
