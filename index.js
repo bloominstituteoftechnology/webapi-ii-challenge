@@ -11,6 +11,10 @@ const PORT = 4000;
 //parsing JSON
 server.use(express.json());
 
+//allow access control
+const cors = require('cors')
+server.use(cors());
+
 //endpoints
 
 //POST
