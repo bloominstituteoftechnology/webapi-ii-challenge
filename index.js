@@ -1,24 +1,19 @@
 // import your node modules
 
-const express = require('express');
-const db = require('./data/db.js');
+const express = require('express');     //import express package
+const db = require('./data/db.js');     
 
-const server = express();     //express is a function
+const server = express();               //creates the server; express is a function
 const PORT = 5000;
 
 // CORS stuff
 const cors = require('cors')
+
 server.use(cors())
 
-// server.get('/api/posts/:id', function (req, res, next) {
-//     res.json({msg: 'This is CORS-enabled for all origins!'})
-// })
 
-// server.listen(80, function () {
-//     console.log('CORS-enabled web server listening on port 80')
-// })
 
-// add your server code starting here
+// handle requests to the root of the api, the / route
 
 server.get('/api/posts', (req, res) => {
     db.find()
@@ -52,7 +47,7 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 
-// listening
+// listening; watch for connections on port 5000 (defined above)
 
 server.listen(PORT, () => {
     console.log(`server on localhost:5000 is up and running on port ${PORT}`)

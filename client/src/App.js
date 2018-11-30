@@ -31,13 +31,10 @@ class App extends Component {
             
             {this.state.posts.map(post => {
               return (
-            
                   <div className="card" key={post.id}>
                     <p>{post.title}</p>
                     <h2>{post.contents}</h2>
                   </div>
-           
-             
               )
             })}
         </div>
