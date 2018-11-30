@@ -47,7 +47,7 @@
           "application/json"
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "New post is created",
             "schema": {
               "$ref": "#/definitions/Post"
@@ -62,7 +62,7 @@
         "summary": "Get all posts in system",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "All posts were retrieved successfully",
             "schema": {
               "$ref": "#/definitions/Posts"
             }
@@ -87,7 +87,7 @@
         "summary": "Get post with given ID",
         "responses": {
           "200": {
-            "description": "Post is found",
+            "description": "The post with the specified ID was found",
             "schema": {
               "$ref": "#/definitions/Postr"
             }
@@ -101,7 +101,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Post is deleted",
+            "description": "The post with the specified ID was deleted",
             "schema": {
               "$ref": "#/definitions/Post"
             }
@@ -125,7 +125,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Post is updated",
+            "description": "The Post was successfully updated",
             "schema": {
               "$ref": "#/definitions/Post"
             }
@@ -138,12 +138,11 @@
     "Post": {
       "required": [
         "title",
-        "id"
+        "contents"
       ],
       "properties": {
         "title": {
-          "type": "string",
-          "uniqueItems": true
+          "type": "string"
         },
         "contents": {
           "type": "string"
