@@ -78,25 +78,33 @@ server.post('/api/posts', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
     const {id} = req.params;
-    const post = res.body;
-    db.remove(id)
-        .then(count => {
-            console.log(count);
-            if (count){
-                console.log(post);
-                res
-                .json({message: "This post was successfully deleted. You have conquered your foe."})
+    db.findById(id)
+        .then(post => {
+            if (post) {
+                const thePost = post[0];
+               db.remove(id)
+                .then(count => {
+                    if (count){
+                        res
+                        .json(thePost)
+                    }
+                })
             } else {
                 res
                 .status(404)
                 .json({ message: "Invalid ID. Are you sure that's who you were looking to vanquish?" })
             }
         })
-        .catch(err => {
+    .catch(err => {
             res
             .status(500)
-            .json({ message: "Post is invulnerable to your attack and cannot be deleted." })
-        })
+            .json({ message: "This post is invulnerable to your attacks and could not be deleted." })
+    })
+})
+
+server.put('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+
 })
 
 
