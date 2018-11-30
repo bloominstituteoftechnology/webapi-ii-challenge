@@ -19,24 +19,26 @@ server.post('/api/posts', (req, res) => {
     const newPost = { title, contents };
     //return new post after posting
     const findPost = idInfo =>
-    db.findById(idInfo.id)
-        .then(post => {
-            res.status(201)
-                .json(post)
-        })
+        db.findById(idInfo.id)
+            .then(post => {
+                res.status(201)
+                    .json(post)
+            })
     //posting new post
-    db.insert(newPost)
-        .then(idInfo => {
-            if (!title || !contents) {
-                res.status(400)
-                    .json({ errorMessage: "Please provide title and contents for the post." })
-            }
-            else { findPost(idInfo) }
-        })
-        .catch(err => {
-            res.status(500)
-                .json({ error: "There was an error while saving the post to the database" })
-        })
+    if (title && contents) {
+        db.insert(newPost)
+            .then(idInfo => {
+                findPost(idInfo)
+            })
+            .catch(err => {
+                res.status(500)
+                    .json({ error: "There was an error while saving the post to the database" })
+            })
+    }
+    else {
+        res.status(400)
+            .json({ errorMessage: "Please provide title and contents for the post." })
+    }
 })
 
 //GET all posts
@@ -74,9 +76,34 @@ server.get('/api/posts/:id', (req, res) => {
 //PUT
 server.put('/api/posts/:id', (req, res) => {
     const { id } = req.params;
-    const { title, contents } = req.query;
+    const { title, contents } = req.body;
     const updatedPost = { title, contents }
-    db.update(id, updatedPost)
+    //return updated post after updating
+    const findPost = id =>
+        db.findById(id)
+            .then(post => {
+                res.status(200)
+                    .json(post)
+            })
+    //updating
+    if (title && contents) {
+        db.update(id, updatedPost)
+            .then(count => {
+                if (count) { findPost(id) }
+                else {
+                    res.status(404)
+                        .json({ message: "The post with the specified ID does not exist." })
+                }
+            })
+            .catch(err => {
+                res.status(500)
+                    .json({ error: "The post information could not be modified." })
+            })
+    }
+    else {
+        res.status(400)
+            .json({ errorMessage: "Please provide title and contents for the post." })
+    }
 })
 
 //DELETE
