@@ -16,7 +16,7 @@ server.get('/api/posts', (req, res) =>{
         })
         .catch((err) =>{
             res.status(500)
-            res.json('Unable to retrieve the posts');
+            res.json({ error: "The posts information could not be retrieved."})
         })
 });
 
@@ -30,14 +30,14 @@ server.get('/api/posts/:id', (req, res) =>{
                 res.json(post)
             }else{
                 res.status(404)
-                res.json('The requested post does not exist')
+                res.json({ message: "The post with the specified ID does not exist." })
             }
         })
         .catch((err) =>{
             res.status(500)
-            res.json('Unable to retrieve the post')
+            res.json({ error: "The post information could not be retrieved." });        
         })
-});
+});         
 
 server.listen(PORT, () =>{
     console.log(`Server is up and running on port ${PORT}`);
