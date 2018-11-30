@@ -27,7 +27,7 @@ server.post("/api/posts", (req, res) => {
 
     if (newPost.title && newPost.contents) {
         db.insert(newPost).then(post => {
-            res.status(201).send(post);
+            res.status(201).json(post);
         }).catch(error => {
             res.status(500).json({error: "There was an error while saving the post to the database"});
         });
@@ -63,8 +63,8 @@ server.put("/api/posts/:id", (req, res) => {
 
 server.delete("/api/posts/:id", (req, res) => {
     let id = req.params.id;
-    db.remove(id).then(() => {
-        res.status(200);
+    db.remove(id).then(post => {
+        res.status(200).json(post);
     }).catch(error => {
         res.status(500).json({error: "The post could not be removed"});
     });
