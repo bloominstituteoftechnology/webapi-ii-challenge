@@ -8,7 +8,7 @@ const db = require('./data/db.js');
 const app = express();
 const port = 3000;
 
-server.use(express.json());
+app.use(express.json());
 
 app.get('/api/posts', function(req, res) {
     db.find()
@@ -18,6 +18,24 @@ app.get('/api/posts', function(req, res) {
         .catch(() => {
             res.status(500).json({ error: "The posts information could not be retrieved." });
         });
+});
+
+app.post('/api/posts', function(req, res) {
+    const post = req.body;
+    if(post) {
+        db.insert(post)
+            .then(id => {
+                db.findById(id)
+                    .then(post => {
+                        res.json(post);
+                    });
+            })
+            .catch(() => {
+                res.status(500).json({ error: "There was an error while saving the post to the database" });
+            });
+    } else {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    }
 });
 
 app.get('/api/post/:id', function(req, res) {
