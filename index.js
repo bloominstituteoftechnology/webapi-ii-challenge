@@ -31,7 +31,7 @@ SERVER.get('/api/posts',(req,res) => {
 SERVER.get('/api/posts:id',(req,res) => {
 	DB.find()
 		.then((posts) => {
-			console.log("Post ID:\t",posts)
+			console.log("Post:\t",posts)
 			res.json(posts)
 		})
 		.catch(err => {
@@ -39,6 +39,46 @@ SERVER.get('/api/posts:id',(req,res) => {
 				.status(500)
 				.json({message: "Failed to find post ID"})
 		})
+});
+
+// Use POST
+
+SERVER.post('api/posts',(req,res) => {
+	const Post = req.body;
+	if(Post.title && Post.content){
+		DB.insert(Post).then(idInfo => {
+			DB.findById(idInfo.id).then(user => {
+				res.status(201).json(Post);
+			});
+		}).catch(err => {
+			res
+				.status(500)
+				.json({message: "Failed to post"})
+		});
+	} else {
+		res
+			.status(400)
+			.json({message: "Missing title or content"})
+	}
+});
+
+// Use DELETE
+
+SERVER.delete('api/posts:id',(req,res) => {
+	const {id} = req.params;
+	DB.remove(id).then(count => {
+		if(count){
+			res.json({message: `Deleted ${count}`})
+		} else {
+			res
+				.status(404)
+				.json({message: "Invalid id"})
+		}
+	}).catch(err => {
+		res
+			.status(500)
+			.json({message:"Failed to delete"})
+	})
 });
 
 // Start Listenings
