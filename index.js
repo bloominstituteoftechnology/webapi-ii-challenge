@@ -12,7 +12,18 @@ server.get('/api/posts', (req,res) => {
     .catch(err => {
         res
         .status(500)
-        .json({"message": "Failure!"})})
+        .json({"error": "The posts information could not be retrieved."})})
+})
+
+server.get('/api/posts/:id', (req,res) => {
+    const {id} = req.params;
+    db.findById(id)
+    .then( post => {res.json(post)})
+    .catch(err => {
+        res
+        .status(404)
+        .json({"message":"The post with the specified ID does not exist."})
+    })
 })
 
 // add your server code starting here
