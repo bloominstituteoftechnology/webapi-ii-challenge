@@ -1,21 +1,12 @@
-// import your node modules
 const express = require('express');
 const server = express();
 const db = require('./data/db.js');
 
-//middleware to allow us to use req.body
-//body is like an outer shell
-//further request the key value by using req.body.VALUE
 server.use(express.json());
-// const { title, contents } = req.body
-
-
-// add your server code starting here
 
 server.get('/api/posts', (req, res) => {
     db.find()
         .then((posts) => {
-            console.log(posts)
             res.json(posts)
         })
         .catch(err => {
@@ -104,7 +95,40 @@ server.delete('/api/posts/:id', (req, res) => {
 
 server.put('/api/posts/:id', (req, res) => {
     const {id} = req.params;
+    const post = req.body;
 
+    if (post.title && post.contents){
+        db.update(id, post)
+        .then(count => {
+            if(count){
+                db.findById(id)
+                    .then(post => {
+                        res.json(post[0])
+                    })
+            } else {
+                res
+                .status(404)
+                .json({ message: "Invalid ID. Are you sure that's what you were looking to change?"})
+            }
+        })
+        .catch(err => {
+            res
+            .status(500)
+            .json({ message: "There was an error updating this post. It rejected your changes as unacceptable." })
+        })
+    } else if (post.title) {
+        res
+        .status(400)
+        .json({ message: "Your updated post needs contents. What is an empty post? Worthless!" })
+    } else if (post.contents) {
+        res
+        .status(400)
+        .json({ message: "Your updated post needs a title. How else will we know what it's all about?" })
+    } else {
+        res
+        .status(400)
+        .json({ message: "Your updated post needs a title and contents. Why are you just adding empty air? Stop wasting The Internet Gods' time!" })
+    }
 })
 
 
