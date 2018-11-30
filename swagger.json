@@ -1,0 +1,158 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Node Express Lab API Documentation",
+    "description": "Jorge Osto's API documentation",
+    "license": {
+      "name": "Lambda School",
+      "url": "https://github.com/Jorlost19/Node-Express-Lab"
+    }
+  },
+  "host": "localhost:4000",
+  "basePath": "/api/",
+  "tags": [
+    {
+      "name": "Posts",
+      "description": "API for posts in the system"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/posts": {
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "description": "Create new post in system",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "body",
+            "description": "Post that we want to create",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New post is created",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get all posts in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Posts"
+            }
+          }
+        }
+      }
+    },
+    "/posts/{postId}": {
+      "parameters": [
+        {
+          "name": "postId",
+          "in": "path",
+          "required": true,
+          "description": "ID of post that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get post with given ID",
+        "responses": {
+          "200": {
+            "description": "Post is found",
+            "schema": {
+              "$ref": "#/definitions/Postr"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete post with given ID",
+        "tags": [
+          "Posts"
+        ],
+        "responses": {
+          "200": {
+            "description": "Post is deleted",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update post with given ID",
+        "tags": [
+          "Posts"
+        ],
+        "parameters": [
+          {
+            "name": "post",
+            "in": "body",
+            "description": "Post with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post is updated",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Post": {
+      "required": [
+        "title",
+        "id"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "contents": {
+          "type": "string"
+        }
+      }
+    },
+    "Posts": {
+      "type": "array",
+      "$ref": "#/definitions/Post"
+    }
+  }
+}
