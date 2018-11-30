@@ -48,7 +48,6 @@ class NoteDetail extends React.Component {
         ...note
       })
       .then(response => {
-        console.log(response);
         this.props.fetchNotes();
       })
       .catch(err => console.log(err));
@@ -64,7 +63,6 @@ class NoteDetail extends React.Component {
     axios
       .delete(`http://localhost:4000/api/posts/${id}`)
       .then(response => {
-        console.log(response);
         this.props.fetchNotes();
       })
       .catch(err => console.log(err));

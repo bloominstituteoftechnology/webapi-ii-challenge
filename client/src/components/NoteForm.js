@@ -7,7 +7,6 @@ const NoteForm = props => {
       title: props.title,
       contents: props.contents
     };
-    console.log(newNote)
     props.postNotes(newNote);
     props.history.push(`/`);
   };
