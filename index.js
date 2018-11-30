@@ -8,6 +8,8 @@ const db = require('./data/db.js');
 const app = express();
 const port = 3000;
 
+server.use(express.json());
+
 app.get('/api/posts', function(req, res) {
     db.find()
         .then(posts => {
