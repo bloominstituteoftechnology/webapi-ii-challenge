@@ -30,7 +30,7 @@ server.get('/api/posts/:id', (req, res) => {
     db.findById(id)
         .then(post => {
            if(post) {
-               res.json(post)
+               res.json(post[0])
            } else {
                res
                .status(404)
@@ -53,7 +53,7 @@ server.post('/api/posts', (req, res) => {
                     .then(post => {
                         res
                         .status(201)
-                        .json(post)
+                        .json(post[0])
                     })
             })
             .catch(err => {
