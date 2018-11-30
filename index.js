@@ -32,7 +32,6 @@ server.get( '/api/posts/:id', (req, res) => {
       } else {
         res.status(200).json(post);
       }
-      // res.status(200).json(posts);
     })
     // No valid response from db
     .catch( err => {
@@ -94,6 +93,29 @@ server.put( '/api/posts/:id', (req, res) => {
 
 // DELETE	/api/posts/:id	Removes the post with the specified id and returns the deleted post object. You may need to make additional calls to the database in order to satisfy this requirement.
 // db.remove(id).then(count)
+server.delete( '/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+
+  // We do need the deleted object returned. Must get that first before deleting it.
+  db.findById(id)
+    .then( post => {
+      //Check for an empty array
+      if( post.length === 0 ){
+        res.status(404).json({ message: "The post with the specified ID does not exist."});
+      } else {
+        // Post exists, now delete it.
+        db.remove(id)
+          .then( count => {
+            if( count > 0 ){
+              // Delete was successful. Send back original post
+              res.status(200).json(post);
+            }
+          })
+      }
+    })
+    .catch( err => { error: "The post could not be removed."});
+});
+
 // Listener:
 server.listen( PORT, () => {
   console.log( `Server started on port: ${PORT}`)
