@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
 
 import Post from "./Post";
 
@@ -8,13 +9,14 @@ const PostsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  margin-top: 20px;
 `;
 
 const PostContainer = styled.div`
   flex: 0 1 20%;
   min-width: 300px;
   height: 300px;
-  background-color: #f6f5f7;
+  /* background-color: #f6f5f7; */
   border: 0;
   border-radius: 3px;
   box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0, 0, 0, 0.12),
