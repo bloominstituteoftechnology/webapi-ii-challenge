@@ -15,6 +15,7 @@ server.use(express.json());
 server.get('/api/posts', (req, res) => {
     db.find()
         .then((posts) => {
+            console.log(posts)
             res.json(posts)
         })
         .catch(err => {
@@ -43,6 +44,51 @@ server.get('/api/posts/:id', (req, res) => {
         })
 })
 
-server.listen(4000, ()=> {
+server.post('/api/posts', (req, res) => {
+    const post = req.body;
+    if (post.title && post.contents) {
+        db.insert(post)
+            .then(postID => {
+                db.findById(postID.id)
+                    .then(post => {
+                        res
+                        .status(201)
+                        .json(post)
+                    })
+            })
+            .catch(err => {
+                res
+                .status(500)
+                .json({ message: "Cannot add this new post" })
+            })
+    } else if (post.title) {
+        res
+        .status(400)
+        .json({message: "New posts need a title, not just content. Otherwise, how do we know what it's all about?"})
+    } else if (post.contents) {
+        res
+        .status(400)
+        .json({message: "New posts need content. Empty posts are just soulless creatures."})
+    } else {
+        res
+        .status(400)
+        .json({message: "New posts need a title and content"})
+    }
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    db.remove(id)
+        .then(count => {
+            console.log(count)
+        })
+        .catch(err => {
+            res
+            .status(500)
+            .json({ message: "Post is invulnerable to your attack and cannot be deleted." })
+        })
+})
+
+server.listen(3000, ()=> {
     console.log('Server works. Go. Awesome.')
 })
