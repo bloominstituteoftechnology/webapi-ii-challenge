@@ -14,3 +14,14 @@ server.get('/', (req , res) => {
 server.listen(PORT, () => {
     console.log(`My server is running on port ${PORT}`);
 });
+
+server.get('/api/posts', (req, res) => {
+    db.find()
+    .then(posts => {
+        res.json(posts)
+    })
+    .catch(err => {
+        res.status(500)
+        res.json(`Huh, can't find those posts`)
+    })
+})
