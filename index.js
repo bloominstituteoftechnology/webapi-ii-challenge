@@ -47,17 +47,19 @@ server.post("/api/posts", (req, res) => {
 
     db.insert(postsInfo)
         .then(post => {
-            if (post) {
                 res.status(201)
                 .json(post)
 
-            } else {
-                res.status(400).json({ errorMessage: "Please provide title and contents for the post."})
-            }
         })
         .catch(err => {
-            res.status(500).json({ error: "There was an error while saving the post to the database" })
-        })
+            if (err.errno === 19) {
+                res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+
+            }
+            else {
+                res.status(500).json({ error: "There was an error while saving the post to the database" })
+            }
+            })
 })
 
 server.listen(PORT, () => {
