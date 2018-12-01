@@ -1854,6 +1854,11 @@ posix-character-classes@^0.1.0:
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
   integrity sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=
 
+postman@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/postman/-/postman-0.2.0.tgz#73cb3634336d6cf37b976826561204157501e04e"
+  integrity sha1-c8s2NDNtbPN7l2gmVhIEFXUB4E4=
+
 prepend-http@^1.0.1:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
