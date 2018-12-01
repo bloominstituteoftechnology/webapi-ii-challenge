@@ -4,6 +4,7 @@ const db = require('./data/db.js');
 const server = express();
 
 const PORT = 3300;
+server.use(express.json());
 
 // add your server code starting here
 
@@ -76,7 +77,23 @@ server.post('/api/posts', (req, res) => {
         }
     })
 
-    server.delete('/api/posts/:id', (req, res))
+    server.delete('/api/posts/:id', (req, res) => {
+        const {id} = req.params;
+
+        db.remove(id).then(count => {
+            if (count) {
+                res.json({message: "Successfully Delete Item"})
+            }else {
+                res.status(404)
+                .json({message: "The post with the specified ID does not exist."})
+            }
+        } 
+
+        ).catch(err => {
+            res.status(500)
+            .json({error: "The post could not be removed"})
+        } )
+    })
 
 
 
