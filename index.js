@@ -29,7 +29,7 @@ server.get('/api/posts', (req, res) => {
         .catch(err => {
             res
                 .status(500)
-                .json({message: 'failed to get posts'})
+                .json({message: "The posts information could not be retrieved."})
         });
 });
 
@@ -45,12 +45,12 @@ server.get('/api/posts/:id', (req, res) => {
             }
                 res
                     .status(404)
-                    .json({message: 'no post found'})
+                    .json({message: "The post with the specified ID does not exist."})
         })
         .catch(err => {
             res
                 .status(500)
-                .json({message: 'there was an error in retrieving the post'})
+                .json({message: "The post information could not be retrieved." })
         });
 });
 
@@ -71,13 +71,13 @@ server.post('/api/posts', (req, res) => {
         .catch(err => {
             res
                 .status(500)
-                .json({message: 'failed to add new post'})
+                .json({message: "There was an error while saving the post to the database."})
         });
     }
     else {
         res
             .status(400)
-            .json({ message: 'missing title or contents'})
+            .json({ message: "Please provide title and contents for the post."})
     }
 });
 
@@ -88,18 +88,18 @@ server.delete('/api/posts/:id', (req, res) => {
     db.remove(id)
         .then(count => {
             if (count) {
-                res.json({ message: 'post deleted'})
+                res.json({ message: "The post was deleted."})
             }
             else {
                 res
                     .status(404)
-                    .json({ message: 'could not find post'})
+                    .json({ message: "The post with the specified ID does not exist."})
             }
         })
         .catch(err => {
             res
                 .status(500)
-                .json({message: 'failed to delete post'})
+                .json({message: "The post could not be removed."})
         });
 });
 
@@ -120,24 +120,24 @@ server.put('/api/posts/:id', (req, res) => {
                 else {
                     res
                         .status(404)
-                        .json({ message: 'could not find post'});
+                        .json({ message: "The post with the specified ID does not exist."});
                 }
             })
             .catch(err => {
                 res
                     .status(500)
-                    .json({message: 'failed to delete post'});
+                    .json({message: "The post information could not be modified."});
             });
     }
     else {
         res
             .status(400)
-            .json({ message: 'missing title or contents'});
+            .json({ message: "Please provide title and contents for the post."});
     }
 });
 
 // initiate listening
 
 server.listen(PORT, err => {
-    console.log(`server is still running for sure!`)
+    console.log(`Server is running on ${PORT}`)
 });
