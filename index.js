@@ -41,7 +41,6 @@ server.get('/api/posts/:id', (req, res) => {
                     .json({ message: 'Failed to get post' })
             }
         })
-        //What is the purpose of this catch?
         .catch(err => {
             res.status(500)
                 .json({ message: 'Failed to get post' })
@@ -50,12 +49,13 @@ server.get('/api/posts/:id', (req, res) => {
 })
 
 server.post('/api/posts', (req, res) => {
-    const user = req.body;
 
-    if (user.title && user.contents) {
-        db.insert(user)
+    const post = req.body;
+
+    if (post.title && post.contents) {
+        db.insert(post)
             .then(idInfo => {
-                db.findById(idInfo.id).then(user => {
+                db.findById(idInfo.id).then(post => {
                     res.status(201).json(idInfo)
                 })
             })
@@ -71,8 +71,9 @@ server.post('/api/posts', (req, res) => {
 })
 
 server.delete('/api/posts/:id', (req, res) => {
+
     const { id } = req.params;
-    console.log('id', id)
+    
     db.remove(id)
         .then(count => {
             if (count) {
@@ -86,6 +87,33 @@ server.delete('/api/posts/:id', (req, res) => {
             res.status(500)
                 .json({ message: 'Failed to delete post' })
         })
+})
+
+server.put('/api/posts/:id', (req, res) => {
+    
+    const { id } = req.params;
+    const post = req.body
+
+    if (post.title && post.contents) {
+        db.update(id, post)
+            .then(count => {
+                if (count) {
+                    db.findById(id).then(post => {
+                        res.json(post);
+                    });
+                } else {
+                    res.status(404).json({ message: 'invalid id' });
+                }
+            })
+            .catch(err => {
+                res.status(500)
+                    .json({ message: 'Failed to update post' })
+            })
+    } else {
+        res.status(400).json({
+            message: 'missing title or content'
+        })
+    }
 })
 
 // Listen
