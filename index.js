@@ -17,7 +17,7 @@ server.get('/api/posts', (req, res) => {
         res.json(posts);
     })
     .catch(() => {
-        res.status(500).json({message: 'Failed to get posts'});
+        res.status(500).json({ error: "The posts information could not be retrieved." });
         console.log('Get request on :', curTime, 'failed to complete. ERR-STATUS: 500');
     })
 })
@@ -32,29 +32,31 @@ server.get('/api/posts/:id', (req, res) => {
             res.json(post);
         }
         else {
-            res.status(404).json({message: 'Post does not exist'});
+            res.status(404).json({ message: "The post with the specified ID does not exist." });
         }
     })
     .catch(() => {
-        res.status(500).json({message: 'Failed to get post.'});
+        res.status(500).json({ error: "The post information could not be retrieved." });
     })
 })
 
 server.post('/api/posts', (req, res) => {
-    //insert
     const postObj = req.body;
-    console.log(postObj);
-    if (!postObj.title) {
-        res.status(400).json({message: 'Error posting data. title required'});
-    }
-    else if (!postObj.contents){
-        res.status(400).json({message: 'Error posting data. contents required.'});
+    if (postObj.title && postObj.contents) {
+        db.insert(postObj)
+        .then((postID) => {
+            db.findById(postID)
+            .then((post) => {
+                res.status(201).json(post);
+            })
+        })
+        .catch(() => {
+            res.status(500).json({ error: "There was an error while saving the post to the database" });
+        })
     }
     else {
-        res.json({message: 'Post request received'});
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
     }
-    
-    
 })
 
 server.put('/api/posts/:id', (req, res) => {
@@ -64,10 +66,11 @@ server.put('/api/posts/:id', (req, res) => {
         db.findById(id)
         .then(() => {
             db.update(id, putObj)
-            .then(() => {
+            .then((count) => {
+                console.log(count);
                 db.findById(id)
                 .then((post) => {
-                    res.status(200).json(post);
+                    if(post.length) {res.status(200).json(post); }
                 })
             })
             .catch(() => {
@@ -84,8 +87,24 @@ server.put('/api/posts/:id', (req, res) => {
 })
 
 server.delete('/api/posts/:id', (req, res) => {
-    //remove
-    //db.remove()
+    const {id} = req.params;
+    let deletedPost;
+    db.findById(id)
+    .then((post) => {
+        if(post.length) { 
+            deletedPost = post;
+            db.remove(id)
+            .then(() => {
+                res.status(200).json(deletedPost);
+            })
+            .catch(() => {
+                res.status(500).json({ error: "The post could not be removed" });
+            })
+        }
+        else {
+            res.status(404).json({ message: "The post with the specified ID does not exist." });
+        }
+    })
 })
 
 server.listen(PORT, () => {
