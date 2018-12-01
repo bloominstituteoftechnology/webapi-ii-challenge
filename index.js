@@ -19,5 +19,24 @@ server
             })
     })
 
+server
+    .get('/api/posts/:id', (req, res) => {
+    const { id } =  req.params;
+    db.findById(id)
+    .then(post => {
+        if (!post) {
+            res
+            .status(404)
+            .json({error: "The post with the specified ID does not exist."})
+        }
+        res.json(post);
+    })
+    .catch(err => {
+        res
+            .status(500)
+            .send({ error: "The post information could not be retrieved."})
+    })
+})
+
 const PORT = 3333;
 server.listen(PORT);                              
