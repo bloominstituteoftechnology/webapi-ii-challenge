@@ -1,18 +1,16 @@
 // import your node modules
 
 const express = require("express");
+const cors = require("cors");
 
 const db = require("./data/db.js");
 
 const server = express();
-const PORT = 3030;
+const PORT = 4000;
 server.use(express.json());
+server.use(cors());
 
 // add your server code starting here
-
-const statusMessage = (code, message) => {
-  res.status(code).json({ error: message });
-};
 
 server.get("/api/posts", (req, res) => {
   db.find()
@@ -20,7 +18,7 @@ server.get("/api/posts", (req, res) => {
       res.json(posts);
     })
     .catch(err => {
-      statusMessage(500, "The posts information could not be retrieved.");
+      res.status(500).json({ error: "The posts information could not be retrieved." });
     });
 });
 
@@ -28,14 +26,14 @@ server.get("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   db.findById(id)
     .then(post => {
-      if (post.length > 0) {
+      if (post[0]) {
         res.json(post);
       } else {
-        statusMessage(404, "The post with the specified ID does not exist.");
+        res.status(404).json({error: "The post with the specified ID does not exist."})
       }
     })
     .catch(err => {
-      statusMessage(500, "The post information could not be retrieved.");
+      res.status(500).json({error: "The post information could not be retrieved."})
     });
 });
 
@@ -47,13 +45,10 @@ server.post("/api/posts", async (req, res) => {
       const userPost = await db.findById(userId.id);
       res.status(201).json(userPost);
     } catch (err) {
-      statusMessage(
-        500,
-        "There was an error while saving the post to the database"
-      );
+      res.status(500).json({error: "There was an error while saving the post to the database"})
     }
   } else {
-    statusMessage(400, "Please provide title and contents for the post.");
+    res.status(400).json({error: "Please provide title and contents for the post."})
   }
 });
 server.put("/api/posts/:id", (req, res) => {
@@ -65,14 +60,14 @@ server.put("/api/posts/:id", (req, res) => {
         if (updated.title && updated.contents !== "") {
           res.status(200).json(updated);
         } else {
-          statusMessage(400, "Please provide title and contents for the post.");
+          res.status(400).json({error: "Please provide title and contents for the post."})
         }
       } else {
-        statusMessage(404, "The post with the specified ID does not exist.");
+        res.status(404).json({error: "The post with the specified ID does not exist."})
       }
     })
     .catch(err => {
-      statusMessage(500, "The post information could not be modified.");
+      res.status(500).json({error: "The post information could not be modified."})
     });
 });
 
@@ -84,11 +79,11 @@ server.delete("/api/posts/:id", async (req, res) => {
       if (count) {
         res.status(200).json(deleted);
       } else {
-        statusMessage(404, "The post with the specified ID does not exist.");
+        res.status(404).json({error: "The post with the specified ID does not exist."})
       }
     })
     .catch(err => {
-      statusMessage(500, "The post could not be removed");
+      res.status(500).json({error: "The post could not be removed"})
     });
 });
 
