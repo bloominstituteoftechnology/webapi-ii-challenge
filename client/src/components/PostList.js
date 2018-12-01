@@ -1,5 +1,7 @@
 import React from 'react'
 
+import PostView from './PostView'
+
 class PostList extends React.Component {
     constructor(props){
         super(props);
@@ -13,10 +15,9 @@ class PostList extends React.Component {
             <div className="App">
                 {this.props.posts.map(post => {
                     return (
-                        <div className="card" key={post.id}>
-                            <p>{post.title}</p>
-                            <h2>{post.contents}</h2>
-                        </div>
+
+                        <PostView handleDeleteNote={this.props.handleDeleteNote} post={post} />
+                    
                     )
                 })}
             </div>
@@ -26,3 +27,7 @@ class PostList extends React.Component {
 
 export default PostList
 
+    {/* <div className="card" key={post.id}>
+                            <p>{post.title}</p>
+                            <h2>{post.contents}</h2>
+                        </div> */}

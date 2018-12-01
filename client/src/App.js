@@ -43,6 +43,24 @@ class App extends Component {
     })
   }
 
+  handleDeleteNote = id => {
+    axios 
+    .delete(`http://localhost:5000/api/posts/${id}`)
+    .then(response => {
+          axios 
+          .get(`http://localhost:5000/api/posts/`)
+          .then(response => {
+              this.setState({ posts: response.data })
+          })
+          .catch(err => {
+            console.log("Fail to GET Posts from local server", err)
+          })
+    })
+    .catch(err => {
+      console.log("Fail to delete a post", err)
+    })
+  }
+
   render() {
     console.log(this.state.posts)
     return (
@@ -51,7 +69,7 @@ class App extends Component {
         <div className="App">
           
           <CreateNewPost handleAddNewPost={this.handleAddNewPost}/>
-          <PostList posts={this.state.posts} />
+          <PostList posts={this.state.posts} handleDeleteNote={this.handleDeleteNote}/>
 
           {/* {this.state.posts.map(post => {
               return (

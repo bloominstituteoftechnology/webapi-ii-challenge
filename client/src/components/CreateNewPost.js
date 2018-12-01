@@ -27,15 +27,15 @@ class CreateNewPost extends React.Component {
             <div>
                 <h2> Create New Notes </h2>
                 <form>
-                    <input 
+                    <textarea 
                         placeholder="Post Title"
                         type="text"
                         name="title"
                         value={this.state.title}
                         onChange={this.handleChange}
                     />
-                    <textarea 
-                        placeholder="Post Contents"
+                    <input 
+                        placeholder="Guess who said this"
                         type="text"
                         name="contents"
                         value={this.state.contents}
