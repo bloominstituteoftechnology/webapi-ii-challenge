@@ -103,7 +103,7 @@ server.put('/api/posts/:id', (req, res) => {
                 res.status(500)
                     .json({ error: "The post information could not be modified." })
             })
-    }
+    } 
     else {
         res.status(400)
             .json({ errorMessage: "Please provide title and contents for the post." })

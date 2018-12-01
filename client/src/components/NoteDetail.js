@@ -10,6 +10,8 @@ class NoteDetail extends React.Component {
       tag: "",
       title: "",
       contents: "",
+      created_at: "",
+      updated_at: "",
       editing: false
     };
   }
@@ -24,7 +26,9 @@ class NoteDetail extends React.Component {
           id: response.data[0].id,
           title: response.data[0].title,
           contents: response.data[0].contents,
-          tags: response.data[0].tags
+          tags: response.data[0].tags,
+          created_at: response.data[0].created_at,
+          updated_at: response.data[0].updated_at
         });
       })
       .catch(err => console.log(err.response));
@@ -76,32 +80,38 @@ class NoteDetail extends React.Component {
     return (
       <div className="note-detail">
         <header className="body-header">
-          <form className="tags-form" onSubmit={this.props.handleSubmitTag}>
-            <div className="tags">
-              {this.props.tags.map(tag => {
-                return <p className="tag">{tag}</p>
-              })}
+          <container className="tags-container">
+            <form className="tags-form" onSubmit={this.props.handleSubmitTag}>
+              <div className="tags">
+                {this.props.tags.map(tag => {
+                  return <p className="tag">{tag}</p>
+                })}
+              </div>
+              <input
+                className="input-tags"
+                type="text"
+                name="tag"
+                value={this.props.tag}
+                onChange={this.props.handleInput}
+                onSubmit={this.props.handleSubmitTag}
+                placeholder="add tags"
+              />
+            </form>
+            <div className="btn-container">
+              <button
+                className={this.state.editing ? "save-btn" : "hide"}
+                onClick={this.handleUpdate}
+              >
+                save
+          </button>
+              <button className="delete-btn" onClick={this.handleDelete}>
+                delete
+          </button>
             </div>
-            <input
-              className="input-tags"
-              type="text"
-              name="tag"
-              value={this.props.tag}
-              onChange={this.props.handleInput}
-              onSubmit={this.props.handleSubmitTag}
-              placeholder="add tags"
-            />
-          </form>
-          <div className="btn-container">
-            <button
-              className={this.state.editing ? "save-btn" : "hide"}
-              onClick={this.handleUpdate}
-            >
-              save
-          </button>
-            <button className="delete-btn" onClick={this.handleDelete}>
-              delete
-          </button>
+          </container>
+          <div className="timeStamp">
+            <p>Created: {this.state.created_at}</p>
+            <p>Updated: {this.state.updated_at}</p>
           </div>
         </header>
         <hr></hr>

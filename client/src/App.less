@@ -95,27 +95,39 @@
         }
         .body-header {
             display: flex;
-            justify-content: space-between;
-            width: 100%;
-            .tags {
-                display: inline-block;
-                width: auto;
-                .tag {
+            flex-direction: column;
+            .tags-container {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                .tags {
                     display: inline-block;
-                    font-size: 0.8rem;
-                    margin: 0 10px 0 0;
-                    background: #79B0D5;
-                    padding: 5px 10px;
-                    border-radius: 10px;
+                    width: auto;
+                    .tag {
+                        display: inline-block;
+                        font-size: 0.8rem;
+                        margin: 0 10px 0 0;
+                        background: #79B0D5;
+                        padding: 5px 10px;
+                        border-radius: 10px;
+                    }
+                }
+                .input-tags {
+                    display: inline-block;
+                    width: auto;
+                }
+                .btn-container {
+                    display: flex;
+                    align-items: center;
                 }
             }
-            .input-tags {
-                display: inline-block;
-                width: auto;
-            }
-            .btn-container {
-                display: flex;
-                align-items: center;
+            .timeStamp {
+                p {
+                    font-size: 0.8rem;
+                    display: inline-block;
+                    margin: 10px 10px 0 0;
+                    color: #404040;
+                }
             }
         }
         button {

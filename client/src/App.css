@@ -97,14 +97,18 @@
 }
 .App .body .body-header {
   display: flex;
+  flex-direction: column;
+}
+.App .body .body-header .tags-container {
+  display: flex;
   justify-content: space-between;
   width: 100%;
 }
-.App .body .body-header .tags {
+.App .body .body-header .tags-container .tags {
   display: inline-block;
   width: auto;
 }
-.App .body .body-header .tags .tag {
+.App .body .body-header .tags-container .tags .tag {
   display: inline-block;
   font-size: 0.8rem;
   margin: 0 10px 0 0;
@@ -112,13 +116,19 @@
   padding: 5px 10px;
   border-radius: 10px;
 }
-.App .body .body-header .input-tags {
+.App .body .body-header .tags-container .input-tags {
   display: inline-block;
   width: auto;
 }
-.App .body .body-header .btn-container {
+.App .body .body-header .tags-container .btn-container {
   display: flex;
   align-items: center;
+}
+.App .body .body-header .timeStamp p {
+  font-size: 0.8rem;
+  display: inline-block;
+  margin: 10px 10px 0 0;
+  color: #404040;
 }
 .App .body button {
   display: flex;
