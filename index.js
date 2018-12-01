@@ -74,9 +74,14 @@ server.put('/api/posts/:id', (req, res) =>{
     if(post.title && post.contents){
 
         db.update(id, post) //if successful, returns count of updated 
-            .then(response =>{
-                res.status(200)
-                res.json(post)
+            .then(count =>{
+                if(count){
+                    res.status(200)
+                    res.json(post)
+                }else{
+                    res.status(404)
+                    res.json({error:"The post with the specified ID does not exist"})
+                }
             })
             .catch(err =>{
                 res.status(500)
@@ -87,6 +92,59 @@ server.put('/api/posts/:id', (req, res) =>{
         res.json({error: "Please provide title and contents for the post."})
     }
 });
+
+//********DELETE  - Delete post ********* */
+server.delete('/api/posts/:id', (req, res) =>{
+    const id = req.params.id;
+
+    db.findById(id)
+        .then(post =>{
+            if(post[0]){  //The post exists
+                db.remove(id)  //if successful, returns count of deleted
+                    .then(count =>{
+                        res.status(200)
+                        res.json(post)
+                    })
+            }else{  //post does not exist
+                res.status(404)
+                res.json({error:"The post with the specified ID does not exist"})
+            }
+            })
+        .catch(err =>{
+            res.status(500)
+            res.json({error: "The post could not be removed"})
+        })
+
+})
+
+// server.delete('/api/posts/:id', (req, res) =>{
+//     const {id} = req.params;
+//     db.findById(id)
+//       .then(user =>{
+//         if(user){
+//           db.remove(id)
+//             .then(count =>{  //db.remove returns # records deleted
+//               if(count){
+//                 //something has been deleted
+//                 //need to send back the user
+//                 res.json(user)
+//               }else{
+//                 //bad id - no user that matched id
+//                 res.status(404)
+//                 res.json({message: "The user with the specified ID does not exist."})
+//               }
+//             })
+//         }else{
+//           res
+//           .status(404)
+//           .json({ message: "The user with the specified ID does not exist."});
+//         }
+//       })
+//       .catch((err) =>{
+//         res.status(500)
+//         res.json({message: 'Failed to remove user'})
+//       })
+//   })
 
 server.listen(PORT, () =>{
     console.log(`Server is up and running on port ${PORT}`);
