@@ -1,56 +1,52 @@
 import React, { Component } from 'react';
-import ListPosts from "./components/listPosts"
+//import ListPosts from "./components/listPosts"
 import Post from "./components/post"
-import Posts from "./components/posts"
-import { Route } from 'react-router-dom';
+//import Posts from "./components/posts"
+//import { Route } from 'react-router-dom';
 import axios from "axios";
 import './App.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      posts: [],
+   posts: []
     };
   }
 
   componentDidMount() {
     axios
-    .get('http://localhost:4000/api/posts')
-    
-     
-      .then(res => {
-        const arr = res;
-       console.log(res);
-     
-        this.setState({ posts: arr });
-     
+      .get('http://localhost:4000/api/posts')
+      .then(response => {
+        this.setState(() => ({ posts: response.data }));
       })
-     // let obj = JSON.parse(res)
-
-      //console.log(obj)
-     // this.setState(() => ({ posts: res.data }));
-    //  console.log(this.state.posts)
-    
-    .catch(error => {
-      console.error('Server Error', error);
-    }); 
+      .catch(error => {
+        console.error('Server Error', error);
+      });
   }
-
  
-   render() {
-    return (
-      <div className="App">{this.state.posts}
-         
-       {/*   <Route exact path="/" render={props => (<Posts posts={this.state.posts} /> )} /> */}
-         <Route exact path="/" component={ListPosts}   /*  render={props => (<Posts posts={this.state.posts} /> )} */ />
-        <Route path="/ListPosts" component={ListPosts} />
-      {/*   <Route path="/Posts/:id" component={Post} /> */}
-        
-      
-      </div>
-    );
+
+  render() {
+  console.log("this.state", this.state)
+      return (
+        <div className="container"><ul>{this.state.posts.map(post => {
+          return (
+            <Post
+              title={post.title}
+              contents={post.contents}
+              key={post.id}
+        />);
+          })}
+            </ul>
+          </div>
+        );
+    }
   }
-}
+
 
 export default App;
+   
+  
+ 
+
+  

@@ -1,21 +1,20 @@
-import React, { Component } from 'react';
-//import ListPosts from "./components/listPosts"
-//import { Route } from 'react-router-dom';
-//import axios from "axios";
+import React from 'react';
+//import { NavLink } from 'react-router-dom';
 import '../App.css';
 
-class Post extends Component {
-  render() {
-    return (
-      <div className="List2">
-      
-       
-       
+const Post = props => {
+  return (
+    <div className="posts">
+      <h4>{props.title}</h4>
+      <strong>{props.contents} </strong>
+    <p></p>
+    
+    </div>
+  );
+};
 
-     
-      </div>
-    );
-  }
-}
+
 
 export default Post;
+
+

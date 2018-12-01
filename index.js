@@ -78,68 +78,72 @@ server.delete('/api/posts/:id', (req, res) => {
 /********* Update Post *************/
 server.put('/api/posts/:id', (req, res) => {
     const { id } = req.params
-    const post = req.body
-    console.log("post", post)
-    if (!post.title || !post.contents) {
+    const newPost = req.body
+    
+    if (!newPost.title || !newPost.contents) {
         res
             .status(400)
-            .json({ message: "Please provide title and contents for the post." })
+            .json({ message: "Please provide title and contents for the post." });
     } else {
-        const newPost = post;
-        const foundPost = db.find(post => post.id == id);
-        console.log("foundPost:", foundPost)
-        if (foundPost) {
+       const post = db.findById(id)
+        if (post) {
             db.update(id, newPost)
                 .then(post => {
-                    console.log("post:", post)
                     if (post) {
                         db.findById(id);
-                        console.log("newPost:", newPost)
-                        res
-                            .status(201)
-                            .json(post);
+                        if (post) {
+                            res
+                                .status(201)
+                                .json(post);
+                        } else {
+                            res
+                                .status(404)
+                                .json({ message: "The post with the specified ID does not exist." })
+                        }
                     } else {
-                        res
-                            .status(404)
-                            .json({ message: "The post with the specified ID does not exist." })
+                        // nothing here
                     }
                 })
                 .catch(err => {
                     res
                         .status(500)
                         .json({ error: "The post could not be modified." });
-                })
-            }
+                });
+        } else {
+
+            res
+                .status(404)
+                .json({ message: "The post with the specified ID does not exist." })
+        }
+    }
+})
+
+    /********* Create New Post *************/
+    server.post('/api/posts', (req, res) => {
+        const post = req.body;
+        if (post.title && post.contents) {
+            db.insert(post)
+                .then(idInfo => {
+                    db.findById(idInfo.id)
+                        .then(post => {
+                            res.status(201).json(post);
+                        });
+                }).catch(err => {
+                    res
+                        .status(500)
+                        .json({ message: "failed to insert user in db" })
+                });
+        } else {
+            res
+                .status(400)
+                .json({ message: "missing title or contents" })
         }
     });
 
 
-/********* Create New Post *************/
-server.post('/api/posts', (req, res) => {
-    const post = req.body;
-    if (post.title && post.contents) {
-        db.insert(post)
-            .then(idInfo => {
-                db.findById(idInfo.id)
-                    .then(post => {
-                        res.status(201).json(post);
-                    });
-            }).catch(err => {
-                res
-                    .status(500)
-                    .json({ message: "failed to insert user in db" })
-            });
-    } else {
-        res
-            .status(400)
-            .json({ message: "missing title or contents" })
-    }
-});
-
-
-server.listen(PORT, () => {
-    console.log(`server is running on port ${PORT} `);
-});
+    server.listen(PORT, () => {
+        console.log(`server is running on port ${PORT} `);
+    });
 
 
 

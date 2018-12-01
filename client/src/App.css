@@ -18,3 +18,13 @@
   color: #61dafb;
 }
 
+.posts {
+border: 2px solid blue;
+border-radius: 15px;
+margin-bottom: 10px;
+padding-left: 6px;
+background-color: rgb(106, 186, 240);
+width: 60%;
+
+}
+
