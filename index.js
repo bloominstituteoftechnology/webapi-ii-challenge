@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const server = express();
 const db = require('./data/db.js');
-
+const PORT = 4000;
 server.use(express.json());
 server.use(cors());
 
@@ -104,6 +104,6 @@ server.put('/api/posts/:id', (req, res) => {
     
  
 
-server.listen(4000, () => {
-    console.log('server is running');
+server.listen(PORT, () => {
+    console.log(`server is running on ${PORT}`);
 })

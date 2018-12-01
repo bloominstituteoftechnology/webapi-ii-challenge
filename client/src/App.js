@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Router, Route, NavLink } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import Posts from './components/Post';
@@ -23,12 +22,10 @@ axios.get(`http://localhost:4000/api/posts`)
 }
   render() {
     return (
-      <Router>
       <div className="App">
-      <NavLink to ='/'>Home</NavLink>
-      <Route exact path='/' render={() => <Posts posts={this.state.posts}/>}/>
+      <h1>Guess who said that!</h1>
+      <Posts posts={this.state.posts}/>
       </div>
-      </Router>
     );
   }
 }
