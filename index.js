@@ -49,7 +49,20 @@ server.post('/api/posts', (req, res) => {
   }
 });
 
-
-server.listen(PORT, () => {
-  console.log(`server is up and running on port ${PORT}`)
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.remove(id).then(count => {
+    if (count) {
+      res.json({ message: "succesfully deleted" })
+    } else {
+      res.status(404).json({ message: "The post with the specified ID does not exist" })
+    }
+  }).catch(err => {
+    res.status(500).json({ message: "failed to delete post" })
+  });
 })
+
+
+  server.listen(PORT, () => {
+    console.log(`server is up and running on port ${PORT}`)
+  })
