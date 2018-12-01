@@ -83,6 +83,32 @@ server.delete('/api/posts/:id', (req, res) => {
 });
 
 // PUT /api/posts/:id
+server.put('/api/posts/:id', (req, res) => {
+  const post = req.body;
+  const { id } = req.params;
+  if (post.title && post.contents) {
+    db.update(id, post).then(count => {
+      if (count) {
+        db.findById(id).then(post => {
+          res.json(post);
+        });
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(err => {
+      res
+        .status(400)
+        .json({ errorMessage: 'Please provide title and contents for the post.' });
+    })
+  } else {
+    res
+      .status(500)
+      .json({ error: "The post information could not be modified." });
+  }
+});
 
 
 server.listen(PORT, () => {
