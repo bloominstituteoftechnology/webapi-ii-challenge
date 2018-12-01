@@ -1,0 +1,5 @@
+[build]
+
+base = "./api_docs"
+publish = "./api_docs/build"
+command = "yarn build"
