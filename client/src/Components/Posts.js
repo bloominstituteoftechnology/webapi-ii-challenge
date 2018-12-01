@@ -22,11 +22,35 @@ class Posts extends React.Component {
          console.log(err);
       });
    }
+
+   deletePost = (postId) => {
+      console.log(postId)
+      axios.delete(`http://localhost:4000/api/posts/${postId}`)
+         .then(post => {
+            console.log(post);
+         })
+         .catch(err => {
+            console.log(err);
+         })
+   }
+
+   updatePost = () => {
+
+   }
+
+   addPost = () => {
+
+   }
+
    render() {
       return (
          <div>
             {this.state.posts.map(post =>
-               <Post key={post.id} post={post}/>
+               <Post 
+                  key={post.id} 
+                  post={post}
+                  delete={this.deletePost}
+               />
             )}
          </div>
       )
