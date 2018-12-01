@@ -34,7 +34,7 @@ server.get('/api/posts/:id', (req, res) => {
             .json({ error: "The post information could not be retrieved." }))
 })
 
-server.post('/api/posts'), (req, res) => {
+server.post('/api/posts', (req, res) => {
     const post = req.body;
 
     if (post.title && post.contents){
@@ -50,7 +50,7 @@ server.post('/api/posts'), (req, res) => {
     }else {
         res.status(400).json({errorMessage: "Please provide title and contents for the post." })
     }  
-    }; 
+    }); 
 
 
 
