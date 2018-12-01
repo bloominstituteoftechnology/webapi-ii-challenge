@@ -15,5 +15,7 @@
 	},
 	"devDependencies": {
 		"nodemon": "^1.18.6"
-	}
+	},
+	"repository": "https://github.com/smbren/Node-Express-Lab.git",
+	"author": "Scott Bren <smbren@ncsu.edu>"
 }
