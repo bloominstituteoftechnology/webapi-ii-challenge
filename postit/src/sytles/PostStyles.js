@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Main = styled.div`
-  max-width: 600px;
+  max-width: 880px;
   margin: 40px;
   display: flex;
   flex-direction: column;
@@ -14,27 +14,34 @@ export const Main = styled.div`
 
 export const Contianer = styled.div`
 
+  display: flex;
+  flex-wrap: wrap;
+
   hr {
     width: 100%;
   }
 `;
 
 export const Button = styled.button`
-  border: none;
-  width:50px;
+  width: 60px;
   padding: 5px;
-  margin: 0;
   text-decoration: none;
   border-radius: 3px;
   border: 1px solid #d6d0c4;
   background-color: #d6d0c4;
 `;
 
+export const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+
+`;
+
 export const LinkContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: flex-end;
-  padding:10px;
-  z-index: 2;
+  padding: 10px;
+  z-index: 1;
 `;
