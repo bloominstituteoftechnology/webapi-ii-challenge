@@ -70,10 +70,10 @@
         }
       }
     },
-    "/posts/{postId}": {
+    "/posts/{Id}": {
       "parameters": [
         {
-          "name": "postId",
+          "name": "Id",
           "in": "path",
           "required": true,
           "description": "ID of post that we want to find",
@@ -89,7 +89,7 @@
           "200": {
             "description": "The post with the specified ID was found",
             "schema": {
-              "$ref": "#/definitions/Postr"
+              "$ref": "#/definitions/Posts"
             }
           }
         }

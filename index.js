@@ -38,7 +38,7 @@ server.post('/api/posts/', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params;    
-    const post = db.findById(id).then(post => post);
+    const post = db.findById(id).then(post => post[0]);
     db.remove(id)
         .then(records => records ? res.json(post) : res.status(404).json({message: "The post with the specified ID does not exist."}))
         .catch(err => res.status(500).json({error: "The post could not be removed"}))
