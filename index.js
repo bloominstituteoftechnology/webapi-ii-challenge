@@ -11,6 +11,11 @@ const server = express();
 const cors = require('cors');
 server.use(cors());
 
+// use parser middleware
+
+const parser = express.json();
+server.use(parser );
+
 // get array of posts
 
 server.get('/api/posts', (req, res) => {
@@ -45,6 +50,23 @@ server.get('/api/posts/:id', (req, res) => {
                 .status(500)
                 .json({message: 'there was an error in retrieving the post'})
         })
+})
+
+// create new post
+
+server.post('/api/posts', (req, res) => {
+    const newPost = req.body;
+    db.insert(newPost)
+        .then(idInfo => {
+            res
+                .status(201)
+                .json(idInfo);
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .json({message: 'failed to add new post'})
+        });
 })
 
 // initiate listening

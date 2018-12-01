@@ -27,7 +27,12 @@ class App extends Component {
   render() {
     return (
       <div>
-        {this.state.posts.map(post => <h1 key={post.id}>{post.title}</h1>)}
+        {this.state.posts.map(post => 
+          <div key={post.id}>
+            <h1>{post.title}</h1> 
+            <p>{post.created_at}</p>
+          </div>
+        )}
       </div>
     );
   }
