@@ -7,15 +7,16 @@ const server = express();
 const PORT = 5555;
 server.disable('etag')
 server.use(express.json());
+
 server.get("/api/posts", (req, res) => {
 db.find()
     .then(posts => {
         res
-            .status(200)
-            .json(posts);
+        .status(200)
+        .json(posts);
     })
     .catch(err => {
-    res
+        res
         .status(500)
         .json({ error: "The posts information could not be retrieved." });
     });
@@ -27,7 +28,8 @@ const { id } = req.params;
 db.findById(id)
     .then(post => {
     if (post.length) {
-        res.json(post);
+        res
+        .json(post);
     } else {
         res
         .status(404)
@@ -35,7 +37,7 @@ db.findById(id)
     }
     })
     .catch(err => {
-    res
+        res
         .status(500)
         .json({ error: "The post information could not be retrieved." });
     });
@@ -53,13 +55,13 @@ server.post("/api/posts", (req, res) => {
         })
         .catch(err => {
             res
-                .status(500)
-                .json({ error: "There was an error saving the post to the server" })
+            .status(500)
+            .json({ error: "There was an error saving the post to the server" })
         })
     } else {
         res
-            .status(400)
-            .json({ errormessage: "Please provide title and content for the post." })
+        .status(400)
+        .json({ errormessage: "Please provide title and content for the post." })
     }
 })
 
@@ -79,7 +81,33 @@ server.delete("/api/posts/:id", (req, res) => {
             })
 })
 
-
+server.put('/api/posts/:id', (req, res) => {
+    const posts = req.body
+    const { id } = req.params
+    if (posts.title && posts.contents) {
+        db.update(id, posts)
+            .then(count => {
+                count ?
+                    db.findById(id).then(posts => {
+                        res
+                        .json(posts)
+                    })
+                    :
+                    res
+                    .status(404)
+                    .json({ message: "The post with the specified ID does not exist." })
+            })
+            .catch(err => {
+                res
+                .status(500)
+                .json({ error: "The post information could not be modified." })
+            })
+    } else {
+        res
+        .status(400)
+        .json({ errorMessage: "Please provide title and contents for the post." })
+    }
+})
 
 server.listen(PORT, () => {
   console.log("server is up and running");
