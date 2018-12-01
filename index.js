@@ -42,11 +42,10 @@ server.get("/api/posts/:id", (req, res) => {
 //post request
 server.post("/api/posts", (req, res) => {
    const post = req.body;
-   console.log(post);
-   if(post.title && post.body) {
+   if(post.title && post.contents) {
       db.insert(post)
          .then(postId => {
-            db.findById(postId)
+            db.findById(postId.id)
                .then(post => {
                   res.status(201).json(post)
                })
@@ -73,6 +72,16 @@ server.delete("/api/posts/:id", (req, res) => {
       .catch(err => {
          res.status(500).json({ error: "The post could not be removed" })
       });
+});
+
+//put request
+server.put("/api/post/:id", (req, res) => {
+   const {id} = req.params;
+   const post = req.body;
+   db.update(id, post)
+      .then(post => {
+         console.log(post)
+      })
 });
 
 server.listen(PORT, () => {
