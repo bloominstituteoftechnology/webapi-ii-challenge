@@ -15,7 +15,7 @@ export const fetchPosts = () => dispatch => {
     axios
         .get(`${URL}/posts`)
         .then(resp => {
-            console.log(resp.data)
+
             dispatch({type: FETCH_POSTS, payload:resp.data})
         })
         .catch(err => {
@@ -32,5 +32,18 @@ export const deletePost = id => dispatch => {
         })
         .catch(err => {
             dispatch({type:ERROR, payload: err.errorMessage})
+        })
+}
+
+
+export const addPost = newPost => dispatch => {
+    dispatch({ type: LOADING })
+    axios
+        .post(`${URL}/posts`, newPost)
+    .then(resp => {
+            dispatch(fetchPosts())
+        })
+        .catch(err => {
+            dispatch({type: ERROR, payload: err.errorMessage})
         })
 }

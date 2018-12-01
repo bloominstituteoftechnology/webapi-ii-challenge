@@ -45,3 +45,25 @@ export const LinkContainer = styled.div`
   padding: 10px;
   z-index: 1;
 `;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  padding: 5% 1% 0 10%;
+`;
+export const Input = styled.input`
+  border: 1px solid #333;
+  padding: 10px;
+  width: 400px;
+  font-size: 20px;
+  margin-bottom: 10px;
+`;
+
+export const TextArea = styled.textarea`
+  border: 1px solid #333;
+  outline: none;
+  font-size: 15px;
+  padding: 10px;
+  width: 400px;
+  height: 50px;
+`;
