@@ -11,8 +11,9 @@ class Posts extends Component {
   render() {
     return (
       <Main>
-            <h1>LOTR > QUOTES <Button>Add</Button></h1>
-        <hr />
+            <h1>LOTR > QUOTES</h1>
+            <hr />
+            <Button>Add</Button>
         {this.props.loading ? <h1>LOADING...</h1> : null}
         {this.props.error !== null ? <h1>{this.props.error}</h1> : null}
         {this.props.posts.map(post => (

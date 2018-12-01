@@ -1,9 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 // import Posts from './Posts';
+import {deletePost} from '../actions/index'
 import { Contianer, Button, LinkContainer, Body } from "../sytles/PostStyles";
 
-const Post = ({ post }) => {
+const Post = ({ post, deletePost }) => {
+
+const deleteHandler = () => {
+    deletePost(post.id)
+}
+
 return (
     <Contianer key={post.id} className="post-card">
         <Body>
@@ -12,7 +18,7 @@ return (
             <hr />
         </Body>
         <LinkContainer>
-            <Button>Delete</Button>
+            <Button onClick={deleteHandler}>Delete</Button>
             <br />
             <Button>Update</Button>
         </LinkContainer>
@@ -22,4 +28,4 @@ return (
 
 const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps)(Post);
+export default connect(mapStateToProps, {deletePost})(Post);
