@@ -13,7 +13,6 @@ export const Main = styled.div`
 `;
 
 export const Contianer = styled.div`
-
   display: flex;
   flex-wrap: wrap;
 
@@ -36,13 +35,13 @@ export const Body = styled.div`
   display: flex;
   flex-direction: column;
   width: 400px;
-
 `;
 
 export const LinkContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: center;
   padding: 10px;
   z-index: 1;
 `;
