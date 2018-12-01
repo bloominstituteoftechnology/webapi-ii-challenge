@@ -8,6 +8,20 @@ const PORT = 5000;
 
 server.use(express.json());
 
+server.delete('/api/posts/:id', (req, res) => {
+    db.remove(req.params.id)
+        .then(count => {
+            if (count) {
+                res.json({message: `Successfully deleted the post with ID: ${req.params.id}`})
+            } else {
+                res.status(404).json({message: "The post with the specified ID does not exist."})
+            }
+        })
+        .catch(err => {
+            res.status(500).json({error: "The post could not be removed"});
+        })
+});
+
 server.get('/api/posts', (req, res) => {
     db.find()
         .then((posts) => {
