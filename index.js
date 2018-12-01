@@ -12,6 +12,7 @@ const PORT = 4000;
 // Ednpoints
 
 server.use(cors())
+server.use(express.json())
 
 server.get('/api/posts', (req, res) => {
 
@@ -43,13 +44,42 @@ server.get('/api/posts/:id', (req, res) => {
         //What is the purpose of this catch?
         .catch(err => {
             res.status(500)
-               .json({ message: 'Failed to get user' })
+                .json({ message: 'Failed to get post' })
         })
 
 })
 
+server.post('/api/posts', (req, res) => {
+    const user = req.body;
+
+    if (user.title && user.contents) {
+        db.insert(user)
+            .then(idInfo => {
+                db.findById(idInfo.id).then(user => {
+                    res.status(201).json(idInfo)
+                })
+            })
+            .catch(err => {
+                res.status(500)
+                    .json({ message: 'Failed to insert post' })
+            })
+    } else {
+        res.status(400).json({
+            message: 'missing title or content'
+        })
+    }
+})
+
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.param;
+    db.remove(id)
+        .then()
+        .catch(err => {
+            res.status(500)
+                .json({ message: 'Failed to delete post' })
+        })
+})
+
 // Listen
 
-server.listen(PORT, () => {
-    console.log(`server is runnning on port ${PORT}`)
-})
+server.listen(PORT)
