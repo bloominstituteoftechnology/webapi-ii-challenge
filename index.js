@@ -45,7 +45,7 @@ server.post('/api/posts', (req, res) => {
     if (postObj.title && postObj.contents) {
         db.insert(postObj)
         .then((postID) => {
-            db.findById(postID)
+            db.findById(postID.id)
             .then((post) => {
                 res.status(201).json(post);
             })
