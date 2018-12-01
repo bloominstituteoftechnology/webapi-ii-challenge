@@ -8,6 +8,8 @@ const express = require('express');
 const PORT = 4001;
 const server = express();
 
+// use cors middleware to connect server to react app
+
 const cors = require('cors');
 server.use(cors());
 
@@ -56,17 +58,27 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.post('/api/posts', (req, res) => {
     const newPost = req.body;
-    db.insert(newPost)
+    if (newPost.title && newPost.contents) {
+        db.insert(newPost)
         .then(idInfo => {
-            res
-                .status(201)
-                .json(idInfo);
+            db.findById(idInfo.id)
+                .then(user => {
+                res
+                    .status(201)
+                    .json(user);
+                })
         })
         .catch(err => {
             res
                 .status(500)
                 .json({message: 'failed to add new post'})
         });
+    }
+    else {
+        res
+            .status(400)
+            .json({ message: 'missing title or contents'})
+    }
 })
 
 // initiate listening
