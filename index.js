@@ -6,7 +6,7 @@ const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
-const PORT =4000
+const PORT =4000;
 
 server.get('/api/posts', (req, res) =>{
     db.find()
@@ -15,18 +15,27 @@ server.get('/api/posts', (req, res) =>{
     })
     .catch(err =>{
         res
-            .status(400)
-            .json({errorMessage: "Please provide title and contents for the post." });
+        .status(500)
+        .json({error: "The posts information could not be retrieved." });
     });
 });
 
-server.get(`/api/posts/:id`, (req, res) =>{
-    const{ id } = req.params
+server.get('/api/posts/:id', (req, res) =>{
+    const { id } = req.params
+    //console.log(req.params)
     db.findById(id)
-    .then((posts)=>{
-        res.json(posts);
+    .then(post =>{
+        console.log(post.length)
+        if (post.length !== 0){
+            res.json(post);
+        } else {
+            res
+            .status(404)
+            .json({ message: "The post with the specified ID does not exist." })
+        }
     })
     .catch(err =>{
+        console.log("not working")
         res
         .status(500)
         .json({ error: "The posts information could not be retrieved." })
