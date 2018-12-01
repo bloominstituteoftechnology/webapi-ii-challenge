@@ -47,3 +47,18 @@ export const addPost = newPost => dispatch => {
             dispatch({type: ERROR, payload: err.errorMessage})
         })
 }
+
+export const updatePost = updatedPost => dispatch => {
+    dispatch({ type: LOADING })
+    axios
+        .put(`${URL}/posts/${updatedPost.id}`, updatedPost)
+        .then(() => {
+            dispatch(fetchPosts())
+        })
+        .catch(err => {
+            dispatch({
+                type: ERROR,
+                payload: err.errorMessage
+            })
+        })
+}

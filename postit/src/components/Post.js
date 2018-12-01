@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 // import Posts from './Posts';
 import {deletePost} from '../actions/index'
 import { Contianer, Button, LinkContainer, Body } from "../sytles/PostStyles";
-
+import {NavLink} from "react-router-dom"
 const Post = ({ post, deletePost }) => {
 
 const deleteHandler = () => {
@@ -20,7 +20,9 @@ return (
         <LinkContainer>
             <Button onClick={deleteHandler}>Delete</Button>
             <br />
-            <Button>Update</Button>
+            <NavLink to={`/update/${post.id}`} style={{ textDecoration: 'none' }}>
+                <Button>Update</Button>
+            </NavLink>
         </LinkContainer>
     </Contianer>
   );
