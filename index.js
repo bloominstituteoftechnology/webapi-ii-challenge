@@ -39,6 +39,7 @@ server.get('/api/posts/:id', (req, res) =>{
         })
 });   
 
+//******POST  - Add post******** */
 server.post('/api/posts', (req, res) =>{
     //grab post to add 
     const post = req.body;
@@ -62,6 +63,29 @@ server.post('/api/posts', (req, res) =>{
         res.json({error: "Please provide title and contents for the post."})
     }
 
+});
+
+//*********.PUT - Update post******* */
+server.put('/api/posts/:id', (req, res) =>{
+    //grab post and id 
+    const post = req.body
+    const id = req.params.id
+
+    if(post.title && post.contents){
+
+        db.update(id, post) //if successful, returns count of updated 
+            .then(response =>{
+                res.status(200)
+                res.json(post)
+            })
+            .catch(err =>{
+                res.status(500)
+                res.json({error: "The post information could not be modified."})
+            })
+    }else{
+        res.status(400)
+        res.json({error: "Please provide title and contents for the post."})
+    }
 });
 
 server.listen(PORT, () =>{
