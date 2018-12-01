@@ -16,7 +16,7 @@ class App extends Component {
     this.getPosts();
   }
 
-  getPosts() {
+  getPosts = () => {
     axios.get('http://localhost:4000/api/posts/')
     .then(posts => {
       this.setState({
@@ -28,7 +28,7 @@ class App extends Component {
     })
   }
 
-  deletePost(id) {
+  deletePost = (id) => {
     axios.delete(`http://localhost:4000/api/posts/${id}`)
     .then(() => {
       this.getPosts();

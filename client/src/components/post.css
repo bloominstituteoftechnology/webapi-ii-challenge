@@ -1,0 +1,27 @@
+.post-list-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-container {
+    max-width: 600px;
+    border: 1px solid burlywood;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-title {
+    font-weight: bold;
+}
+
+.post-button-delete {
+    font-weight: bold;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 5px;
+    margin-right: 15px;
+}
