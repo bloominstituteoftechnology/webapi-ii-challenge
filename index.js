@@ -18,15 +18,35 @@ server.get('/api/posts', (req,res) => {
 server.get('/api/posts/:id', (req,res) => {
     const {id} = req.params;
     db.findById(id)
-    .then( post => {res.json(post)})
+    .then( post => {
+        console.log(post)
+        if (post.length > 0) {res.json(post)}
+
+        else { 
+            res
+            .status(404)
+            .json({"message":"The post with the specified ID does not exist."})}
+    })
     .catch(err => {
         res
-        .status(404)
-        .json({"message":"The post with the specified ID does not exist."})
+        .status(500)
+        .json({"message": "failed to get post"})
     })
 })
 
 // add your server code starting here
+
+server.post('/api/posts', (req,res) => {
+    const post = req.body;
+    console.log(post)
+    db.insert(post)
+    .then(post => {res.json(post)})
+    .catch(err => {
+        res
+        .status(500)
+        .json({"message": "failed to get post"})
+    })
+})
 
 server.put('/api/users/:id', (req,res) => {
     res.update(id, req.params({}))
