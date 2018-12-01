@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 class Post extends Component    {
@@ -8,15 +9,20 @@ class Post extends Component    {
         .then((data)    =>  {
             this.props.getPosts()
         })
-
     }
+
+    navigateToPostHandler = ({target})  =>  {
+        return this.props.history.push(`/post/${this.props.id}`)
+    }
+
     render()    {
+        console.log(this.props)
         return(
             <div>
-                <div>
+                <div onClick={this.navigateToPostHandler}>
                     {this.props.title}
                 </div>
-                <div>
+                <div onClick={this.navigateToPostHandler}>
                     {this.props.contents}
                 </div>
                 <div onClick={this.onDeleteHandler}>
@@ -27,4 +33,4 @@ class Post extends Component    {
     }
 }
 
-export default Post;
+export default withRouter(Post);
