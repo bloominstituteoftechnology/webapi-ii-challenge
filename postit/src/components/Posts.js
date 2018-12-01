@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {fetchPosts} from '../actions/index'
 import Post from './Post'
 import { connect } from 'react-redux'
-
+import {Main} from '../sytles/PostStyles'
 
 
 class Posts extends Component {
@@ -12,13 +12,15 @@ class Posts extends Component {
     render() {
         return (
 
-            < div >
+            <Main>
+                <h1>LOTR > QUOTES</h1>
+                <hr/>
                 {this.props.loading ? <h1>LOADING...</h1> : null}
                 {this.props.error !== null ? <h1>{this.props.error}</h1> : null}
                 {this.props.posts.map(post =>
                     <Post post={post} key={post.id} />
                 )}
-            </div >
+            </Main>
 
             )
 
