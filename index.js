@@ -24,10 +24,10 @@ app.post('/api/posts', (req, res) => {
     const post = req.body;
     if(post) {
         db.insert(post)
-            .then(id => {
-                db.findById(id)
+            .then(idInfo => {
+                db.findById(idInfo.id)
                     .then(post => {
-                        res.json(post);
+                        res.status(201).json(post);
                     });
             })
             .catch(() => {
