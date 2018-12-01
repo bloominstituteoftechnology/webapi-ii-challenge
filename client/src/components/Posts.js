@@ -4,9 +4,9 @@ import {
   // CardGroup,
   CardColumns,
   // CardImg,
-  CardHeader,
-  CardFooter,
-  // CardTitle,
+  // CardHeader,
+  // CardFooter,
+  CardTitle,
   CardText,
   // CardDeck,
   // CardSubtitle,
@@ -18,13 +18,13 @@ const Posts = props => {
     <CardColumns>
       {props.posts.map(post => {
         return (
-          <Card body outline color="primary" key={post.id}>
+          <Card body inverse color="success" key={post.id}>
             <CardBody>
-              <CardHeader>Quote Id: {post.id}</CardHeader>
+              <CardTitle>Quote Id: {post.id}</CardTitle>
               <CardText>Created: {post.created_at}</CardText>
               <CardText>Updated: {post.updated_at}</CardText>
               <CardText>Quote: {post.title}</CardText>
-              <CardFooter>{post.contents}</CardFooter>
+              {/* <CardFooter>{post.contents}</CardFooter> */}
             </CardBody>
           </Card>
         );
