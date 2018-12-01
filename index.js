@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 // add your server code starting here
 const server = express();
 server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(express.json());
 
 server.post('/api/posts', (req, res) => {
 	const { title, contents } = req.body;
@@ -44,7 +46,7 @@ server.get('/api/posts/:id', (req, res) => {
 	  .findById(id)
 	  .then(posts => {
 	  	if(posts.length === 0) {
-	  		res.status(404).json({error: 'The post information could not be retrieved.'});
+	  		res.status(404).json({error: 'The post with the specified ID does not exist.'});
 	  	} else {
 	  		res.json(posts);
 	  	}
@@ -68,6 +70,31 @@ server.delete('/api/posts/:id', (req, res) => {
 	  .catch(error => {
 	  	res.status(500).json('The post could not be removed.')
 	  })
+})
+
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.param
+    const update = req.body;
+
+    if (!update.title || !update.contents) {
+        res.status(400).json({
+            errorMessage: "Please provide title and contents for the post."
+        });
+    }
+
+    db
+        .update(ob)
+        .then(count => {
+            if (count > 0) {
+                res.status(200).json({ message: 'updated successfully' })
+            } else {
+                res.status(404).json({ message: "The post with the specified ID does not exist." });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'The post information could not be modified.' });
+            process.abort();
+        })
 })
 
 const PORT = 5000;
