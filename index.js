@@ -81,6 +81,28 @@ server.post('/api/posts', (req, res) => {
     }
 })
 
+// delete post
+
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    db.remove(id)
+        .then(count => {
+            if (count) {
+                res.json({ message: 'post deleted'})
+            }
+            else {
+                res
+                    .status(404)
+                    .json({ message: 'could not find post'})
+            }
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .json({message: 'failed to delete post'})
+        });
+})
+
 // initiate listening
 
 server.listen(PORT, err => {
