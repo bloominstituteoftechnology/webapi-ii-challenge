@@ -6,6 +6,7 @@ const db = require("./data/db.js");
 const server = express();
 const PORT = 5555;
 server.disable('etag')
+server.use(express.json());
 server.get("/api/posts", (req, res) => {
 db.find()
     .then(posts => {
@@ -25,7 +26,6 @@ const { id } = req.params;
 
 db.findById(id)
     .then(post => {
-        // res.json(post);
     if (post.length) {
         res.json(post);
     } else {
@@ -40,6 +40,30 @@ db.findById(id)
         .json({ error: "The post information could not be retrieved." });
     });
 });
+
+server.post("/api/posts", (req, res) => {
+    const posts= req.body;
+    if (posts.title && posts.contents) {
+        db.insert(posts)
+        .then(response => {
+            db.findById(response.id).then(posts => {
+                res.status(201)
+                .json(posts)
+            })
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .json({ error: "There was an error saving the post to the server" })
+        })
+    } else {
+        res
+            .status(400)
+            .json({ errormessage: "Please provide title and content for the post." })
+    }
+})
+
+
 
 server.listen(PORT, () => {
   console.log("server is up and running");
