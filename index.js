@@ -37,7 +37,32 @@ server.get('/api/posts/:id', (req, res) =>{
             res.status(500)
             res.json({ error: "The post information could not be retrieved." });        
         })
-});         
+});   
+
+server.post('/api/posts', (req, res) =>{
+    //grab post to add 
+    const post = req.body;
+
+    if(post.title && post.contents){
+        db.insert(post)
+            .then(postID =>{
+                db.findById(postID.id)
+                    .then(post =>{
+                        res.status(201)
+                        res.json(post)
+                    })
+
+            })
+            .catch(err => {
+                res.status(500)
+                res.json({error: "There was an error while saving the post to the database"});
+            });
+    }else{
+        res.status(400);
+        res.json({error: "Please provide title and contents for the post."})
+    }
+
+});
 
 server.listen(PORT, () =>{
     console.log(`Server is up and running on port ${PORT}`);
