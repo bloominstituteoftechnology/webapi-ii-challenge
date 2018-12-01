@@ -29,7 +29,7 @@ class App extends Component {
   render() {
   console.log("this.state", this.state)
       return (
-        <div className="container"><ul>{this.state.posts.map(post => {
+        <div className="container"><h2>Node Express Lab</h2><ul>{this.state.posts.map(post => {
           return (
             <Post
               title={post.title}

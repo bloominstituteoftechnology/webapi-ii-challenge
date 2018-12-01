@@ -28,3 +28,12 @@ width: 60%;
 
 }
 
+h2 {
+border: 2px solid blue;
+width: 65%;
+text-align: center;
+padding: 10px;
+border-radius: 15px;
+background-color: rgb(62, 136, 206);
+
+}
