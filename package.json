@@ -1,6 +1,6 @@
 {
 	"name": "node-express",
-	"version": "1.0.0",
+	"version": "v1.12.3",
 	"description": "Lab for Introduction to Node.js and Express",
 	"private": true,
 	"main": "index.js",
