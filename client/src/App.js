@@ -20,7 +20,7 @@ class App extends Component {
         this.setState(() => ({ posts: response.data }));
       })
       .catch(error => {
-        console.erroßr("Server Error", error);
+        console.error("Server Error", error);
       });
   }
 
