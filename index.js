@@ -7,6 +7,8 @@ const db = require('./data/db.js');
 const server = express();
 const PORT = 8080;
 
+server.use(express.json());
+
 // GET /api/posts
 server.get('/api/posts', (req, res) => {
   db
@@ -54,7 +56,7 @@ server.post('/api/posts', (req, res) => {
     .catch(err => {
       res
         .status(500)
-        .json( { message: 'failed insert post in db' });
+        .json( { message: 'failed to insert post in db' });
     });
   } else {
     res.status(400).json({ errorMessage: 'Please provide title and contens for the posts.' });
