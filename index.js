@@ -1,11 +1,15 @@
 // import your node modules
 const express = require("express")
+const cors = require("cors")
 const db = require('./data/db.js');
+
 // add your server code starting here
 const server = express();
 const PORT = 4000; 
 
-server.use(express.json());
+server.use(express.json(), cors());
+
+
 
 //GET
 server.get(`/api/posts`, (req, res) => {
@@ -96,8 +100,6 @@ server.delete(`/api/posts/:id`, (req, res) => {
      })
         
 })
-
-
 
 //PUT
 
