@@ -5,6 +5,12 @@ export const Main = styled.div`
   margin: 40px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+
+  h5 {
+    margin-left: 400px;
+    align-items: flex-end;
+  }
   hr {
     width: 50%;
     margin-right: 400px;
@@ -15,9 +21,12 @@ export const Main = styled.div`
 export const Contianer = styled.div`
   display: flex;
   flex-wrap: wrap;
-
+ h1 {
+   text-indent: 30px;
+ }
   hr {
     width: 100%;
+
   }
 `;
 
@@ -35,6 +44,14 @@ export const Body = styled.div`
   display: flex;
   flex-direction: column;
   width: 400px;
+`;
+
+export const SectionHeader = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-arround;
+  text-indent: 15px;
+  margin-bottom: 20px;
 `;
 
 export const LinkContainer = styled.div`
@@ -66,4 +83,10 @@ export const TextArea = styled.textarea`
   padding: 10px;
   width: 400px;
   height: 50px;
+`;
+
+export const Nav = styled.div`
+  width: 100vw;
+  background-color: #f4f1ea;
+  height: 125px;
 `;

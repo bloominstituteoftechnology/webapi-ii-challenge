@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 // import Posts from './Posts';
 import {deletePost} from '../actions/index'
 import { Contianer, Button, LinkContainer, Body } from "../sytles/PostStyles";
-import {NavLink} from "react-router-dom"
+import { NavLink } from "react-router-dom"
+
+
+
+
 const Post = ({ post, deletePost }) => {
 
 const deleteHandler = () => {
