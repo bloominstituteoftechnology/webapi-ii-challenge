@@ -28,17 +28,17 @@ server.get('/api/posts/:id', (req, res) => {
             if (posts.length > 0) {
                 res.status(200)
                     .send(posts)
-            }
+                }
             else {
                 res
-                    .status(404)
-                    .json({ errorMessage: "Post Id Not Found" })
-            }
-        })
+                 .status(404)
+                 .json({ errorMessage: "Post Id Not Found" })
+                }
+        }) //end of posts
         .catch(err => {
-            res
-                .status(500)
-                .json({ errorMessage: "Post Id Not Found" })
+                res
+                 .status(500)
+                 .json({ errorMessage: "Post Id Not Found" })
         });
 })
 
@@ -79,7 +79,7 @@ server.post('/api/posts', (req, res) => {
                 }) // newPost end
         }) // idInfo end   
     }
-    else if(post.title || post.content === undefined){
+    else if(post.title || post.content === undefined) {
         res
          .status(400)
          .json({errorMessage: "Please provide title and contents for the post." })
@@ -89,16 +89,33 @@ server.post('/api/posts', (req, res) => {
          .status(500)
          .json({ error: "There was an error while saving the post to the database" })
     }
-
-  });
-
-
-
-
-
+});
 
 
 //DELETE
+
+server.delete(`/api/posts/:id`, (req, res) => {
+    const { id } = req.params;
+    console.log( id );
+    db.remove(id)
+     .then( post => {
+         if(post) {
+            res
+             .json({ message: "Delete success" });
+         }
+         else  {
+            res
+             .status(404)
+             .json({message: "The post with the specified ID does not exist."})
+         }
+     })
+     .catch( err => {
+            res
+             .status(500)
+             .json({error: "The post could not be removed"})
+     })
+        
+})
 
 // server.delete(`/api/users/:id`, (req, res) => {
 //     const { id } = req.params;
@@ -147,7 +164,6 @@ server.post('/api/posts', (req, res) => {
                     
 // })
 
-
     server.listen(PORT, () => {
-        console.log("this is  working")
+        console.log("Server Listening...")
     })
