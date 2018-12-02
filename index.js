@@ -1,5 +1,6 @@
 // import nodes modules 
 const express = require('express');
+const cors = require('cors');
 const db = require('./data/db');
 
 // server starting code here 
@@ -7,7 +8,10 @@ const server = express();
 const PORT = 4000;
 const parser = express.json();
 
+server.use(cors());
 server.use(parser);
+server.disable('etag')
+
 
 // endpoints 
 
