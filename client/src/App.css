@@ -2,6 +2,9 @@
   text-align: center;
 }
 
+body {
+background-color: black;
+}
 
 .App-header {
   background-color: #282c34;
@@ -23,17 +26,22 @@ border: 2px solid blue;
 border-radius: 15px;
 margin-bottom: 10px;
 padding-left: 6px;
-background-color: rgb(106, 186, 240);
+background-color: rgb(137, 195, 235);
 width: 60%;
 
 }
 
+.created {
+font-size: 12px;
+
+}
+
 h2 {
-border: 2px solid blue;
+border: 2px solid white;
 width: 65%;
 text-align: center;
 padding: 10px;
 border-radius: 15px;
 background-color: rgb(62, 136, 206);
-
+color: white;
 }

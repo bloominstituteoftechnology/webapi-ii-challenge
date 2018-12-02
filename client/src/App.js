@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-//import ListPosts from "./components/listPosts"
 import Post from "./components/post"
-//import Posts from "./components/posts"
-//import { Route } from 'react-router-dom';
 import axios from "axios";
 import './App.css';
 
@@ -27,13 +24,15 @@ class App extends Component {
  
 
   render() {
-  console.log("this.state", this.state)
+  
       return (
         <div className="container"><h2>Node Express Lab</h2><ul>{this.state.posts.map(post => {
           return (
             <Post
               title={post.title}
               contents={post.contents}
+              created={post.created_at}
+              updated={post.updated_at}
               key={post.id}
         />);
           })}
