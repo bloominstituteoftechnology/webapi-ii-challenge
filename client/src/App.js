@@ -43,7 +43,7 @@ class App extends Component {
     })
   }
 
-  handleDeleteNote = id => {
+  handleDeletePost = id => {
     axios 
     .delete(`http://localhost:5000/api/posts/${id}`)
     .then(response => {
@@ -69,7 +69,7 @@ class App extends Component {
         <div className="App">
           
           <CreateNewPost handleAddNewPost={this.handleAddNewPost}/>
-          <PostList posts={this.state.posts} handleDeleteNote={this.handleDeleteNote}/>
+          <PostList posts={this.state.posts} handleDeletePost={this.handleDeletePost}/>
 
           {/* {this.state.posts.map(post => {
               return (

@@ -36,9 +36,10 @@ class PostView extends React.Component {
 
 
     render(){
-        console.log(this.state)
+        // console.log(this.state)
+        console.log(this.props)
         return(
-            <div>
+            <div className="card">
                 <div>
                     <p>{this.state.title}</p>
                     <h2>{this.state.contents}</h2>

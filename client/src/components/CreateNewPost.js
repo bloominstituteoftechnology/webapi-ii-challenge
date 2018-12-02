@@ -28,7 +28,7 @@ class CreateNewPost extends React.Component {
                 <h2> Create New Notes </h2>
                 <form>
                     <textarea 
-                        placeholder="Post Title"
+                        placeholder="Quote from LOTR"
                         type="text"
                         name="title"
                         value={this.state.title}

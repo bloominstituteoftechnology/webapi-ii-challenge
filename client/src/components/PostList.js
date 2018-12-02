@@ -16,7 +16,7 @@ class PostList extends React.Component {
                 {this.props.posts.map(post => {
                     return (
 
-                        <PostView handleDeleteNote={this.props.handleDeleteNote} post={post} />
+                        <PostView handleDeletePost={this.props.handleDeletePost} post={post} />
                     
                     )
                 })}
