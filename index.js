@@ -16,6 +16,8 @@ server.use(function(req, res, next) {
   next();
 });
 
+server.use(express.json())
+
 
 //grabbing a list of all posts
 server.get('/api/posts', (req, res) => {
@@ -46,6 +48,83 @@ server.get('/api/posts/:id', (req, res) => {
     .catch( err => {
       res.json({message: 'unable to load posts'})
     })
+})
+
+//deleting an individual post by id
+server.delete('/api/posts/:id', (req, res) => {
+  const {id} = req.params;
+  db.remove(id)
+    .then( post => {
+      if (post) {
+        res
+          .json({message: 'post was successfully deleted'})
+      } else {
+        res
+          .status(404)
+          .json({message: "The post with the specified ID does not exist."})
+      }
+    })
+    .catch( err => {
+      res
+        .status(500)
+        .json({error: "The post could not be removed"})
+    })
+})
+
+//updating an individual post by id
+server.put('/api/posts/:id', (req, res) => {
+  const changes = req.body;
+  const {id} = req.params;
+
+  if (changes.title && changes.contents) {
+    db.update(id, changes)
+      .then( count => {
+        console.log(count)
+        if (count) {
+          db.findById(id)
+            .then( post => {
+              res.json(post)
+            })  
+        } else {
+            res
+              .status(404)
+              .res.json({message: "The post with the specified ID does not exist."})
+        }
+      }).catch( err => {
+        res
+          .status(500)
+          .json({error: "The post information could not be modified."})
+      })
+  } else {
+    res
+      .status(400)
+      .json({errorMessage: "Please provide title and contents for the post."})
+  }
+})
+
+server.post('/api/posts', (req, res) => {
+  const post = req.body;
+  
+  if (post.title && post.contents) {
+    db.insert(post)
+      .then( post => {
+        db.findById(post.id)
+          .then( post => {
+            res
+              .status(201)
+              .json(post)
+          })
+          
+      }).catch( err => {
+        res
+          .status(500)
+          .json({error: "There was an error while saving the post to the database"})
+      })
+  } else {
+    res
+      .status(400)
+      .json({errorMessage: "Please provide title and contents for the post."})
+  } 
 })
 
 //listening
