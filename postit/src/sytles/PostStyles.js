@@ -21,12 +21,11 @@ export const Main = styled.div`
 export const Contianer = styled.div`
   display: flex;
   flex-wrap: wrap;
- h1 {
-   text-indent: 30px;
- }
+  h1 {
+    text-indent: 30px;
+  }
   hr {
     width: 100%;
-
   }
 `;
 
@@ -89,4 +88,20 @@ export const Nav = styled.div`
   width: 100vw;
   background-color: #f4f1ea;
   height: 125px;
+  a {
+    margin: 40px;
+    width: 6px;
+    padding: 6px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+  }
+  a:hover {
+    background-color: #d1ccbb;
+    width: 6px;
+    padding: 6px;
+    color: black;
+    font-weight: bold;
+    border-radius: 3px;
+  }
 `;
