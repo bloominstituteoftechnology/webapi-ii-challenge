@@ -63,9 +63,9 @@ server.put('/api/posts/:id', (req,res) => {
     const {id} = req.params;
     const post = req.body;
     if (post.title && post.contents) {
-    db.update(id)
-    .then(post => {
-        if (post.length > 0) {
+    db.update(id, post)
+    .then(count => {
+        if (count) {
             db.findById(id).then(post => {
                 res.status(200).json(post);
             })
