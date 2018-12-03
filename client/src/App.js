@@ -7,7 +7,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-   posts: []
+      posts: []
     };
   }
 
@@ -21,12 +21,19 @@ class App extends Component {
         console.error('Server Error', error);
       });
   }
- 
+
 
   render() {
-  
-      return (
-        <div className="container"><h2>Node Express Lab</h2><ul>{this.state.posts.map(post => {
+
+    return (
+      <div className="container">
+        <div className="header-container">
+          <div className="create-button">
+            <button className="create">Create Note</button>
+          </div>
+          <h2>Node Express Lab</h2>
+        </div>
+        <ul>{this.state.posts.map(post => {
           return (
             <Post
               title={post.title}
@@ -34,18 +41,17 @@ class App extends Component {
               created={post.created_at}
               updated={post.updated_at}
               key={post.id}
-        />);
-          })}
-            </ul>
-          </div>
-        );
-    }
+            />);
+        })}
+        </ul>
+      </div>
+    );
   }
+}
 
 
 export default App;
-   
-  
- 
 
-  
+
+
+

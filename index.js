@@ -126,7 +126,8 @@ server.put('/api/posts/:id', (req, res) => {
                 .then(idInfo => {
                     db.findById(idInfo.id)
                         .then(post => {
-                            res.status(201).json(post);
+                            res.status(201)
+                            .json(post);
                         });
                 }).catch(err => {
                     res

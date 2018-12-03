@@ -1,47 +1,112 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 body {
-background-color: black;
+    background-color: black;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 .posts {
-border: 2px solid blue;
-border-radius: 15px;
-margin-bottom: 10px;
-padding-left: 6px;
-background-color: rgb(137, 195, 235);
-width: 60%;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid blue;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    padding-left: 6px;
+    background-color: rgb(137, 195, 235);
+    width: 60%;
+}
 
+.close-button {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-left: 22px;
+    margin-top: 6px;
+    margin-right: 22px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: 2px solid black;
+}
+
+.header-container {
+    border: 2px solid white;
+    width: 65%;
+    text-align: center;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: rgb(62, 136, 206);
+    color: white;
+    display: flex;
+    flex-direction: row;
+   margin-bottom: 10px;
+}
+
+.create-button {}
+
+.post-data {
+    /* border: 2px solid red; */
+    width: 90%;
+}
+
+.post-controls {
+    display: flex;
+    flex-direction: column;
+    /* border: 2px solid green; */
+}
+
+.edit-button {
+    background-color: rgb(62, 136, 206);
+    margin-bottom: 6px;
+    margin-right: 6px;
+    font-weight: 300;
+    border-radius: 4px;
+    color: white;
+    width: 80px;
+    border: 0px solid blue;
+}
+
+.delete-button {
+    border: 0px solid blue;
+    font-weight: 300;
+    margin-right: 6px;
+    border-radius: 4px;
+    color: white;
+    background-color: rgb(62, 136, 206);
 }
 
 .created {
-font-size: 12px;
+    font-size: 12px;
+}
 
+.create {
+ background-color:  rgb(137, 195, 235);
+ color: white;
+ border: 0px solid gray;
 }
 
 h2 {
-border: 2px solid white;
-width: 65%;
-text-align: center;
-padding: 10px;
-border-radius: 15px;
-background-color: rgb(62, 136, 206);
-color: white;
+    /* border: 2px solid white; */
+    width: 65%;
+    text-align: center;
+    /* padding: 10px; */
+    /* border-radius: 15px; */
+    background-color: rgb(62, 136, 206);
+    color: white;
 }
