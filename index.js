@@ -40,6 +40,25 @@ server.get('/api/posts/:id', (req, res) => {
     
 });
 
+
+server.delete('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  if(!id){
+     res
+     .status(404)
+     .json({message: "The post with the specified ID does not exist."})
+  }
+  db.remove(id)
+      .then((post) => {
+          res.json(post);
+  })
+  .catch( err => {
+      res
+      .status(500)
+      .json({error: 'The post could not be removed', err})
+  })
+})
+
 server.listen(3000, () => {
     console.log('Server running on http://localhost:3000')
 });
