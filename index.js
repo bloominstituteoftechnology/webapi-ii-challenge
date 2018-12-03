@@ -15,20 +15,26 @@ server.use(parser);
 
 server.post('/api/posts', (req, res) =>{
     const post = req.body
-    db.insert(post)
-    .then( idInfo =>{
-        db.findById(idInfo.id).then(user =>{
-        console.log("post from insert method",user)
-        res
-        .status(201)
-        .json(user);
+    if (post.title && post.contents){
+        db.insert(post)
+        .then( idInfo =>{
+            db.findById(idInfo.id).then(user =>{
+                console.log("post from insert method",user)
+                res
+                .status(201)
+                .json(user);
+            });
         })
-    })
-    .catch(err =>{
+        .catch(err =>{
+            res
+            .status(500)
+            .json({ error: "There was an error while saving the post to the database" })
+        });
+    } else {
         res
-        .status(500)
-        .json({ error: "There was an error while saving the post to the database" })
-    });
+        .status(400)
+        .json({errorMessage: "Please provide title and contents for the post." })
+    }
 });
 
 server.get('/api/posts', (req, res) =>{
