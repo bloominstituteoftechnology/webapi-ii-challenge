@@ -18,11 +18,11 @@ export const Main = styled.div`
   }
 `;
 
-export const Contianer = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  h1 {
-    text-indent: 30px;
+  img {
+    margin:33px;
   }
   hr {
     width: 100%;
@@ -90,18 +90,17 @@ export const Nav = styled.div`
   height: 125px;
   a {
     margin: 40px;
-    width: 6px;
-    padding: 6px;
+    width: 50px;
+    padding: 10px;
     text-decoration: none;
     color: black;
-    font-weight: bold;
+
   }
   a:hover {
-    background-color: #d1ccbb;
-    width: 6px;
-    padding: 6px;
-    color: black;
-    font-weight: bold;
-    border-radius: 3px;
+    background-color: #382110;
+    width:  50px;
+    padding: 10px;
+    color: white;
+    border-radius: 1px;
   }
 `;
