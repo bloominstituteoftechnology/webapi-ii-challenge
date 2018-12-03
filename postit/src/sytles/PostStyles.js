@@ -22,7 +22,8 @@ export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   img {
-    margin:33px;
+    margin-top: 40px;
+    margin-left: 20px;
   }
   hr {
     width: 100%;
