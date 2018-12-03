@@ -70,8 +70,46 @@ server.get('/api/posts/:id', (req, res) =>{
 
 
 //DELETE /api/posts/:id 
+server.delete('/api/posts/:id', (req, res) =>{
+    const { id } = req.params
+    console.log("id from top" , id)
+    db.remove(id)
+    .then(post =>{
+        console.log("post from inside", post)
+        if(post===1){
+            res
+            .json(post)
+        } else{
+            res
+            .status(404)
+            .json({ message: "The post with the specified ID does not exist." })
+        }
+    })
+    .catch(err =>{
+        res
+        .status(500)
+        .json({error: "The post could not be removed" })
+    })
+})
 
 //PUT /api/posts/:id
+
+server.put('/api/posts/:id', (req, res) =>{
+    const { id } = req.params
+    const post  = req.body
+    console.log("id/post", id, post)
+    db.update(id, post)
+    .then(post =>{
+        res
+        .status(200)
+        .json(post)
+    })
+    .catch(err =>{
+        res
+        .status(500)
+        .json({error: "The post information could not be modified." })
+    })
+})
 
 server.listen(PORT, () =>{
     console.log(`server is up and running on port ${PORT}`);
