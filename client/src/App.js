@@ -22,6 +22,47 @@ class App extends Component {
       });
   }
 
+  closeHandler = (id) => {
+
+
+  }
+
+  editHandler = (id) => {
+axios
+      .get('http://localhost:4000/api/posts')
+      .then(response => {
+        this.setState(() => ({ posts: response.data }));
+      })
+      .catch(error => {
+        console.error('Server Error', error);
+      });
+  }
+
+  deleteHandler = id => {
+    console.log("id:", id)
+    axios
+    .delete(`http://localhost:4000/api/posts/${id}`)
+    .then(response => {
+      console.log("response:", response)
+      window.location.reload();
+      //getHandler;
+     /*  this.setState(() => ({ posts: response.data })); */
+    })
+    .catch(error => {
+      console.error('Server Error', error);
+    });
+  }
+
+  getHandler = e => {
+    axios
+    .get('http://localhost:4000/api/posts')
+    .then(response => {
+      this.setState(() => ({ posts: response.data }));
+    })
+    .catch(error => {
+      console.error('Server Error', error);
+    });
+  }
 
   render() {
 
@@ -31,7 +72,7 @@ class App extends Component {
           <div className="create-button">
             <button className="create">Create Note</button>
           </div>
-          <h2>Node Express Lab</h2>
+          <h2>Node "Note" Express Lab</h2>
         </div>
         <ul>{this.state.posts.map(post => {
           return (
@@ -41,6 +82,10 @@ class App extends Component {
               created={post.created_at}
               updated={post.updated_at}
               key={post.id}
+              id={post.id}
+              editHandler={this.props.editHandler}
+              deleteHandler={this.deleteHandler}
+              closeHandler={this.props.closeHandler}
             />);
         })}
         </ul>

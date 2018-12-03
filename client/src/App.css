@@ -24,7 +24,7 @@ body {
 .posts {
     display: flex;
     flex-direction: row;
-    border: 2px solid blue;
+    border: 2px solid white;
     border-radius: 15px;
     margin-bottom: 10px;
     padding-left: 6px;
@@ -45,6 +45,11 @@ body {
     border: 2px solid black;
 }
 
+.close-button:hover {
+color: white;
+border: 2px solid white;
+}
+
 .header-container {
     border: 2px solid white;
     width: 65%;
@@ -56,6 +61,7 @@ body {
     display: flex;
     flex-direction: row;
    margin-bottom: 10px;
+   margin-top: 10px;
 }
 
 .create-button {}
@@ -79,16 +85,24 @@ body {
     border-radius: 4px;
     color: white;
     width: 80px;
-    border: 0px solid blue;
+    border: 2px solid rgb(62, 136, 206);
 }
 
 .delete-button {
-    border: 0px solid blue;
+    border: 2px solid rgb(62, 136, 206);
     font-weight: 300;
     margin-right: 6px;
     border-radius: 4px;
     color: white;
     background-color: rgb(62, 136, 206);
+    text-align: center;
+}
+
+.edit-button:hover, .delete-button:hover {
+/* background-color: white; */
+/* color: yellow; */
+border: 2px solid white;
+font-weight: 500;
 }
 
 .created {
@@ -99,6 +113,8 @@ body {
  background-color:  rgb(137, 195, 235);
  color: white;
  border: 0px solid gray;
+ margin-top: 20px;
+ margin-left: 10px;
 }
 
 h2 {
