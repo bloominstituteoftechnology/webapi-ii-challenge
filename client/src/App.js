@@ -6,6 +6,9 @@ import './App.css';
 import PostList from './components/PostList'
 import CreateNewPost from './components/CreateNewPost'
 
+import { Route } from 'react-router-dom'
+import UpdatePost from './components/UpdatePost'
+
 class App extends Component {
   constructor(){
     super();
@@ -61,6 +64,24 @@ class App extends Component {
     })
   }
 
+  handleUpdatePost = updatedPost => {
+    axios 
+    .put(`http://localhost:5000/api/posts/${updatedPost.id}`, updatedPost)
+    .then(response => {
+          axios 
+          .get(`http://localhost:5000/api/posts/`)
+          .then(response => {
+              this.setState({ posts: response.data })
+          })
+          .catch(err => {
+            console.log("Fail to GET Posts from local server", err)
+          })
+    })
+    .catch(err => {
+      console.log("Fail to UpDate a post", err)
+    })
+  }
+
   render() {
     console.log(this.state.posts)
     return (
@@ -69,7 +90,17 @@ class App extends Component {
         <div className="App">
           
           <CreateNewPost handleAddNewPost={this.handleAddNewPost}/>
-          <PostList posts={this.state.posts} handleDeletePost={this.handleDeletePost}/>
+          <PostList posts={this.state.posts} handleDeletePost={this.handleDeletePost}
+            handleUpdatePost={this.handleUpdatePost}
+          />
+
+          <div className="Route-Container">
+              <Route path="/api/posts/:id" 
+                render={props => <UpdatePost {...props} handleUpdatePost={this.handleUpdatePost} 
+                  posts={this.state.posts}
+                />}
+              />
+          </div>
 
           {/* {this.state.posts.map(post => {
               return (

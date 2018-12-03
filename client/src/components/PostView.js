@@ -2,6 +2,9 @@ import React from 'react'
 
 import axios from 'axios'
 
+import { Link } from 'react-router-dom'
+import UpdatePost from './UpdatePost'
+
 class PostView extends React.Component {
     constructor(){
         super();
@@ -20,7 +23,7 @@ class PostView extends React.Component {
         .get(`http://localhost:5000/api/posts/${id}`)
         .then(response => {
             console.log(response.data)
-            const {title, contents} = response.data[0]   //first and only entry
+            const {title, contents} = response.data[0]   //first and only entry; response.data comes in as an array
             this.setState({ title, contents })
         })
         .catch(err => {
@@ -46,6 +49,9 @@ class PostView extends React.Component {
                 </div>
                 <div>
                     <div onClick={this.handleDelete}> Delete </div>
+                </div>
+                <div>
+                    <Link to={`/api/posts/${this.props.post.id}`}> Update </Link>
                 </div>
             </div>
         )

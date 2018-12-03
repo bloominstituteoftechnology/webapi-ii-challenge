@@ -19,6 +19,7 @@ class CreateNewPost extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         this.props.handleAddNewPost({...this.state})
+        //this.setState({[event.target.value]: ''});    not working
     }
 
 
@@ -33,7 +34,7 @@ class CreateNewPost extends React.Component {
                         name="title"
                         value={this.state.title}
                         onChange={this.handleChange}
-                    />
+                    ></textarea>
                     <input 
                         placeholder="Guess who said this"
                         type="text"
