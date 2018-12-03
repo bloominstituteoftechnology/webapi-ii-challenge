@@ -23,19 +23,20 @@ class App extends Component {
   }
 
   closeHandler = (id) => {
-
+alert("function is unavailable at this time...")
 
   }
 
-  editHandler = (id) => {
-axios
+  editHandler = id => {
+    alert("function is unavailable at this time...")
+/* axios
       .get('http://localhost:4000/api/posts')
       .then(response => {
         this.setState(() => ({ posts: response.data }));
       })
       .catch(error => {
         console.error('Server Error', error);
-      });
+      }); */
   }
 
   deleteHandler = id => {
@@ -83,9 +84,9 @@ axios
               updated={post.updated_at}
               key={post.id}
               id={post.id}
-              editHandler={this.props.editHandler}
+              editHandler={this.editHandler}
               deleteHandler={this.deleteHandler}
-              closeHandler={this.props.closeHandler}
+              closeHandler={this.closeHandler}
             />);
         })}
         </ul>
