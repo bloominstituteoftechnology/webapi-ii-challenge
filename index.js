@@ -1,28 +1,91 @@
-// import your node modules
-const express=require('express');
-const introduce=require('./introduce.js');
+const express = require('express');
 const db = require('./data/db.js');
-// add your server code starting here
-const server=express();
-    server.get('/',(req,res)=>{
+const cors = require('cors');
+
+
+
+const server = express();
+    server.use(express.json());
+    server.use(cors()); 
+    server.get('/', (req, res) => {
         res.json('alive');
+});
+
+    server.get('/api/posts', (req, res) => {
+        db.find().then(posts => {
+            res.json(posts);
+    }).catch(err => {
+        res.status(500).json({ message: "The posts information could not be retrieved." });
     });
-    server.get('/greet',(req,res)=>{
-        res.json({hello:'stranger'});
+});
+
+    server.get('/api/posts/:id', (req, res) => {
+const { id } = req.params;
+    db.findById(id).then(post => {
+        if(post.id) {
+           res.status(200).json(post); 
+        } else {
+            res.status(404).json({message: "The post with the specified ID does not exist."  });
+        }
+    }).catch(err => {
+        res.status(500).json({message: "The post information could not be retrieved." })
     });
-    server.get('/api/users/:id',(req,res)=>{
-        const{id}=req.params;
-        db.findById(id).then(user=>{
-            if(user){
-                res.status(200).json(user);
-            }else{
-                res.status(404).json({message:'User Not Found'})
+});
+    
+    server.post('/api/posts', async (req, res) => {
+        console.log('body', req.body)
+        try {
+            const postData = req.body;
+            const postId = await db.insert(postData);
+            const post = await db.findById(postId.id)
+            res.status(201).json(post)
+        } catch (error) {
+            let message = 'error creating post';
+            if (error.errno === 19) {
+                res.status(400).json({ message: "Please provide title and contents for the post." })
             }
-        }).catch(err=>{
-            res.status(500).json({message:"Our Bad, Try Again", error: err})
-        });
+            res.status(500).json({ message, error})
+    }
+})
+
+    server.delete('/api/posts/:id', (req, res) => {
+        db.remove(req.params.id)
+          .then(id => {
+                if (id) {
+                    res.status(200).json(id);
+                } else {
+                    res.status(404).json({ message: "The post with the specified ID does not exist." })
+                }
+            }).catch(err => {
+        res.status(500).json({ message: 'The post could not be removed' });
     })
-    server.get('/greet/:person',introduce);
-      server.listen(9000,()=>console.log('working server?'));
+})
+
+    server.put('/api/posts/:id', (req, res) => {
+        const { id } = req.params;
+        const changes = req.body;
+            db.update(id, changes)
+                .then(count => {
+                    if (count) {
+                    res.status(200).json({ message: `${count} post updated` }); 
+                    } else {
+                        res.status(404).json({ message: "The post with the specified ID does not exist." })
+                    }  
+    }).catch(err => {
+        res.status(500).json({ message: 'error updating post' });
+    })
+})
+
+    server.get('/posts', (req, res) => {
+        const { id } = req.query;
+            if (id) {
+                db.findById(id).then(post => res.send(post))
+            } else {
+                db.find().then(posts => res.send(posts))
+            }
+})
+
+
+server.listen(9000, () => console.log('the server is alive!'));
 
 
