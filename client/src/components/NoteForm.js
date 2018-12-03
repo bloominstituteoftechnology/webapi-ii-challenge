@@ -15,25 +15,27 @@ const NoteForm = props => {
     <div>
       <div className="note-form">
         <header className="body-header">
-          <form className="tags-form" onSubmit={props.handleSubmitTag}>
-            <div className="tags">
-              {props.tags.map(tag => {
-                return <p className="tag" key={tag}>{tag}</p>
-              })}
+          <container className="tags-container">
+            <form className="tags-form" onSubmit={props.handleSubmitTag}>
+              <div className="tags">
+                {props.tags.map(tag => {
+                  return <p className="tag" key={tag}>{tag}</p>
+                })}
+              </div>
+              <input
+                className="input-tags"
+                type="text"
+                name="tag"
+                value={props.tag}
+                onChange={props.handleInput}
+                onSubmit={props.handleSubmitTag}
+                placeholder="add tags"
+              />
+            </form>
+            <div className="btn-container">
+              <button onClick={handleClick}>Save</button>
             </div>
-            <input
-              className="input-tags"
-              type="text"
-              name="tag"
-              value={props.tag}
-              onChange={props.handleInput}
-              onSubmit={props.handleSubmitTag}
-              placeholder="add tags"
-            />
-          </form>
-          <div className="btn-container">
-            <button onClick={handleClick}>Save</button>
-          </div>
+          </container>
         </header>
         <hr></hr>
         <input
