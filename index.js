@@ -19,7 +19,6 @@ server.post('/api/posts', (req, res) =>{
         db.insert(post)
         .then( idInfo =>{
             db.findById(idInfo.id).then(user =>{
-                console.log("post from insert method",user)
                 res
                 .status(201)
                 .json(user);
@@ -40,7 +39,9 @@ server.post('/api/posts', (req, res) =>{
 server.get('/api/posts', (req, res) =>{
     db.find()
     .then((posts) =>{
-        res.json(posts);
+        res
+        .status(200)
+        .json(posts);
     })
     .catch(err =>{
         res
@@ -54,7 +55,9 @@ server.get('/api/posts/:id', (req, res) =>{
     db.findById(id)
     .then(post =>{
         if (post.length !== 0){
-            res.json(post);
+            res
+            .status(200)
+            .json(post);
         } else {
             res
             .status(404)
@@ -72,12 +75,11 @@ server.get('/api/posts/:id', (req, res) =>{
 //DELETE /api/posts/:id 
 server.delete('/api/posts/:id', (req, res) =>{
     const { id } = req.params
-    console.log("id from top" , id)
     db.remove(id)
-    .then(post =>{
-        console.log("post from inside", post)
-        if(post===1){
+    .then(count =>{
+        if(count===1){
             res
+            .status(200)
             .json(post)
         } else{
             res
@@ -97,10 +99,11 @@ server.delete('/api/posts/:id', (req, res) =>{
 server.put('/api/posts/:id', (req, res) =>{
     const { id } = req.params
     const post  = req.body
-    console.log("id/post", id, post)
     db.update(id, post)
-    .then(post =>{
-        if(post===1){
+    .then(count =>{
+        console.log(count)
+        console.log(post.title, post.content)
+        if(count===1){
             if(post.title && post.contents){
             res
             .status(200)
