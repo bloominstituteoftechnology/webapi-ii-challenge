@@ -62,7 +62,28 @@ server.delete('/api/posts/:id', (req, res) => {
   });
 })
 
+server.put('/api/posts/:id', (req, res) => {
+  const post = req.body;
+  const { id } = req.params;
 
-  server.listen(PORT, () => {
-    console.log(`server is up and running on port ${PORT}`)
-  })
+  if (post.title && post.contents) {
+    db.update(id, post).then(count => {
+      if (count) {
+        db.findById(id).then(post => {
+          res.json(post)
+        });
+
+      } else {
+        res.status(500).json({ message: "failed to edit post" });
+
+      }
+    });
+  } else {
+    res.status(400).json({ message: "missing title or contents" })
+  }
+})
+
+
+server.listen(PORT, () => {
+  console.log(`server is up and running on port ${PORT}`)
+})
