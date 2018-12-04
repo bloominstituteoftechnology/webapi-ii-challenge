@@ -101,8 +101,6 @@ server.put('/api/posts/:id', (req, res) =>{
     const post  = req.body
     db.update(id, post)
     .then(count =>{
-        console.log(count)
-        console.log(post.title, post.content)
         if(count===1){
             if(post.title && post.contents){
             res
