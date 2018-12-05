@@ -54,14 +54,14 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.post('/api/posts', (req, res) => {
     const user = req.body;
-    console.log('user from body:', user)
+    console.log('post from body:', user)
     db.insert(user).then(user => {
-        console.log('user from insert method:', user);
+        console.log('post from insert method:', user);
         res.json(user);
     }).catch(err => {
         res
         .status(500)
-        .json("Error: failed to add user")
+        .json("Error: failed to add post")
     })
 })
 
