@@ -55,20 +55,20 @@ server.get('/api/posts/:id', (req, res) => {
 
 
 server.post('/api/posts', (req, res) => {
-    const user = req.body;
+    const posts = req.body;
 
-    if (user.name && user.bio) {
-    console.log('post from body:', user)
-    db.insert(user).then(user => {
-        console.log('post from insert method:', user);
-        res.json(user);
+    if (posts.title && posts.contents) {
+    console.log('post from body:', posts)
+    db.insert(posts).then(post => {
+        console.log('post from insert method:', posts);
+        res.json(posts);
     }).catch(err => {
         res
         .status(500)
         .json("Error: failed to add post")
         })
     } else {
-        res.status(400).json('New user needs a name and a bio. Both of them.')
+        res.status(400).json('New post needs a title and some contents. Both of them.')
     }
 })
 
