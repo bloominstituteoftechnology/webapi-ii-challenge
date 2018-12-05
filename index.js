@@ -7,17 +7,15 @@ const PORT = 5000;
 
 // add your server code starting here
 
-console.log('foo')
+console.log('foo?')
 
 server.get('/', (req, res) => {
     res.send(
-        'hi there from our regular get function :D!'
+        'hi there from our regular get function! ~_~'
     )
 })
 
-server.listen(PORT, () => {
-    console.log(`server is alive on port ${PORT}`);
-});
+// endpoint shenanigans
 
 server.get('/api/posts', (req, res) => {
     db.find()
@@ -46,3 +44,26 @@ server.get('/api/posts/:id', (req, res) => {
         res.json('Error 500: Idk that post')
     })
 })
+
+// post req
+
+server.post('/api/users/', (req, res) => {
+    const user = req.body;
+    db.insert()
+    .then(user => {
+        console.log('user from insert method:', user)
+        res.json(user)
+    })
+    .catch(err => {
+        res
+        .status(500)
+        .json('Error: failed to add user')
+    })
+})
+
+
+// server has to be told to listen
+
+server.listen(PORT, () => {
+    console.log(`server is alive on port ${PORT}`);
+});
