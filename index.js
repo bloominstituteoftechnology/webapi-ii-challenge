@@ -59,6 +59,17 @@ server.post('/api/posts', (req,res) => {
 
 });
 
+server.put('/api/posts/:id', (req,res) => {
+      const post = req.body;
+      const {id} = req.params;
+      console.log(id);
+      db.update(id, post)
+        .then(post => {
+             console.log(post);
+        })
+        .catch();
+});
+
 server.listen(PORT, () => {
      console.log(`Server is up and is running on ${PORT}`);
 });
