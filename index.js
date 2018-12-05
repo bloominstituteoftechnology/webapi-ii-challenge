@@ -27,7 +27,7 @@ server.get('/api/posts/:id', (req, res) => {
            if(post.length>0) {
                res.status(200).send(post);
            } else {
-               res.status(404)
+               res.status(400)
                   .json({errorMessage: "This doesn't seem to be functional"})
            }
        })
@@ -61,15 +61,41 @@ server.post('/api/posts', (req,res) => {
 
 });
 
+
+
 server.put('/api/posts/:id', (req,res) => {
       const post = req.body;
       const {id} = req.params;
-      console.log(id);
-      db.update(id, post)
-        .then(post => {
-            console.log(post);
-        })
-        .catch();
+      
+      if(post.title && post.contents) {
+        // 200 successfully updated.
+        console.log(id);
+        db.update(id, post)
+          .then(count => {
+              if(count) {
+                console.log(count);
+                db.findById(id).then( post => {
+                      res.json(post); 
+                    });
+              } else {
+                // 404 invalid ID.
+                res.status(404).json({ message: "The post with the specified ID does not exist."});
+              }
+          })
+          .catch( err => {
+              // 500 something went wrong -- server side code.
+              res.status(500)
+                 .json({ error: "The post information could not be modified." });
+          });
+      
+      
+      } else {
+           // 400 title or contents are missing-- client side.
+        //    res.status(400).json({ errorMessage:"Please provide title and contents for the post." });
+           res.status(400)
+             .json({errorMessage: "Please provide title and contents for the post."});
+      }
+     
 });
 
 server.listen(PORT, () => {
