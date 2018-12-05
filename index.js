@@ -3,11 +3,15 @@
 const db = require('./data/db.js');
 const express = require('express');
 const server = express();
-const PORT = 5000;
+const PORT = 4000;
+
+server.use(express.json());
+
+
 
 // add your server code starting here
 
-console.log('foo?')
+console.log('hello world')
 
 server.get('/', (req, res) => {
     res.send(
@@ -28,6 +32,7 @@ server.get('/api/posts', (req, res) => {
     })
 })
 
+
 server.get('/api/posts/:id', (req, res) => {
     const {id} = req.params;
     db.findById(id)
@@ -47,17 +52,16 @@ server.get('/api/posts/:id', (req, res) => {
 
 // post req
 
-server.post('/api/users/', (req, res) => {
+server.post('/api/posts', (req, res) => {
     const user = req.body;
-    db.insert()
-    .then(user => {
-        console.log('user from insert method:', user)
-        res.json(user)
-    })
-    .catch(err => {
+    console.log('user from body:', user)
+    db.insert(user).then(user => {
+        console.log('user from insert method:', user);
+        res.json(user);
+    }).catch(err => {
         res
         .status(500)
-        .json('Error: failed to add user')
+        .json("Error: failed to add user")
     })
 })
 
