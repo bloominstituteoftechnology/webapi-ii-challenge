@@ -47,7 +47,9 @@ server.post('/api/posts', (req,res) => {
           db.insert(post)
             .then(postId => {
                  console.log("post from the insert method", postId);
-                 res.status(201).send(post);
+                 db.findById(postId.id).then( post => {
+                    res.status(201).send(post);
+                 });
             })
             .catch(err => {
                 res.status(500)
@@ -65,7 +67,7 @@ server.put('/api/posts/:id', (req,res) => {
       console.log(id);
       db.update(id, post)
         .then(post => {
-             console.log(post);
+            console.log(post);
         })
         .catch();
 });
