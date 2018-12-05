@@ -51,9 +51,13 @@ server.get('/api/posts/:id', (req, res) => {
 })
 
 // post req
+// also: error catching if post is missing either a title or contents
+
 
 server.post('/api/posts', (req, res) => {
     const user = req.body;
+
+    if (user.name && user.bio) {
     console.log('post from body:', user)
     db.insert(user).then(user => {
         console.log('post from insert method:', user);
@@ -62,8 +66,14 @@ server.post('/api/posts', (req, res) => {
         res
         .status(500)
         .json("Error: failed to add post")
-    })
+        })
+    } else {
+        res.status(400).json('New user needs a name and a bio. Both of them.')
+    }
 })
+
+
+
 
 
 // server has to be told to listen
