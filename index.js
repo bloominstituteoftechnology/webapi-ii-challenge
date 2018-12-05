@@ -72,7 +72,25 @@ server.post('/api/posts', (req, res) => {
     }
 })
 
+// server delete
 
+server.delete('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    db.remove(id)
+    .then(count => {
+        if(count) {
+            res.json('post was successfully deleted')
+
+        } else {
+            res.status(404).json('invalid ID')
+        }
+
+    })
+    .catch(err => {
+        res.status(500).json('I could not delete that post')
+    })
+
+})
 
 
 
