@@ -41,20 +41,24 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.post('/api/posts', (req,res) => {
       const post = req.body;
+    //   console.log(post);
       if(post.title && post.contents) {
            console.log("Before insert:", post)
           db.insert(post)
-            .then(post => {
-                 console.log("post from the insert method", post);
-                 res.send(post);
+            .then(postId => {
+                 console.log("post from the insert method", postId);
+                 res.status(201).send(post);
             })
             .catch(err => {
                 res.status(500)
                    .json({errorMessage: "Failed to add new post.."})
             })
+      } else {
+          res.status(400).json({errorMessage: "Please provide title and contents for the post."});
       }
 
-})
+});
+
 server.listen(PORT, () => {
-     console.log(`localhost is runs on ${PORT}`);
-})
+     console.log(`Server is up and is running on ${PORT}`);
+});
