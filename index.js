@@ -76,6 +76,7 @@ server.post('/api/posts', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
     const {id} = req.params;
+    const post = req.body
     db.remove(id)
     .then(count => {
         if(count) {
@@ -92,10 +93,43 @@ server.delete('/api/posts/:id', (req, res) => {
 
 })
 
+// post request
+// post needs:
+// 200: successfully updated
+// 400: title or content is missing 
+// 404: invalid id
+// 500: all other issues 
 
+server.put('/api/posts/:id', (req, res) => {
+    const {id} = req.params;
+    const post = req.body;
+ 
+    if (post.title && post.contents){
+        db.update(id, post)
+            .then(count => {
+                if (count){
+                    db.findById(id)
+                        .then(post => {
+                            res.json(post);
+                        })
+                } else {
+                    res
+                        .status(404)
+                        .json({message: "Invalid id"});
+                }
+            })
+            .catch(err => {
+                res
+                    .status(500)
+                    .json({message: 'Could not update this post'});
+            })
+    } else {
+        res.status(400).json({message: "New post needs both a title and contents"})
+    }
+ })
 
 // server has to be told to listen
 
 server.listen(PORT, () => {
     console.log(`server is alive on port ${PORT}`);
-});
+})
