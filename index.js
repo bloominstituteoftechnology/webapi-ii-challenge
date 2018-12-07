@@ -67,21 +67,26 @@ server.put('/api/posts/:id', (req, res) => {
     const putObj = req.body;
     if (putObj.title && putObj.contents) {
         db.findById(id)
-        .then(() => {
-            db.update(id, putObj)
-            .then((count) => {
-                console.log(count);
-                db.findById(id)
-                .then((post) => {
-                    if(post.length) {res.status(200).json(post); }
+        .then((post) => {
+            if (post.length) {
+                db.update(id, putObj)
+                .then((count) => {
+                    console.log(count);
+                    db.findById(id)
+                    .then((post) => {
+                        if(post.length) {res.status(200).json(post); }
+                    })
                 })
-            })
-            .catch(() => {
-                res.status(500).json({ error: "The post information could not be modified." });
-            })
+                .catch(() => {
+                    res.status(500).json({ error: "The post information could not be modified." });
+                })
+            }
+            else {
+                res.status(404).json({ message: "The post with the specified ID does not exist." });
+            }
         })
         .catch(() => {
-            res.status(404).json({ message: "The post with the specified ID does not exist." });
+            res.status(500).json({ message: "The post with the specified ID does not exist." });
         })
     }
     else {
