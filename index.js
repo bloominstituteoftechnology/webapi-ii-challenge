@@ -8,11 +8,11 @@ const server = express();
 
 server.use(cors());
 
-server.get('/api/users', (req, res) => {
+server.get('/api/posts', (req, res) => {
 	db.find()
-		.then(users => {
-			console.log('\n** users **', users);
-			res.json(users)})
+		.then(posts => {
+			console.log('\n** posts **', posts);
+			res.json(posts)})
 		.catch(err => res.send(err))
 });
 
