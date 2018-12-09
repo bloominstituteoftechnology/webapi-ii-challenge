@@ -13,9 +13,7 @@ server.get('/api/posts', (req,res) => {
             res.json(posts);
         })
         .catch(error => {
-            res.status(500).json({
-                errorMessage: "posts not found!"
-            });
+            res.status(500).json({ error: "The posts information could not be retrieved." });
         });
 });
 
