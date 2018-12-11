@@ -16,4 +16,20 @@ server.get('/api/posts', (req, res) => {
     })
 })
 
+server.get('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    db.findById(id)
+    .then(post => {
+        if (post) {
+            res.json(post);  
+        } else {
+            res.status(404).json({ message: 'user does not exist'})
+        }
+        
+    })
+    .catch(err => {
+        res.status(404).json({error: "The post information could not be retrieved."})
+    })
+})
+
 server.listen(PORT, () =>console.log(`API running on port ${PORT}`))
