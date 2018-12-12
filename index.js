@@ -51,12 +51,29 @@ server.post("/api/posts", (req, res) => {
         });
       });
   } else {
-    res
-      .status(400)
-      .json({
-        errorMessage: "Please provide title and contents for the post."
-      });
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
   }
+});
+
+server.delete("api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  db.remove(id)
+    .then(count => {
+      if (count) {
+        res.json({ message: "successfully deleted" });
+        //something has been deleted
+        //send back the user
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The post could not be removed" });
+    });
 });
 
 server.put("api/posts/:id", (req, res) => {});
