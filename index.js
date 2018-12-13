@@ -88,24 +88,23 @@ server.put('/api/put_posts/:id', (req, res) => {
 		//
 		console.log('id' + id);
 		console.log('updated post' + updatedPost.title + updatedPost.contents);
-		db.update(id, updatedPost)
-			.then(number => {
-				console.log(number);
-				if (!number) {
-					res.status(404).json({
-						error: 'The post with the specified ID does not exist'
-					});
-				} else {
-					db.findById(id).then(successfullyUpdatedPost => {
-						res.status(200).json(successfullyUpdatedPost);
-					});
-				}
-			})
-			.catch(
-				res.status(500).json({
-					error: 'The post information could not be modified.'
-				})
-			);
+		db.update(id, updatedPost).then(number => {
+			console.log(number);
+			if (!number) {
+				res.status(404).json({
+					error: 'The post with the specified ID does not exist'
+				});
+			} else {
+				db.findById(id).then(successfullyUpdatedPost => {
+					res.status(200).json(successfullyUpdatedPost[0]);
+				});
+			}
+		});
+		// .catch(
+		// 	res.status(500).json({
+		// 		error: 'The post information could not be modified.'
+		// 	})
+		// );
 	} else {
 		res.status(400).json({
 			errorMessage: 'Please provide title and contents for the post.'
