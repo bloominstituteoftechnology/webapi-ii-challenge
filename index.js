@@ -74,8 +74,7 @@ server.delete("/api/posts/:id", (req, res) => {
     });
 });
 
-
-server.put("api/posts/:id", (req, res) => {
+server.put("/api/posts/:id", (req, res) => {
   const post = req.body;
   const { id } = req.params;
   if (post.title && post.contents) {
@@ -86,11 +85,9 @@ server.put("api/posts/:id", (req, res) => {
             res.json(post);
           });
         } else {
-          res
-            .status(404)
-            .json({
-              message: "The post with the specified ID does not exist."
-            });
+          res.status(404).json({
+            message: "The post with the specified ID does not exist."
+          });
         }
       })
       .catch(err => {
