@@ -6,30 +6,62 @@ const cors = require('cors')
 
 const server = express()
 
-server.use(server.json(), cors())
+const PORT = 3999
 
 const db = require('./data/db.js');
 
-// add your server code starting here
+server.use(cors())
 
-server.post('/api/users/', (req, res) => {
+// add your server code starting here
+server.post('/api/posts/', (req, res) => {
  const { title, contents } = req.body
- db.insert(user = {title, contents})
-  if (title, contents){
+ db
+  .insert({title, contents})
+  .then(() => {
+   if (title && contents){
+    res
+     .status(201)
+     .send(user)
+     .json(user)
+   }
+   else {
+    res
+     .status(400)
+     .json({errorMessage: "Please provide title and contents for the post."})
+   }
+  })
+  .catch(() => {
    res
-    .status(201)
-    .send(user)
-    .json(user)
-  }
-  else if (!(title, contents)) {
-   res
-    .status(400)
-    .json({errorMessage: "Please provide title and contents for the post."})
-  }
+    .status(500)
+    .json({error: "There was an error while saving the post to the database."})
+  })
 })
 
-const PORT = 3999
+server.get('/api/posts/', (req, res) => {
+ db.find()
+  .then((posts) => {
+   res 
+    .json(posts)
+  })
 
-server.listen(POST, () => {
+  .catch(() => {
+   res
+   
+   .status(500)
+    .json({error: "The posts information could not be retrieved"})
+  })
+})
+
+server.get('/api/posts/id', (req, res) => {
+ const { id } = req.params
+ db
+  .findById(id)
+})
+
+
+
+
+
+server.listen(PORT, () => {
  console.log(`Server is running live on ${PORT}`)
 } )
