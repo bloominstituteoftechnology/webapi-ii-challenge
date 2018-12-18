@@ -14,15 +14,19 @@ server.use(cors())
 
 // add your server code starting here
 server.post('/api/posts/', (req, res) => {
- const { title, contents } = req.body
+ const {title, contents} = req.body
+ console.log(req.body)
+
+ const post = req.body
  db
-  .insert({title, contents})
+  .insert(post)
   .then(() => {
    if (title && contents){
     res
      .status(201)
-     .send(user)
-     .json(user)
+     .send(req.params)
+
+     .json(response)
    }
    else {
     res
@@ -36,6 +40,7 @@ server.post('/api/posts/', (req, res) => {
     .json({error: "There was an error while saving the post to the database."})
   })
 })
+
 
 server.get('/api/posts/', (req, res) => {
  db.find()
@@ -52,14 +57,83 @@ server.get('/api/posts/', (req, res) => {
   })
 })
 
-server.get('/api/posts/id', (req, res) => {
+server.get('/api/posts/:id', (req, res) => {
  const { id } = req.params
  db
   .findById(id)
+  .then((post) => {
+   if (!id){
+    res
+     .status(404)
+     .json({message: "The post with the specified ID does not exist."})
+   }
+   else {
+    res
+     .json(post)
+   }
+  })
+  .catch(() => {
+   res
+    .status(500)
+    .json({error: "The post information could not be retrieved."})
+  })
 })
 
 
+server.delete('/api/posts/:id', (req, res) => {
+ const { id } = req.params
+ db
+  .remove(id)
+  .then((post) => {
+   if (id){
+    res
+     .send(post)
+     .json({message: "Post was removed from database."})
+   }
+   else {
+    res
+     .status(404)
+     .json({message: "The post with the specified ID does not exist."})
+   }
+  })
+  .catch(() => {
+   res
+    .status(500)
+    .json({error: "The post could not be removed."})
+  })
+})
 
+
+ 
+server.put('/api/posts/:id', (req, res) => {
+
+ const post = req.body
+ const { id } = req.params
+ if (post.title && post.contents){
+  db
+   .update(id, post)
+   .then(count => {
+    if (count){
+     db.findById(id)
+       .then(post => {
+        res
+         .json(post)
+       })
+    }
+
+    else {
+     res
+      .status(404)
+      .json({message: "The post with the specified ID does not exist."})
+    }
+   })
+   .catch(() => {
+    res
+     .status(500)
+     .json({error: "The post information could not be modified."})
+   })
+ }
+})
 
 
 server.listen(PORT, () => {
