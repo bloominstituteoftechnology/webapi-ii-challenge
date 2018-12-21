@@ -79,11 +79,10 @@ server.delete('/api/posts/:id', (req, res) => {
  const { id } = req.params
  db
   .remove(id)
-  .then((post) => {
+  .then(() => {
    if (id){
     res
-     .send(post)
-     .json({message: "Post was removed from database."})
+     .send({message: "Post was removed from database."})
    }
    else {
     res
