@@ -8,25 +8,20 @@ const server = express()
 
 const PORT = 3999
 
-const db = require('./data/db.js');
+const db = require('./data/db.js')
 
-server.use(cors())
+server.use(express.json())
 
 // add your server code starting here
-server.post('/api/posts/', (req, res) => {
- const {title, contents} = req.body
- console.log(req.body)
-
+server.post('/api/posts', (req, res) => {
  const post = req.body
+ console.log(post)
  db
   .insert(post)
-  .then(() => {
-   if (title && contents){
+  .then((post) => {
+   if (post){
     res
-     .status(201)
-     .send(req.params)
-
-     .json(response)
+     .json(post)
    }
    else {
     res
@@ -102,11 +97,8 @@ server.delete('/api/posts/:id', (req, res) => {
     .json({error: "The post could not be removed."})
   })
 })
-
-
  
 server.put('/api/posts/:id', (req, res) => {
-
  const post = req.body
  const { id } = req.params
  if (post.title && post.contents){
@@ -120,7 +112,6 @@ server.put('/api/posts/:id', (req, res) => {
          .json(post)
        })
     }
-
     else {
      res
       .status(404)
