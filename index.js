@@ -35,7 +35,17 @@ server.get(`${url}:id`, (req, res) => {
 	  })
 });
 
+server.post(url, (req, res) => {
+	res.status(201).json({url: url, operation: "POST"})
+}); //CREATE
 
+server.put(url, (req, res) => {
+	res.status(200).json({url: url, operation: "PUT"})
+}); //UPDATA
+
+server.delete(url, (req, res) => {
+	res.status(204).json({url: url, operation: "DELETE"})
+}); //DESTROY 
 
 server.listen(9000, () => console.log('server is running'))
 // add your server code starting here
