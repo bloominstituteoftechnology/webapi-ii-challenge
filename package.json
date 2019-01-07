@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "LambdaSchool Node.js and Express",
   "private": true,
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "server": "nodemon server.js"
+    "server": "nodemon index.js"
   },
   "license": "ISC",
   "dependencies": {
