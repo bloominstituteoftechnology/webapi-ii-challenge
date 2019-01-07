@@ -14,7 +14,7 @@ server.get('/api/posts', (req, res) => {
             res.status(200).send(posts);
         
     })
-    .catch(err =>{
+    .catch(err => {
         res.status(500).send(`<h1>Bad Request<h1>`);
         //res.status(500).json({message: `failed to get users`});
     })
@@ -24,11 +24,11 @@ server.get('/api/posts', (req, res) => {
 server.get('/api/posts/:id', (req,res) => {
     // console.log(req);
     console.log(req.params);
-    const thisId = req.params.id;
-    db.findById(thisId)
-        .then( thisPost => {
-            console.log(`thisPost = ${thisPost}`);
-            res.status(200).send(thisPost);
+    let id = req.params.id;
+    db.findById(id)
+        .then( posts => {
+            console.log(`posts = ${posts}`);
+            res.status(200).send(posts);
         })
         .catch(
             res.status(404).json({ message: `User does not exist.`})
@@ -40,3 +40,4 @@ server.get('/api/posts/:id', (req,res) => {
 server.listen(PORT, () => {
     console.log(`The server is runnning on port ${PORT}`);
 });
+// gdfgsdfgsdfgsdfgsdfgsdgsdfgddfsfsd
