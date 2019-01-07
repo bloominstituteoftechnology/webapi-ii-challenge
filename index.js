@@ -26,7 +26,7 @@ server.get("/api/posts/:id", (req, res) => {
 
   db.findById(id)
     .then(post => {
-      if (post.length > 0) {
+      if (post) {
         res.status(200).json(post);
       } else {
         res
