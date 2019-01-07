@@ -20,7 +20,12 @@ server.get('/api/posts', (req, res) => {
 
 server.get('/api/posts/:id', (req, res) => {
   const id = req.params.id;
-  res.send(`place holder for dynamic ${id} posts`);
+  db.findById(id)
+    .then(post => {
+      res.status(200).json(post);
+    })
+    .catch(err => res.status(404).json({message: "The post with the specified ID does not exist."}))
+  // res.send(`place holder for dynamic ${id} posts`);
 });
 
 server.listen(8000, () => console.log('Server running, listening on port 8000'));
