@@ -16,11 +16,14 @@ server.get('/api/posts', (req, res) => {
     })
     .catch(err =>{
         res.status(500).send(`<h1>Bad Request<h1>`);
+        //res.status(500).json({message: `failed to get users`});
     })
 });
     
 
-// server.get()
+// server.get('/api/posts/:id', () => {}
+
+// )
 //     .then()
 //     .catch();
 
