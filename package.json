@@ -1,18 +1,20 @@
 {
-  "name": "node-express",
-  "version": "0.0.1",
-  "description": "LambdaSchool Node.js and Express",
-  "private": true,
-  "main": "index.js",
-  "scripts": {
-    "server": "nodemon index.js"
-  },
-  "license": "ISC",
-  "dependencies": {
-    "knex": "^0.16.3",
-    "sqlite3": "^4.0.4"
-  },
-  "devDependencies": {
-    "nodemon": "^1.18.9"
-  }
+    "name": "node-express",
+    "version": "0.0.1",
+    "description": "LambdaSchool Node.js and Express",
+    "private": true,
+    "main": "index.js",
+    "scripts": {
+        "server": "nodemon index.js",
+        "monitor": "nodemon monitor.js"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.16.4",
+        "knex": "^0.16.3",
+        "sqlite3": "^4.0.4"
+    },
+    "devDependencies": {
+        "nodemon": "^1.18.9"
+    }
 }
