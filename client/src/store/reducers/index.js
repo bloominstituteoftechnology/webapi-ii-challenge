@@ -27,7 +27,7 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         fetchingPosts: false,
-        notes: action.payload
+        posts: action.payload
       };
     case GET_POSTS_FAILURE:
       return {
@@ -45,7 +45,7 @@ export const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         fetchingPost: false,
-        note: action.payload
+        post: action.payload
       };
     case GET_POST_FAILURE:
       return {
