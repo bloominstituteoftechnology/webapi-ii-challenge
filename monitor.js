@@ -14,7 +14,8 @@ setInterval(() => {
         // The whole response has been received. Print out the result.
         resp.on('end', () => {
             console.log(JSON.stringify(resp.headers, null, 4));
-            console.log(data);
+            data = JSON.parse(data);
+            console.log(JSON.stringify(data, null, 4));
         });
     }).on('error', err => {
         console.log('Error: ' + err.message);
