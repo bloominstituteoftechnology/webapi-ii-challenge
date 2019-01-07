@@ -17,4 +17,18 @@ server.get("/api/posts", (req, res) => {
     .catch(error => res.status(500).json(error));
 });
 
+server.post("/api/posts", (req, res) => {
+  const { title, contents } = req.body;
+
+  if (!title || !contents) {
+    res
+      .status(400)
+      .json({ error: "Did not receive the required title or contents" });
+  } else {
+    db.insert({ title, contents })
+      .then(postId => res.status(200).json(postId))
+      .catch(error => res.status(500).json(error));
+  }
+});
+
 server.listen(5000, () => console.log("Server is running on port: 5000"));
