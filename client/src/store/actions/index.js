@@ -20,7 +20,6 @@ export const getPosts = () => dispatch => {
   axios
     .get(`${urlLinks.server}${urlLinks.home}${urlLinks.getPosts}`)
     .then(res => {
-      console.log(res);
       dispatch({ type: GET_POSTS_SUCCESS, payload: res.data });
     })
     .catch(err => dispatch({ type: GET_POSTS_FAILURE, payload: err }));

@@ -9,7 +9,7 @@ import ListPostsView from './views/listpostsview';
  ********************************************* Variables *******************************************
  **************************************************************************************************/
 export const urlLinks = {
-  server: 'http://www.localhost:8000',
+  server: 'http://localhost:8000',
   home: '/',
   getPosts: `api/posts`
 };

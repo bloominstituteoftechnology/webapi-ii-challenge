@@ -14,6 +14,7 @@ const DivWrapper = styled.div`
  ********************************************* Component *******************************************
  **************************************************************************************************/
 const ListPosts = props => {
+  console.log(props);
   return (
     <DivWrapper>
       <h1>This is the ListPosts Component</h1>

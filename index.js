@@ -1,10 +1,12 @@
 // import your node modules
 const express = require('express');
+const cors = require('cors');
 const port = 8000;
 const db = require('./data/db.js');
 
 // add your server code starting here
 const server = express();
+server.use(cors());
 
 server.get('/', (req, res) => {
   res.send('Hello World');
