@@ -12,7 +12,29 @@ server.get('/api/posts', (req, res) => {
     .then(posts => {
       res.status(200).json(posts);
     })
-    .catch(err => res.status(404).json(err));
+    .catch(err =>
+      res
+        .status(500)
+        .json({message: 'The posts information could not be retrieved'}),
+    );
 });
 
 server.listen(5000);
+
+server.get('/api/posts/:id', (req, res) => {
+  db.findById(req.params.id)
+    .then(post => {
+      if (post.length) {
+        res.status(200).json(post);
+      } else {
+        res
+          .status(404)
+          .json({error: 'The post with the specified ID does not exist'});
+      }
+    })
+    .catch(err =>
+      res
+        .status(500)
+        .json({error: 'The post information could not be retrieved'}),
+    );
+});
