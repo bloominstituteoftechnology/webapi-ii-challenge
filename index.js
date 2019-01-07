@@ -11,7 +11,11 @@ server.get('/', (req, res) => {
 });
 
 server.get('/api/posts', (req, res) => {
-  res.send('place holder for posts');
+  db.find()
+    .then(posts => {
+      res.status(200).json(posts);
+    })
+    .catch(err => res.status(500).json({error: "The Posts information could not be retrieved."}))
 });
 
 server.get('/api/posts/:id', (req, res) => {
