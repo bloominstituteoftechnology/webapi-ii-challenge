@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
+import SideNav from './components/SideNav';
+import HomeView from './views/homeview';
+import ListPostsView from './views/listpostsview';
+
+/***************************************************************************************************
+ ********************************************* Variables *******************************************
+ **************************************************************************************************/
+export const urlLinks = {
+  server: 'http://www.localhost:8000',
+  home: '/',
+  getPosts: `api/posts`
+};
 
 /***************************************************************************************************
  ********************************************** Styles *********************************************
@@ -34,6 +46,18 @@ class App extends Component {
     return (
       <DivWrapper>
         <GlobalStyle />
+        <SideNav
+          home={`${urlLinks.home}`}
+          viewPostsLink={`${urlLinks.home}${urlLinks.getPosts}`}
+        />
+        <Route exact path={`${urlLinks.home}`} render={() => <HomeView />} />
+        <Route
+          exact
+          path={`${urlLinks.home}${urlLinks.getPosts}`}
+          render={() => (
+            <ListPostsView postsLink={`${urlLinks.home}${urlLinks.getPosts}`} />
+          )}
+        />
       </DivWrapper>
     );
   }
