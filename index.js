@@ -50,16 +50,26 @@ server.post('/api/posts', (req, res) => {
           .then(post => {
             res.status(201).json(post);
           })
-          .catch(err => res.status(400).json({errorMessage: "failed to send"}))
+          .catch(err => res.status(400).json({errorMessage: "failed to send back content"}))
+
       })
       .catch(err => res.status(500).json({error: "There was an error while saving the post to the database "}))
+
   } else {
     res.status(400).json({errorMessage:  "Please provide title and contents for the post." });
-  }
+  };
+
 });
 
 server.delete('/api/posts/:id', (req, res) => {
-  res.send('place holder');
+  const id = req.params.id;
+  db.remove(id)
+    .then(item => {
+      if(item){
+        res.status(204).json({message: `item ${item} deleted`})
+      } else res.status(404).json({message: "The post with the specified ID does not exist."})
+    })
+    .catch(err => res.status(500).json({error: "The post could not be removed"}))
 });
 
 server.put('/api/posts/:id', (req, res) => {
