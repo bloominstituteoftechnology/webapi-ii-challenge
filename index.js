@@ -30,7 +30,7 @@ server.get("/api/posts/:postid", (req, res) => {
 
   db.findById(pid)
     .then(post => {
-      if (post) {
+      if (post.length > 0) {
         res.status(200).json(post);
       } else {
         res
@@ -38,7 +38,7 @@ server.get("/api/posts/:postid", (req, res) => {
           .json({ message: "The post with the specified ID does not exist." });
       }
     })
-    .catch(err => res.status(500).json.apply(err));
+    .catch(err => res.status(500).json(err));
 });
 
 server.listen(5000, () => console.log("server running"));
