@@ -19,6 +19,8 @@ server.get('/', (req, res) => {
 });
 
 server.get('/api/posts', (req, res) => {
+  // Below we print out everything we get from req
+  console.dir(req, { depth: 0 });
   db.find()
     .then(users => {
       res.status(200).json(users);
@@ -26,6 +28,19 @@ server.get('/api/posts', (req, res) => {
     .catch(err => {
       res.status(500).json({
         error: 'There was an error while saving the post to the database'
+      });
+    });
+});
+
+server.get('/api/posts/:id', (req, res) => {
+  const { id } = req.params;
+  db.findById(id)
+    .then(posts => {
+      res.status(200).json(posts);
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: 'The post information could not be retrieved.'
       });
     });
 });
@@ -64,8 +79,6 @@ server.put('/api/posts/:id', async (req, res) => {
         .json({ message: 'The post information could not be modified.' });
     });
 });
-
-server.get
 
 server.delete('/api/posts/:id', (req, res) => {
   db.remove(req.params.id)
