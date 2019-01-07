@@ -22,17 +22,18 @@ server.get('/api/posts', (req, res) => {
     
 
 server.get('/api/posts/:id', (req,res) => {
-    console.log(req);
+    // console.log(req);
     console.log(req.params);
     const thisId = req.params.id;
     db.findById(thisId)
         .then( thisPost => {
-
+            console.log(`thisPost = ${thisPost}`);
+            res.status(200).send(thisPost);
         })
-        .catch()
-}
-
-)
+        .catch(
+            res.status(404).json({ message: `User does not exist.`})
+        )
+})
 //     .then()
 //     .catch();
 
