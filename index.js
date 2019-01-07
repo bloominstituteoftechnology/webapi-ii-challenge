@@ -105,9 +105,9 @@ server.put('/api/posts/:id', (req, res) => {
         db.update(req.params.id, updatedPost)
           .then(status => {
             if (status === 1) {
-              // post has been updated, return new list of posts
-              db.find()
-                .then(posts => res.status(200).json(posts))
+              // post has been updated, return updated post
+              db.findById(req.params.id)
+                .then(post => res.status(200).json(post))
                 .catch(err =>
                   res.status(500).json({
                     errorMessage:
