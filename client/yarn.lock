@@ -1588,10 +1588,10 @@ babel-plugin-macros@2.4.2:
     cosmiconfig "^5.0.5"
     resolve "^1.8.1"
 
-babel-plugin-named-asset-import@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-named-asset-import/-/babel-plugin-named-asset-import-0.3.0.tgz#3289ec622d19cd1cc84df8d784b41f1b048bd524"
-  integrity sha512-to6Shd/r8fMRRg/MaOhDNfqpuXfjlQx3ypWDG6jh4ESCVZDJCgdgIalZbrnVlBPGgH/QeyHMjnGb2W+JJiy+NQ==
+babel-plugin-named-asset-import@0.3.1-next.6a95aae9:
+  version "0.3.1-next.6a95aae9"
+  resolved "https://registry.yarnpkg.com/babel-plugin-named-asset-import/-/babel-plugin-named-asset-import-0.3.1-next.6a95aae9.tgz#3cb23de32b25afefb07b87a96f3070675d8226c8"
+  integrity sha512-BR1DS10Wbgsb3LuNJ3KMGUtL8kIWtFJyFEalse/IGUCvq5qxgE1YWg2AcoK4UsiL6IIgGbnBlxPcka8loDL7rQ==
 
 babel-plugin-syntax-object-rest-spread@^6.13.0, babel-plugin-syntax-object-rest-spread@^6.8.0:
   version "6.13.0"
@@ -1619,10 +1619,10 @@ babel-preset-jest@^23.2.0:
     babel-plugin-jest-hoist "^23.2.0"
     babel-plugin-syntax-object-rest-spread "^6.13.0"
 
-babel-preset-react-app@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/babel-preset-react-app/-/babel-preset-react-app-7.0.0.tgz#86bf71e43cb8d36e40da69f8b4ad5d6f945dec93"
-  integrity sha512-LQKCB3xxdhAlRbk6IIZdO4ry1yA8gKGVV4phjOIgCEQr3oyaLPXf2j+lfD0zljOE2wkN2axRGOLTzdUPzVDO4w==
+babel-preset-react-app@7.0.1-next.6a95aae9:
+  version "7.0.1-next.6a95aae9"
+  resolved "https://registry.yarnpkg.com/babel-preset-react-app/-/babel-preset-react-app-7.0.1-next.6a95aae9.tgz#5d18ae5a17d437726930ba2794bfbc2442856327"
+  integrity sha512-RTI+6bkpmVndvrd0C2G2H1kWhvkbkFa4wFL+hNvzww+KarLTmOpQMsvLcwqmMUkgL5LH8I3PlArEyb57xwTUhQ==
   dependencies:
     "@babel/core" "7.1.6"
     "@babel/plugin-proposal-class-properties" "7.1.0"
@@ -2391,10 +2391,10 @@ concat-stream@^1.5.0:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-confusing-browser-globals@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/confusing-browser-globals/-/confusing-browser-globals-1.0.5.tgz#0171050cfdd4261e278978078bc00c4d88e135f4"
-  integrity sha512-tHo1tQL/9Ox5RELbkCAJhnViqWlzBz3MG1bB2czbHjH2mWd4aYUgNCNLfysFL7c4LoDws7pjg2tj48Gmpw4QHA==
+confusing-browser-globals@1.0.6-next.6a95aae9:
+  version "1.0.6-next.6a95aae9"
+  resolved "https://registry.yarnpkg.com/confusing-browser-globals/-/confusing-browser-globals-1.0.6-next.6a95aae9.tgz#39fc6c92bb6b146b749b8d41ab944b1d0c2c1faa"
+  integrity sha512-DZAuylTeybmIOcAbsn1UUwD+EeCUBxpkP1Q9BX+y4hb8PJ0t8wPtIippfq8kzAEmpBbgQTvL/jha2fFD3Th35Q==
 
 connect-history-api-fallback@^1.3.0:
   version "1.5.0"
@@ -3264,12 +3264,12 @@ escodegen@^1.11.0, escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-react-app@^3.0.6:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/eslint-config-react-app/-/eslint-config-react-app-3.0.6.tgz#addcae1359235941e95f3c96970b7ac8552e1130"
-  integrity sha512-VL5rA1EBZv7f9toc9x71or7nr4jRmwCH4V9JKB9DFVaTLOLI9+vjWLgQLjMu3xR9iUT80dty86RbCfNaKyrFFg==
+eslint-config-react-app@3.0.7-next.6a95aae9:
+  version "3.0.7-next.6a95aae9"
+  resolved "https://registry.yarnpkg.com/eslint-config-react-app/-/eslint-config-react-app-3.0.7-next.6a95aae9.tgz#04f6cbad4ff4f75d20c56ab61480be0778d76367"
+  integrity sha512-ugRWKCJ1i0iE5HiZz6oeVpuEZ92YHs0JiPiiQV1PlyLN1OLjpSmjPSugBnMPKwTgJ2L2eHkkcnup9pl8VU48zg==
   dependencies:
-    confusing-browser-globals "^1.0.5"
+    confusing-browser-globals "1.0.6-next.6a95aae9"
 
 eslint-import-resolver-node@^0.3.1:
   version "0.3.2"
@@ -7851,10 +7851,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-app-polyfill@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-0.2.0.tgz#60eaf037223b2f3a5671f45e5ac3b418f0b48ad2"
-  integrity sha512-uBfocjRsBNqhTaEywUZ2buzhHbor2jBbnhZY8VUZ7VZ3PXucIPZrPDAAmbclELhvl+x08PbynAGQfMYcBmqZ2w==
+react-app-polyfill@0.2.1-next.6a95aae9:
+  version "0.2.1-next.6a95aae9"
+  resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-0.2.1-next.6a95aae9.tgz#7d61a07d5db8a10ccdc003be3a74104de35ddbe2"
+  integrity sha512-yokbrUIqztC0IFFtu8uUBH2l4CMuXv8OdHDKyx/WarSmCCpT0idVRsQ74LEu+59C/A7kp5nGFKATnBjUqgfM8Q==
   dependencies:
     core-js "2.5.7"
     object-assign "4.1.1"
@@ -7862,10 +7862,10 @@ react-app-polyfill@^0.2.0:
     raf "3.4.0"
     whatwg-fetch "3.0.0"
 
-react-dev-utils@^7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-7.0.1.tgz#c53e759a22668ee2c0d146c24ce4bdec2b41e3c8"
-  integrity sha512-AN/RKZKHsyB2FebKSyMLOecvjuzZ54lzsLYF8wNmwwgRA3dVC4vhYsafvME7JD4q7RUB0bejqFWjOS9QtN48Zg==
+react-dev-utils@7.0.1-next.6a95aae9:
+  version "7.0.1-next.6a95aae9"
+  resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-7.0.1-next.6a95aae9.tgz#04df5d7faab79cc03ced6319c8e9b389f974702b"
+  integrity sha512-amY+TalUrKhJcsofJvLENFNse3WXgRkPNlR70fhl9nOF5Ik1PQFqa63GmsopzHNg0BaP9GOUcwkN6eafUxfaEA==
   dependencies:
     "@babel/code-frame" "7.0.0"
     address "1.0.3"
@@ -7885,7 +7885,7 @@ react-dev-utils@^7.0.1:
     loader-utils "1.1.0"
     opn "5.4.0"
     pkg-up "2.0.0"
-    react-error-overlay "^5.1.2"
+    react-error-overlay "5.1.2-next.6a95aae9"
     recursive-readdir "2.2.2"
     shell-quote "1.6.1"
     sockjs-client "1.1.5"
@@ -7893,24 +7893,24 @@ react-dev-utils@^7.0.1:
     text-table "0.2.0"
 
 react-dom@^16.7.0-alpha.2:
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.7.0.tgz#a17b2a7ca89ee7390bc1ed5eb81783c7461748b8"
-  integrity sha512-D0Ufv1ExCAmF38P2Uh1lwpminZFRXEINJe53zRAbm4KPwSyd6DY/uDoS0Blj9jvPpn1+wivKpZYc8aAAN/nAkg==
+  version "16.7.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.7.0-alpha.2.tgz#16632880ed43676315991d8b412cce6975a30282"
+  integrity sha512-o0mMw8jBlwHjGZEy/vvKd/6giAX0+skREMOTs3/QHmgi+yAhUClp4My4Z9lsKy3SXV+03uPdm1l/QM7NTcGuMw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.12.0"
+    scheduler "^0.12.0-alpha.2"
 
-react-error-overlay@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.2.tgz#888957b884d4b25b083a82ad550f7aad96585394"
-  integrity sha512-7kEBKwU9R8fKnZJBRa5RSIfay4KJwnYvKB6gODGicUmDSAhQJ7Tdnll5S0RLtYrzRfMVXlqYw61rzrSpP4ThLQ==
+react-error-overlay@5.1.2-next.6a95aae9:
+  version "5.1.2-next.6a95aae9"
+  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.2-next.6a95aae9.tgz#20e7dd79dbac1091286c5554cb1b6ca0a13c29e5"
+  integrity sha512-W/QLYMKvzH/2Mj6cDAZ+Rf3vXvpHA88tAgwNZpgEqWtzVAlwg7wM820aTRb7uGptEXvl3ea6tPM5x64diVkjbw==
 
-react-scripts@2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-2.1.3.tgz#6e49be279f4039fb9f330d2b3529b933b8e90945"
-  integrity sha512-JASD0QVVgSVleVhA9TeA+UBx+shq887hm/L+09qjZLrqIUvJZHZU+oOnhMFGot02Yop+LKfkvf9KSsTNlu/Rwg==
+react-scripts@^2.1.3-next.6a95aae9:
+  version "2.1.3-next.6a95aae9"
+  resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-2.1.3-next.6a95aae9.tgz#f280f49335641683611f71c06d3cc4eb1ea45868"
+  integrity sha512-hpWT925jYCFZ0/eETZ/D5TypYJwsZEQLRZJZ0VTe28KSyh9ircP4Vubq12iZeAsxMdjkMvM07m0yRFsi6qUqvg==
   dependencies:
     "@babel/core" "7.1.6"
     "@svgr/webpack" "2.4.1"
@@ -7918,8 +7918,8 @@ react-scripts@2.1.3:
     babel-eslint "9.0.0"
     babel-jest "23.6.0"
     babel-loader "8.0.4"
-    babel-plugin-named-asset-import "^0.3.0"
-    babel-preset-react-app "^7.0.0"
+    babel-plugin-named-asset-import "0.3.1-next.6a95aae9"
+    babel-preset-react-app "7.0.1-next.6a95aae9"
     bfj "6.1.1"
     case-sensitive-paths-webpack-plugin "2.1.2"
     chalk "2.4.1"
@@ -7927,7 +7927,7 @@ react-scripts@2.1.3:
     dotenv "6.0.0"
     dotenv-expand "4.2.0"
     eslint "5.6.0"
-    eslint-config-react-app "^3.0.6"
+    eslint-config-react-app "3.0.7-next.6a95aae9"
     eslint-loader "2.1.1"
     eslint-plugin-flowtype "2.50.1"
     eslint-plugin-import "2.14.0"
@@ -7948,8 +7948,8 @@ react-scripts@2.1.3:
     postcss-loader "3.0.0"
     postcss-preset-env "6.3.1"
     postcss-safe-parser "4.0.1"
-    react-app-polyfill "^0.2.0"
-    react-dev-utils "^7.0.1"
+    react-app-polyfill "0.2.1-next.6a95aae9"
+    react-dev-utils "7.0.1-next.6a95aae9"
     resolve "1.8.1"
     sass-loader "7.1.0"
     style-loader "0.23.0"
@@ -7963,14 +7963,14 @@ react-scripts@2.1.3:
     fsevents "1.2.4"
 
 react@^16.7.0-alpha.2:
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.7.0.tgz#b674ec396b0a5715873b350446f7ea0802ab6381"
-  integrity sha512-StCz3QY8lxTb5cl2HJxjwLFOXPIFQp+p+hxQfc8WE0QiLfCtIlKj8/+5tjjKm8uSTlAW+fCPaavGFS06V9Ar3A==
+  version "16.7.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.7.0-alpha.2.tgz#924f2ae843a46ea82d104a8def7a599fbf2c78ce"
+  integrity sha512-Xh1CC8KkqIojhC+LFXd21jxlVtzoVYdGnQAi/I2+dxbmos9ghbx5TQf9/nDxc4WxaFfUQJkya0w1k6rMeyIaxQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.12.0"
+    scheduler "^0.12.0-alpha.2"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -8426,7 +8426,7 @@ saxes@^3.1.3:
   dependencies:
     xmlchars "^1.3.1"
 
-scheduler@^0.12.0:
+scheduler@^0.12.0-alpha.2:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.12.0.tgz#8ab17699939c0aedc5a196a657743c496538647b"
   integrity sha512-t7MBR28Akcp4Jm+QoR63XgAi9YgCUmgvDHqf5otgAj4QvdoBE4ImCX0ffehefePPG+aitiYHp0g/mW6s4Tp+dw==
