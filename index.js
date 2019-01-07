@@ -34,8 +34,6 @@ server.get('/api/posts/:id', (req,res) => {
             res.status(404).json({ message: `User does not exist.`})
         )
 })
-//     .then()
-//     .catch();
 
 
 
