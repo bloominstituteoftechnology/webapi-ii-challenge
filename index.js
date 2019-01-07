@@ -28,4 +28,16 @@ server.get('/api/posts/:id', (req, res) => {
   // res.send(`place holder for dynamic ${id} posts`);
 });
 
+server.post('/api/posts', (req, res) => {
+  res.send('place holder');
+});
+
+server.delete('/api/posts/:id', (req, res) => {
+  res.send('place holder');
+});
+
+server.put('/api/posts/:id', (req, res) => {
+  res.send('place holder');
+});
+
 server.listen(8000, () => console.log('Server running, listening on port 8000'));
