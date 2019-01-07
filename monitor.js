@@ -13,7 +13,7 @@ setInterval(() => {
 
         // The whole response has been received. Print out the result.
         resp.on('end', () => {
-            console.log('Status code:', resp.status);
+            console.log('Status code:', resp.statusCode);
             console.log('Header:', JSON.stringify(resp.headers, null, 4));
             data = JSON.parse(data);
             console.log('Data:', JSON.stringify(data, null, 4));
