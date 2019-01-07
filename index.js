@@ -65,15 +65,32 @@ server.delete('/api/posts/:id', (req, res) => {
   const id = req.params.id;
   db.remove(id)
     .then(item => {
+      console.log(item)
       if(item){
-        res.status(204).json({message: `item ${item} deleted`})
+        res.sendStatus(204)
       } else res.status(404).json({message: "The post with the specified ID does not exist."})
     })
     .catch(err => res.status(500).json({error: "The post could not be removed"}))
 });
 
 server.put('/api/posts/:id', (req, res) => {
-  res.send('place holder');
+
+  const id = req.params.id;
+  const {title, contents} = req.body;
+  if(title && contents) {
+    db.update(id, {title, contents})
+      .then(post => {
+        if(post) {
+          res.sendStatus(200);
+        } else {
+          res.status(404).json({ message: "The post with the specified ID does not exist." })
+        }
+      })
+      .catch(err => res.status(500).json({ error: "The post information could not be modified." }))
+  } else {
+    res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+  }
+
 });
 
 server.listen(8000, () => console.log('Server running, listening on port 8000'));
