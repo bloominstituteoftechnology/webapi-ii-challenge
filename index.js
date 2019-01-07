@@ -1,10 +1,12 @@
 // import your node modules
 const express = require("express");
 const db = require("./data/db.js");
-
 const server = express();
+const cors = require("cors");
 
 // add your server code starting here
+
+server.use(cors());
 
 server.get("/", (req, res) => {
   db.find()
