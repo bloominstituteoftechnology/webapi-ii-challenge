@@ -5,6 +5,7 @@
     "private": true,
     "main": "index.js",
     "scripts": {
+        "test-client": "bash ./test-client.sh",
         "server": "nodemon index.js",
         "monitor": "nodemon monitor.js"
     },
