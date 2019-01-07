@@ -17,6 +17,22 @@ server.get("/api/posts", (req, res) => {
     .catch(error => res.status(500).json(error));
 });
 
+server.get("/api/posts/:id", (req, res) => {
+  const postId = req.params.id;
+
+  db.findById(postId)
+    .then(post => {
+      if (post.length === 0) {
+        res.status(404).json({
+          error: "Cannot find a post with requested id"
+        });
+      } else {
+        res.status(200).json(post);
+      }
+    })
+    .catch(error => res.status(500).json(error));
+});
+
 server.post("/api/posts", (req, res) => {
   const { title, contents } = req.body;
 
