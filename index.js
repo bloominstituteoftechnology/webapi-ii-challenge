@@ -4,11 +4,13 @@ const db = require('./data/db.js');
 const express = require('express');
 const cors = require('cors');
 
-// add your server code starting here
-//
+// create express server
 server = express();
+
 // need this to read request body
 server.use(express.json());
+
+// need this to resolve cors errors
 server.use(cors());
 
 // get all posts
