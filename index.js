@@ -21,9 +21,18 @@ server.get('/api/posts', (req, res) => {
 });
     
 
-// server.get('/api/posts/:id', () => {}
+server.get('/api/posts/:id', (req,res) => {
+    console.log(req);
+    console.log(req.params);
+    const thisId = req.params.id;
+    db.findById(thisId)
+        .then( thisPost => {
 
-// )
+        })
+        .catch()
+}
+
+)
 //     .then()
 //     .catch();
 
