@@ -1,17 +1,17 @@
 nav {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 1.6rem;
-    border-bottom: 1px solid #efefef;
-    margin-bottom: 32px;
-  }
-  
-  nav a {
-    text-decoration: none;
-    color: darkslategray;
-  }
-  
-  nav a.active {
-    border-bottom: 1px solid darkslategray;
-  }
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 1.6rem;
+  border-bottom: 1px solid #efefef;
+  margin-bottom: 32px;
+}
+
+nav a {
+  text-decoration: none;
+  color: darkslategray;
+}
+
+nav a.active {
+  border-bottom: 1px solid darkslategray;
+}

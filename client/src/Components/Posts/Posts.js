@@ -1,6 +1,6 @@
 import React from "react";
 
-import './Posts.css'
+import "./Posts.css";
 
 const Posts = props => {
   return props.posts.map(post => (
