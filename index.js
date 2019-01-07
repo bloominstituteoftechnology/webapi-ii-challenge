@@ -3,10 +3,10 @@ const db = require("./data/db.js");
 const express = require("express");
 
 // add your server code starting here
-const app = express();
-app.use(express.json());
+const server = express();
+server.use(express.json());
 
-app.get("/api/posts", (req, res) => {
+server.get("/api/posts", (req, res) => {
   db.find().then(
     doc => {
       res.status(200).send(doc);
@@ -15,7 +15,7 @@ app.get("/api/posts", (req, res) => {
   );
 });
 
-app.get(`/api/posts/:id`, (req, res) => {
+server.get(`/api/posts/:id`, (req, res) => {
   const id = req.params.id;
 
   db.findById(id)
@@ -29,7 +29,7 @@ app.get(`/api/posts/:id`, (req, res) => {
     .catch(err => res.status(500).json({ error: "The post information could not be retrieved." }));
 });
 
-app.delete("/api/posts/:id", (req, res) => {
+server.delete("/api/posts/:id", (req, res) => {
   const { id } = req.params;
   let post;
 
@@ -45,4 +45,20 @@ app.delete("/api/posts/:id", (req, res) => {
     .catch(err => res.status(500).json({ error: "The post could not be removed" }));
 });
 
-app.listen(3000, () => console.log("The server is up and listening on port 3000"));
+server.post("/api/posts", (req, res) => {
+  const post = req.body;
+
+  db.insert(post)
+    .then(doc => res.status(201).json(post))
+    .catch(err => {
+      if ((err.errno = 19)) {
+        res
+          .status(400)
+          .json({ errorMessage: "Please provide BOTH a title and contents for the post." });
+      } else {
+        res.status(500).json({ error: "There was an error while saving the post to the database" });
+      }
+    });
+});
+
+server.listen(3000, () => console.log("The server is up and listening on port 3000"));
