@@ -1,5 +1,5 @@
 import React from 'react';
-import Post from './Post';
+import Post from './Post/Post';
 
 const Posts = props => {
     return (

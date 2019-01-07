@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Route } from "react-router-dom";
 
 import Posts from './Components/Posts'
+import Navigation from './Components/Navigation/Navigation';
+import Home from './Components/Home';
+
 import './App.css';
 
 class App extends Component {
@@ -23,7 +27,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Posts posts={this.state.posts}/>
+        <Navigation />
+        <Route exact path='/' component={Home} />
+        <Route path='/api/posts' render={props=> <Posts {...props} posts={this.state.posts}/>}/>
       </div>
     );
   }

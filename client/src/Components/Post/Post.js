@@ -1,9 +1,12 @@
 import React from 'react';
 
+import './Post.css';
+
+
 const Post = props => {
     return (
-        <div>
-            <h1>{props.post.title}</h1>
+        <div className="post-container">
+            <h3>{props.post.title}</h3>
             <p>{props.post.contents}</p>
         </div>
     );
