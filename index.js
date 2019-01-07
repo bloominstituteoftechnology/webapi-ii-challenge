@@ -86,5 +86,45 @@ server.delete('/api/posts/:id', (req, res) => {
     );
 });
 
+server.put('/api/posts/:id', (req, res) => {
+  //ensure the id is valid
+  db.findById(req.params.id)
+    .then(post => {
+      //ensure the post has title and contents
+      if (!req.body.title || !req.body.contents) {
+        res.status(400).json({
+          errorMessage: 'Please provide title and contents for the post',
+        });
+      } else {
+        // the request body is valid, continue
+        const updatedPost = req.body;
+        db.update(req.params.id, updatedPost)
+          .then(status => {
+            if (status === 1) {
+              // post has been updated, return new list of posts
+              db.find()
+                .then(posts => res.status(200).json(posts))
+                .catch(err =>
+                  res.status(500).json({
+                    errorMessage:
+                      'There was an error retrieving the posts. I think your post was updated, though',
+                  }),
+                );
+            }
+          })
+          .catch(err => {
+            //error updating the post
+            res.send({errorMessage: 'There was an error updating the post'});
+          });
+      }
+    })
+    .catch(err => {
+      //id was not valid, return 404
+      res
+        .status(404)
+        .json({message: 'The post with the specified ID does not exist'});
+    });
+});
+
 // listen up, server
 server.listen(5000);
