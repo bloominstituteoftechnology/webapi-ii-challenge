@@ -11,4 +11,10 @@ server.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to my first API" });
 });
 
+server.get("/api/posts", (req, res) => {
+  db.find()
+    .then(posts => res.status(200).json(posts))
+    .catch(error => res.status(500).json(error));
+});
+
 server.listen(5000, () => console.log("Server is running on port: 5000"));
