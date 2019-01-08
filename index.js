@@ -6,7 +6,11 @@ const db = require('./data/db');
 // add your server code starting here
 const server = express();
 
-const PORT = 5000;
+const PORT = 4545;
+const parser = express.json();
+
+server.use(parser);
+
 
 server.get('/api/posts', (req, res) => {
     db.find()
@@ -37,10 +41,37 @@ server.get('/api/posts/:id', (req, res) => {
     
 });
 
+//++++++++++++++++++++++++++++++++++++++++
+// Day 2 - put post delete stuff here
+//++++++++++++++++++++++++++++++++++++++++
+server.post('', (req, res) => {
+    const black = req.body;
+    console.log(req.body);
+    if (a && b) {
+        db.insert(post)
+            .then((postData)=> {
+                console.log('post from body', postData);
+                db.findById(postData.id).then( (post) => {
+                    res.status(201).json(post)
+                });
+            })
+            .catch( (err) => {
+                res.status(500)
+                    .json({
+                    message: `Failed to insert user into the db`
+                })
+            });
+
+    } else {
+        console.log("++++ERROR missing name or bio!! +++");
+        res.status(400).json({ message: "missing manditory data"});
+    }
+});
+
 
 
 server.listen(PORT, () => {
     console.log(`The server is runnning on port ${PORT}`);
 });
-//rggpfgw
+
 
