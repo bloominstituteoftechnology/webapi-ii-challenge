@@ -20,19 +20,24 @@ class App extends Component {
 			.catch(err => {
 				console.log("Server Error: ", err);
 			});
-  }
-  
+	}
+
 	render() {
 		return (
-      <div className="App">
-        {this.state.posts.map( post => (
-          <div className="post-container">
-            <h4>{post.title}</h4>
-            <p>{post.contents}</p>
-          </div>
-        ))}
-      </div>
-    );
+			<div className="App">
+				{this.state.posts.map(post => (
+					<div className="post-container" key={post.id}>
+						<br />
+						<h3>Post #{post.id}</h3>
+						<h4>{post.title}</h4>
+
+						<p>{post.contents}</p>
+						<h6>Created on {post.created_at}</h6>
+						<br />
+					</div>
+				))}
+			</div>
+		);
 	}
 }
 
