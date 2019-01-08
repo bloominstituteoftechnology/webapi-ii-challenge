@@ -1,5 +1,5 @@
 // import your node modules
-const express = require('express')
+const express = require('express');
 
 const db = require('./data/db.js');
 
@@ -21,23 +21,25 @@ server.get('/api/posts', (req, res) => {
 });
     
 
-server.get('/api/posts/:id', (req,res) => {
+server.get('/api/posts/:id', (req, res) => {
     // console.log(req);
     console.log(req.params);
-    let id = req.params.id;
+    const id = req.params.id;
+
     db.findById(id)
         .then( posts => {
             console.log(`posts = ${posts}`);
-            res.status(200).send(posts);
+            res.status(200).json(posts);
         })
-        .catch(
-            res.status(404).json({ message: `User does not exist.`})
-        )
-})
+        .catch(err => {
+            res.status(500).json({ message: `User does not exist.`});
+        });
+    
+});
 
 
 
 server.listen(PORT, () => {
     console.log(`The server is runnning on port ${PORT}`);
 });
-// gdfgsdfgsdfgsdfgsdfgsdgsdfgddfsfsd
+//rggpfgw
