@@ -69,24 +69,48 @@ server.post('/api/posts', (req, res) => {
 });
 
 server.delete('/api/posts/:id', (req, res) => {
+    // const { id } = req.params;
+    // or
     const id = req.params.id;
     console.log(id);
-    db.remove(id)
-        .then(deleteNum => {
-            console.log(deleteNum);
-            if (count) {
-                // we should like to send back the user, "get request".
-                res.status(204).json({ message: `The user was successfully deleted`})
-            } else {
-                res.status(404).json({ message: 'invalid id'});
-            }
-        })
-        .catch(err => {
-            res.status(500).json({ message: `Your failed to Delete user, please try again.` })
-        });
+    db.findById(id)
+    .then(user => {
+        if (user) {
+
+            db.remove(id)
+                .then(deleteNum => {
+                    console.log(deleteNum);
+                    if (count) {
+                        res.status(204).json(user);
+                    } else {
+                        res.status(404).json({ message: 'invalid id'});
+                    }
+                })
+                .catch(err => {
+                    res.status(500).json({ message: `Your failed to Delete user, please try again.` })
+                });
+
+        } else {
+            res.status(404)
+                    .json({ message: 'This user with the specfied ID does not exist.'})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ message: `Your failed to Identify a user, please try again.` })
+    });
 });
 
+//++++++++++++++++++++++++++++++++++++
+//+++++++  Put  ++++++++++++ regular Put
+//++++++++++++++++++++++++++++++++++++++
 
+
+
+
+
+//++++++++++++++++++++++++++++++++++++
+//Listener
+//++++++++++++++++++++++++++++++++++++++
 
 server.listen(PORT, () => {
     console.log(`The server is runnning on port ${PORT}`);
