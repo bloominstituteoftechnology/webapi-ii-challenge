@@ -1,0 +1,12 @@
+.postlist-container {
+  border: 2px solid black;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  border: 2px solid blue;
+  justify-content: space-between;
+}

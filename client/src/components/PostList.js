@@ -1,17 +1,15 @@
 import React from 'react';
-import Post from './Post';
 import './PostList.css';
+import { Route, Link } from 'react-router-dom';
 
 const PostList = props => {
-  console.log('props from PostList', props);
+  console.log('props from Post', props);
   return (
-    <div className="postlist-container">
-      <div className="card">
-        {props.posts.data.map((post, index) => {
-          console.log('from within map', post.title);
-          return <Post post={post} key={index} />;
-        })}
-      </div>
+    <div className="post-container">
+      <Link to={'/post'} className="post">
+        <div className="title">{props.post.title}</div>
+        <div className="contents">{props.post.contents}</div>
+      </Link>
     </div>
   );
 };

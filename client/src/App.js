@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios';
-import PostList from './components/PostList';
+import PostContainer from './components/PostContainer';
 import LoadingSpinner from './components/LoadingSpinner';
+import { Route, Link } from 'react-router-dom';
+import Post from './components/Post';
 
 class App extends Component {
   constructor() {
@@ -30,12 +32,14 @@ class App extends Component {
     console.log('The state:', this.state.posts);
     return (
       <div className="App">
-        Heyyy
         {this.state.isLoaded === true ? (
-          <PostList posts={this.state.posts} />
+          <PostContainer posts={this.state.posts} />
         ) : (
           <LoadingSpinner />
         )}
+        <div>
+          <Route path="/post" component={Post} />
+        </div>
       </div>
     );
   }

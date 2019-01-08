@@ -1,9 +1,30 @@
-.postlist-container {
-  border: 2px solid black;
-  width: 60%;
-  margin: 0 auto;
+.post-container {
+  /* border: 2px solid yellow; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 30%;
 }
 
-.card {
-  border: 2px solid green;
+.post {
+  /* border: 2px solid lightgray; */
+  padding: 2%;
+  margin: 5%;
+  width: 100%;
+  background-color: #f2f2f2;
+  border-radius: 5%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.title {
+  /* border: 2px solid red; */
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 100;
+}
+
+.contents {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 100;
 }
