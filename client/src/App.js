@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import SideNav from './components/SideNav';
 import HomeView from './views/homeview';
 import ListPostsView from './views/listpostsview';
+import PostView from './views/postview';
 
 /***************************************************************************************************
  ********************************************* Variables *******************************************
@@ -56,6 +57,18 @@ class App extends Component {
           path={`${urlLinks.home}${urlLinks.getPosts}`}
           render={() => (
             <ListPostsView postsLink={`${urlLinks.home}${urlLinks.getPosts}`} />
+          )}
+        />
+        <Route
+          exact
+          path={`${urlLinks.home}${urlLinks.getPosts}/:id`}
+          render={props => (
+            <PostView
+              history={props.history}
+              match={props.match}
+              editPostLink={`${urlLinks.home}${urlLinks.getPosts}/:id`}
+              viewPostsLink={`${urlLinks.home}${urlLinks.getPosts}`}
+            />
           )}
         />
       </DivWrapper>

@@ -12,6 +12,14 @@ export const GET_POST_LOADING = 'GET_POST_LOADING';
 export const GET_POST_SUCCESS = 'GET_POST_SUCCESS';
 export const GET_POST_FAILURE = 'GET_POST_FAILURE';
 
+export const ADD_POST_LOADING = 'ADD_POST_LOADING';
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
+export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+
+export const DELETE_POST_LOADING = 'DELETE_POST_LOADING';
+export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
+export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE';
+
 /***************************************************************************************************
  ********************************************** Actions ********************************************
  **************************************************************************************************/
@@ -33,4 +41,24 @@ export const getPost = id => dispatch => {
       dispatch({ type: GET_POST_SUCCESS, payload: res.data });
     })
     .catch(err => dispatch({ type: GET_POST_FAILURE, payload: err }));
+};
+
+export const addPost = post => dispatch => {
+  dispatch({ type: ADD_POST_LOADING });
+  axios
+    .post(`${urlLinks.server}${urlLinks.home}${urlLinks.getPosts}`, post)
+    .then(res => {
+      dispatch({ type: ADD_POST_SUCCESS });
+    })
+    .catch(err => dispatch({ type: ADD_POST_FAILURE, payload: err }));
+};
+
+export const deletePost = id => dispatch => {
+  dispatch({ type: DELETE_POST_LOADING });
+  axios
+    .delete(`${urlLinks.server}${urlLinks.home}${urlLinks.getPosts}/${id}`)
+    .then(res => {
+      dispatch({ type: DELETE_POST_SUCCESS });
+    })
+    .catch(err => dispatch({ type: DELETE_POST_FAILURE, payload: err }));
 };
