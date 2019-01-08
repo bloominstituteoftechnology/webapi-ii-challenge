@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 import axios from 'axios';
+
+import Post from './Post';
 import './App.css';
 
 const url = 'http://localhost:9000/api/posts/';
@@ -32,6 +35,15 @@ class App extends Component {
             <p>{post.contents}:</p>
             </div>
           )}
+          <Route
+            exact path='/api/posts/:id'
+            render={props => 
+              <Post
+                {...props}
+                posts={this.state.postData }
+              />
+            }
+          />
       </div>
     );
   }
