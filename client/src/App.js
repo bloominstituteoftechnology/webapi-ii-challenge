@@ -12,21 +12,26 @@ class App extends Component {
     }
   }
 
-  componentDidMount = () => {
-    axios.get('http://localhost:9000/api/posts/')
-      .then(res => {
-        console.log(res)
-        this.setState({
-          postData: res.data
-        })
-      })
-      .catch(err => console.log(err))
+  componentDidMount() {
+    axios.get(url)
+    .then(res => {
+      console.log(res.data)
+      this.setState({ postData: res.data })
+    })
+    .catch(err => {
+      console.log(err, 'Oops!');
+    })
   }
   render() {
-    console.log(this.state)
+    console.log(this.state.postData)
     return (
       <div className="App">
-        <h1>Hello</h1>
+        {this.state.postData.map(post => 
+        <div key={post.id}>
+            <h4>Title: {post.title}</h4>
+            <p>{post.contents}:</p>
+            </div>
+          )}
       </div>
     );
   }
