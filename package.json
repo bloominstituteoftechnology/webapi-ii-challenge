@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
-    "client": "yarn start --prefix client",
-    "dev": "concurrently \"yarn run server\" \"yarn run client\""
+    "client": "cd client && yarn start",
+    "dev": "concurrently \"yarn:start\" \"yarn:client\""
   },
   "license": "ISC",
   "dependencies": {

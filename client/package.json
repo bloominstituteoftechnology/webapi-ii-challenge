@@ -19,6 +19,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "license": "ISC",
   "eslintConfig": {
     "extends": "react-app"
   },
