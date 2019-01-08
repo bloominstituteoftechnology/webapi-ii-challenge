@@ -4,6 +4,7 @@ const express = require('express');
 const server = express();
 
 const db = require('./data/db.js');
+const cors = require('cors');
 
 const myData = require('./data/seeds/posts');
 
@@ -14,6 +15,8 @@ const myData = require('./data/seeds/posts');
 // turn it into a JS object
 server.use(express.json());
 
+server.use(cors());
+
 server.get('/', (req, res) => {
   res.json('Working!');
 });
@@ -22,8 +25,8 @@ server.get('/api/posts', (req, res) => {
   // Below we can print out everything we get from req
   // console.dir(req, { depth: 0 });
   db.find()
-    .then(users => {
-      res.status(200).json(users);
+    .then(posts => {
+      res.status(200).json(posts);
     })
     .catch(err => {
       res.status(500).json({

@@ -1,0 +1,9 @@
+.postlist-container {
+  border: 2px solid black;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.card {
+  border: 2px solid green;
+}
