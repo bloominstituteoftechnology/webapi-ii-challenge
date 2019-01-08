@@ -1,24 +1,21 @@
 .post-container {
-  /* border: 2px solid yellow; */
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  width: 30%;
+  width: 33%;
 }
 
 .post {
-  /* border: 2px solid lightgray; */
-  padding: 2%;
-  margin: 5%;
+  padding: 3%;
+  margin: 3%;
   width: 100%;
-  background-color: #f2f2f2;
-  border-radius: 5%;
+  background-color: white;
+  border-radius: 2%;
   text-align: center;
   cursor: pointer;
 }
 
 .title {
-  /* border: 2px solid red; */
   width: 100%;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 100;

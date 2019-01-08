@@ -1,12 +1,13 @@
 .postlist-container {
-  border: 2px solid black;
-  width: 60%;
+  width: 65%;
   margin: 0 auto;
+  background-color: #f2f2f2;
 }
 
 .wrapper {
   display: flex;
   flex-wrap: wrap;
-  border: 2px solid blue;
   justify-content: space-between;
+  align-content: center;
+  margin-top: 20%;
 }

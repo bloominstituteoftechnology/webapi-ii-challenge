@@ -1,19 +1,18 @@
 import React from 'react';
+import './SinglePost.css';
 
 const Post = props => {
   console.log('props from individual post', props);
   return (
-    <div className="post-container">
-      <div>
+    <div className="single-post-container">
+      <div className="single-post-wrapper">
         {props.posts.data.map((post, index) => {
           return post.id == props.match.params.id ? (
             <div>
-              {post.title}
-              {post.contents}
+              <div className="single-post-title">{post.title}</div>
+              <div className="single-post-contents">{post.contents}</div>
             </div>
-          ) : (
-            console.log('Nope!')
-          );
+          ) : null;
         })}
       </div>
     </div>
