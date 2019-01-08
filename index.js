@@ -8,6 +8,10 @@ const server = express();
 
 server.use(express.json());
 
+const cors = require('cors');
+
+const port = 5000;
+
 // add your server code starting here
 
 server.get("/api/posts", (req, res) => {
@@ -109,4 +113,7 @@ server.put("/api/posts/:id", (req, res) => {
   });
 });
 
-server.listen(5000, () => console.log("server running"));
+server.listen(port, err => {
+  if (err) console.log(err);
+  console.log(`server is listening on port ${port}`);
+});
