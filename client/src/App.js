@@ -15,6 +15,8 @@ const Container = styled.div`
 const PostWrapper = styled.div`
   margin: 20px 0;
   padding: 0;
+  border: 1px solid grey;
+  background: whitesmoke;
 
   @media (max-width: 600px) {
     width: 100%;
@@ -47,7 +49,7 @@ class App extends Component {
             <PostWrapper>
               <Card
                 body
-                style={{ backgroundColor: "whitesand", borderColor: "#fff" }}
+                style={{ backgroundColor: "whitesmoke", borderColor: "#fff" }}
               >
                 <CardBody>
                   <CardTitle>{post.contents}</CardTitle>

@@ -4,9 +4,8 @@ const db = require("./data/db.js");
 const server = express();
 const cors = require("cors");
 
-// add your server code starting here
-
 server.use(cors());
+server.use(express.json());
 
 server.get("/", (req, res) => {
   db.find()
@@ -37,6 +36,28 @@ server.get("/api/posts/:id", (req, res) => {
       res
         .status(500)
         .json({ error: "The post information could not be retrieved." });
+    });
+});
+
+server.post("/api/posts", (req, res) => {
+  const userInfo = req.body; // reads information from the body of the request
+
+  db.insert(userInfo)
+    .then(response => {
+      if (!userInfo.title || !userInfo.contents) {
+        res
+          .status(400)
+          .json({
+            errorMessage: "Please provide title and contents for the post."
+          });
+      } else {
+        res.status(201).json(userInfo);
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: "There was an error while saving the post to the database"
+      });
     });
 });
 
