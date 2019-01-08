@@ -68,6 +68,24 @@ server.post('/api/posts', (req, res) => {
     }
 });
 
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+    db.remove(id)
+        .then(deleteNum => {
+            console.log(deleteNum);
+            if (count) {
+                // we should like to send back the user, "get request".
+                res.status(204).json({ message: `The user was successfully deleted`})
+            } else {
+                res.status(404).json({ message: 'invalid id'});
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: `Your failed to Delete user, please try again.` })
+        });
+});
+
 
 
 server.listen(PORT, () => {
