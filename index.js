@@ -19,8 +19,8 @@ server.get('/', (req, res) => {
 });
 
 server.get('/api/posts', (req, res) => {
-  // Below we print out everything we get from req
-  console.dir(req, { depth: 0 });
+  // Below we can print out everything we get from req
+  // console.dir(req, { depth: 0 });
   db.find()
     .then(users => {
       res.status(200).json(users);
@@ -52,13 +52,11 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts', async (req, res) => {
-  console.log('body:', req.body);
   try {
     const post = req.body;
     const postInfo = await db.insert(post);
     res.status(201).json(postInfo);
   } catch (error) {
-    let message = 'error creating user';
     if (error.errno === 19) {
       res.status(400).json({
         errorMessage: 'Please provide both the title and the contents.'
@@ -71,16 +69,21 @@ server.post('/api/posts', async (req, res) => {
 });
 
 server.put('/api/posts/:id', async (req, res) => {
-  console.log('body from put:', req.body);
   const { id } = req.params;
   const changes = req.body;
   db.update(id, changes)
     .then(count => {
       // if the count is 1, the data was updated correctly
-      if (count) {
+      if (changes.title === undefined || changes.contents === undefined) {
+        res.status(400).json({
+          errorMessage: 'Please provide title and contents for the post.'
+        });
+      } else if (count === 0) {
+        res.status(404).json({
+          message: 'The post with the specified ID does not exist.'
+        });
+      } else if (count === 1) {
         res.status(200).json({ message: `${count} post updated.` });
-      } else {
-        res.status(404).json({ message: 'user not found' });
       }
     })
     .catch(err => {
