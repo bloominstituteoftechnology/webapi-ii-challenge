@@ -44,7 +44,7 @@ server.get('/api/posts/:id', (req, res) => {
 //++++++++++++++++++++++++++++++++++++++++
 // Day 2 - put post delete stuff here
 //++++++++++++++++++++++++++++++++++++++++
-server.post('', (req, res) => {
+server.post('/api/posts', (req, res) => {
     const black = req.body;
     console.log(req.body);
     if (a && b) {
