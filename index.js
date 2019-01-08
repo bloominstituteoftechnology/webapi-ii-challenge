@@ -2,10 +2,12 @@
 const db = require("./data/db.js");
 
 const express = require("express");
+const cors = require('cors')
 
 const server = express();
 
 server.use(express.json());
+server.use(cors());
 
 server.get("/api/posts", (req, res) => {
 	db.find()
