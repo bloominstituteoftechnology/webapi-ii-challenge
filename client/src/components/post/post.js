@@ -1,12 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
-export default function Post(props) {
-    return (
+class Post extends React.Component {
+
+    deletePost = (id) => {
+        axios.delete(`http://localhost:5000/api/posts/${id}`)
+            .then(res=> this.props.getPosts())
+            .catch(err => console.log(err))
+    }
+
+    render() {
+        return (
         <StyledPost>
-            <h3>{props.post.id}) <strong>{props.post.title}</strong></h3>
+            <h3>{this.props.post.id}) <strong>{this.props.post.title}</strong></h3>
+            <button onClick={()=>this.deletePost(this.props.post.id)}>Delete</button>
         </StyledPost>
-    )
+    )}
 }
 
 const StyledPost = styled.section`
@@ -19,6 +29,7 @@ const StyledPost = styled.section`
     padding: 0 20px;
     box-shadow: 0px 0px 15px 0px lightblue;
     border-radius: 5px;
+    position: relative;
 
     &:hover {
         box-shadow: 0px 0px 35px 10px lightblue;
@@ -28,4 +39,25 @@ const StyledPost = styled.section`
     strong {
         font-style: italic;
     }
+
+    button {
+        font-size: 16px;
+        background: lightblue;
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+
+        &:hover {
+            background: white;
+            color: black;
+        }
+
+        &:active {
+            background: black;
+            color: white;
+        }
+    }
 `
+
+export default Post;
