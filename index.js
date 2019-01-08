@@ -45,11 +45,9 @@ server.post("/api/posts", (req, res) => {
   db.insert(userInfo)
     .then(response => {
       if (!userInfo.title || !userInfo.contents) {
-        res
-          .status(400)
-          .json({
-            errorMessage: "Please provide title and contents for the post."
-          });
+        res.status(400).json({
+          errorMessage: "Please provide title and contents for the post."
+        });
       } else {
         res.status(201).json(userInfo);
       }
@@ -59,6 +57,26 @@ server.post("/api/posts", (req, res) => {
         error: "There was an error while saving the post to the database"
       });
     });
+});
+
+server.delete("/api/posts/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.findById(id)
+    .then(user => {
+      if (user.length) {
+        db.remove(id).then(count => {
+          res.status(200).json(user);
+        });
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(err =>
+      res.status(500).json({ error: "The post could not be removed" })
+    );
 });
 
 server.listen(5005);
