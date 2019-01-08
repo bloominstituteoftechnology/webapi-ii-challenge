@@ -16,17 +16,14 @@ const StyledPost = styled.section`
     color: lightblue;
     text-align: left;
     line-height: 2rem;
-    font-weight: normal;
     padding: 0 20px;
-    cursor: pointer;
     box-shadow: 0px 0px 15px 0px lightblue;
+    border-radius: 5px;
 
     &:hover {
         box-shadow: 0px 0px 35px 10px lightblue;
         text-decoration: underline;
-        /* margin: 20px auto; */
     }
-    
 
     strong {
         font-style: italic;

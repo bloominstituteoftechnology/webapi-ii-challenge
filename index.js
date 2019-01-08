@@ -6,6 +6,7 @@ const cors = require('cors');
 // add your server code starting here
 const server = express();
 server.use(cors());
+server.use(express.json());
 
 server.get('/api/posts', (req,res) => {
     db.find().then(posts => {
@@ -29,5 +30,28 @@ server.get('/api/posts/:postid', (req,res) => {
     })
     .catch(err => res.status(500).json({ error: "The post information could not be retrieved." }))
 })
+
+server.post('/api/posts', (req,res) => {
+    const userInfo = req.body;
+
+    if( userInfo.title && userInfo.contents ){
+        db.insert(userInfo)
+            .then(result => {
+                db.findById(result.id)
+                    .then(user => {
+                        res.status(201).json(user);
+                    })
+                    .catch(err => res.status(500).json({message: 'user added, but get by id failed', error: err}))
+            })
+            .catch(err=> res.status(500).json({message: 'post of new user failed', error: err}))
+    }
+    else{
+        res.status(400).json({errorMessage: "Please provide title and contents for the post."})
+    }
+})
+
+// server.delete('/api/posts/:id', (req,res) => {
+
+// })
 
 server.listen(5000, () => console.log('server running'));
