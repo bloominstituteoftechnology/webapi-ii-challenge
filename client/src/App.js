@@ -4,7 +4,7 @@ import axios from 'axios';
 import PostContainer from './components/PostContainer';
 import LoadingSpinner from './components/LoadingSpinner';
 import { Route, Link } from 'react-router-dom';
-import Post from './components/Post';
+import SinglePost from './components/SinglePost';
 
 class App extends Component {
   constructor() {
@@ -32,13 +32,22 @@ class App extends Component {
     console.log('The state:', this.state.posts);
     return (
       <div className="App">
-        {this.state.isLoaded === true ? (
-          <PostContainer posts={this.state.posts} />
-        ) : (
-          <LoadingSpinner />
-        )}
+        <Route
+          exact
+          path="/"
+          render={props =>
+            this.state.isLoaded === true ? (
+              <PostContainer {...props} posts={this.state.posts} />
+            ) : (
+              <LoadingSpinner />
+            )
+          }
+        />
         <div>
-          <Route path="/post" component={Post} />
+          <Route
+            path="/post/:id"
+            render={props => <SinglePost {...props} posts={this.state.posts} />}
+          />
         </div>
       </div>
     );
