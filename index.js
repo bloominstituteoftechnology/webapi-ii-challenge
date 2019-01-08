@@ -49,12 +49,26 @@ server.post(url, async (req, res) => {
 }
 }); //CREATE
 
-server.put(url, (req, res) => {
-	res.status(200).json({url: url, operation: "PUT"})
-}); //UPDATA
+server.put(`${url}:id`, (req, res) => {
+	const { id } = req.params;
+	const post = req.body;
+	db.update(id, post) 
+		.then(count => {
+			if(count) {
+				res.status(200).json({message: `${count} post updated`})
+			} else {
+				res.status(404).json({message: 'post not found'})
+			}
+		})
+		.catch(err => res.status(500).json({message: 'error updating user', error: err}))
+}); //UPDATE
 
-server.delete(url, (req, res) => {
-	res.status(204).json({url: url, operation: "DELETE"})
+server.delete(`${url}:id`, (req, res) => {
+	db.remove(id)
+		.then(count => {
+			res.status(204).json(count)
+		})
+		.catch(err => res.status(500).json({message: 'error deleting post', error: err}))
 }); //DESTROY 
 
 server.listen(9000, () => console.log('server is running'))
