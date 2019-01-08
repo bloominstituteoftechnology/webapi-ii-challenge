@@ -1,18 +1,30 @@
 import React from 'react';
 import PostList from './PostList';
-import './PostContainer.css';
+import styled from 'styled-components';
+
+const PostContainerDiv = styled.div`
+  width: 65%;
+  margin: 0 auto;
+  background-color: #f2f2f2;
+`;
+
+const PCWrapperDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: center;
+  margin-top: 20%;
+`;
 
 const PostContainer = props => {
-  console.log('props from PostList', props);
   return (
-    <div className="postlist-container">
-      <div className="wrapper">
+    <PostContainerDiv>
+      <PCWrapperDiv>
         {props.posts.data.map((post, index) => {
-          console.log('from within map', post.title);
           return <PostList post={post} key={index} />;
         })}
-      </div>
-    </div>
+      </PCWrapperDiv>
+    </PostContainerDiv>
   );
 };
 

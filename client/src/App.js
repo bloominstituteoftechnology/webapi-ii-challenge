@@ -3,7 +3,7 @@ import './App.css';
 import axios from 'axios';
 import PostContainer from './components/PostContainer';
 import LoadingSpinner from './components/LoadingSpinner';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import SinglePost from './components/SinglePost';
 
 class App extends Component {
@@ -17,19 +17,14 @@ class App extends Component {
 
   componentDidMount() {
     axios.get('http://localhost:8000/api/posts').then(response => {
-      console.log('response from component', response);
       this.setState({
         posts: response,
         isLoaded: true
       });
     });
-    // axios.get('/api/posts').then(response => {
-    //   console.log(response);
-    // });
   }
 
   render() {
-    console.log('The state:', this.state.posts);
     return (
       <div className="App">
         <Route
