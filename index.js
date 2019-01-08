@@ -66,28 +66,64 @@ server.delete('/api/posts/:id', (req,res) => {
         .catch(err => res.status(500).json({ error: "The post could not be removed" }))
 })
 
-server.put('/api/posts/:id', (req,res) => {
+// server.put('/api/posts/:id', (req,res) => {
+//     const id = req.params.id;
+//     const changes = req.body;
+
+//     db.findById(id)
+//         .then(post => {
+//             if( post ) {
+//                 if( changes.title && changes.contents){
+//                     db.update(id, changes)
+//                     .then(count => {
+//                         db.findById(id)
+//                         .then(updatedPost => res.status(200).json(updatedPost))
+//                         .catch( err => res.status(200).json({message: "Post Updated Successfully"}))
+//                     })
+//                 }
+//                 else{
+//                     res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+//                 }
+//             }
+//             else {
+//                 res.status(404).json({ message: "The post with the specified ID does not exist." })
+//             }
+//         })
+//         .catch(err => res.status(500).json({ error: "The post information could not be modified." }))
+// })
+
+server.put('/api/posts/:id', async (req,res) => {
     const id = req.params.id;
     const changes = req.body;
 
-    db.findById(id)
-        .then(post => {
-            if( post ) {
-                if( changes.title && changes.contents){
-                    db.update(id, changes)
-                    .then(count => {
-                        db.findById(id).then(updatedPost => res.status(200).json(updatedPost))
-                    })
+    try {
+        const result = await db.findById(id);
+        if (result) {
+            if( changes.title && changes.contents) {
+                await db.update(id, changes);
+
+                try {
+                    const updatedPost = await db.findById(id);
+                    res.status(200).json(updatedPost);
                 }
-                else{
-                    res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+                catch (err) {
+                    // updated but server error in last find
+                    res.status(200).json({message: "Post Updated Successfully"})
                 }
+
             }
             else {
-                res.status(404).json({ message: "The post with the specified ID does not exist." })
+                res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
             }
-        })
-        .catch(err => res.status(500).json({ error: "The post information could not be modified." }))
+        }
+        else {
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
+        }
+    }
+    catch (err) {
+        res.status(500).json({ error: "The post information could not be modified." })
+    }
+
 })
 
 server.listen(5000, () => console.log('server running'));
