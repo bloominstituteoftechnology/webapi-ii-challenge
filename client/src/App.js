@@ -4,6 +4,8 @@ import styled from "styled-components";
 import HomeView from "./containers/HomeView";
 import { Route } from "react-router-dom";
 import SinglePost from "./components/SinglePost";
+import PostForm from "./components/PostForm";
+import Navbar from "./components/Navbar";
 
 const AppContainer = styled.div`
   display: flex;
@@ -16,21 +18,16 @@ const AppContainer = styled.div`
   margin: 0 auto;
 `;
 
-const H1 = styled.h1`
-  color: rebeccapurple;
-  font-size: 2.6rem;
-  margin: 1rem auto;
-`;
-
 class App extends Component {
   render() {
     return (
       <>
-        <H1>POSTS LIST</H1>
+        <Navbar />
         <AppContainer>
           <Route exact path="/" component={HomeView} />
           <Route exact path="/posts" component={PostsContainer} />
           <Route path="/posts/:postId" component={SinglePost} />
+          <Route path="/post/add-post" component={PostForm} />
         </AppContainer>
       </>
     );

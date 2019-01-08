@@ -6,6 +6,7 @@ const PORT = 5000;
 
 const server = express();
 server.use(cors());
+server.use(express.json());
 
 server.get("/api/posts", (req, res) => {
   db.find()
@@ -35,5 +36,35 @@ server.get("/api/posts/:id", (req, res) => {
         .json({ error: "The posts information could not be retrieved." })
     );
 });
+
+server.post("/api/posts", (req, res) => {
+  const newPost = req.body;
+
+  if (!newPost.title || !newPost.contents) {
+    return res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  }
+
+  db.insert(newPost)
+    .then(result => {
+      db.findById(result.id)
+        .then(post => res.status(201).json(post))
+        .catch(err =>
+          res.status(500).json({
+            message: "There was an error while saving the post to the database"
+          })
+        );
+    })
+    .catch(err =>
+      res.status(500).json({
+        error: "There was an error while saving the post to the database"
+      })
+    );
+});
+
+server.put("/api/posts/:id", (req, res) => {});
+
+server.delete("/api/posts/:id", (req, res) => {});
 
 server.listen(PORT, () => console.log(`server running on port: ${PORT}`));
