@@ -96,11 +96,3 @@ server.get('/api/posts/:postid', (req, res) => {
 server.listen(5000, () => console.log('Server is running'));
 
 
-
-if (newPost.title !== "" && post.contents !== "") {
-    res.status(201).json(post);
-    console.log('This is a post', post);
-} else {
-  res.status(404).json({ errorMessage: "Please provide title and contents for the post." });
-}
-
