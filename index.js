@@ -44,13 +44,14 @@ server.post('/api/posts', (req, res) => {
   if(title && contents) {
     db.insert({title, contents})
       .then(id => {
+        
         const post_id = id.id;
 
         db.findById(post_id)
           .then(post => {
-            res.status(201).json(post);
+            res.status(201).json({ url: '/api/posts', operation: 'POST', post });
           })
-          .catch(err => res.status(400).json({errorMessage: "failed to send back content"}))
+          .catch(err => res.status(400).json({errorMessage: "findById search failed"}))
 
       })
       .catch(err => res.status(500).json({error: "There was an error while saving the post to the database "}))
@@ -63,25 +64,32 @@ server.post('/api/posts', (req, res) => {
 
 server.delete('/api/posts/:id', (req, res) => {
   const id = req.params.id;
-  db.remove(id)
-    .then(item => {
-      console.log(item)
-      if(item){
-        res.sendStatus(204)
-      } else res.status(404).json({message: "The post with the specified ID does not exist."})
+
+  db.findById(id)
+    .then(post => {
+      db.remove(id)
+        .then(item => {
+          console.log(item)
+          if(item){
+            res.status(200).json(post);
+          } else res.status(404).json({message: "The post with the specified ID does not exist."})
+        })
     })
     .catch(err => res.status(500).json({error: "The post could not be removed"}))
 });
 
 server.put('/api/posts/:id', (req, res) => {
-
   const id = req.params.id;
   const {title, contents} = req.body;
+
   if(title && contents) {
     db.update(id, {title, contents})
-      .then(post => {
-        if(post) {
-          res.sendStatus(200);
+    .then(post => {
+      if(post) {
+        db.findById(id)
+          .then(post => {
+              res.status(200).json({url: `/api/posts/${id}`, operation: `PUT for posts with id ${id}`, post});
+            })
         } else {
           res.status(404).json({ message: "The post with the specified ID does not exist." })
         }
