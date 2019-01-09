@@ -1,8 +1,8 @@
-
 const db = require("./data/db.js");
 
+const cors = require("cors");
+
 const express = require("express");
-const cors = require('cors')
 
 const server = express();
 
@@ -96,7 +96,7 @@ server.put("/api/posts/:id", (req, res) => {
 		})
 		.catch(err =>
 			res.status(500).json({
-				error: "The post information could not be modified." ,
+				error: "The post information could not be modified.",
 			})
 		);
 });
