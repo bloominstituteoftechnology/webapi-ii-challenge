@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Moment from "react-moment";
 import { withRouter } from "react-router-dom";
 
 const PostContainer = styled.div`
@@ -39,7 +40,7 @@ const H3 = styled.h3`
   border-bottom: 1px dashed #0f0f0f;
 `;
 
-const H6 = styled.h6`
+const H6 = styled(Moment)`
   font-size: 0.8rem;
   flex: 1;
   width: 100%;
@@ -56,7 +57,7 @@ function Post({ title, contents, created_at, id, history }) {
     <PostContainer onClick={() => history.push(`/posts/${id}`)}>
       <H1>{title.length > 50 ? title.slice(0, 50) + "..." : title}</H1>
       <H3>{contents.length > 50 ? contents.slice(0, 50) + "..." : contents}</H3>
-      <H6>{created_at}</H6>
+      <H6 format="Do MMM YYYY">{created_at}</H6>
     </PostContainer>
   );
 }

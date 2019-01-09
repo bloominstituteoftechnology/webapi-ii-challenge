@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Moment from "react-moment";
 import styled from "styled-components";
 
 const Div = styled.div`
@@ -67,7 +68,9 @@ export default class SinglePost extends Component {
             <H1>{title}</H1>
             <P>
               {contents}
-              <Span>{created_at}</Span>
+              <Span>
+                <Moment format="Do MMM YYYY">{created_at}</Moment>
+              </Span>
             </P>
           </Div>
           <Button onClick={() => this.props.history.push("/posts")}>
