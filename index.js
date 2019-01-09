@@ -10,6 +10,9 @@ server.use(express.json());
 
 const cors = require('cors');
 
+server.use(cors({}));
+server.use(express.json());
+
 const port = 5000;
 
 // add your server code starting here

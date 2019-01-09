@@ -42,17 +42,6 @@ class App extends Component {
     .catch(err => console.log(err))
   }
 
-  deletePost = id => {
-    axios
-    .delete(`${url}${id}`)
-    .then(response => {
-      this.setState({
-        posts: response.data
-      })
-    })
-    .catch(err => console.log(err))
-  }
-
   render() {
     return (
       <div className="App">
@@ -62,7 +51,7 @@ class App extends Component {
         </nav-bar>
         <Route
         exact path='/api/posts'
-        render={props => <Posts posts={this.state.posts} deletePost={this.deletePost} {...props} />}
+        render={props => <Posts posts={this.state.posts} {...props} />}
         />
         <Route path='/post-form'
         render={props => <PostForm addPost={this.addPost} {...props} />}

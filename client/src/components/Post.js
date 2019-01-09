@@ -5,7 +5,6 @@ const Post = props => {
     <div className="Smurf">
       <h2>{props.title}</h2>
       <p>{props.contents}</p>
-      <button onClick={() => props.deletePost(props.id)}>Delete</button>
     </div>
   );
 };
