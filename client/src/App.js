@@ -47,15 +47,15 @@ class App extends Component {
       <div className="App">
         <nav-bar>
           <NavLink to='/api/posts'>Home</NavLink>
-          <NavLink to ='/post-form'>Form</NavLink>
+          {/* <NavLink to ='/post-form'>Form</NavLink> */}
         </nav-bar>
         <Route
         exact path='/api/posts'
         render={props => <Posts posts={this.state.posts} {...props} />}
         />
-        <Route path='/post-form'
+        {/* <Route path='/post-form'
         render={props => <PostForm addPost={this.addPost} {...props} />}
-        />
+        /> */}
       </div>
     );
   }

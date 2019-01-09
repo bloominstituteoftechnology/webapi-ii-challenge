@@ -111,7 +111,8 @@ server.put("/api/posts/:id", (req, res) => {
     } else {
       db.update(id, changes).then(count => {
         res.status(200).json(post);
-      });
+      })
+      .catch(err => res.status(500).json({ error: "The post information could not be modified." }))
     }
   });
 });
