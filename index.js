@@ -37,7 +37,7 @@ server.get('/api/posts/:id', (req, res) => {
 
 server.post('/api/posts', (req, res) => {
   const post = req.body;
-  if (post.title && post.contents){
+  if (post.title || post.contents){
   db.insert(post)
     .then(result => {
       res.status(201).json(result);
@@ -66,22 +66,21 @@ server.delete('/api/posts/:id', (req, res) => {
     .catch(err => res.stats(500).json(err))
 });
 
-server.put('/api/posts/:id', async (req, res) => {
+server.put('/api/posts/:id', (req, res) => {
   const id = req.params.id;
   const changes = req.body;
-  const post = await db.findById(id)
-  try {
-    if(post){
-    const result = await db.update(id, changes);
-    console.log('result', result);
+  const post = db.findById(id);
 
-    res.status(200).json(result);
-  } else {
-    res.status(404).json({ message: "The post with the specified ID does not exist." })
-  }
-  } catch (err){
-    res.status(500).json(err);
-  }
+  db.update(id, changes)
+    .then(updated => {
+      if(!changes.title || !changes.contents){
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+      } else if (!updated){
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
+      } else {
+        res.status(200).json(updated);
+      }
+    })
 });
 
 server.listen(5000, () => console.log('server running!'));
