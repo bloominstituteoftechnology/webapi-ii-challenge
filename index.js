@@ -36,11 +36,17 @@ server.get('/api/posts/:id', (req, res) => {
 });
 
 server.post('/api/posts', (req, res) => {
-  db.insert(req.body)
+  const post = req.body;
+  if (post.title && post.contents){
+  db.insert(post)
     .then(result => {
       res.status(201).json(result);
     })
     .catch(err => res.status(500).json({ error: err }));
+  }else {
+    res
+      .status(400).json({ errorMessage: "Please provide title and contents for the post." })
+  }
 });
 
 server.delete('/api/posts/:id', (req, res) => {
@@ -63,13 +69,16 @@ server.delete('/api/posts/:id', (req, res) => {
 server.put('/api/posts/:id', async (req, res) => {
   const id = req.params.id;
   const changes = req.body;
-
-
+  const post = await db.findById(id)
   try {
+    if(post){
     const result = await db.update(id, changes);
     console.log('result', result);
 
     res.status(200).json(result);
+  } else {
+    res.status(404).json({ message: "The post with the specified ID does not exist." })
+  }
   } catch (err){
     res.status(500).json(err);
   }
