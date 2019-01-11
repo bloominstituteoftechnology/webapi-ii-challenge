@@ -66,12 +66,12 @@ server.post('/api/posts', (req, res) => {
   }
 });
 
-server.delete('api/posts/:id', (req, res) => {
+server.delete('/api/posts/:id', (req, res) => {
    const { id } = req.params;
     
     db.findById(id).then(post => {
         if (post) {
-            const removedPost = post[0];
+            const removedPost = post;
         db.remove(id).then(count => {
             if (count) {
                 res.json(removedPost);
