@@ -85,6 +85,12 @@ server.delete('/api/posts/:id', (req, res) => {
     })
 });
 
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const post = req.body;
+    
+})
+
 
 //server listening service
 server.listen(PORT, () => {
