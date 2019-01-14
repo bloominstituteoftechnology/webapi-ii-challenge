@@ -34,7 +34,7 @@ server.get('/api/posts/:id', (req, res) => {
   db.findById(id)
     .then(post => {
       console.log(post);
-      if (post) {
+      if (post.length > 0) {
         console.log('post exists')
         res
           .status(200)
