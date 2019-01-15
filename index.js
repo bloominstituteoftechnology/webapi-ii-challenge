@@ -43,11 +43,9 @@ server.get('/api/posts/', (req, res) => {
    res 
     .json(posts)
   })
-
   .catch(() => {
    res
-   
-   .status(500)
+    .status(500)
     .json({error: "The posts information could not be retrieved"})
   })
 })
