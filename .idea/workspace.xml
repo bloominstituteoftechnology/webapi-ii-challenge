@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1efb45f4-f619-41b3-86a0-023ac6ce766c" name="Default Changelist" comment="" />
+    <list default="true" id="1efb45f4-f619-41b3-86a0-023ac6ce766c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -15,8 +17,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="260" />
-    <option name="y" value="449" />
+    <option name="x" value="233" />
+    <option name="y" value="42" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -26,6 +28,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -37,12 +40,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Sprint-Challenge-React-Smurfs" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="settings.nodejs" />
   </component>
@@ -69,11 +71,13 @@
       <option name="presentableId" value="Default" />
       <updated>1547515848486</updated>
       <workItem from="1547515853839" duration="798000" />
+      <workItem from="1547615720810" duration="10000" />
+      <workItem from="1548469824161" duration="46000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="798000" />
+    <option name="totallyTimeSpent" value="854000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -85,16 +89,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="260" y="449" width="1400" height="1000" extended-state="0" />
+    <frame x="233" y="42" width="1400" height="1000" extended-state="0" />
     <layout>
-      <window_info id="npm" side_tool="true" />
-      <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" sideWeight="0.49927327" weight="0.32982457" />
-      <window_info active="true" anchor="bottom" id="Terminal" sideWeight="0.4985465" visible="true" weight="0.32982457" />
-      <window_info anchor="bottom" id="Event Log" sideWeight="0.50145346" side_tool="true" visible="true" weight="0.32982457" />
+      <window_info id="npm" order="2" side_tool="true" />
+      <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -102,6 +102,10 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32982457" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49927327" weight="0.32982457" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.502907" side_tool="true" visible="true" weight="0.3302217" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49709302" visible="true" weight="0.3302217" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
