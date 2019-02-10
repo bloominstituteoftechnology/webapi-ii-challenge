@@ -24,7 +24,9 @@ server.get('/api/posts', (request, response) => {
   
     const error500 = { errorMessage: "The posts information could not be retrieved"};
 
-    db.find()
+
+
+db.find()
     .then(posts => response.status(200).send(posts))
     .catch(
         error => {
@@ -101,7 +103,9 @@ server.put('/api/posts/:id', (request, response) => {
     }})
     .catch(() => response.status(500).send(error500))
 });
-//Delete!
+//Delete!\\
+
+
 
 server.delete('/api/posts/:id', (request, response) => {
     
@@ -129,3 +133,19 @@ server.delete('/api/posts/:id', (request, response) => {
 // Activate Server on Port
 const port = 7777;
 server.listen(port, console.log(`=-=-= Server Active On Port ${port} =-=-=`));
+
+
+
+//example post
+server.post('/api/users', (req,res) => {
+    const { name, bio } = req.body;
+    const newUser = { name, bio };
+    db.insert(newUser)
+        .then(id => {
+            db.findById(id).then(user => {
+                res.status(201).json(user);
+            });
+        })
+        .catch(err => console.error(err));
+
+});
