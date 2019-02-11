@@ -64,13 +64,13 @@ Server.js already has `db.js` required and ready for you to use when building yo
 
 Configure the API to respond to the following routes:
 
-| Method | Endpoint       | Description                                                                                                                       |
-| ------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| POST   | /api/posts     | Creates a post using the information sent inside the `request body`.                                                              |
-| GET    | /api/posts     | Returns an array of all the post objects contained in the database.                                                               |
-| GET    | /api/posts/:id | Returns the post object with the specified id.                                                                                    |
-| DELETE | /api/posts/:id | Removes the post with the specified id and returns the **deleted post object**. You may need to make additional calls to the database in order to satisfy this requirement.                                                              |
-| PUT    | /api/posts/:id | Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**. |
+| Method | Endpoint       | Description                                                                                                                                                                 |
+| ------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| POST   | /api/posts     | Creates a post using the information sent inside the `request body`.                                                                                                        |
+| GET    | /api/posts     | Returns an array of all the post objects contained in the database.                                                                                                         |
+| GET    | /api/posts/:id | Returns the post object with the specified id.                                                                                                                              |
+| DELETE | /api/posts/:id | Removes the post with the specified id and returns the **deleted post object**. You may need to make additional calls to the database in order to satisfy this requirement. |
+| PUT    | /api/posts/:id | Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**.                                           |
 
 #### Endpoint Specifications
 
@@ -150,6 +150,13 @@ When the client makes a `PUT` request to `/api/posts/:id`:
   - return the newly updated _post_.
 
 ## Stretch Problems
+
+To work on the stretch problems you'll need to enable the `cors` middleware. Follow these steps:
+
+- add the `cors` npm module: `yarn add cors` or `npm i cors`.
+- add `server.use(cors())` after `server.use(express.json())`.
+
+Create a new React application and connect it to your server:
 
 - Use `create-react-app` to create an application inside the root folder, name it `client`.
 - From the React application connect to the `/api/posts` endpoint in the API and show the list of posts.
