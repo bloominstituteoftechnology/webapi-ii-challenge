@@ -1,34 +1,19 @@
 {
-  "name": "node-express",
-  "version": "0.0.1",
-  "description": "LambdaSchool Node.js and Express",
-  "private": true,
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon index.js"
-  },
-  "license": "ISC",
-  "dependencies": {
-    "components": "^0.1.0",
-    "knex": "^0.15.2",
-    "sqlite3": "^4.0.2",
-    "styled": "^1.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^1.18.4"
-  }
-}
-
-
-{
-  "name": "ChallengeNodeExpress",
+  "name": "Node-Express-Lab",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/JGolden25/Sprint-Challenge-Node-Express",
+  "repository": "https://github.com/JGolden25/Sprint-Challenge-Node-Express.git",
   "author": "Joseph Chretien <joechre@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "nodemon index.js"
   },
+  "dependencies": {
+    "express": "^4.16.4",
+    "knex": "^0.15.2",
+    "sqlite3": "^4.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
 }
-
