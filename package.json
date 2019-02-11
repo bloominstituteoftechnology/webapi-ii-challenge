@@ -9,10 +9,21 @@
   },
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.4",
     "knex": "^0.16.3",
     "sqlite3": "^4.0.6"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lennamau/Node-Express-Lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/lennamau/Node-Express-Lab/issues"
+  },
+  "homepage": "https://github.com/lennamau/Node-Express-Lab#readme"
 }
