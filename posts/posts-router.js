@@ -60,7 +60,7 @@ router.post('/', (req, res) => {
         })
         .catch(error => {
             console.log(error);
-            res.status(500).json({ message: "Error while saving the post to the databse"});
+            res.status(500).json({ message: "Error while saving the post to the database"});
         });
 })
 
@@ -70,12 +70,12 @@ router.delete('/:id', async (req, res) => {
         if (count > 0){
             res.status(200).json({ message: 'This post is goneso!'});
         } else {
-            res.status(404).json({ message: 'This post does not exist to be deleted' });
+            res.status(404).json({ message: "The post with the specified ID does not exist." });
         }
     } catch(error) {
         console.log(error);
         res.status(500).json({
-            message: 'Error removing the post',
+            message: "The post could not be removed",
         });
     }
 });
