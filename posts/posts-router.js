@@ -95,16 +95,17 @@ router.delete('/:id', async (req, res) => {
 // });
 
 router.put('/:id', (req, res) => {
-    const { id } = req.params.id;
-    const changes = req.body;
-    if (!changes.title || !changes.contents){
+    const { id } = req.params;
+    const post = req.body;
+    if (!post.title || !post.contents){
         res.status(400).json({ message: "Please provide title and contents for the post."});
     }
+
     Posts
-        .update(id, changes)
+        .update(id, post)
         .then(updatedPost => {
             if (updatedPost){
-                res.status(200).json({updated});
+                res.status(200).json(updatedPost);
             } else {
                 res.status(404).json({ message: "The post with the specified ID does not exist." });
             }
