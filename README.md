@@ -23,6 +23,7 @@ The `data` folder contains a database populated with test `posts`.
 
 Database access will be done using the `db.js` file included inside the `data` folder.
 
+
 The `db.js` publishes the following methods:
 
 - `find()`: calling find returns a promise that resolves to an array of all the `posts` contained in the database.
