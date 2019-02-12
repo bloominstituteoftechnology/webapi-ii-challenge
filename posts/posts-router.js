@@ -32,17 +32,33 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
-    try {
-        const post = await Posts.insert(req.body);
-        res.status(201).json(post);
-    } catch(error) {
-        console.log(error);
-        res.status(500).json({
-            message: 'Error adding the post',
-        });
+// router.post('/', async (req, res) => {
+//     try {
+//         const post = await Posts.insert(req.body);
+//         res.status(201).json(post);
+//     } catch(error) {
+//         console.log(error);
+//         res.status(500).json({
+//             message: 'Error while saving the post to the database',
+//         });
+//     }
+// });
+
+router.post('/', (req, res) => {
+    const post = req.body;
+    if (!post.title || !post.contents){
+        res.status(400).json({ message: "Please add title and contents to the post"});
     }
-});
+    Posts
+        .insert(post)
+        .then(post => {
+            res.status(201).json(post);
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({ message: "Error while saving the post to the databse"});
+        });
+})
 
 router.delete('/:id', async (req, res) => {
     try {
