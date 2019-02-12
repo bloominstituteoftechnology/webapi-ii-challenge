@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            message: 'You done goofed',
+            message: "The posts information could not be retrieved.",
         });
     }
 });
@@ -22,26 +22,30 @@ router.get('/:id', async (req, res) => {
         if (post){
             res.status(200).json(post);
         } else {
-            res.status(404).json({ message: 'Post not found '});
+            res.status(404).json({ message: "The post with the specified ID does not exist."});
         }
-    } catch (error) {
+    } catch(error) {
         console.log(error);
         res.status(500).json({
-            message: 'Error retrieving the post',
+            message: "The post information could not be retrieved.",
         });
     }
 });
 
-// router.post('/', async (req, res) => {
-//     try {
-//         const post = await Posts.insert(req.body);
-//         res.status(201).json(post);
-//     } catch(error) {
-//         console.log(error);
-//         res.status(500).json({
-//             message: 'Error while saving the post to the database',
+// router.get('/:id', (req, res) => {
+//     const { id } = req.params;
+//     Posts
+//         .findById(id)
+//         .then(post => {
+//             if (!post){
+//                 res.status(404).json({ message: "The post with the specified ID does not exist."});
+//             } else {
+//                 res.status(200).json(post);
+//             }
+//         })
+//         .catch(error => {
+//             res.status(500).json({ error: "The post information could not be retrieved."});
 //         });
-//     }
 // });
 
 router.post('/', (req, res) => {
