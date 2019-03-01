@@ -24,25 +24,41 @@ router.get("/", async (req, res) => {
   //   );
 });
 
-router.post("/", (req, res) => {
-  const post = req.body;
+// destructure request object to grab the body then alias it as post
+router.post("/", async ({ body: post }, res) => {
   //if the title or the contents are missing them send an error
-  !req.body.title || !req.body.contents
-    ? res.status(400).json({
+  try {
+    if (!post.title || !post.contents) {
+      res.status(400).json({
         errorMessage: "Please provide title and contents for the post."
-      })
-    : db
-        .insert(post)
-        .then(({ id }) => {
-          db.findById(id).then(post => {
-            res.status(201).json(post);
-          });
-        })
-        .catch(error =>
-          res.status(500).json({
-            error: "There was an error while saving the post to the database"
-          })
-        );
+      });
+    } else {
+      const { id } = await db.insert(post);
+      const newPost = await db.findById(id);
+      res.status(201).json(newPost);
+    }
+  } catch (e) {
+    res.status(500).json({
+      error: e
+    });
+  }
+
+  // !post.title || !post.contents
+  //   ? res.status(400).json({
+  //       errorMessage: "Please provide title and contents for the post."
+  //     })
+  //   : db
+  //       .insert(post)
+  //       .then(({ id }) => {
+  //         db.findById(id).then(post => {
+  //           res.status(201).json(post);
+  //         });
+  //       })
+  //       .catch(error =>
+  //         res.status(500).json({
+  //           error: "There was an error while saving the post to the database"
+  //         })
+  //       );
 });
 
 //and get a single post by it's ID
