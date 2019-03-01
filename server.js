@@ -9,6 +9,6 @@ server.get('/', (req, res) => {
     res.send('Api up and running');
 })
 
-server.use('/', postRoutes);
+server.use('/api/posts/', postRoutes);
 
 module.exports = server;
