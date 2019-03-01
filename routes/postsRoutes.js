@@ -3,16 +3,25 @@ const router = express.Router();
 
 const db = require("../data/db");
 
-router.get("/", (req, res) => {
-  db.find()
-    .then(posts => {
-      res.status(200).json(posts);
-    })
-    .catch(error =>
-      res
-        .status(500)
-        .json({ error: "The posts information could not be retrieved." })
-    );
+router.get("/", async (req, res) => {
+  try {
+    const posts = await db.find();
+    res.status(200).json(posts);
+  } catch (e) {
+    res
+      .status(500)
+      .json({ error: "The posts information could not be retrieved." });
+  }
+
+  // db.find()
+  //   .then(posts => {
+  //     res.status(200).json(posts);
+  //   })
+  //   .catch(error =>
+  //     res
+  //       .status(500)
+  //       .json({ error: "The posts information could not be retrieved." })
+  //   );
 });
 
 router.post("/", (req, res) => {
