@@ -145,3 +145,13 @@ table {
   box-sizing: border-box;
   font-size: 62.5%; /*1rem = 10px*/
 }
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+}
+#root {
+  height: 100%;
+  width: 100%;
+}
