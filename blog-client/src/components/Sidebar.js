@@ -8,7 +8,13 @@ const Sidebar = () => {
       <nav>
         <ul>
           <li>Home</li>
-          <li>Create</li>
+          <li
+            onClick={() => {
+              console.log("testificate");
+            }}
+          >
+            Create
+          </li>
           <li>Another Link</li>
           <li>Another Link</li>
         </ul>

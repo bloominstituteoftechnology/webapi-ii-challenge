@@ -16,13 +16,22 @@ const PostsContainer = props => {
     getPosts().then(posts => setPosts(posts));
   }, []);
 
+  const clickHandler = id => {
+    props.setDisplayForm(false);
+    props.setDisplayPosts(false);
+    props.setDisplayPost(true);
+    props.setPostId(id);
+  };
+
   return (
     <div className="posts-container">
       {console.log(posts)}
       {!posts.length ? (
         <p className="loading-message">LOADING</p>
       ) : (
-        posts.map(post => <PostCard key={post.id} {...post} />)
+        posts.map(post => (
+          <PostCard key={post.id} {...post} clickHandler={clickHandler} />
+        ))
       )}
     </div>
   );
