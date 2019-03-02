@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./PostsContainer.css";
+import { PostCard } from "./index";
 
 const PostsContainer = props => {
   const [posts, setPosts] = useState([]);
@@ -17,12 +18,12 @@ const PostsContainer = props => {
 
   return (
     <div className="posts-container">
-      {posts.map(post => (
-        <section key={post.id}>
-          <h2>{post.title}</h2>
-          <p>{post.contents}</p>
-        </section>
-      ))}
+      {console.log(posts)}
+      {!posts.length ? (
+        <p className="loading-message">LOADING</p>
+      ) : (
+        posts.map(post => <PostCard key={post.id} {...post} />)
+      )}
     </div>
   );
 };

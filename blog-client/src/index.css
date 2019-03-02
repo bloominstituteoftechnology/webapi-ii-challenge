@@ -146,10 +146,15 @@ table {
   font-size: 62.5%; /*1rem = 10px*/
 }
 html {
-  height: 100%;
+  min-height: 100%;
 }
 body {
   height: 100%;
+  background-image: linear-gradient(
+    to bottom,
+    rgb(215, 215, 235),
+    rgb(168, 168, 168)
+  );
 }
 #root {
   height: 100%;
