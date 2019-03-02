@@ -1,0 +1,18 @@
+.post-card h2 {
+  font-family: "Arial Black", "Arial Bold", Gadget, sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+  line-height: 0.9rem;
+}
+
+.post-card p {
+  font-family: "Courier New", Courier, "Lucida Sans Typewriter",
+    "Lucida Typewriter", monospace;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
