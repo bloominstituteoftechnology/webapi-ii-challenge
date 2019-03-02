@@ -1,11 +1,11 @@
 const express = require('express');
 
+const dataRoutes = require('./data/Router.js');
+
 const server = express();
 
 server.use(express.json());
+server.use('/api/posts', dataRoutes);
 
-server.get('/', (req, res) => {
-	res.send('Lambda School');
-});
 
 module.exports = server;
