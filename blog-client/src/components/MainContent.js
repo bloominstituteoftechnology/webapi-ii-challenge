@@ -7,17 +7,21 @@ const MainContent = () => {
   const [displayPost, setDisplayPost] = useState(false);
   const [displayForm, setDisplayForm] = useState(false);
   const [postId, setPostId] = useState(0);
+
+  const renderLogic = {
+    setDisplayPosts,
+    setDisplayPost,
+    setDisplayForm,
+    setPostId,
+    postId
+  };
+
   return (
     <div className="main-content">
       {/* Need to pass set to posts container */}
-      {displayPosts && (
-        <PostsContainer
-          setDisplayPosts={setDisplayPosts}
-          setPostId={setPostId}
-        />
-      )}
-      {displayPost && <Post id={postId} />}
-      {displayForm && <PostForm />}
+      {displayPosts && <PostsContainer {...renderLogic} />}
+      {displayPost && <Post {...renderLogic} />}
+      {displayForm && <PostForm {...renderLogic} />}
     </div>
   );
 };

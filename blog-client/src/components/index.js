@@ -4,3 +4,4 @@ export { default as MainContent } from "./MainContent.js";
 export { default as PostsContainer } from "./PostsContainer.js";
 export { default as PostCard } from "./PostCard.js";
 export { default as Post } from "./Post.js";
+export { default as PostForm } from "./PostForm.js";
