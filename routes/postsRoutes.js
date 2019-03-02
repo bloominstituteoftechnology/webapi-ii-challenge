@@ -94,20 +94,32 @@ router.get("/:id", async ({ params: { id } }, res) => {
   //   );
 });
 
-router.delete("/:id", (req, res) => {
-  const { id } = req.params;
-  db.remove(id)
-    .then(count => {
-      console.log(count);
-      count < 1
-        ? res
-            .status(404)
-            .json({ message: "The post with the specified ID does not exist." })
-        : res.status(200).json({ message: "Post Was Successfully Deleted" });
-    })
-    .catch(error =>
-      res.status(500).json({ error: "The post could not be removed" })
-    );
+router.delete("/:id", async ({ params: { id } }, res) => {
+  const count = await db.remove(id);
+  try {
+    if (count) {
+      res.status(200).json({ message: "Post Was Successfully Deleted" });
+    } else {
+      res
+        .status(404)
+        .json({ message: "The post with the specified ID does not exist." });
+    }
+  } catch (e) {
+    res.status(500).json({ error: "The post could not be removed" });
+  }
+
+  // db.remove(id)
+  //   .then(count => {
+  //     console.log(count);
+  //     count < 1
+  //       ? res
+  //           .status(404)
+  //           .json({ message: "The post with the specified ID does not exist." })
+  //       : res.status(200).json({ message: "Post Was Successfully Deleted" });
+  //   })
+  //   .catch(error =>
+  //     res.status(500).json({ error: "The post could not be removed" })
+  //   );
 });
 
 router.put("/:id", ({ params: { id }, body }, res) => {
