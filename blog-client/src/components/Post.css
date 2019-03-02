@@ -3,6 +3,12 @@
   justify-content: space-between;
 }
 
+.post-container .buttons {
+  min-width: 120px;
+  display: flex;
+  justify-content: space-around;
+}
+
 .post-container .buttons button {
   margin-left: 10px;
 }
@@ -24,6 +30,7 @@
   font-variant: normal;
   font-weight: 400;
   line-height: 20px;
+  padding-top: 4px;
 }
 
 .post-container button {
@@ -37,6 +44,40 @@
   font-variant: normal;
   font-weight: 700;
   line-height: 2rem;
+  background: none;
+}
+
+.post-container .input-title {
+  max-width: 620px;
+  width: 100%;
+  font-family: "Arial Black", "Arial Bold", Gadget, sans-serif;
+  font-size: 2rem;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+  line-height: 2rem;
+  border: none;
+  background: rgb(224, 222, 222);
+  padding: 0px;
+  height: 32px;
+}
+
+.post-container .textarea-contents {
+  margin-top: 0px;
+  max-width: 620px;
+  width: 100%;
+  font-family: "Courier New", Courier, "Lucida Sans Typewriter",
+    "Lucida Typewriter", monospace;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 20px;
+  border: none;
+  background: rgb(224, 222, 222);
+  margin-top: 4px;
+  padding-top: 0px;
+  padding-left: 0px;
 }
 
 .post-container button:hover {
