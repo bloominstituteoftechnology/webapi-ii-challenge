@@ -155,6 +155,10 @@ body {
     rgb(215, 215, 235),
     rgb(168, 168, 168)
   );
+  /*https://stackoverflow.com/a/25981719 
+    account for the width of the scroll bar
+  */
+  width: calc(100vw - 34px);
 }
 #root {
   height: 100%;
