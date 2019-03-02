@@ -1,3 +1,10 @@
+.post-card {
+}
+
+.post-card:hover {
+  cursor: pointer;
+}
+
 .post-card h2 {
   font-family: "Arial Black", "Arial Bold", Gadget, sans-serif;
   font-size: 1rem;

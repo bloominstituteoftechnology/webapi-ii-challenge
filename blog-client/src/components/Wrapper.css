@@ -1,9 +1,10 @@
 .wrapper {
-  border: 1px solid black;
   padding: 30px;
   height: 100%;
+  max-width: 1024px;
   display: grid;
   grid-gap: 30px;
   grid-template-columns: 1fr 6fr;
   grid-template-areas: "sidebar main";
+  margin: 0 auto;
 }

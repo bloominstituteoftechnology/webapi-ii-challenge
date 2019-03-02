@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./MainContent.css";
 import { PostsContainer, Post, PostForm } from "./index";
 
 const MainContent = props => {
-  console.log(props);
-
   return (
     <div className="main-content">
       {/* Need to pass set to posts container */}

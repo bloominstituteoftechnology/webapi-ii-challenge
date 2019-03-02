@@ -8,15 +8,19 @@ const Post = props => {
     fetch(`http://localhost:8000/api/posts/${props.postId}`)
       .then(response => response.json())
       .then(post => {
-        console.log(post[0]);
         setPost(post[0]);
       });
   }, []);
 
   return (
     <section className="post-container">
-      <button>Δ EDIT</button>
-      <h2>{post.title}</h2>
+      <div className="title">
+        <h2>{post.title}</h2>
+        <div className="buttons">
+          <button>Δ</button>
+          <button>X</button>
+        </div>
+      </div>
       <p>{post.contents}</p>
     </section>
   );
