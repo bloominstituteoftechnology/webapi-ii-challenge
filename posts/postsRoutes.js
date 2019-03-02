@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
             res.status(200).json(posts);
         }
         else {
-            res.status(400).json('There are no available posts')
+            res.status(404).json('There are no available posts')
         }
     }
     catch (e) {
@@ -55,7 +55,28 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.put('/:id', async (req, res) => {
+
+    const id = req.params.id;
+    const editedPost = req.body;
+    const updated = await db.update(id, editedPost);
+
+    try {
+        if (updated) {
+            res.status(201).json('Item was updated')
+        }
+        else {
+            res.status(404).json('This post is unavailable')
+        }
+    }
+    catch (e) {
+        res.status(500).json(e);
+    }
+
+});
+
 router.delete('/:id', async (req, res) => {
+
     const id = req.params.id;
     const removed = await db.remove(id);
     try {
