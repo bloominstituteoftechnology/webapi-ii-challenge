@@ -4,6 +4,7 @@
 }
 
 .post-container .buttons {
+  margin-bottom: auto;
   min-width: 120px;
   display: flex;
   justify-content: space-around;
