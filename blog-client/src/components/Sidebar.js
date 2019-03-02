@@ -4,7 +4,7 @@ import "./Sidebar.css";
 const Sidebar = () => {
   return (
     <aside className="sidebar">
-      <h1>Lambda Blog</h1>
+      <h1> λ Lambda Blog</h1>
       <nav>
         <ul>
           <li>Home</li>

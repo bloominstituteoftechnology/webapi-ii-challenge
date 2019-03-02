@@ -3,6 +3,7 @@
   padding: 30px;
   height: 100%;
   display: grid;
+  grid-gap: 30px;
   grid-template-columns: 1fr 6fr;
   grid-template-areas: "sidebar main";
 }
