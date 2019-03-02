@@ -122,29 +122,58 @@ router.delete("/:id", async ({ params: { id } }, res) => {
   //   );
 });
 
-router.put("/:id", ({ params: { id }, body }, res) => {
-  //if the body has all the correct values
-  !body.title || !body.contents
-    ? res.status(400).json({
+/*look I get that async await makes stuff look more like synchronous code
+but, to be completely honest I think it's kind of ugly
+because I feel using the try catches and the if else's add  more braces
+which, to me feels like more cognitive loan
+*/
+router.put("/:id", async ({ params: { id }, body }, res) => {
+  try {
+    //if the body doesn't have the correct values
+    if (!body.title || !body.contents) {
+      res.status(400).json({
         errorMessage: "Please provide title and contents for the post."
-      })
-    : db
-        .update(id, body)
-        .then(count => {
-          //if a post was updated
-          count > 0
-            ? db.findById(id).then(post => {
-                res.status(200).json(post);
-              })
-            : res.status(404).json({
-                message: "The post with the specified ID does not exist."
-              });
-        })
-        .catch(error =>
-          res
-            .status(500)
-            .json({ error: "The post information could not be modified." })
-        );
+      });
+    } else {
+      //returns how many were updated
+      const count = await db.update(id, body);
+      if (count) {
+        const post = await db.findById(id);
+        res.status(200).json(post);
+      } else {
+        res.status(404).json({
+          message: "The post with the specified ID does not exist."
+        });
+      }
+    }
+  } catch (e) {
+    res
+      .status(500)
+      .json({ error: "The post information could not be modified." });
+  }
+
+  //if the body has all the correct values
+  // !body.title || !body.contents
+  //   ? res.status(400).json({
+  //       errorMessage: "Please provide title and contents for the post."
+  //     })
+  //   : db
+  //       .update(id, body)
+  //       .then(count => {
+  //         //if a post was updated
+  //         count > 0
+  //           ? db.findById(id).then(post => {
+  //               res.status(200).json(post);
+  //             })
+  //           : res.status(404).json({
+  //               message: "The post with the specified ID does not exist."
+  //             });
+  //       })
+  //       .catch(error =>
+  //         res
+  //           .status(500)
+  //           .json({ error: "The post information could not be modified." })
+  //       );
 });
 
 module.exports = router;
