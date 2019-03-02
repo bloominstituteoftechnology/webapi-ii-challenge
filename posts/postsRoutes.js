@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
             res.status(200).json(posts);
         }
         else {
-            res.json('There are no available posts')
+            res.status(400).json('There are no available posts')
         }
     }
     catch (e) {
@@ -23,6 +23,7 @@ router.post('/', async (req, res) => {
 
     const newPost = req.body;
     const post = await db.insert(newPost);
+
     try {
         if (newPost) {
             res.status(201).json('Item added');    
@@ -39,18 +40,36 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
 
     const post = await db.findById(req.params.id);
+    
     try {
-        if (post) {
+
+        if (post.length > 0) {
             res.status(200).json(post);
         }
         else {
-            res.json('This post unavailable');
+            res.status(400).json('This post is unavailable');
         }
     }
     catch (e) {
         res.status(500).json(e);
     }
 });
+
+router.delete('/:id', async (req, res) => {
+    const id = req.params.id;
+    const removed = await db.remove(id);
+    try {
+        if (removed) {
+            res.status(200).json('Item removed')
+        }
+        else {
+            res.status(400).json('Post unavailable.')
+        }
+    } 
+    catch (e) {
+        res.status(500).json(e);
+    }
+})
 
 
 
