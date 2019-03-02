@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./Post.css";
 
 const Post = props => {
   const [post, setPost] = useState({});
@@ -14,6 +15,7 @@ const Post = props => {
 
   return (
     <section className="post-container">
+      <button>Δ EDIT</button>
       <h2>{post.title}</h2>
       <p>{post.contents}</p>
     </section>
