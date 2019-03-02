@@ -19,10 +19,26 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.post('/', async (req, res) => {
+
+    const newPost = req.body;
+    const post = await db.insert(newPost);
+    try {
+        if (newPost) {
+            res.status(201).json('Item added');    
+        }
+        else {
+            res.json('Please enter both the title and contents');
+        }
+    }
+    catch (e) {
+        res.status(500).json(e);
+    }
+})
+
 router.get('/:id', async (req, res) => {
 
     const post = await db.findById(req.params.id);
-    console.log(req.params.id);
     try {
         if (post) {
             res.status(200).json(post);
@@ -35,6 +51,7 @@ router.get('/:id', async (req, res) => {
         res.status(500).json(e);
     }
 });
+
 
 
 module.exports = router;
