@@ -9,10 +9,13 @@
   },
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.4",
     "knex": "^0.16.3",
     "sqlite3": "^4.0.6"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"
-  }
+  },
+  "repository": "https://github.com/Kseniyapl/Node-Express-Lab.git",
+  "author": "Kseniya Platonava <ksu2008@gmail.com>"
 }
