@@ -1,14 +1,7 @@
-const express = require("express");
-
-const db = require('./data/db.js');
-
-const server = express();
+const server = require('./server.js');
 
 const PORT = 8000;
 
-server.use(express.json());
-
-
 server.listen(PORT, () => {
-  console.log(`\n*** Server Running on http://localhost:${PORT} ***\n`)
+  console.log(`\n*** Server Running on http://localhost:${PORT} ***\n`);
 });
