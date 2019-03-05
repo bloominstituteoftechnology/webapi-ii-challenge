@@ -54,19 +54,23 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-//PUT
+//PUT (Update)
 
 
 router.put('/:id', async (req, res) => {
-
-  const { title, contents } = req.body
+  const { title, contents } = req.body;
 
   try {
+    if (title && contents) {
     const post = await Posts.update(req.params.id, { title, contents });
-    if (post) {
-      res.status(200).json(post);
-    } else {
-      res.status(404).json({ message: "Please provide title and contents for the post." });
+      if (post) {
+        res.status(200).json(post);
+      } else {
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
+      }
+    }
+    else{
+      res.status(400).json({error: "Please provide title and contents for the post." });
     }
   } catch (error) {
     // log error to database
@@ -79,24 +83,20 @@ router.put('/:id', async (req, res) => {
 
 //POST
 
-// router.post('/:id/messages', async (req, res) => {
-//   const newMessage = req.body;
-//   newMessage.hub_id = req.params.id;
+router.post('/', async (req, res) => {
+  const { title, contents } = req.body;
 
-//   try {
-//     const hub = await Hubs.findById(req.params.id);
-
-//     if (hub) {
-//       const message = await Hubs.addMessage(newMessage);
-//       res.status(201).json(message);
-//     } else {
-//       res.status(400).json({err: 'invalid hub id'});
-//     }
-//   } catch (e) {
-//     res.status(500).json({err: e});
-//   }
-
-// });
+  try {
+    if (title && contents) {
+      const post = await Posts.insert({title, contents});
+      res.status(201).json(post);
+    } else {
+      res.status(400).json({error: "Please provide title and contents for the post."});
+    }
+  } catch (err) {
+    res.status(500).json({error: "There was an error while saving the post to the database."});
+  }
+});
 
 
 
