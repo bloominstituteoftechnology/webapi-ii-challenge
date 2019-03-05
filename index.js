@@ -12,8 +12,13 @@ server.get('/api/posts', (req, res) => {
     })
     .catch(err => res.send(err));
 })
+
 server.get('/api/posts/:id', (req, res) => {
-    res.send(req.params.id);
+    const id = req.params.id;
+    db.
+    findById(id)
+    .then()
+    .catch()
 });
 server.post('/api/posts', (req, res) => {
     const {title, contents} = req.body;
