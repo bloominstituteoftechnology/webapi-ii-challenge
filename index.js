@@ -26,6 +26,17 @@ server.post('/api/posts', (req, res) => {
         })
 });
 
+// READ
+server.get('/api/posts', (req, res) => {
+    db.find()
+        .then(posts => {
+            res.status(200).json(posts)
+        })
+        .catch(err => {
+            res.status(500).json({ error: "The posts information could not be retrieved." })
+        })
+});
+
 
 // Run Server
 server.listen(3000, () => {
