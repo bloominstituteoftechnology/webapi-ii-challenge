@@ -1,7 +1,7 @@
 const express = require('express');
 
 
-// const postRouter = require('./routes/post-router')
+const postRouter = require('./routes/post-router')
 
 const server = express();
 
@@ -14,7 +14,7 @@ server.get('/', (req, res) => {
   `);
 });
 
-// server.use('/api/posts',postRouter)
+server.use('/api/posts',postRouter)
 
 
 module.exports = server;
