@@ -6,6 +6,7 @@ const postRouter = require('./routes/post-router')
 const server = express();
 
 server.use(express.json());
+// server.use(CORS());
 
 server.get('/', (req, res) => {
   res.send(`
@@ -14,7 +15,7 @@ server.get('/', (req, res) => {
   `);
 });
 
-server.use('/api/posts',postRouter)
+server.use('/api/posts', postRouter)
 
 
 module.exports = server;
