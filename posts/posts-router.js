@@ -40,7 +40,7 @@ router.get("/:id", (req, res) => {
   const { id } = req.params;
   db.findById(id)
     .then(post => {
-      if (post) {
+      if (post[0]) {
         res.status(200).json(post);
       } else {
         res
