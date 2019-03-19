@@ -10,7 +10,17 @@ router.post("/", (req, res) => {
   if (post.title && post.contents) {
     db.insert(post)
       .then(post => {
-        res.status(201).json(post);
+          console.log(post)
+          db.findById(post.id)
+          .then(post => {
+            if (post[0]) {
+              res.status(200).json(post);
+            } else {
+              res
+                .status(404)
+                .json({ message: "The post with the specified ID does not exist." });
+            }
+          })
       })
       .catch(error => {
         res.status(500).json({
@@ -23,6 +33,8 @@ router.post("/", (req, res) => {
     });
   }
 });
+
+
 
 router.get("/", async (req, res) => {
   try {
