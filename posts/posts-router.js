@@ -10,7 +10,6 @@ router.post("/", (req, res) => {
   if (post.title && post.contents) {
     db.insert(post)
       .then(post => {
-          console.log(post)
           db.findById(post.id)
           .then(post => {
             if (post[0]) {
