@@ -11,20 +11,62 @@ function Post({ post, id, deletePost }) {
   );
 }
 
+function FormAddOrUpdate({ addPost }) {
+  const [post, setPost] = useState("");
+  const [content, setContent] = useState("");
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    addPost({
+      "title": post,
+      "contents": content
+    });
+    setPost("");
+    setContent("");
+  };
+
+  return (
+    <div className="add-post-form">
+      <h2>Add Post:</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="title"
+          placeholder="Post title"
+          value={post}
+          onChange={e => setPost(e.target.value)}
+        />
+        <input
+          type="text"
+          name="content"
+          placeholder="contents"
+          value={content}
+          onChange={e => setContent(e.target.value)}
+        />
+        {/* <input
+          type="number"
+          name="id"
+          placeholder="id of post to edit"
+          value={id}
+          onChange={e => setId(e.target.value)}
+        /> */}
+        <button>{"Add Post"}</button>
+      </form>
+    </div>
+  );
+}
+
 export default function App() {
   const [posts, setPosts] = useState([]);
 
   const deletePost = id => {
     axios
-    .delete(`http://localhost:9000/api/posts/${id}`)
-  
-    .catch(err => {
-      console.log(err)
-    })
-    // const newPosts = [...posts];
-    // newPosts.splice(id, 1);
-    // setPosts(newPosts);
-  }
+      .delete(`http://localhost:9000/api/posts/${id}`)
+
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     axios
@@ -38,12 +80,24 @@ export default function App() {
       });
   });
 
+  const addPost = post => {
+    axios.post("http://localhost:9000/api/posts", post)
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  };
+
   return (
     <div className="app">
       <h1>Posts:</h1>
-      {posts.map((post) => (
+      
+      {posts.map(post => (
         <Post post={post} id={post.id} key={post.id} deletePost={deletePost} />
       ))}
+      <FormAddOrUpdate addPost={addPost} />
     </div>
   );
 }
