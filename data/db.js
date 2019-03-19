@@ -15,13 +15,17 @@ function find() {
 }
 
 function findById(id) {
-  return db('posts').where({ id: Number(id) });
+  return db('posts').where({
+    id: Number(id)
+  });
 }
 
 function insert(post) {
   return db('posts')
     .insert(post)
-    .then(ids => ({ id: ids[0] }));
+    .then(ids => ({
+      id: ids[0]
+    }));
 }
 
 function update(id, post) {
