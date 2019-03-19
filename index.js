@@ -23,7 +23,16 @@ server.delete('/api/posts/:id', (req, res) => {
 	.catch(err => res.status(500).json( {messege: 'user could not be deleted'} ))
 });
 
-
+server.post('/api/posts/', (req, res) => {
+	const { title, contents } = req.body;
+	if (!title || !contents) {
+		sendUserError(400, `need title & contents`, res);
+		return;
+	} else {
+	db.insert({ title, contents }).then(user => res.status(200).json({ messege: 'user added' }))
+	.catch(err => res.status(500).json({ messege: `user could not be added` }));
+}
+});
 
 const port = 4000;
 
