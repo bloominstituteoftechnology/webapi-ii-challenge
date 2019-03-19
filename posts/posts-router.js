@@ -17,7 +17,6 @@ router.get("/", (req, res) => {
     });
 });
 
-
 // GET POSTS w/ Specific ID
 router.get("/:id", (req, res) => {
   const { id } = req.params;
@@ -37,7 +36,6 @@ router.get("/:id", (req, res) => {
       });
     });
 });
-
 
 // POST
 router.post("/", (req, res) => {
@@ -60,6 +58,34 @@ router.post("/", (req, res) => {
   }
 });
 
+// PUT
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+
+  db.findById(id).then(post => {
+    if (!post) {
+      res
+        .status(404)
+        .json({ message: "The post with the specified ID does not exist." });
+    }
+    if (!changes.title || !changes.contents) {
+      res.status(400).json({
+        errorMessage: "Please provide title and contents for the post."
+      });
+    }
+
+    db.update(id, changes)
+      .then(result => {
+        res.status(200).json({ result });
+      })
+      .catch(error => {
+        res.status(500).json({
+          error: "The post information could not be modified."
+        });
+      });
+  });
+});
 
 
 
