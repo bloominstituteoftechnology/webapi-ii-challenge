@@ -55,4 +55,21 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  db.remove(id)
+    .then(id => {
+      if (id) {
+        res.status(200).json(id);
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error: "The post could not be removed" });
+    });
+});
+
 module.exports = router;
