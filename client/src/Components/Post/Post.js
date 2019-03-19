@@ -10,7 +10,7 @@ class Post extends React.Component {
 
   componentDidMount() {
     axios
-      .get(`http://localhost:5000/api/posts/${this.props.match.params.id}`)
+      .get(`http://localhost:4000/api/posts/${this.props.match.params.id}`)
       .then(response => {
         console.log(response);
         this.setState({
