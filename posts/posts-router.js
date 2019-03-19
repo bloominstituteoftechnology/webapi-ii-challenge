@@ -24,4 +24,16 @@ router.post("/", (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const posts = await db.find(req.body);
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "The posts information could not be retrieved."
+    });
+  }
+});
+
 module.exports = router;
