@@ -74,18 +74,18 @@ export default function App() {
       .then(res => {
         setPosts(res.data);
       })
-      .catch(err => {
+      .catch(err => { 
         setPosts({ error: err });
         console.log(err);
       });
-  });
+  }, []);
 
   const addPost = post => {
     axios.post("http://localhost:9000/api/posts", post)
     .then(res => {
       console.log(res);
     })
-    .catch(err => {
+    .catch(err => { 
       console.log(err)
     })
   };
