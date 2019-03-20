@@ -41,7 +41,7 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   const post = req.body;
 
-  if (!post.title || !post.contents) {
+  if (!post.title && !post.contents) {
     res.status(400).json({
       errorMessage: "Please provide title and contents for the post."
     });
@@ -69,7 +69,7 @@ router.put("/:id", (req, res) => {
         .status(404)
         .json({ message: "The post with the specified ID does not exist." });
     }
-    if (!changes.title || !changes.contents) {
+    if (!changes.title && !changes.contents) {
       res.status(400).json({
         errorMessage: "Please provide title and contents for the post."
       });
