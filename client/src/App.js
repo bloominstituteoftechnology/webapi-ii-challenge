@@ -58,32 +58,39 @@ function FormAddOrUpdate({ addPost }) {
 
 export default function App() {
   const [posts, setPosts] = useState([]);
+  
 
   const deletePost = id => {
     axios
       .delete(`http://localhost:9000/api/posts/${id}`)
-
+    .then(res => {
+      fetchData();
+    })
       .catch(err => {
         console.log(err);
       });
   };
 
-  useEffect(() => {
+  const fetchData = () => {
     axios
-      .get("http://localhost:9000/api/posts")
-      .then(res => {
-        setPosts(res.data);
-      })
-      .catch(err => { 
-        setPosts({ error: err });
-        console.log(err);
-      });
+    .get("http://localhost:9000/api/posts")
+    .then(res => {
+      setPosts(res.data);
+    })
+    .catch(err => { 
+      setPosts({ error: err });
+      console.log(err);
+    });
+  }
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const addPost = post => {
     axios.post("http://localhost:9000/api/posts", post)
     .then(res => {
-      console.log(res);
+      fetchData();
     })
     .catch(err => { 
       console.log(err)
