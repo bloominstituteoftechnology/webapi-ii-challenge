@@ -18,8 +18,8 @@ function FormAddOrUpdate({ addPost }) {
   const handleSubmit = e => {
     e.preventDefault();
     addPost({
-      "title": post,
-      "contents": content
+      title: post,
+      contents: content
     });
     setPost("");
     setContent("");
@@ -58,14 +58,13 @@ function FormAddOrUpdate({ addPost }) {
 
 export default function App() {
   const [posts, setPosts] = useState([]);
-  
 
   const deletePost = id => {
     axios
       .delete(`http://localhost:9000/api/posts/${id}`)
-    .then(res => {
-      fetchData();
-    })
+      .then(res => {
+        fetchData();
+      })
       .catch(err => {
         console.log(err);
       });
@@ -73,34 +72,35 @@ export default function App() {
 
   const fetchData = () => {
     axios
-    .get("http://localhost:9000/api/posts")
-    .then(res => {
-      setPosts(res.data);
-    })
-    .catch(err => { 
-      setPosts({ error: err });
-      console.log(err);
-    });
-  }
+      .get("http://localhost:9000/api/posts")
+      .then(res => {
+        setPosts(res.data);
+      })
+      .catch(err => {
+        setPosts({ error: err });
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const addPost = post => {
-    axios.post("http://localhost:9000/api/posts", post)
-    .then(res => {
-      fetchData();
-    })
-    .catch(err => { 
-      console.log(err)
-    })
+    axios
+      .post("http://localhost:9000/api/posts", post)
+      .then(res => {
+        fetchData();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
     <div className="app">
       <h1>Posts:</h1>
-      
+
       {posts.map(post => (
         <Post post={post} id={post.id} key={post.id} deletePost={deletePost} />
       ))}
