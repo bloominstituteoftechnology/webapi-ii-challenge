@@ -60,93 +60,80 @@ Server.js already has `db.js` required and ready for you to use when building yo
 
 Configure the API to respond to the following routes:
 
-| Method | Endpoint       | Description                                                                                                                       |
-| ------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| POST   | /api/posts     | Creates a post using the information sent inside the `request body`.                                                              |
-| GET    | /api/posts     | Returns an array of all the post objects contained in the database.                                                               |
-| GET    | /api/posts/:id | Returns the post object with the specified id.                                                                                    |
-| DELETE | /api/posts/:id | Removes the post with the specified id and returns the deleted post.                                                              |
-| PUT    | /api/posts/:id | Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**. |
+ Method  Endpoint        Description                                                                                                                       
+ ------  --------------  ---------------------------------------------------------------------------------------------------------------------------------
+ - [ ] POST      /api/posts   Creates a post using the information sent inside the `request body`.                                                              
+ - [ ] GET      /api/posts    Returns an array of all the post objects contained in the database.                                                               
+ - [ ] GET     /api/posts/:id Returns the post object with the specified id.                                                                                    
+ - [ ] DELETE /api/posts/:id  Removes the post with the specified id and returns the deleted post.                                                              
+ - [ ] PUT   /api/posts/:id   Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**.
 
 #### Endpoint Specifications
 
 When the client makes a `POST` request to `/api/posts`:
+- [ ] If the request body is missing the `title` or `contents` property:
+  - [ ] cancel the request.
+  - [ ] respond with HTTP status code `400` (Bad Request).
+  - [ ] return the following JSON response: `{ errorMessage: "Please provide title and contents for the post." }`.
 
-- If the request body is missing the `title` or `contents` property:
+- [ ] If the information about the _post_ is valid:
+  - [ ] save the new _post_ the the database.
+  - [ ] return HTTP status code `201` (Created).
+  - [ ] return the newly created _post_.
 
-  - cancel the request.
-  - respond with HTTP status code `400` (Bad Request).
-  - return the following JSON response: `{ errorMessage: "Please provide title and contents for the post." }`.
-
-- If the information about the _post_ is valid:
-
-  - save the new _post_ the the database.
-  - return HTTP status code `201` (Created).
-  - return the newly created _post_.
-
-- If there's an error while saving the _post_:
-  - cancel the request.
-  - respond with HTTP status code `500` (Server Error).
-  - return the following JSON object: `{ error: "There was an error while saving the post to the database" }`.
+- [ ] If there's an error while saving the _post_:
+  - [ ] cancel the request.
+  - [ ] respond with HTTP status code `500` (Server Error).
+  - [ ] return the following JSON object: `{ error: "There was an error while saving the post to the database" }`.
 
 When the client makes a `GET` request to `/api/posts`:
-
-- If there's an error in retrieving the _posts_ from the database:
-  - cancel the request.
-  - respond with HTTP status code `500`.
-  - return the following JSON object: `{ error: "The posts information could not be retrieved." }`.
+- [ ] If there's an error in retrieving the _posts_ from the database:
+  - [ ] cancel the request.
+  - [ ] respond with HTTP status code `500`.
+  - [ ] return the following JSON object: `{ error: "The posts information could not be retrieved." }`.
 
 When the client makes a `GET` request to `/api/posts/:id`:
+- [ ] If the _post_ with the specified `id` is not found:
+  - [ ] return HTTP status code `404` (Not Found).
+  - [ ] return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
 
-- If the _post_ with the specified `id` is not found:
-
-  - return HTTP status code `404` (Not Found).
-  - return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
-
-- If there's an error in retrieving the _post_ from the database:
-  - cancel the request.
-  - respond with HTTP status code `500`.
-  - return the following JSON object: `{ error: "The post information could not be retrieved." }`.
+- [ ] If there's an error in retrieving the _post_ from the database:
+  - [ ] cancel the request.
+  - [ ] respond with HTTP status code `500`.
+  - [ ] return the following JSON object: `{ error: "The post information could not be retrieved." }`.
 
 When the client makes a `DELETE` request to `/api/posts/:id`:
+- [ ] If the _post_ with the specified `id` is not found:
+  - [ ] return HTTP status code `404` (Not Found).
+  - [ ] return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
 
-- If the _post_ with the specified `id` is not found:
-
-  - return HTTP status code `404` (Not Found).
-  - return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
-
-- If there's an error in removing the _post_ from the database:
-  - cancel the request.
-  - respond with HTTP status code `500`.
-  - return the following JSON object: `{ error: "The post could not be removed" }`.
+- [ ] If there's an error in removing the _post_ from the database:
+  - [ ] cancel the request.
+  - [ ] respond with HTTP status code `500`.
+  - [ ] return the following JSON object: `{ error: "The post could not be removed" }`.
 
 When the client makes a `PUT` request to `/api/posts/:id`:
+- [ ] If the _post_ with the specified `id` is not found:
+  - [ ] return HTTP status code `404` (Not Found).
+  - [ ] return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
 
-- If the _post_ with the specified `id` is not found:
+- [ ] If the request body is missing the `title` or `contents` property:
+  - [ ] cancel the request.
+  - [ ] respond with HTTP status code `400` (Bad Request).
+  - [ ] return the following JSON response: `{ errorMessage: "Please provide title and contents for the post." }`.
 
-  - return HTTP status code `404` (Not Found).
-  - return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
+- [ ] If there's an error when updating the _post_:
+  - [ ] cancel the request.
+  - [ ] respond with HTTP status code `500`.
+  - [ ] return the following JSON object: `{ error: "The post information could not be modified." }`.
 
-- If the request body is missing the `title` or `contents` property:
-
-  - cancel the request.
-  - respond with HTTP status code `400` (Bad Request).
-  - return the following JSON response: `{ errorMessage: "Please provide title and contents for the post." }`.
-
-- If there's an error when updating the _post_:
-
-  - cancel the request.
-  - respond with HTTP status code `500`.
-  - return the following JSON object: `{ error: "The post information could not be modified." }`.
-
-- If the post is found and the new information is valid:
-
-  - update the post document in the database using the new information sent in the `reques body`.
-  - return HTTP status code `200` (OK).
-  - return the newly updated _post_.
+- [ ] If the post is found and the new information is valid:
+  - [ ] update the post document in the database using the new information sent in the `reques body`.
+  - [ ] return HTTP status code `200` (OK).
+  - [ ] return the newly updated _post_.
 
 ## Stretch Problems
 
-- Use `create-react-app` to create an application inside the root folder, name it `client`.
-- From the React application connect to the `/api/posts` endpoint in the API and show the list of posts.
-- Style the list of posts however you see fit.
+- * Use `create-react-app` to create an application inside the root folder, name it `client`.
+- * From the React application connect to the `/api/posts` endpoint in the API and show the list of posts.
+- * Style the list of posts however you see fit.
