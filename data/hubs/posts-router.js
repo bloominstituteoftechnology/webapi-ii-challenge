@@ -10,8 +10,8 @@ const router = express.Router();
 //get all hubs
 router.get('/', async (req, res) => {
     try {
-      const hubs = await Hubs.find(req.query);
-      res.status(200).json(hubs);
+      const posts = await find(req.query);
+      res.status(200).json(posts);
     } catch (error) {
       // log error to database
       console.log(error);
@@ -25,10 +25,10 @@ router.get('/', async (req, res) => {
   //get hubs by id
   router.get('/:id', async (req, res) => {
     try {
-      const hub = await findById(req.params.id);
+      const post = await findById(req.params.id);
   
-      if (hub) {
-        res.status(200).json(hub);
+      if (post) {
+        res.status(200).json(post);
       } else {
         res.status(404).json({ message: 'The post with the specified ID does not exist.' });
       }
@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
   //add a hub
   router.post('/', async (req, res) => {
     try {
-      const hub = await Hubs.add(req.body);
+      const post = await add(req.body);
       if(){
 
       } //add more
@@ -64,7 +64,7 @@ router.get('/', async (req, res) => {
   //delete a hub
   router.delete('/:id', async (req, res) => {
     try {
-      const count = await Hubs.remove(req.params.id);
+      const count = await remove(req.params.id);
       if (count > 0) {
         res.status(200).json({ message: 'Yay' });
       } else {
@@ -82,9 +82,9 @@ router.get('/', async (req, res) => {
   //edit a hub
   router.put('/:id', async (req, res) => {
     try {
-      const hub = await Hubs.update(req.params.id, req.body);
-      if (hub) {
-        res.status(200).json(hub);
+      const post = await update(req.params.id, req.body);
+      if (post) {
+        res.status(200).json(post);
       } else {
         res.status(404).json({ message: 'The post with the specified ID does not exist.' });
       }
