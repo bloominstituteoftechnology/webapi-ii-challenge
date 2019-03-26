@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
       // log error to database
       console.log(error);
       res.status(500).json({
-        message: 'Error retrieving the hubs',
+        message: 'The posts information could not be retrieved.',
       });
     }
   });
@@ -25,18 +25,18 @@ router.get('/', async (req, res) => {
   //get hubs by id
   router.get('/:id', async (req, res) => {
     try {
-      const hub = await Hubs.findById(req.params.id);
+      const hub = await findById(req.params.id);
   
       if (hub) {
         res.status(200).json(hub);
       } else {
-        res.status(404).json({ message: 'Hub not found' });
+        res.status(404).json({ message: 'The post with the specified ID does not exist.' });
       }
     } catch (error) {
       // log error to database
       console.log(error);
       res.status(500).json({
-        message: 'Error retrieving the hub',
+        message: 'The post information could not be retrieved.',
       });
     }
   });
@@ -45,12 +45,18 @@ router.get('/', async (req, res) => {
   router.post('/', async (req, res) => {
     try {
       const hub = await Hubs.add(req.body);
+      if(){
+
+      } //add more
+      else{
+          
+      }
       res.status(201).json(hub);
     } catch (error) {
       // log error to database
       console.log(error);
       res.status(500).json({
-        message: 'Error adding the hub',
+        message: 'There was an error while saving the post to the database',
       });
     }
   });
@@ -68,7 +74,7 @@ router.get('/', async (req, res) => {
       // log error to database
       console.log(error);
       res.status(500).json({
-        message: 'Error removing the hub',
+        message: 'The post could not be removed',
       });
     }
   });
@@ -80,44 +86,19 @@ router.get('/', async (req, res) => {
       if (hub) {
         res.status(200).json(hub);
       } else {
-        res.status(404).json({ message: 'The hub could not be found' });
+        res.status(404).json({ message: 'The post with the specified ID does not exist.' });
       }
     } catch (error) {
       // log error to database
       console.log(error);
       res.status(500).json({
-        message: 'Error updating the hub',
+        message: 'The post information could not be modified.',
       });
     }
   });
 
   //Sub Routes
 
-  //add endpoint that returns all messages for a hub
-  router.get('/:id/messages', async (req, res) =>{
-
-      try{
-          const response = await Hubs.findHubMessages(req.params.id)
-          if (response && response.length > 0){
-              res.status(200).json(response)
-          }else{
-            res.status(404).json({message: 'No message for the hub'})
-          }
-      }catch(error){
-          res.status(500).json({errorMessage: `Error retrieving messages: ${error}`})
-      }
-  })
-
-
-  //add endpoint that adds new message for a hub
-  router.post('/:id/messages', async(req,res) =>{
-      const messageInfo = {...req.body, hub_id: req.params.id}
-      try{
-          const response = await Hubs.addMessage(messageInfo)
-          res.status(201).json(response)
-      }catch(error){
-          res.status(500).json({errorMessage: `Error adding meassage: ${error}`})
-      }
-  })
+  
 
   module.exports = router;
