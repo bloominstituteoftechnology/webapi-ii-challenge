@@ -1,6 +1,6 @@
 const express = require('express');
 
-const postRouter = require('./hubs/hubs-router.js');
+const postRouter = require('./data/hubs/posts-router.js');
 
 const server = express();
 

@@ -2,7 +2,7 @@
 const express = require ('express')
 
 //import hubs db helper functions
-const Hubs = require('../db.js');
+const Posts = require('../db.js');
 
 //initialize router
 const router = express.Router();
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
   //get hubs by id
   router.get('/:id', async (req, res) => {
     try {
-      const post = await findById(req.params.id);
+      const post = await Posts.findById(req.params.id);
   
       if (post) {
         res.status(200).json(post);
@@ -45,13 +45,13 @@ router.get('/', async (req, res) => {
   router.post('/', async (req, res) => {
     try {
       const post = await add(req.body);
-      if(){
-
-      } //add more
-      else{
-          
+      if(!post.title || !post.content){
+        res.status(400).json({errorMessage: "Please provide title and contents for the post. "})
       }
-      res.status(201).json(hub);
+      Posts.insert({post}).then(post =>{
+        res.status(201).json(post)
+      }) //add more
+      
     } catch (error) {
       // log error to database
       console.log(error);
@@ -64,7 +64,7 @@ router.get('/', async (req, res) => {
   //delete a hub
   router.delete('/:id', async (req, res) => {
     try {
-      const count = await remove(req.params.id);
+      const count = await Posts.remove(req.params.id);
       if (count > 0) {
         res.status(200).json({ message: 'Yay' });
       } else {
@@ -82,7 +82,7 @@ router.get('/', async (req, res) => {
   //edit a hub
   router.put('/:id', async (req, res) => {
     try {
-      const post = await update(req.params.id, req.body);
+      const post = await Posts.update(req.params.id, req.body);
       if (post) {
         res.status(200).json(post);
       } else {
