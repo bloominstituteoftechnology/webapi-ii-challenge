@@ -1,5 +1,5 @@
 const express = require('express');
-
+const cors = require('cors');
 const neonRouter = require('./neon/neon-router.js');
 
 const server = express();
