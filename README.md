@@ -2,7 +2,7 @@
 
 ## Topics:
 
-* Node.js and Express.
+* Node.js and Express
 * HTTP methods and status codes.
 * Reading Request data from body, URL parameters and query string parameters.
 * API design and development.
