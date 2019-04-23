@@ -32,9 +32,14 @@ server.get("/api/posts/:id",(req,res)=>{
 })
 //-------------------------------------
 server.post("/api/posts",(req,res)=>{
-    db.insert()
-    .then()
-    .catch()
+    const userPost = req.body;
+    db.insert(userPost)
+    .then(users=>{
+        res.status(201).json(users)
+    })
+    .catch(err=>{
+        res.status(400).json({ errorMessage: "Please provide name and bio for the user." })
+    })
 })
 //-------------------------------------
 server.delete("/api/posts/:id",(req,res)=>{
