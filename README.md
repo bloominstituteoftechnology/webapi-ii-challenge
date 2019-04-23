@@ -13,8 +13,11 @@ Use `Node.js` and `Express` to build an API that performs _CRUD_ operations on `
 ### Project Setup
 
 - **Fork** and **Clone** this repository.
+DONE
 - **CD into the folder** where you cloned the repository.
+DONE
 - Type `yarn` or `npm install` to download all dependencies.
+DONE
 - To start the server, type `yarn server` or `npm run server` from the root folder (where the _package.json_ file is). The server is configured to restart automatically as you make changes.
 
 ### Database Persistence Helpers
