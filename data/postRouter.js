@@ -46,7 +46,7 @@ router.delete("/:id",(req,res)=>{
         if(!message){
             res.status(404).json({ message: "The post with the specified ID does not exist." })
         }else{
-            res.status(204).json(message)
+            res.status(204).end()
         }
     })
     .catch(err=>{
@@ -59,7 +59,7 @@ router.put("/:id", (req, res) => {
     const userText = (req.body)
     db.update(userID,userText)
     .then(user => {
-        if (user) {
+        if (userID && userText) {
         res.status(200).json(user);
         } else {
         res.status(404).json({ message: "The user with the specified ID does not exist." });
