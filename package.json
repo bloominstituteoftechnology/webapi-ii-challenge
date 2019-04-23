@@ -7,7 +7,6 @@
   "scripts": {
     "server": "nodemon index.js"
   },
-  "license": "ISC",
   "dependencies": {
     "knex": "^0.16.5",
     "sqlite3": "^4.0.6"
