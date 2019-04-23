@@ -19,7 +19,7 @@ DONE
 - Type `yarn` or `npm install` to download all dependencies.
 DONE
 - To start the server, type `yarn server` or `npm run server` from the root folder (where the _package.json_ file is). The server is configured to restart automatically as you make changes.
-
+DONE
 ### Database Persistence Helpers
 
 The `data` folder contains a database populated with test `posts`.
