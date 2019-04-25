@@ -1,8 +1,8 @@
 const evnReader = require("dotenv")
 evnReader.config(); //reads the .env file and merges it into process.env
 
-
 const server = require("./server")
+
 const port = process.env.PORT || 4000;
 
 server.listen(port, () => {

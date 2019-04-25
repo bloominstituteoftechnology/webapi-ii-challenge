@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/",(req,res)=>{
     db.find()
     .then(message=>{
-        res.status(200).json(message)
+        res.status(200).json({messageOfTheDay:process.env.MOTD,message})
 })
     .catch(err=>{
         res.status(500).json({ error: "The posts information could not be retrieved." })
