@@ -1,5 +1,6 @@
 const server = require ('./server')
 
-server.listen(4000 , () =>{
+const PORT = process.env.PORT || 4000
+server.listen(PORT , () =>{
     console.log( ' we in here on port 4000 ')
 })
