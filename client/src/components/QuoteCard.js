@@ -9,7 +9,7 @@ const QuoteCard = (props) => {
 			<Update changeAnswer={props.changeAnswer} info={props.info} />
 			<button
 				onClick={(e) => {
-					e.preventDefault();
+					// e.preventDefault();
 					props.deleteQuote(props.info.id);
 				}}
 			>

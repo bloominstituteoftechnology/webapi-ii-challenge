@@ -4,6 +4,7 @@ import axios from 'axios';
 import './App.css';
 
 import QuoteCard from './components/QuoteCard';
+import Add from './components/Add';
 
 class App extends React.Component {
 	constructor() {
@@ -26,6 +27,10 @@ class App extends React.Component {
 			});
 	}
 
+	// componentDidUpdate(prevState) {
+	// 	if(this.state.quoteInfo.length !=== )
+	// }
+
 	changeAnswer = (answer, id) => {
 		// console.log('changeAnser()', answer, id);
 		axios
@@ -38,12 +43,23 @@ class App extends React.Component {
 			});
 	};
 
+	add = (quote) => {
+		axios
+			.post(`http://localhost:5000/api/posts`, quote)
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				alert(err);
+			});
+	};
+
 	deleteQuote = (id) => {
 		console.log(id);
-		// axios
-		// 	.delete(`http://localhost:5000/api/posts/${id}`)
-		// 	.then((res) => console.log(res))
-		// 	.catch((err) => alert(err));
+		axios
+			.delete(`http://localhost:5000/api/posts/${id}`)
+			.then((res) => this.componentDidMount())
+			.catch((err) => alert(err));
 	};
 
 	render() {
@@ -53,9 +69,12 @@ class App extends React.Component {
 		return (
 			<div className="App">
 				<h1>Lord of the Rings - Quotes</h1>
-				{this.state.quoteInfo.map((obj) => (
-					<QuoteCard info={obj} changeAnswer={this.changeAnswer} deleteQuote={this.deleteQuote} />
-				))}
+				<Add add={this.add} />
+				<div className="cards-wrapper">
+					{this.state.quoteInfo.map((obj) => (
+						<QuoteCard info={obj} changeAnswer={this.changeAnswer} deleteQuote={this.deleteQuote} />
+					))}
+				</div>
 			</div>
 		);
 	}
