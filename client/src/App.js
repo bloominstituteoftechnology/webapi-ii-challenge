@@ -39,10 +39,11 @@ class App extends React.Component {
 	};
 
 	deleteQuote = (id) => {
-		axios
-			.delete(`http://localhost:5000/api/posts/${id}`)
-			.then((res) => console.log(res))
-			.catch((err) => alert(err));
+		console.log(id);
+		// axios
+		// 	.delete(`http://localhost:5000/api/posts/${id}`)
+		// 	.then((res) => console.log(res))
+		// 	.catch((err) => alert(err));
 	};
 
 	render() {
