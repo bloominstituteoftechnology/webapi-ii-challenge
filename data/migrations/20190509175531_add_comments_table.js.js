@@ -1,8 +1,21 @@
+exports.up = function(knex) {
+  return knex.schema.createTable('comments', tbl => {
+      tbl.increments();
+      tbl
+        .string('text')
+        .notNullable()
+      tbl.timestamps(true, true);
 
-exports.up = function(knex, Promise) {
-  
+      tbl
+        .integer('post_id')
+        .unsigned()
+        .references('id')
+        .inTable('posts')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE');
+    });
 };
 
-exports.down = function(knex, Promise) {
-  
+exports.down = function(knex) {
+  return knex.schema.dropTableIfExists('comments');
 };

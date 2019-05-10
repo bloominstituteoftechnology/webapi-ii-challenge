@@ -1,22 +1,14 @@
 exports.up = function(knex) {
-  return knex.schema.createTable('comments', function(tbl) {
-      tbl.increments();
-      tbl
-        .string('text')
-        .notNullable()
-      tbl.text('username').notNullable();
-      tbl.timestamps(true, true);
+  return knex.schema.createTable('posts', function(posts) {
+    posts.increments();
 
-      tbl
-        .integer('post_id')
-        .unsigned()
-        .references('id')
-        .inTable('posts')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
-    });
+    posts.string('title', 1024).notNullable();
+    posts.text('contents').notNullable();
+
+    posts.timestamps(true, true);
+  });
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists('comments');
+  return knex.schema.dropTableIfExists('posts');
 };
