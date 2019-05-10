@@ -3,6 +3,8 @@ const db = require('./data/db');
 
 const router = express.Router();
 
+
+//GET request
 router.get('/', async(req, res) => {
     try{
         const users = await db.find(req.query);
@@ -12,5 +14,19 @@ router.get('/', async(req, res) => {
     }
 })
 
-
+//GET by id
+router.get('/:id', async(req, res) => {
+    try{
+        const user = await db.findById(req.params.id)
+        if(user){
+            res.status(200).json(user)
+        } else {
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
+        }
+    } catch {
+        res.status(500).json({
+            message:'Error retrieving the user'
+        })
+    }
+})
 module.exports = router;
