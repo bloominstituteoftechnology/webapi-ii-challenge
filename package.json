@@ -5,9 +5,11 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index.js"
+    "start": "nodemon server.js",
+    "server": "nodemon server.js"
   },
   "dependencies": {
+    "express": "^4.16.4",
     "knex": "^0.16.5",
     "sqlite3": "^4.0.6"
   },
