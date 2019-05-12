@@ -53,8 +53,6 @@ function findCommentById(id) {
     .where('comments.id', id);
 }
 
-async function insertComment(comment) {
-  const [id] = await db('comments').insert(comment);
-
-  return db('comments').where({ id });
+function insertComment(comment) {
+  return db('comments').insert(comment).then(ids => ({ id: ids[0] }));
 }
