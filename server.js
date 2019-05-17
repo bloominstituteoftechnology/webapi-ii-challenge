@@ -5,10 +5,10 @@ const PostsRouter = require('./posts/posts-router.js');
 const server = express();
 
 server.use(express.json());
-server.use('/api/posts', PostsRouter);
+server.use('https://sprint-app.herokuapp.com/posts', PostsRouter);
 
 server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`)
+  res.send(`<h2>Let's figure this out together</h2>`)
 });
 
 
