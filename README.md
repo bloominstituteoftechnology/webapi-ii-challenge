@@ -1,5 +1,4 @@
 # Building RESTful APIs with Express
-
 ## Topics:
 
 - Express Routing
