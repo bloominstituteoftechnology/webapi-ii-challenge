@@ -13,4 +13,8 @@ server.get('/', (req, res) => {
 // For shorthand links
 server.use('/api/posts', db_router);
 
+// fall back
+server.use(function(req, res) {
+  res.status(404).send(`No such page exits.`);
+});
 module.exports = server;
