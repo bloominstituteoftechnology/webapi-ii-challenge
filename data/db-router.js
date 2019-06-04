@@ -1,5 +1,6 @@
 const express = require('express');
 const Posts = require('./db');
+const Comments = require('./db');
 
 const router = express.Router();
 
@@ -31,22 +32,20 @@ router.get('/', async (req, res) => {
     }
   });
 
-//   //GET id comments
-//   router.get('/:id/comments', async (req, res) => {
-//     try {
-//       const comment = await Posts.findCommentById(req.params.id.comments);
-  
-//       if (comment) {
-//         res.status(200).json(comment);
-//       } else {
-//         res.status(404).json({ message: "The post with the specified ID does not exist."});
-//       }
-//     } catch (error) {
-//       // log error to database
-//       console.log(error);
-//       res.status(500).json({error: "The comments information could not be retrieved." });
-//     }
-//   });
+  //GET comments by id
+  router.get('/:id/comments', async(req, res) => {
+    try {
+      const comments = await Comments.findPostComments(req.params.id)
+      if (comments.length > 0) {
+        res.status(200).json(comments)
+      } else {
+        res.status(404).json({ message: "The post with the specified ID does not exist."})
+      }
+    } catch(error) {
+      console.log(error)
+      res.status(500).json({error: "The comments information could not be retrieved."});
+    }
+  })
 
 
 module.exports = router;
