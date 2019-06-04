@@ -3,7 +3,7 @@ const postsRouter = require('./data/db-router');
 const server = express();
 
 server.use(express.json());
-server.use('/api/db', postsRouter)
+server.use('/api/posts', postsRouter)
 
 server.get('/', (req, res) => {
   res.send(`
