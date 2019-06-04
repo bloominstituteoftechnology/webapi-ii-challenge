@@ -64,4 +64,36 @@ router.get('/', async (req, res) => {
     }
   });
 
+
+  router.delete('/:id', async (req, res) => {
+    try {
+      const count = await Posts.remove(req.params.id);
+      if (count > 0) {
+        res.status(200).json({ message: 'The post has been removed' });
+      } else {
+        res.status(404).json({ message: "The post with the specified ID does not exist."  });
+      }
+    } catch (error) {
+      // log error to database
+      console.log(error);
+      res.status(500).json({error: "The post could not be removed" });
+    }
+  });
+  router.post('/:id/comments', async (req, res) => {
+    try {
+        const {text} = req.body
+        const comment = await Comments.insertComment(req.body);
+      if (title && contents) {
+      res.status(201).json(comment);
+      } else if (!title || !contents) {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+      }
+    } catch (error) {
+      // log error to database
+      console.log(error);
+      res.status(500).json({error: "There was an error while saving the post to the database"});
+    }
+  });
+
+
 module.exports = router;
