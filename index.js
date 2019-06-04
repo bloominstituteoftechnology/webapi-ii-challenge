@@ -1,9 +1,7 @@
 const express = require('express'); //express package import
-const server = express(); // server creation
+const server = require('./server'); 
 
-server.get('/', (req, res) => {
-  res.send('Hello');
-});
+
 
 server.listen(5000, () =>
   console.log('Server running on http://localhost:5000')
