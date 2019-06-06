@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const postsRouter = require('./data/db-router');
 const server = express();
