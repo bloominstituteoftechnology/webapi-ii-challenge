@@ -1,4 +1,5 @@
 const express = require('express');
+const postsRouter = require('../hubs/posts-router');
 
 const server = express();
 
@@ -9,5 +10,7 @@ server.get('/', (req, res) => {
         <h2>Posts API</h2>
     `)
 });
+
+server.use('/api/posts', postsRouter )
 
 module.exports = server;
