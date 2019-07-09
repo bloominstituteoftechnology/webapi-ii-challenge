@@ -24,6 +24,7 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/:id/comments", async (req, res) => {
+  //come back
   const { id } = req.params;
   const { text } = req.body;
 
@@ -39,7 +40,7 @@ router.post("/:id/comments", async (req, res) => {
           message: "The post with the specified ID does not exist."
         });
       } else {
-        const comment = await db.insertComment(req.body);
+        const comment = await db.insertComment(text);
         res.status(201).json(comment);
       }
     } catch (err) {
@@ -100,6 +101,7 @@ router.get("/:id/comments", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
+  //debug
   const { id } = req.params;
 
   try {
