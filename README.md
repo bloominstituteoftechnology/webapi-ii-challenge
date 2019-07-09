@@ -1,10 +1,10 @@
 # Building RESTful APIs with Express
 
-## Topics:
+## Topics
 
 - Express Routing
 - Reading Request data from body and URL parameters
-- Subroutes
+- Sub-routes
 - API design and development.
 
 ## Description
@@ -68,7 +68,7 @@ A Comment in the database has the following structure:
 - Add the code necessary to implement the endpoints listed below.
 - Separate the endpoints that begin with `/api/posts` into a separate `Express Router`.
 
-### Endpoints.
+### Endpoints
 
 Configure the API to handle to the following routes:
 
@@ -199,7 +199,7 @@ When the client makes a `PUT` request to `/api/posts/:id`:
 
 To work on the stretch problems you'll need to enable the `cors` middleware. Follow these steps:
 
-- add the `cors` npm module: `yarn add cors` or `npm i cors`.
+- add the `cors` npm module: `npm i cors`.
 - add `server.use(cors())` after `server.use(express.json())`.
 
 Create a new React application and connect it to your server:
