@@ -6,6 +6,14 @@ const server = express();
 
 server.use(express.json());
 
+server.post("/api/posts", (req, res) => {
+    // POST /api/posts
+});
+
+server.post("/api/posts/:id/comments", (req, res) => {
+    // POST /api/posts/:id/comments
+});
+
 server.get("/", (req, res) => {
     // GET /
     res.send("Hello World!");
@@ -49,11 +57,11 @@ server.get("/api/posts/:id", (req, res) => {
         });
 });
 
-server.get("/api/posts/:postId/comments", (req, res) => {
-    // GET /api/posts/<postId>/comments
-    const { postId } = req.params;
+server.get("/api/posts/:id/comments", (req, res) => {
+    // GET /api/posts/<id>/comments
+    const { id } = req.params;
 
-    db.findPostComments(postId)
+    db.findPostComments(id)
         .then(comments => {
             if (comments) {
                 res.status(200).json({
@@ -70,6 +78,14 @@ server.get("/api/posts/:postId/comments", (req, res) => {
                 error: "The comments information could not be retrieved."
             });
         });
+});
+
+server.put("/api/posts/:id", (req, res) => {
+    // PUT /api/posts/<id>
+});
+
+server.delete("/api/posts/:id", (req, res) => {
+    // DELETE /api/posts/<id>
 });
 
 server.listen(4000, () => {
