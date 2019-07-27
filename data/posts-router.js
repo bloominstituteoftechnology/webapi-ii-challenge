@@ -90,4 +90,26 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  const updatedPost = { ...req.body, post_id: req.params.id };
+  try {
+    const post = await Posts.update(updatedPost);
+    if (post) {
+      res.status(200).json(post);
+    } else {
+      if (!updatedPost.title || !updatedPost.contents) {
+        res.status(400).json({
+          errorMessage: 'Please provide title and contents for the post.'
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: 'The post information could not be modified.'
+    });
+  }
+});
+
 module.exports = router;
