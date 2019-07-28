@@ -4,7 +4,7 @@ const Posts = require('./posts-model');
 const router = express.Router();
 
 /********************************************************
- *                           GET                        *
+ *                      GET /api/posts                  *
  ********************************************************/
 router.get('/', (req, res) => {
   Posts.find()
@@ -24,7 +24,29 @@ router.get('/', (req, res) => {
 });
 
 /********************************************************
- *                          POST /                      *
+ *                   GET /api/posts/:id                 *
+ ********************************************************/
+router.get('/:id', (req, res) => {
+  const post_id = req.params.id;
+
+  Posts.findById(post_id)
+    .then(post => {
+      res.status(200).json({
+        success: true,
+        post
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        success: false,
+        message: 'The posts information could not be retrieved',
+        err
+      });
+    });
+});
+
+/********************************************************
+ *                     POST /api/posts                  *
  ********************************************************/
 router.post('/', (req, res) => {
   const post = req.body;
@@ -61,12 +83,123 @@ router.post('/', (req, res) => {
 });
 
 /********************************************************
- *                    POST /:id/comments                *
+ *                    PUT /api/posts/:id                *
+ ********************************************************/
+router.put('/:id', async (req, res) => {
+  const post_id = req.params.id;
+  let post = await Posts.findById(post_id);
+
+  if (post.length === 0) {
+    res.status(404).json({
+      success: false,
+      errorMessage: 'The post with the specificed ID does not exist.'
+    });
+  }
+
+  post = req.body;
+
+  if (!post.title || !post.contents) {
+    post = req.body;
+
+    const missingField =
+      !post.title && !post.contents
+        ? 'a title and contents'
+        : !post.title
+        ? 'a title'
+        : 'contents';
+
+    res.status(400).json({
+      success: false,
+      errorMessage: `Please provide ${missingField} for the post.`
+    });
+  } else {
+    post = req.body;
+
+    Posts.update(post_id, post)
+      .then(post => {
+        res.status(200).json({
+          success: true,
+          post
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          success: false,
+          errorMessage: 'The post could not be removed',
+          err
+        });
+      });
+  }
+});
+
+/********************************************************
+ *                 DELETE /api/posts/:id                *
+ ********************************************************/
+router.delete('/:id', async (req, res) => {
+  const post_id = req.params.id;
+
+  const post = await Posts.findById(post_id);
+
+  if (post.length === 0) {
+    res.status(404).json({
+      success: false,
+      errorMessage: 'The post with the specificed ID does not exist.'
+    });
+  } else {
+    Posts.remove(post_id)
+      .then(post => {
+        res.status(200).json({
+          success: true,
+          post
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          success: false,
+          errorMessage: 'The post could not be removed',
+          err
+        });
+      });
+  }
+});
+
+/********************************************************
+ *               GET api/posts/:id/comments             *
+ ********************************************************/
+router.get('/:id/comments', async (req, res) => {
+  const post_id = req.params.id;
+
+  const post = await Posts.findById(post_id);
+
+  if (post.length === 0) {
+    res.status(404).json({
+      success: false,
+      errorMessage: 'The post with the specificed ID does not exist.'
+    });
+  } else {
+    Posts.findPostComments(post_id)
+      .then(comments => {
+        res.status(200).json({
+          success: true,
+          comments
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          success: false,
+          errorMessage: 'The comments information could not be retrieved',
+          err
+        });
+      });
+  }
+});
+
+/********************************************************
+ *               POST api/posts/:id/comments            *
  ********************************************************/
 router.post('/:id/comments', async (req, res) => {
   const text = req.body.text;
   const post_id = req.params.id;
-  console.log(text);
 
   const post = await Posts.findById(post_id);
 
@@ -95,36 +228,6 @@ router.post('/:id/comments', async (req, res) => {
         res.status(500).json({
           errorMessage:
             'There was an error while saving the comment to the database',
-          err
-        });
-      });
-  }
-});
-/********************************************************
- *                    GET /:id/comments                 *
- ********************************************************/
-router.get('/:id/comments', async (req, res) => {
-  const post_id = req.params.id;
-
-  const post = await Posts.findById(post_id);
-
-  if (post.length === 0) {
-    res.status(404).json({
-      success: false,
-      errorMessage: 'The post with the specificed ID does not exist.'
-    });
-  } else {
-    Posts.findPostComments(post_id)
-      .then(comments => {
-        res.status(200).json({
-          success: true,
-          comments
-        });
-      })
-      .catch(err => {
-        res.status(500).json({
-          success: false,
-          errorMessage: 'The comments information could not be retrieved',
           err
         });
       });
