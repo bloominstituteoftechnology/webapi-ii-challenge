@@ -87,24 +87,22 @@ router.post('/', (req, res) => {
  ********************************************************/
 router.put('/:id', async (req, res) => {
   const post_id = req.params.id;
-  let post = await Posts.findById(post_id);
+  const updatedPost = req.body;
 
-  if (post.length === 0) {
+  let existingPost = await Posts.findById(post_id);
+
+  if (existingPost.length === 0) {
     res.status(404).json({
       success: false,
       errorMessage: 'The post with the specificed ID does not exist.'
     });
   }
 
-  post = req.body;
-
-  if (!post.title || !post.contents) {
-    post = req.body;
-
+  if (!updatedPost.title || !updatedPost.contents) {
     const missingField =
-      !post.title && !post.contents
+      !updatedPost.title && !updatedPost.contents
         ? 'a title and contents'
-        : !post.title
+        : !updatedPost.title
         ? 'a title'
         : 'contents';
 
@@ -113,9 +111,7 @@ router.put('/:id', async (req, res) => {
       errorMessage: `Please provide ${missingField} for the post.`
     });
   } else {
-    post = req.body;
-
-    Posts.update(post_id, post)
+    Posts.update(post_id, updatedPost)
       .then(post => {
         res.status(200).json({
           success: true,
