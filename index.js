@@ -8,6 +8,32 @@ server.use(express.json());
 
 server.post("/api/posts", (req, res) => {
     // POST /api/posts
+
+    // required post schema:
+    // {
+    //     title: "The post title", // String, required
+    //     contents: "The post contents", // String, required
+    //     created_at: Mon Aug 14 2017 12:50:16 GMT-0700 (PDT) // Date, defaults to current date
+    //     updated_at: Mon Aug 14 2017 12:50:16 GMT-0700 (PDT) // Date, defaults to current date
+    // }
+    const postInfo = req.body;
+    
+    if (postInfo) {
+        db.insert(postInfo)
+            .then(inserted => {
+                res.send(201).json({ postInfo });
+            })
+            .catch(err => {
+                res.send(500).json({
+                    error:
+                        "There was an error while saving the post to the database."
+                });
+            });
+    } else {
+        res.send(400).json({
+            errorMessage: "Please provide title and contents for the post."
+        });
+    }
 });
 
 server.post("/api/posts/:id/comments", (req, res) => {
