@@ -1,0 +1,9 @@
+.cards {
+    width:450px;
+    background-color: ghostwhite
+}
+.postList {
+    display: flex;
+    flex-wrap: wrap;
+
+}
