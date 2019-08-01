@@ -31,14 +31,6 @@ class App extends Component {
             "updated_at": updated_at
         
            }
-           axios.post("http://localhost:2000/api/posts",newPost)
-            .then(res=>{
-              console.log("POST RESPONSE",res)
-              //this.setState({posts:res.data})
-              this.refresh();
-              
-
-            })
             .catch(err=>{
               console.log(err);
             })
