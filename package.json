@@ -1,17 +1,21 @@
 {
-  "name": "webapi-ii-challenge",
+  "name": "node-express",
   "version": "0.0.1",
-  "description": "Challenge for Web API II Module",
+  "description": "LambdaSchool Node.js and Express",
   "private": true,
   "main": "index.js",
   "scripts": {
     "server": "nodemon index.js"
   },
+  "license": "ISC",
   "dependencies": {
-    "knex": "^0.18.3",
-    "sqlite3": "^4.0.9"
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "knex": "^0.16.3",
+    "sqlite3": "^4.0.4"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.18.9"
   }
 }
