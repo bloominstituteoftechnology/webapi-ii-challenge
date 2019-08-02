@@ -119,7 +119,7 @@ router.post('/:id/comments', async (req, res) => {
             .then(found => {
                 if (found && found.length) {
                     db.insertComment({ 
-                        text: req.body.text, postId: req.params.id 
+                        text: req.body.text, post_id: req.params.id 
                     })
                         .then(commentRes => {
                             if (req.body.text) {
