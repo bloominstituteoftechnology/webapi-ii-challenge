@@ -1,6 +1,6 @@
 const express = require("express");
 
-const Posts = require("./db.js");
+const Posts = require("./data/db.js");
 
 const router = express.Router();
 
