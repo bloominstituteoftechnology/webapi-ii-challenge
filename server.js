@@ -12,4 +12,4 @@ server.use(cors());
 
 server.use("/api/posts", PostRouter);
 
-server.listen(5000, () => console.log("\nRunning\n"));
+server.listen(9000, () => console.log("\nRunning\n"));

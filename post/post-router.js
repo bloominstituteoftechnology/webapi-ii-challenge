@@ -19,7 +19,7 @@ router.get("/:id", (req, res) => {
   Posts.findById(postId)
     .then(post => {
       console.log(postId);
-      if (post) {
+      if (post.length) {
         res.status(200).json(post);
       } else {
         res
@@ -38,7 +38,7 @@ router.get("/:id/comments", (req, res) => {
   const postId = req.params.id;
   Posts.findPostComments(postId)
     .then(comments => {
-      if (comments) {
+      if (comments.length) {
         res.status(200).json(comments);
       } else {
         res
@@ -120,21 +120,54 @@ router.delete("/:id", (req, res) => {
     });
 });
 
-router.put("/:d", (req, res) => {
-  const { d } = req.params;
-  console.log(d);
+// router.put("/:id", (req, res) => {
+//   const { id } = req.params;
+//   console.log(id);
+//   const changes = req.body;
+//   Posts.findById(id).then(post => {
+//     if (post.length) {
+//       Posts.update(id, changes).then(updated => {
+//         if (!changes.title || !changes.contents) {
+//           res.status(400).json({
+//             errorMessage: "Pleaese Provide title and contends for the post."
+//           });
+//         } else {
+//           res.status(200).json(updated);
+//         }
+//       });
+//     }
+//   });
+// });
+
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
   const changes = req.body;
-  Posts.findById(d).then(post => {
-    if (post.length) {
-      Posts.update(d, changes).then(updated => {
-        if (!changes.title || !changes.contents) {
-          res.status(400).json({
-            errorMessage: "Pleaese Provide title and contends for the post."
+  if (!id) {
+    return res
+      .status(400)
+      .json({ message: "Please include an id with your request." });
+  }
+  Posts.findById(id).then(findPost => {
+    if (findPost.length) {
+      Posts.update(id, changes).then(updated => {
+        Posts.findById(id)
+          .then(post => {
+            if (!post[0].title || !post[0].contents) {
+              res.status(400).json({
+                errorMessage: "Please provide title and contends for the post."
+              });
+            } else {
+              res.status(200).json(post);
+            }
+          })
+          .catch(err => {
+            res
+              .status(500)
+              .json({ error: "The post information could not be modified." });
           });
-        } else {
-          res.status(200).json(updated);
-        }
       });
+    } else {
+      res.status(400).json({ error: "The ID does not exist" });
     }
   });
 });
