@@ -6,5 +6,7 @@ const server = express();
 
 server.use(express.json());
 server.use('/api/posts', postRouter)
+server.use('/api/posts', commentRouter)
+
 
 server.listen(8000, () => console.log('\nServer is running...\n'))
