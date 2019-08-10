@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
     }
 })
 
+// get a specific post by Id.
 router.get('/:id', async (req, res) => {
     try {
         const post = await Posts.findById(req.params.id);
@@ -35,6 +36,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+// create a new post
 router.post('/', async (req, res) => {
     if (!req.body.title || !req.body.contents) {
         res.status(400).json({
@@ -59,6 +61,38 @@ router.post('/', async (req, res) => {
     }
 })
 
+// Put request to update a post
+router.put('/:id', async (req, res) => {
+    if (!req.body.title || !req.body.contents) {
+        res.status(400).json({
+            errorMessage: 'Please provide a title and contents for the post.'
+        })
+    } else {
+        try {
+            const post = await Posts.update(req.params.id, req.body)
+            if (post > 0) {
+                try {
+                const find = await Posts.findById(req.params.id)
+                res.status(200).json(find)
+                } catch {
+                res.status(500).json({
+                    message: 'error in displaying newly create post.'
+                    })
+                }
+            } else {
+                res.status(404).json({
+                    message: 'The post with the specified ID does not exist.'
+                })
+            }
+        } catch{
+            res.status(500).json({
+                message: 'The post information could not be modified.'
+            })
+        }
+    }
+})
+
+// Delete a post
 router.delete('/:id', async (req, res) => {
     try {
         const remove = await Posts.remove(req.params.id);
@@ -75,6 +109,14 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({
             error: 'The post could not be removed'
         })
+    }
+})
+
+//Get the comments from a specific post by Id.
+router.get('/:id/comments', async (req, res) => {
+    try {
+        const comments = await Posts.findCommentById(req.params.id)
+        res.status(200).json
     }
 })
 
