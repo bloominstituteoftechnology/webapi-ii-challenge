@@ -138,4 +138,43 @@ router.get('/:id/comments', async (req, res) => {
     }
 })
 
+//Post method to add a comment to a post
+router.post('/:id/comments', async (req, res) => {
+    const commentInfo = {...req.body, post_id: req.params.id}
+    if (!req.body.text) {
+        res.status(400).json({
+            errorMessage: 'Please provide text for the comment.'
+        })
+    } else {
+        try {
+            const comment = await Posts.insertComment(commentInfo)
+            try {
+                const newComment = await Posts.findCommentById(comment.id)
+                res.status(201).json(newComment)
+            } catch {
+                res.status(500).json({
+                    error: 'there was an error sending the new comment data.'
+                })
+            }
+        } catch {
+            try {
+                const post = await Posts.findById(req.params.id);
+                if (post.length > 0) {
+                    res.status(500).json({
+                        error: 'There was an error while saving the comment to the database'
+                    })
+                } else {
+                    res.status(404).json({
+                        message: 'The post with the specified ID does not exist.'
+                    });
+                }
+            } catch {
+                res.status(500).json({
+                    error: 'There was an error while saving the comment to the database'
+                })
+            }
+        }
+    }
+})
+
 module.exports = router;
