@@ -22,7 +22,7 @@ router.get("/:id", async (req, res) => {
   try {
     const blog = await db.findById(req.params.id);
 
-    if ((blog == [])) {
+    if ((blog.length < 1)) {
       res.status(404).json({
         message: "The post with the specified ID does not exist"
       });
@@ -41,7 +41,7 @@ router.get("/:id", async (req, res) => {
 router.get("/:id/comments", async (req, res) => {
   try {
     const blog = await db.findById(req.params.id);
-    if ((blog == [])) {
+    if ((blog.length < 1)) {
       res.status(404).json({
         message: "The post with the specified ID does not exist"
       });
@@ -80,7 +80,7 @@ router.post("/", async (req, res) => {
 router.post("/:id/comments", async (req, res) => {
   try {
     const blog = await db.findById(req.params.id);
-    if (blog == []) {
+    if (blog.length < 1) {
       res.status(404).json({
         message: "The post with the specified ID does not exist"
       });
@@ -107,7 +107,7 @@ router.put('/:id', async (req, res) => {
         const changes = req.body
         const post = await db.findById(id)
         
-        if (post == []) {
+        if (post.length < 1) {
             res.status(404).json({
                 message: "The post with the specified ID does not exist"
             })
@@ -130,7 +130,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const post = await db.findById(req.params.id)
-        if (post == []) {
+        if (post.length < 1) {
             res.status(404).json({
                 message:"The post with the specified ID does not exist"
             })
