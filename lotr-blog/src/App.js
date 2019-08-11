@@ -1,21 +1,45 @@
 import React from 'react';
 import axios from 'axios'
 import {Route, NavLink} from 'react-router-dom'
+import {Navbar, Nav, NavItem} from 'reactstrap'
+
 import './App.css';
+
+import Posts from './components/Posts'
+import Post from './components/Post'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      posts: []
+      posts: [],
+      comments: []
     }
+  }
+
+  getComments = post => {
+    axios
+      .get(`http://localhost:4000/api/posts/${post.id}/comments`)
+      .then(res => {
+        this.setState({
+          comments: res.data
+        })
+      })
+      .catch(err => {
+        console.log("Error: ", err)
+      })
+  }
+
+  updatePosts = posts => {
+    this.setState({
+      posts
+    })
   }
   
   componentDidMount() {
     axios.get("http://localhost:4000/api/posts")
       .then(res => {
-        console.log(res.data)
         this.setState({
           posts: res.data
         })
@@ -31,6 +55,34 @@ class App extends React.Component {
         <header className="App-header">
           <h1>LOTR Blog</h1>
         </header>
+        <Navbar>
+          <Nav>
+            <NavItem>
+              <NavLink to = "/posts">Posts</NavLink>
+            </NavItem>
+          </Nav>
+        </Navbar>
+        <Route exact path = "/posts" render = {
+          props => (
+            <Posts 
+              {...props}
+              posts = {this.state.posts}
+              updatePosts = {this.updatePosts}
+            />
+          )
+        } />
+        <Route
+          path="/posts/:id"
+          render={props => (
+            <Post
+              {...props}
+              posts={this.state.posts}
+              updatePosts={this.updatePosts}
+              comments = {this.state.comments}
+              getComments = {this.getComments}
+            />
+          )}
+        />
       </div>
     );
   }
