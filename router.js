@@ -13,25 +13,32 @@ router.post('/', (req, res) => {
     .catch(err => {
         res.status(500).json({
             err: err,
-            message: 'There was an error while saving the user to the database'
+            message: 'There was an error while saving the post to the database'
         })
     })
 })
 
-router.post('/', (req, res) => {
-    const newUser = req.body;
-    db.insert(newUser)
-    .then(data => {
-        res.status(201).json(data);
+router.post('/:id/comments', (req, res) => {
+    const newComment = req.body;
+    const { id } = req.params;
+    db.findById(id)
+    .then(found => {
+        if (found) {
+            db.insert(newComment);
+            res.status(201).json(found);
+        } else {
+            res.status(400).json({
+                message: 'The post with the specified ID does not exist.'
+            })
+        }
     })
     .catch(err => {
         res.status(500).json({
             err: err,
-            message: 'There was an error while saving the user to the database'
+            message: 'There was an error while saving the comment to the database'
         })
     })
 })
-
 
 
 //GETS
@@ -44,7 +51,7 @@ router.get('/', (req, res) => {
     .catch(err => {
         res.status(500).json({
             err: err,
-            message: 'The users information could not be retrieved.'
+            message: 'The posts information could not be retrieved.'
         })
     })
 });
@@ -57,19 +64,19 @@ router.get('/:id' , (req, res) => {
             res.json(found);
         } else {
             res.status(404).json({
-                message: 'The user with the specified ID does not exist.'
+                message: 'The post with the specified ID does not exist.'
             })
         }
     })
     .catch(err => {
         res.status(500).json({
             err: err,
-            message: 'The user information could not be retrieved.'
+            message: 'The post information could not be retrieved.'
         })
     })
 })
 
-router.get('/:id' , (req, res) => {
+router.get('/:id/comments' , (req, res) => {
     const { id } = req.params;
     db.findById(id)
     .then(found => {
@@ -77,14 +84,14 @@ router.get('/:id' , (req, res) => {
             res.json(found);
         } else {
             res.status(404).json({
-                message: 'The user with the specified ID does not exist.'
+                message: 'The post with the specified ID does not exist.'
             })
         }
     })
     .catch(err => {
         res.status(500).json({
             err: err,
-            message: 'The user information could not be retrieved.'
+            message: 'The comments information could not be retrieved.'
         })
     })
 })
@@ -102,14 +109,14 @@ router.delete('/:id', (req, res) => {
             res.json(deletedUser);
         } else {
             res.status(404).json({
-                message: 'The user with the specified ID does not exist.'
+                message: 'The post with the specified ID does not exist.'
             })
         }
     })
     .catch(err => {
         res.status(500).json({
             err: err,
-            message: 'The user could not be removed'
+            message: 'The post could not be removed'
         })
     })
 })
@@ -127,14 +134,14 @@ router.put('/:id', (req, res) => {
             res.json(updated);
         } else {
             res.status(404).json({
-                message: 'The user with the specified ID does not exist.'
+                message: 'The post with the specified ID does not exist.'
             })
         }
     })
     .catch(err => {
         res.status(500).json({
             err: err,
-            message: 'The user information could not be modified.'
+            message: 'The post information could not be modified.'
         })
     })
 })
