@@ -2,7 +2,7 @@ const express = require('express')
 
 const db = require('../data/db.js')
 
-const router = express.Router()
+const router = express.Router();
 
 //Get posts
 router.get("/", (req, res) => {
@@ -111,7 +111,7 @@ router.get("/", (req, res) => {
       });
   });
   
-  router.put("/:d", (req, res) => {
+  router.put("/:id", (req, res) => {
     const { d } = req.params;
     console.log(d);
     const changes = req.body;
