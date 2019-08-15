@@ -20,7 +20,7 @@ class App extends React.Component {
 
   getComments = post => {
     axios
-      .get(`http://localhost:4000/api/posts/${post.id}/comments`)
+      .get(`https://lotr-users.herokuapp.com/api/posts/${post.id}/comments`)
       .then(res => {
         this.setState({
           comments: res.data
@@ -38,7 +38,7 @@ class App extends React.Component {
   }
   
   componentDidMount() {
-    axios.get("http://localhost:4000/api/posts")
+    axios.get("https://lotr-users.herokuapp.com/api/posts")
       .then(res => {
         this.setState({
           posts: res.data

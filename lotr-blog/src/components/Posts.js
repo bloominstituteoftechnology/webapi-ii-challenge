@@ -23,7 +23,7 @@ class Posts extends Component {
       console.log(id)
   
       axios
-        .delete(`http://localhost:4000/api/posts/${id}`)
+        .delete(`https://lotr-users.herokuapp.com/api/posts/${id}`)
         .then(response => {
           console.log(response.data);
           this.props.updatePosts(response.data);
