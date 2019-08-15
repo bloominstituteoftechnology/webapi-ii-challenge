@@ -22,7 +22,7 @@ router.get("/:id", async (req, res) => {
   try {
     const blog = await db.findById(req.params.id);
 
-    if ((blog.length < 1)) {
+    if (blog.length < 1) {
       res.status(404).json({
         message: "The post with the specified ID does not exist"
       });
@@ -41,7 +41,7 @@ router.get("/:id", async (req, res) => {
 router.get("/:id/comments", async (req, res) => {
   try {
     const blog = await db.findById(req.params.id);
-    if ((blog.length < 1)) {
+    if (blog.length < 1) {
       res.status(404).json({
         message: "The post with the specified ID does not exist"
       });
@@ -101,51 +101,51 @@ router.post("/:id/comments", async (req, res) => {
 });
 
 //Edit post
-router.put('/:id', async (req, res) => {
-    try {
-        const id = req.params.id
-        const changes = req.body
-        const post = await db.findById(id)
-        
-        if (post.length < 1) {
-            res.status(404).json({
-                message: "The post with the specified ID does not exist"
-            })
-        } else if (!changes.title || !changes.contents) {
-            res.status(500).json({
-                errorMessage: "Please provide title and contents for the post"
-            })
-        } else {
-            await db.update(id, changes)
-            res.status(201).json(changes)
-        }
-    } catch (error) {
-        res.status(500).json({
-            error: "The post information could not be modified"
-        })
+router.put("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const changes = req.body;
+    const post = await db.findById(id);
+
+    if (post.length < 1) {
+      res.status(404).json({
+        message: "The post with the specified ID does not exist"
+      });
+    } else if (!changes.title || !changes.contents) {
+      res.status(500).json({
+        errorMessage: "Please provide title and contents for the post"
+      });
+    } else {
+      await db.update(id, changes);
+      res.status(201).json(changes);
     }
-})
+  } catch (error) {
+    res.status(500).json({
+      error: "The post information could not be modified"
+    });
+  }
+});
 
 //Delete post
-router.delete('/:id', async (req, res) => {
-    try {
-        const post = await db.findById(req.params.id)
-        if (post.length < 1) {
-            res.status(404).json({
-                message:"The post with the specified ID does not exist"
-            })
-        } else {
-            await db.remove(req.params.id)
-            res.status(201).json({
-                message: "Deleted"
-            })
-        }
-    }  catch(error) {
-        res.status(500).json({
-            error: "The post could not be removed"
-        })
+router.delete("/:id", async (req, res) => {
+  try {
+    const post = await db.findById(req.params.id);
+    if (post.length < 1) {
+      res.status(404).json({
+        message: "The post with the specified ID does not exist"
+      });
+    } else {
+      await db.remove(req.params.id);
+      res.status(201).json({
+        message: "Deleted"
+      });
     }
-})
+  } catch (error) {
+    res.status(500).json({
+      error: "The post could not be removed"
+    });
+  }
+});
 
 //Export
 module.exports = router;
