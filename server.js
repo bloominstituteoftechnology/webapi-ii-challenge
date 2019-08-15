@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const app = require('./lotr-blog/src/index')
 
 const BlogsRouter = require('./blogs/blogs-router')
 
@@ -9,7 +10,7 @@ server.use(express.json())
 server.use(cors())
 
 server.get('/', (req, res) => {
-    res.send('<h2>Blog Posts</h2>')
+    res.send(app)
 })
 
 server.use('/api/posts', BlogsRouter)
