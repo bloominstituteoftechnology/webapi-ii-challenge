@@ -19,8 +19,7 @@ class Posts extends Component {
 
     deletePost = e => {
       e.preventDefault();
-      const id = this.props.match.params.id
-      console.log(id)
+      const id = e.target.key
   
       axios
         .delete(`https://lotr-users.herokuapp.com/api/posts/${id}`)
