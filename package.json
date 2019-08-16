@@ -2,7 +2,6 @@
   "name": "webapi-ii-challenge",
   "version": "0.0.1",
   "description": "Challenge for Web API II Module",
-  "private": true,
   "main": "index.js",
   "scripts": {
     "server": "nodemon index.js",
