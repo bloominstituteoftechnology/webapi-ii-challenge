@@ -52,7 +52,8 @@ A Blog Post in the database has the following structure:
 
 ### Comment Schema
 
-A Comment in the database has the following structure:
+A Comment in t +
+he database has the following structure:
 
 ```js
 {
@@ -72,7 +73,7 @@ A Comment in the database has the following structure:
 
 Configure the API to handle to the following routes:
 
-| Method | Endpoint                | Description                                                                                                                                                                 |
+| Method | Endpoint                | Description                                                                                                 yo yo                                                               |
 | ------ | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | POST   | /api/posts              | Creates a post using the information sent inside the `request body`.                                                                                                        |
 | POST   | /api/posts/:id/comments | Creates a comment for the post with the specified id using information sent inside of the `request body`.                                                                   |
