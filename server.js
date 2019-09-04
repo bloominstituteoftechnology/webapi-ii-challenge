@@ -80,8 +80,36 @@ server.get('/api/posts', (req, res) => {
 // });
 
 // -*-*-*-* POST REQUEST  -*-*-*-*
+// server.post('/api/posts', (req, res) => {
+//     const bpost = req.body;
+
+//     //add the new id
+//     bpost.id = postId++;
+//     posts.push(bpost);
+
+//     res.status(200).json(posts);
+// });
+
 server.post('/api/posts', (req, res) => {
     const bpost = req.body;
+    const { title, contents } = req.body;
+
+    if (title && contents) {
+        dataB
+            .insert(bpost)
+            .then(Objres => {
+                res.json(Objres);
+                res.status(201); //created
+            })
+            .catch(err => {
+                res.render(err);
+                res.render.status(500);
+            });
+    } else {
+        res.status(400).json({
+            errorMessage: 'Please provide title and contents for the post.',
+        });
+    }
 
     //add the new id
     bpost.id = postId++;
