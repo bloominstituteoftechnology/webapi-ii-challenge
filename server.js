@@ -3,7 +3,7 @@ const dataB = require('./data/db.js');
 const server = express();
 
 server.use(express.json()); //middleware -- express to parse JSON body
-let postId = 5;
+let postId = 5; //id numbers starts from here
 // let commId = 5;
 
 //collection of blog post tht i intend to modify
@@ -59,6 +59,17 @@ server.get('/', (req, res) => {
     res.status(200).json({ api: 'up....' });
 });
 
+// server.get('/api/posts', (req, res) => {
+//     const minRating = req.query.minrating;
+//     let result = [...movies]
+
+//     if(minRating){
+//         result = movies.filter(m => m.rating >= minRating);
+
+//     }
+//     res.status(200).json(result);
+// });
+
 // //-*-*-*-* GET REQUEST  -*-*-*-*
 server.get('/api/posts', (req, res) => {
     res.status(200).json(posts);
@@ -101,14 +112,24 @@ server.post('/api/posts', (req, res) => {
 // });
 
 //-*-*-*-* DELETE REQUEST  -*-*-*-*
-// server.delete('/api/posts/:id', (req, res) => {
-//     res.status(200).json(posts);
-// });
+server.delete('/api/posts/:id', (req, res) => {
+    //(:id is a string you have to convert into a number)
+    const id = req.param.id;
+
+    posts = posts.filter(p => p.id !== Number(id));
+
+    res.status(200).json(posts);
+});
 
 //-*-*-*-* UPDATE REQUEST  -*-*-*-*
 // server.put('/api/posts/:id', (req, res) => {
+
 //     res.status(200).json(posts);
 // });
+
+server.put('/api/posts/:id', (req, res) => {
+    res.status(200).json(posts);
+});
 
 //Export
 module.exports = server;
