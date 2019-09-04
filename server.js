@@ -152,8 +152,8 @@ server.delete('/api/posts/:id', (req, res) => {
 //-*-*-*-* UPDATE REQUEST  -*-*-*-*
 // server.put('/api/posts/:id', (req, res) => {
 
-//     res.status(200).json(posts);
-// });
+        res.
+    )
 
 server.put('/api/posts/:id', (req, res) => {
     res.status(200).json(posts);
