@@ -2,7 +2,9 @@ const express = require('express'); //import express;
 const dataB = require('./data/db.js');
 const server = express();
 
-server.use(express.json);
+server.use(express.json()); //middleware -- express to parse JSON body
+let postId = 5;
+// let commId = 5;
 
 //collection of blog post tht i intend to modify
 let comments = [
@@ -62,9 +64,9 @@ server.get('/api/posts', (req, res) => {
     res.status(200).json(posts);
 });
 
-server.get('/api/comments', (req, res) => {
-    res.status(200).json(comments);
-});
+// server.get('/api/comments', (req, res) => {
+//     res.status(200).json(comments);
+// });
 
 // -*-*-*-* POST REQUEST  -*-*-*-*
 server.post('/api/posts', (req, res) => {
@@ -77,32 +79,36 @@ server.post('/api/posts', (req, res) => {
     res.status(200).json(posts);
 });
 
-server.post('/api/posts/:id/comments', (req, res) => {
-    res.status(200).json(posts);
-});
+// server.post('/api/posts', (req, res) => {
+//     res.status(200).json(posts);
+// });
+
+// server.post('/api/posts/:id/comments', (req, res) => {
+//     res.status(200).json(posts);
+// });
 
 //-*-*-*-* GET REQUEST  -*-*-*-*
-server.get('/api/posts', (req, res) => {
-    res.status(200).json(posts);
-});
+// server.get('/api/posts', (req, res) => {
+//     res.status(200).json(posts);
+// });
 
-server.get('/api/posts/:id', (req, res) => {
-    res.status(200).json(posts);
-});
+// server.get('/api/posts/:id', (req, res) => {
+//     res.status(200).json(posts);
+// });
 
-server.get('/api/posts/:id/comments', (req, res) => {
-    res.status(200).json(posts);
-});
+// server.get('/api/posts/:id/comments', (req, res) => {
+//     res.status(200).json(posts);
+// });
 
 //-*-*-*-* DELETE REQUEST  -*-*-*-*
-server.delete('/api/posts/:id', (req, res) => {
-    res.status(200).json(posts);
-});
+// server.delete('/api/posts/:id', (req, res) => {
+//     res.status(200).json(posts);
+// });
 
 //-*-*-*-* UPDATE REQUEST  -*-*-*-*
-server.put('/api/posts/:id', (req, res) => {
-    res.status(200).json(posts);
-});
+// server.put('/api/posts/:id', (req, res) => {
+//     res.status(200).json(posts);
+// });
 
 //Export
 module.exports = server;
