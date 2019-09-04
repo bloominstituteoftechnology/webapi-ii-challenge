@@ -1,5 +1,8 @@
 const express = require('express'); //import express;
+const dataB = require('./data/db.js');
 const server = express();
+
+server.use(express.json);
 
 //collection of blog post tht i intend to modify
 let comments = [
@@ -54,12 +57,51 @@ server.get('/', (req, res) => {
     res.status(200).json({ api: 'up....' });
 });
 
+// //-*-*-*-* GET REQUEST  -*-*-*-*
 server.get('/api/posts', (req, res) => {
     res.status(200).json(posts);
 });
 
 server.get('/api/comments', (req, res) => {
     res.status(200).json(comments);
+});
+
+// -*-*-*-* POST REQUEST  -*-*-*-*
+server.post('/api/posts', (req, res) => {
+    const bpost = req.body;
+
+    //add the new id
+    bpost.id = postId++;
+    posts.push(bpost);
+
+    res.status(200).json(posts);
+});
+
+server.post('/api/posts/:id/comments', (req, res) => {
+    res.status(200).json(posts);
+});
+
+//-*-*-*-* GET REQUEST  -*-*-*-*
+server.get('/api/posts', (req, res) => {
+    res.status(200).json(posts);
+});
+
+server.get('/api/posts/:id', (req, res) => {
+    res.status(200).json(posts);
+});
+
+server.get('/api/posts/:id/comments', (req, res) => {
+    res.status(200).json(posts);
+});
+
+//-*-*-*-* DELETE REQUEST  -*-*-*-*
+server.delete('/api/posts/:id', (req, res) => {
+    res.status(200).json(posts);
+});
+
+//-*-*-*-* UPDATE REQUEST  -*-*-*-*
+server.put('/api/posts/:id', (req, res) => {
+    res.status(200).json(posts);
 });
 
 //Export
