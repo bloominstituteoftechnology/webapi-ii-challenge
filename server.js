@@ -1,11 +1,6 @@
 const express = require('express'); //import express;
 const server = express();
 
-//sanity check endpoint
-server.get('/', (req, res) => {
-    res.status(200).json({ api: 'up....' });
-});
-
 //collection of blog post tht i intend to modify
 let comments = [
     {
@@ -53,6 +48,19 @@ let posts = [
         comments: [2, 3],
     },
 ];
+
+//sanity check endpoint
+server.get('/', (req, res) => {
+    res.status(200).json({ api: 'up....' });
+});
+
+server.get('/api/posts', (req, res) => {
+    res.status(200).json(posts);
+});
+
+server.get('/api/comments', (req, res) => {
+    res.status(200).json(comments);
+});
 
 //Export
 module.exports = server;
