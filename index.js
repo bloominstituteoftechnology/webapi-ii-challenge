@@ -4,7 +4,7 @@ const express = require('express');
 
 const db = require('./data/db.js');
 
-const port = 5000;
+const port = 8000;
 
 const server = express();
 server.use(express.json());
@@ -18,21 +18,23 @@ server.post('/api/posts', (req, res) => {
       res.status(201);
     })
     .catch(error => {
-      res.rend(error);
+      res.send(error);
       res.status(500);
     });
 });
 
 server.post('/api/posts/:id/comments', (req, res) => {
-  const userInfo = req.body;
+  let comment = req.body;
+  const id = req.params.id;
+  comment.post_id = id;
 
-  db.insert(userInfo)
+  db.insertComment(comment)
     .then(result => {
       res.json(result);
       res.status(201);
     })
     .catch(error => {
-      res.rend(error);
+      res.send(error);
       res.status(500);
     });
 });
@@ -44,7 +46,7 @@ server.get('/api/posts', (req, res) => {
       res.status(200);
     })
     .then(error => {
-      res.rend(error);
+      res.send(error);
       res.status(500);
     });
 });
@@ -66,7 +68,7 @@ server.get('/api/posts/:id', (req, res) => {
 server.get('/api/posts/:id/comments', (req, res) => {
   const id = req.params.id;
 
-  db.findById(id)
+  db.findPostComments(id)
     .then(response => {
       res.json(response);
       res.status(201);
