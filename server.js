@@ -79,6 +79,28 @@ server.post('/api/posts', (req, res) => {
     }
 });
 
+//supposed to allow me to add comments to a specific post
+server.post('/api/posts/:post_id/comments', (req, res) => {
+    const { post_id } = req.params;
+    const { text } = req.body;
+
+
+    dataB
+        .insertComment({ text, post_id })
+        .then(responseId => {
+
+            res.status(200).json(responseId)
+        })
+        .catch(err => {
+            console.log('err', err);
+            res.status(500).json({
+
+                error: 'The comments information could not be retrieved. ',
+            })
+        }
+        )
+});
+
 
 
 // //-*-*-*-* GET REQUEST  -*-*-*-*
