@@ -9,6 +9,10 @@ const port = 8000;
 const server = express();
 server.use(express.json());
 
+server.get('/', (req, res) => {
+  res.status(200).json('working');
+})
+
 server.post('/api/posts', (req, res) => {
   const userInfo = req.body;
 
