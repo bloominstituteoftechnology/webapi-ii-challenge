@@ -129,27 +129,6 @@ server.get('/api/posts/:postId/comments', (req, res) => {
 
 // //-*-*-*-* DELETE REQUEST  -*-*-*-*
 
-// server.delete('/api/posts/:id', (req, res) => {
-//     const { id } = req.params;
-
-//     dataB
-//         .remove(id)
-//         .then(deleted => {
-//             console.log('deleted', deleted)
-//             if (deleted) {
-//                 res.status(204).json(deleted)
-//             } else {
-//                 res.status(404).json({
-//                     message: 'message: "The post with the specified ID does not exist."',
-//                 }) //Bad Request
-//             }
-//         })
-//         .catch(err => {
-//             console.log(err)
-//             res.status(500).json({ error: "The post could not be removed" })
-//         })
-// });
-
 server.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params;
 
@@ -173,6 +152,42 @@ server.delete('/api/posts/:id', (req, res) => {
             });
         });
 });
+
+//-*-*-*-* UPDATE REQUEST  -*-*-*-*
+server.put('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const { title, contents } = req.body;
+
+    if (!title && !contents) {
+        return res.status(404).json({ message: "The post with the specified ID does not exist." })
+    }
+
+    dataB
+        .update(id, { title, contents })
+        .then(updated => {
+            if (updated) {
+                console.log('Updated', updated);
+                dataB.findById(id)
+                    .then(post => res.status(200).json(post))
+                    .catch(err => {
+                        console.log('err', err);
+                        res.status(500).json({
+                            error: "The post information could not be modified!!!!"
+                        }) //Bad Request
+                    })
+            } else {
+                res.status(404).json({
+                    message: "The post with the specified ID does not exist."
+                }) //Bad Request
+            }
+        })
+        .catch(err =>
+            res.status(500).json({
+                error: 'The post information could not be modified.',
+            })
+        )
+});
+
 
 //Export
 module.exports = server;
