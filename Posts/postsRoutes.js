@@ -52,6 +52,33 @@ router.post('/', (req, res) => {
     })
 })
 
+router.post('/:post_id/comments', (req, res) => {
+  const { post_id } = req.params;
+  const { text } = req.body;
+
+  if (text === '' || typeof text !== 'string') {
+    return res.status(400).json({ error: "Please provide text for the comment" })
+  }
+
+  db.insertComment({ text, post_id })
+    .then(({ id: comment_id }) => {
+      db.findCommentById(comment_id)
+        .then(([comment]) => {
+          if (comment) {
+            res.status(200).json(comment)
+          } else {
+            res.status(404).json({ error: "The post witht he specified ID does not exist" })
+          }
+        })
+        .catch(err => {
+
+        })
+    })
+    .catch(err => {
+      res.status(500).json({ error: "There was an error while saving the comment to the database" })
+    })
+})
+
 
 
 
@@ -77,4 +104,20 @@ router.put('/:id', (req, res) => {
       res.status(500).json({ error: "The post information could not be modified" })
     })
 })
+
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  db.remove(id)
+    .then(deleted => {
+      if (deleted) {
+        res.status(204).end()
+      } else {
+        res.status(404).json({ error: "The post with the specified ID does not exist" })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: "The post could not be removed" })
+    })
+})
+
 module.exports = router;
