@@ -84,12 +84,34 @@ server.post('/api/posts/:post_id/comments', (req, res) => {
     const { post_id } = req.params;
     const { text } = req.body;
 
+    if (text === '') {
+        return res.status(400).json({
+            errorMessage: "Please provide text for the comment."
+        });
+    }
+
 
     dataB
         .insertComment({ text, post_id })
-        .then(responseId => {
+        .then(commentResponseId => {
+            dataB.findCommentById(commentResponseId)
+                .then(([comment]) => {
+                    res.status(200).json(comment)
+                    // if comment exists
+                    if (comment) {
+                        res.status(200).json(comment);
+                    } else {
+                        res.status(404).json({ message: "The post with the specified ID does not exist." })
+                    }
+                })
+                .catch(err => {
+                    console.log('post comment get', err);
+                    res.status(500).json({
+                        error: 'The comments information could not be retrieved. ',
+                    })
 
-            res.status(200).json(responseId)
+                })
+            res.status(200).json(commentResponseId)
         })
         .catch(err => {
             console.log('err', err);
@@ -99,6 +121,20 @@ server.post('/api/posts/:post_id/comments', (req, res) => {
             })
         }
         )
+    // dataB
+    //     .insertComment({ text, post_id })
+    //     .then(responseId => {
+
+    //         res.status(200).json(responseId)
+    //     })
+    //     .catch(err => {
+    //         console.log('err', err);
+    //         res.status(500).json({
+
+    //             error: 'The comments information could not be retrieved. ',
+    //         })
+    //     }
+    //     )
 });
 
 
