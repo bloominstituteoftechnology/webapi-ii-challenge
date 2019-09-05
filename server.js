@@ -3,160 +3,107 @@ const dataB = require('./data/db.js');
 const server = express();
 
 server.use(express.json()); //middleware -- express to parse JSON body
-let postId = 5; //id numbers starts from here
-// let commId = 5;
 
-//collection of blog post tht i intend to modify
-let comments = [
-    {
-        text: 'The text of the comment',
-        post_id: 1, // Integer, required, must match the id of a post entry in the database
-    },
-    {
-        text: 'This is a second comment to the second post',
-        post_id: 2, // Integer, required, must match the id of a post entry in the database
-    },
-    {
-        text: 'This is a third comment to the third post',
-        post_id: 3, // Integer, required, must match the id of a post entry in the database
-    },
-    {
-        text: 'This is a fourth comment to the fourth post',
-        post_id: 4, // Integer, required, must match the id of a post entry in the database
-    },
-];
-
-let posts = [
-    {
-        id: 1,
-        title: 'Keeping up with the Joneses',
-        contents: "Trying to match everyone's glamorous lifestyle with debt",
-        comments: [1, 2],
-    },
-    {
-        id: 2,
-        title: 'How I earned my first million',
-        contents: 'Money management skills to upgrade to a social class',
-        comments: [3, 4],
-    },
-    {
-        id: 3,
-        title: 'Things I would have told my 20 year old self',
-        contents:
-            'From depression, to social interaction, to travels, and self improvement',
-        comments: [1, 3],
-    },
-    {
-        id: 4,
-        title: 'How web development saved my life',
-        contents: 'Finding my passion through programming',
-        comments: [2, 3],
-    },
-];
-
-//sanity check endpoint
 server.get('/', (req, res) => {
     res.status(200).json({ api: 'up....' });
 });
 
-// server.get('/api/posts', (req, res) => {
-//     const minRating = req.query.minrating;
-//     let result = [...movies]
-
-//     if(minRating){
-//         result = movies.filter(m => m.rating >= minRating);
-
-//     }
-//     res.status(200).json(result);
-// });
 
 // //-*-*-*-* GET REQUEST  -*-*-*-*
 server.get('/api/posts', (req, res) => {
-    res.status(200).json(posts);
+    dataB
+        .find()
+        .then(posts => {
+            res.status(200).json(posts);
+        })
+        .catch();
+})
+
+server.get('/api/comments', (req, res) => {
+    dataB.findPostComments()
+        .then(comments => {
+            res.status(200).json(comments);
+        })
+
 });
 
-// server.get('/api/comments', (req, res) => {
-//     res.status(200).json(comments);
-// });
 
-// -*-*-*-* POST REQUEST  -*-*-*-*
-// server.post('/api/posts', (req, res) => {
-//     const bpost = req.body;
-
-//     //add the new id
-//     bpost.id = postId++;
-//     posts.push(bpost);
-
-//     res.status(200).json(posts);
-// });
+// //-*-*-*-* POST REQUEST  -*-*-*-*
 
 server.post('/api/posts', (req, res) => {
-    const bpost = req.body;
+    const post = req.body;
     const { title, contents } = req.body;
 
     if (title && contents) {
-        dataB
-            .insert(bpost)
-            .then(Objres => {
-                res.json(Objres);
-                res.status(201); //created
-            })
-            .catch(err => {
-                res.render(err);
-                res.render.status(500);
-            });
+        dataB.insert(post).then(id => {
+            dataB
+                .findById(id.id)
+                .then(postObj => {
+                    res.status(200).json(postObj);
+                })
+                .catch(err =>
+                    res.status(500).json({
+                        error:
+                            'There was an error while saving the user to the database',
+                    })
+                )
+                .catch(err =>
+                    res.status(500).json({
+                        error:
+                            'There was an error while saving the user to the database',
+                    })
+                );
+        });
     } else {
         res.status(400).json({
-            errorMessage: 'Please provide title and contents for the post.',
-        });
+            errorMessage: 'Please provide name and bio for the user.',
+        }); //Bad Request
     }
-
-    //add the new id
-    bpost.id = postId++;
-    posts.push(bpost);
-
-    res.status(200).json(posts);
 });
 
-// server.post('/api/posts', (req, res) => {
-//     res.status(200).json(posts);
-// });
+// //-*-*-*-* GET REQUEST  -*-*-*-*
 
-// server.post('/api/posts/:id/comments', (req, res) => {
-//     res.status(200).json(posts);
-// });
+server.get('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
 
-//-*-*-*-* GET REQUEST  -*-*-*-*
-// server.get('/api/posts', (req, res) => {
-//     res.status(200).json(posts);
-// });
-
-// server.get('/api/posts/:id', (req, res) => {
-//     res.status(200).json(posts);
-// });
-
-// server.get('/api/posts/:id/comments', (req, res) => {
-//     res.status(200).json(posts);
-// });
-
-//-*-*-*-* DELETE REQUEST  -*-*-*-*
-server.delete('/api/posts/:id', (req, res) => {
-    //(:id is a string you have to convert into a number)
-    const id = req.param.id;
-
-    posts = posts.filter(p => p.id !== Number(id));
-
-    res.status(200).json(posts);
+    dataB
+        .findById(id)
+        .then(response => {
+            if (response.length > 0) {
+                res.status(200).json(response)
+            } else {
+                res.status(404).json({
+                    message: 'The post with the specified ID does not exist.',
+                }) //Bad Request
+            }
+        })
+        .catch(err =>
+            res.status(500).json({
+                error: 'The post information could not be retrieved.',
+            })
+        )
 });
 
-//-*-*-*-* UPDATE REQUEST  -*-*-*-*
-// server.put('/api/posts/:id', (req, res) => {
+//the comments in specific post with specific id
+server.get('/api/posts/:postId/comments', (req, res) => {
+    const { postId } = req.params;
 
-        res.
-    )
-
-server.put('/api/posts/:id', (req, res) => {
-    res.status(200).json(posts);
+    dataB
+        .findPostComments(postId)
+        .then(response => {
+            if (response.length > 0) {
+                res.status(200).json(response)
+            } else {
+                res.status(404).json({
+                    message: 'The post with the specified ID does not exist. ',
+                }) //Bad Request
+            }
+        })
+        .catch(err =>
+            res.status(500).json({
+                error: 'The comments information could not be retrieved. ',
+            })
+        )
 });
 
 //Export
