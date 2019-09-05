@@ -23,7 +23,13 @@ server.post('/api/posts', (req, res) => {
     });
 });
 
-server.post('/api/posts/:id/comments', (req, res) => {
+const validatePost = (req, res, next) => {
+  if(!req.body.text) {
+    res.status(400).send("You must input text content.");
+  } else next();
+}
+
+server.post('/api/posts/:id/comments', validatePost, (req, res) => {
   let comment = req.body;
   const id = req.params.id;
   comment.post_id = id;
