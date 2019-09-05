@@ -16,15 +16,33 @@ server.get('/api/posts', (req, res) => {
         .then(posts => {
             res.status(200).json(posts);
         })
-        .catch();
+        .catch(err => {
+            console.log(err);
+            res.status(500)
+                .json({ error: "The posts information could not be retrieved." })
+        });
 })
 
-server.get('/api/comments', (req, res) => {
-    dataB.findPostComments()
-        .then(comments => {
-            res.status(200).json(comments);
-        })
+server.get('/api/comments/:post_id', (req, res) => {
+    const { post_id } = req.params;
+    const { test } = req.body;
 
+    dataB
+        .findById(post_id)
+        .then(response => {
+            if (response.length > 0) {
+                res.status(200).json(response)
+            } else {
+                res.status(404).json({
+                    message: 'The post with the specified ID does not exist. COMMENT ID',
+                }) //Bad Request
+            }
+        })
+        .catch(err =>
+            res.status(500).json({
+                error: 'The post information could not be retrieved. COMMENT ID',
+            })
+        )
 });
 
 
@@ -60,6 +78,8 @@ server.post('/api/posts', (req, res) => {
         }); //Bad Request
     }
 });
+
+
 
 // //-*-*-*-* GET REQUEST  -*-*-*-*
 
@@ -104,6 +124,54 @@ server.get('/api/posts/:postId/comments', (req, res) => {
                 error: 'The comments information could not be retrieved. ',
             })
         )
+});
+
+
+// //-*-*-*-* DELETE REQUEST  -*-*-*-*
+
+// server.delete('/api/posts/:id', (req, res) => {
+//     const { id } = req.params;
+
+//     dataB
+//         .remove(id)
+//         .then(deleted => {
+//             console.log('deleted', deleted)
+//             if (deleted) {
+//                 res.status(204).json(deleted)
+//             } else {
+//                 res.status(404).json({
+//                     message: 'message: "The post with the specified ID does not exist."',
+//                 }) //Bad Request
+//             }
+//         })
+//         .catch(err => {
+//             console.log(err)
+//             res.status(500).json({ error: "The post could not be removed" })
+//         })
+// });
+
+server.delete('/api/posts/:id', (req, res) => {
+    const { id } = req.params;
+
+    dataB
+        .remove(id)
+        .then(deleted => {
+            console.log('deleted', deleted);
+            if (deleted) {
+                res.status(204).json(deleted);
+            } //200 means good
+            else {
+                res.status(404).json({
+                    message: "The post with the specified ID does not exist."
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: 'The post could not be removed',
+            });
+        });
 });
 
 //Export
