@@ -90,25 +90,22 @@ router.get('/:id/comments', (req, res) => {
             })
     }
 })
-// verify: - if conditional statement. 
-//         - then response(its not being pased anything). 
-//         - line 98. 
-//         - dont i need findById?
+
 router.delete('/:id', (req, res) => {
-    if (!req.params.id) {
-        res.status(404).json({ message: 'The post with the specified ID does not exist' });
-      } else {
         Posts.remove(req.params.id)
-        .then(() => {
+        .then(post => {
+            if (!req.params.id) {
+                res.status(404).json({ message: 'The post with the specified ID does not exist' });
+              } else {
             res.status(200).json({ message: 'The post has been destroyed' })
-        })
+        }})
         .catch(error => {
             console.log(error);
             res.status(500).json({ error: "The post could not be removed" });
       });
     }
-});
-// are my if statements ok before i call Posts?
+);
+
 router.put('/:id', (req, res) => {
     const id = req.params.id;
     const changes = req.body;
