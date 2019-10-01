@@ -199,7 +199,7 @@ When the client makes a `PUT` request to `/api/posts/:id`:
 
 To work on the stretch problems you'll need to enable the `cors` middleware. Follow these steps:
 
-- add the `cors` npm module: `npm i cors`.
+- add the `cors` npm module: `npm i cors`. x
 - add `server.use(cors())` after `server.use(express.json())`.
 
 Create a new React application and connect it to your server:
