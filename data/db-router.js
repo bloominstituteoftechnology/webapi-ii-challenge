@@ -71,8 +71,31 @@ router.get('/:id/comments', (req, res) => {
             res.status(500).json({error: "The post information could not be retrieved."});
         })
 })
-
-
+//************* POST(/api/posts) ********************
+router.post('/', (req, res) => {
+    const postI = req.body;
+    
+    // db.insert(postI)
+        // .then(post => {
+        //     console.log("postI",postI);
+        //     console.log("post", post);
+    if(!postI.title || !postI.contents){
+        console.log(postI.title);
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+    }
+    else {
+        db.insert(postI)
+        .then(post => {
+            res.status(201).json(post)
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({ error: "There was an error while saving the post to the database" });
+        })
+    }
+    })
+       
+//************* POST(/api/posts/:id/comment) ********************
 
 
 
