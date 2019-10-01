@@ -3,7 +3,7 @@ const postRouter = require('./posts/postRouter')
 const server = express();
 
 server.use(express.json());
-// server.use('/api/posts', postRouter)
+server.use('/api/posts', postRouter)
 
 
 
