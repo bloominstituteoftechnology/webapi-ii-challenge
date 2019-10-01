@@ -62,18 +62,19 @@ const router = express.Router()
     })
 
     router.post ('/:id/comments', (req, res)=>{
-
+        if (!req.body.text) {
+            res.status(400).json({ message: "Please provide text for the comment."})
+        } else {
         postsModel
         .insertComment(req.body)
         .then(posts => {
             if (!posts) {
                 res.status(404).json({ message: "The post with the specified ID does not exist." });
-            } else if (!req.body.text) {
-                res.status(400).json({ message: "Please provide text for the comment."})
             } else {res.status(201).json(posts)}
         }).catch(error=>{
             res.status(500).json({ message: 'There was an error while saving the post to the database' })
         })
+    }
     })
     
     router.delete('/:id', (req, res)=>{
