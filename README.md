@@ -1,10 +1,10 @@
 # Building RESTful APIs with Express
 
-## Topics:
+## Topics
 
 - Express Routing
 - Reading Request data from body and URL parameters
-- Subroutes
+- Sub-routes
 - API design and development.
 
 ## Description
@@ -15,8 +15,8 @@ Use `Node.js` and `Express` to build an API that performs _CRUD_ operations on `
 
 - **Fork** and **Clone** this repository.
 - **CD into the folder** where you cloned the repository.
-- Type `yarn` or `npm install` to download all dependencies.
-- To start the server, type `yarn server` or `npm run server` from the root folder (where the _package.json_ file is). The server is configured to restart automatically as you make changes.
+- Type `npm install` to download all dependencies.
+- To start the server, type `npm run server` from the root folder (where the _package.json_ file is). The server is configured to restart automatically as you make changes.
 
 ### Database Persistence Helpers
 
@@ -31,9 +31,9 @@ The `db.js` publishes the following methods:
 - `insert()`: calling insert passing it a `post` object will add it to the database and return an object with the `id` of the inserted post. The object looks like this: `{ id: 123 }`.
 - `update()`: accepts two arguments, the first is the `id` of the post to update and the second is an object with the `changes` to apply. It returns the count of updated records. If the count is 1 it means the record was updated correctly.
 - `remove()`: the remove method accepts an `id` as its first parameter and upon successfully deleting the post from the database it returns the number of records deleted.
-- `findPostComments()`: the findPostComments accepts a `postId` as its first parameter and returns all comments on the post associated with the post id. 
-- `findCommentsById()`: accepts an `id` and returns the comment associated with that id. 
-- `insertComment()`: calling insertComment while passing it a `comment` object will add it to the database and return an object with the `id` of the inserted comment. The object looks like this: `{ id: 123 }`. This method will throw an error if the `post_id` field in the `comment` object does not match a valid post id in the database.  
+- `findPostComments()`: the findPostComments accepts a `postId` as its first parameter and returns all comments on the post associated with the post id.
+- `findCommentById()`: accepts an `id` and returns the comment associated with that id.
+- `insertComment()`: calling insertComment while passing it a `comment` object will add it to the database and return an object with the `id` of the inserted comment. The object looks like this: `{ id: 123 }`. This method will throw an error if the `post_id` field in the `comment` object does not match a valid post id in the database.
 
 Now that we have a way to add, update, remove and retrieve data from the provided database, it is time to work on the API.
 
@@ -68,19 +68,19 @@ A Comment in the database has the following structure:
 - Add the code necessary to implement the endpoints listed below.
 - Separate the endpoints that begin with `/api/posts` into a separate `Express Router`.
 
-### Endpoints.
+### Endpoints
 
 Configure the API to handle to the following routes:
 
-| Method | Endpoint       | Description                                                                                                                                                                 |
-| ------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| POST   | /api/posts     | Creates a post using the information sent inside the `request body`. |
-| POST   | /api/posts/:id/comments | Creates a comment for the post with the specified id using information sent inside of the `request body`. |                                         
-| GET    | /api/posts     | Returns an array of all the post objects contained in the database.                                                                                                         |
-| GET    | /api/posts/:id | Returns the post object with the specified id.                                                                                                                              |
-| GET    | /api/posts/:id/comments | Returns an array of all the comment objects associated with the post with the specified id. |
-| DELETE | /api/posts/:id | Removes the post with the specified id and returns the **deleted post object**. You may need to make additional calls to the database in order to satisfy this requirement. |
-| PUT    | /api/posts/:id | Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**.                                           |
+| Method | Endpoint                | Description                                                                                                                                                                 |
+| ------ | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| POST   | /api/posts              | Creates a post using the information sent inside the `request body`.                                                                                                        |
+| POST   | /api/posts/:id/comments | Creates a comment for the post with the specified id using information sent inside of the `request body`.                                                                   |
+| GET    | /api/posts              | Returns an array of all the post objects contained in the database.                                                                                                         |
+| GET    | /api/posts/:id          | Returns the post object with the specified id.                                                                                                                              |
+| GET    | /api/posts/:id/comments | Returns an array of all the comment objects associated with the post with the specified id.                                                                                 |
+| DELETE | /api/posts/:id          | Removes the post with the specified id and returns the **deleted post object**. You may need to make additional calls to the database in order to satisfy this requirement. |
+| PUT    | /api/posts/:id          | Updates the post with the specified `id` using data from the `request body`. Returns the modified document, **NOT the original**.                                           |
 
 #### Endpoint Specifications
 
@@ -199,7 +199,7 @@ When the client makes a `PUT` request to `/api/posts/:id`:
 
 To work on the stretch problems you'll need to enable the `cors` middleware. Follow these steps:
 
-- add the `cors` npm module: `yarn add cors` or `npm i cors`.
+- add the `cors` npm module: `npm i cors`.
 - add `server.use(cors())` after `server.use(express.json())`.
 
 Create a new React application and connect it to your server:
