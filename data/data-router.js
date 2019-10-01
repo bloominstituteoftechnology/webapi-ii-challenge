@@ -67,13 +67,13 @@ router.get('/posts/:id', (req, res) => {
     })
 })
 
-router.get('/posts/:id/comments', (req, res) => {
+router.get('/posts/:id/comments', (req, res) => { 
     const id = req.params.id
     dataBase
     .findPostComments(id)
     .then(post => {
-        if (post) {
-            res.json(post)
+        if (post[0]) {
+            res.status(200).json(post)
         } else {
             res.status(404).json({ message: "The post with the specified ID does not exist." })
         }
