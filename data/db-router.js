@@ -21,11 +21,11 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
     BPosts.findById(req.params.id)
         .then(postObj => {
-            if (postObj) {
+            console.log(postObj)
+            if (postObj.length > 0) {
                 res.status(200).json(postObj);
             }
-
-            else{
+            else {
                 res.status(404).json({ message: "The post with the specified ID does not exist." });
             }
             
