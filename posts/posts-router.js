@@ -30,13 +30,12 @@ const router = express.Router()
         });
     });
     
-    router.post('/', (req, res)=>{ // this woudn't work without server.use(express.json()) above.
+    router.post('/', (req, res)=>{ 
         const postData = req.body;
     
         console.log('post data', postData);
     
-        //Validate around here
-        if (!postData.name || !postData.bio) {
+        if (!postData.title || !postData.contents) {
             res.status(400).json({ errorMessage: "Please provide name and bio for the post." });
         } else {
         postsModel
