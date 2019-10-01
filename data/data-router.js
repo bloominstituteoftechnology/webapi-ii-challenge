@@ -21,18 +21,24 @@ router.post('/posts', (req, res) => {
 
 router.post('/posts/:id/comments', (req, res) => {
     const newComment = req.body
-    if (!newComment.text) {
-        res.status(400).json({ errorMessage: "Please provide text for the comment." })
-    } else {
+    console.log(req.body)
         dataBase
         .insertComment(newComment)
         .then(post => {
-                res.status(201).json(post);
+            res.status(201).json(post);
         })
-        .catch(() => {
-            res.status(500).json({ error: "There was an error while saving the comment to the database" })
+        .catch((err) => {
+            res.status(500).json({ error: "There was an error while saving the comment to the database", err })
         })
-    }
+
+    //     if (!newComment.text) {
+    //         res.status(400).json({ errorMessage: "Please provide text for the comment." })
+    //     } else {
+        
+    //     .catch(() => {
+    //         res.status(500).json({ error: "There was an error while saving the comment to the database" })
+    //     })
+    // }
 })
 
 router.get('/posts', (req, res) => {
