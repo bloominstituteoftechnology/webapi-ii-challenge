@@ -18,6 +18,9 @@ router.post('/', (req, res) => {
     db.insert({postTitle, postContent})
       .then()
   }
+  else {
+    console.log("Placeholder")
+  }
 })
 
 
