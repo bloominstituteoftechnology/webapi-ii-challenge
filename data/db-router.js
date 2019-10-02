@@ -96,8 +96,82 @@ router.post('/', (req, res) => {
     })
        
 //************* POST(/api/posts/:id/comment) ********************
+router.post('/:id/comments', (req, res) => {
+    const comment = req.body;
+    const { id } = req.params;
+    // if(!comment.text) {
+    //     res.status(400).json({ errorMessage: "Please provide text for the comment." });
+    // }
+    // else if()
+
+    if(!comment.post_id){
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
+    }
+    if(!comment.text) {
+        res.status(400).json({ errorMessage: "Please provide text for the comment." });
+    }
+    if(id && comment.text) {
+        db.insertComment(comment)
+        .then(postComment => {
+            res.status(201).json(postComment);
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({ error: "There was an error while saving the comment to the database"});
+        })
+    }
+})
+
+//Delete endpoint:
+router.delete('/:id', (req,res) => {
+    //Removes the post with the specified id and returns the deleted post object. 
+    const id = req.params.id;
+    if(!id) {
+        res.status(404).json({ message: "The post with the specified ID does not exist." });
+    }
+    else{
+        db.remove(id)
+            .then(d => {
+                res.status(202).json(d);
+            })
+            .catch(error => {
+                console.log(error);
+                res.status(500).json({ error: "The post could not be removed" });
+            });
+    }
+})
+
+//PUT --> /api/posts/:id
+router.put('/:id', (req,res) => {
+    //Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
+    const id = req.params.id;
+    const bodyPut = req.body;
+ 
+        if(!bodyPut.title || !bodyPut.contents){
+            res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
+        }
+        //Q: how to check if id is in the Database???? :/ 
+        else if (id){
+            db.update(id, bodyPut)
+            .then(change => {
+                res.status(200).json(change);
+            })
+            .catch(error => {
+                console.log(error);
+                res.status(500).json({ error: "The post information could not be modified." });
+            })
+        }
+        else{
+            // if(id == null){
+                // res.status(200).json(change);
+                res.status(404).json({ message: "The post with the specified ID does not exist." });
+                
+            // }
+        }
+  
 
 
+})
 
 
 
