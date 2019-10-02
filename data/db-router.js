@@ -151,32 +151,29 @@ router.put('/:id', (req,res) => {
             res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
         }
         //Q: how to check if id is in the Database???? :/ 
-        else if (id){
+        else{
             db.update(id, bodyPut)
+            
+                // db.update(id, bodyPut)
             .then(change => {
-                res.status(200).json(change);
+                if(change){
+                    res.status(200).json(change);
+                }
+                else{
+                    res.status(404).json({ message: "The post with the specified ID does not exist." });
+                }
             })
             .catch(error => {
                 console.log(error);
                 res.status(500).json({ error: "The post information could not be modified." });
             })
-        }
-        else{
-            // if(id == null){
-                // res.status(200).json(change);
-                res.status(404).json({ message: "The post with the specified ID does not exist." });
-                
-            // }
+        
+            
         }
   
 
 
 })
-
-
-
-
-
 
 //export:
 module.exports = router;
