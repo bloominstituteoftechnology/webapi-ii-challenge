@@ -11,17 +11,76 @@ router.get('/', (req, res) => {
     })
 });
 
-router.post('/', (req, res) => {
-  const {postTitle, postContent} = req.body;
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+  db.findById(id)
+    .then((post) => {
+      if(post.length > 0){
+        res.status(200).json(post);
+      } else {
+        res.status(404).json({error: " Post does not exists"});
+      }
+    })
+})
 
-  if(postTitle && postContent){
-    db.insert({postTitle, postContent})
-      .then()
-  }
-  else {
-    console.log("Placeholder")
+router.post('/', (req, res) => {
+  const {title, contents} = req.body;
+
+  if(title && contents){
+    db.insert({title, contents})
+      .then(({id}) => {
+        db.findById(id)
+          .then(([post]) => {
+            res.status(200).json(post)
+          })
+      })
+  } else {
+    res.status(400).json({error: "Need both title and contents"})
   }
 })
 
+router.put('/:id', (req, res) => {
+  const {title, contents} = req.body;
+  const { id } = req.params;
+
+  if(title && contents){
+    db.update(id, {title, contents})
+      .then(({id}) => {
+        db.findById(id)
+          .then(([post]) => {
+            res.status(200).json(post)
+          })
+      })
+  } else {
+    res.status(400).json({error: "Need both title and contents"})
+  }
+})
+
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+
+  db.remove(id)
+    .then(removed => {
+      if(removed){
+      res.status(200).end();
+      } else {
+        res.status(404).json({error: "Post was not found"})
+    })
+    .catch(err => {
+      res.status(500).json({error: "Couldn't delete post"})
+    })
+})
+
+router.get('/:id/comments', (req, res) => {
+  const {id} = req.params;
+  db.findPostComments(id)
+    .then(comment => {
+      res.status(200).json(comments);
+    })
+    .catch( err => {
+      res.status(500).json({error: "Error finding post comment"})
+    }
+    )
+})
 
 module.exports = router;
