@@ -100,32 +100,57 @@ function getIndividualPost(req, res) {
     });
 }
 
+// MY SOLUTION BELOW
+
+// function getComments(req, res) {
+//   const { id } = req.params;
+//   posts
+//     .findById(id)
+//     .then(data => {
+//       if (data.length === 0) {
+//         res
+//           .status(404)
+//           .json({ message: "The post with the specified ID does not exist." });
+//       } else {
+//         posts
+//           .findPostComments(id)
+//           .then(data => {
+//             res.status(200).json(data);
+//           })
+//           .catch(error => {
+//             res.json(500).json({
+//               error: "The comments information could not be retrieved."
+//             });
+//           });
+//       }
+//     })
+//     .catch(error => {
+//       console.log(error);
+//     });
+// }
+
+// GABE SOLUTION BELOW 
+
 function getComments(req, res) {
-  const { id } = req.params;
-  posts
-    .findById(id)
-    .then(data => {
-      if (data.length === 0) {
-        res
-          .status(404)
-          .json({ message: "The post with the specified ID does not exist." });
-      } else {
-        posts
-          .findPostComments(id)
-          .then(data => {
-            res.status(200).json(data);
-          })
-          .catch(error => {
-            res.json(500).json({
-              error: "The comments information could not be retrieved."
-            });
-          });
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    });
-}
+    const { id } = req.params;
+    posts
+      .findById(id)
+      .then(data => {
+        if (data.length === 0) {
+          res
+            .status(404)
+            .json({ message: "The post with the specified ID does not exist." });
+        } else {
+          return posts
+            .findPostComments(id)
+        }
+      })
+      .then(data => {
+        res.status(200).json(data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
 // END OF REQUEST HANDLERS
 
