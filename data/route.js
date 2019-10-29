@@ -64,11 +64,12 @@ router.get('/:id', (req, res) => {
     const { id } = req.params
     db.findById(id)
         .then(post => {
-            if (post.length > 1) {
-                res.status(200).json(post)
+            if (post.length < 1) {
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
             }
             else {
-                res.status(404).json({ message: "The post with the specified ID does not exist." })
+                res.status(200).json(post)
+
             }
         })
         .catch(error => {
@@ -112,8 +113,8 @@ router.delete("/:id", (req, res) => {
 
 
 router.put("/:id", (req, res) => {
-    const { title, content } = req.body;
-    if (!title || !content) {
+    const { title, contents } = req.body;
+    if (!title || !contents) {
         res
             .status(400)
             .json({ errorMessage: "Please provide title and content for the post." });
