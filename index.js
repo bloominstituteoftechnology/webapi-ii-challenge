@@ -12,6 +12,7 @@ server.use(express.json());
 server.post("/api/posts", createPost);
 server.post("/api/posts/:id/comments", createComment);
 server.get("/api/posts", getPosts);
+server.get("/api/posts/:id", getIndividualPost);
 
 // END OF END POINTS
 
@@ -73,6 +74,27 @@ function getPosts(req, res) {
       res
         .status(500)
         .json({ error: "The posts information could not be retrieved." })
+        .end();
+    });
+}
+
+function getIndividualPost(req, res) {
+  const { id } = req.params;
+  posts
+    .findById(id)
+    .then(data => {
+      if (data.length === 0) {
+        res
+          .status(400)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        res.status(200).json(data);
+      }
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ error: "The post information could not be retrieved." })
         .end();
     });
 }
