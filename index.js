@@ -45,6 +45,7 @@ function createPost(req, res) {
 
 function createComment(req, res) {
   const { text } = req.body;
+  const { id } = req.params;
   if (!text) {
     res
       .status(400)
@@ -52,9 +53,28 @@ function createComment(req, res) {
       .end();
   } else {
     posts
-      .insertComment(req.body)
+      .findById(id)
       .then(data => {
-        console.log(data);
+        if (data.length === 0) {
+          res.status(404).json({
+            message: "The post with the specified ID does not exist."
+          });
+        } else {
+          posts
+            .insertComment(req.body)
+            .then(data => {
+              res.status(201).json(data);
+            })
+            .catch(error => {
+              res
+                .status(500)
+                .json({
+                  error:
+                    "There was an error while saving the comment to the database"
+                })
+                .end();
+            });
+        }
       })
       .catch(error => {
         console.log(error);
@@ -129,28 +149,28 @@ function getIndividualPost(req, res) {
 //     });
 // }
 
-// GABE SOLUTION BELOW 
+// GABE SOLUTION BELOW
 
 function getComments(req, res) {
-    const { id } = req.params;
-    posts
-      .findById(id)
-      .then(data => {
-        if (data.length === 0) {
-          res
-            .status(404)
-            .json({ message: "The post with the specified ID does not exist." });
-        } else {
-          return posts
-            .findPostComments(id)
-        }
-      })
-      .then(data => {
-        res.status(200).json(data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  const { id } = req.params;
+  posts
+    .findById(id)
+    .then(data => {
+      if (data.length === 0) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        return posts.findPostComments(id);
+      }
+    })
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
 
 // END OF REQUEST HANDLERS
 

@@ -57,7 +57,7 @@ function findCommentById(id) {
 }
 
 function insertComment(comment) {
-  return db("comments")
+  return db("asdf")
     .insert(comment)
-    .then(ids => ({ id: ids[0] }));
+    .then(ids => findCommentById(ids[0]));
 }
