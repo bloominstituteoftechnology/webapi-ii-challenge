@@ -43,7 +43,24 @@ router.post('/', (req, res) => {
 });
 
 // GET - /api/posts - Returns an array of all the post objects contained in the database.
-
+router.get('/', (req, res) => {
+  find()
+    .then(posts => {
+      res.status(200).json(posts)
+    })
+    /* 
+    - If there's an error in retrieving the _posts_ from the database:
+      - cancel the request.
+      - respond with HTTP status code `500`.
+      - return the following JSON object: `{ error: "The posts information could not be retrieved." }`.
+     */
+    .catch(err => {
+      res.status(500).json({
+        errorMessage: `The posts information could not be retrieved`,
+        serverError: `${err}`
+      })
+    })
+});
 // GET -/api/posts/:id - Returns the post object with the specified id.
 
 // DELETE - /api/posts/:id - Removes the post with the specified id and returns the deleted post object. You may need to make additional calls to the database in order to satisfy this requirement.
