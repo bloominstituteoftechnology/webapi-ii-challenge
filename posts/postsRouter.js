@@ -47,6 +47,7 @@ router.post('/', (req, res)=> {
      })
 })
 
+// TODO: REWORK
 router.post('/:id/comments', (req, res)=> {
      db.insertComment(req.body)
      .then(comment => {
@@ -55,7 +56,20 @@ router.post('/:id/comments', (req, res)=> {
 })
 
 
+router.delete('/:id', (req,res)=> {
+     db.remove(req.params.id)
+     .then(post => {
+          res.status(201).json(post)
+     })
+})
 
+
+router.put('/:id', (req, res) => {
+     db.update(req.params.id, req.body)
+     .then(post => {
+          res.status(201).json(post)
+     })
+})
 
 
 
@@ -79,8 +93,8 @@ gets the post with that ID
 * GET /:id/comments - DONE 
 gets all of the comments from that post with ID
 
-* DELETE /:id
+* DELETE /:id - DONE 
 
-* PUT  /:id
+* PUT  /:id - DONE 
 
 */
