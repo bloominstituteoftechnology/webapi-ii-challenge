@@ -15,6 +15,7 @@ server.get("/api/posts", getPosts);
 server.get("/api/posts/:id", getIndividualPost);
 server.get("/api/posts/:id/comments", getComments);
 server.delete("/api/posts/:id", deletePost);
+server.put("/api/posts/:id", updatePost);
 
 // END OF END POINTS
 
@@ -193,6 +194,36 @@ function deletePost(req, res) {
         .json({ error: "The post could not be removed" })
         .end();
     });
+}
+
+function updatePost(req, res) {
+  const { id } = req.params;
+  const { title, contents } = req.body;
+
+  if (!title || !contents) {
+    res
+      .status(400)
+      .json({ errorMessage: "Please provide title and contents for the post." })
+      .end();
+  } else {
+    posts
+      .update(id, req.body)
+      .then(data => {
+        if (!data) {
+          res.status(404).json({
+            message: "The post with the specified ID does not exist."
+          });
+        } else {
+          res.status(200).json(data);
+        }
+      })
+      .catch(error => {
+        res
+          .status(500)
+          .json({ error: "The post information could not be modified." })
+          .end();
+      });
+  }
 }
 
 // END OF REQUEST HANDLERS
