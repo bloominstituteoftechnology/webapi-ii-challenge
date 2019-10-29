@@ -10,6 +10,8 @@ server.use(express.json());
 // BEGINNING OF END POINTS
 
 server.post("/api/posts", createPost);
+server.post("/api/posts/:id/comments", createComment);
+server.get("/api/posts", getPosts);
 
 // END OF END POINTS
 
@@ -35,6 +37,42 @@ function createPost(req, res) {
         .json({
           error: "There was an error while saving the post to the database"
         })
+        .end();
+    });
+}
+
+function createComment(req, res) {
+  const { text } = req.body;
+  if (!text) {
+    res
+      .status(400)
+      .json({ errorMessage: "Please provide text for the comment." })
+      .end();
+  } else {
+    posts
+      .insertComment(req.body)
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+}
+
+function getPosts(req, res) {
+  posts
+    .find()
+    .then(data => {
+      res
+        .status(200)
+        .json(data)
+        .end();
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ error: "The posts information could not be retrieved." })
         .end();
     });
 }
