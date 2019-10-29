@@ -72,14 +72,14 @@ router.post('/:id/comments', (req, res)=> {
      const id = req.params.id;
      const newComment = {...req.body, post_id:id};
 
-     db.insertComment(newComment)
-     .then(comment => {
-          if(comment){
-               res.status(201).json(comment)
-          }else if(!req.params.id){
+     db.findById(id)
+     .then(post => {
+          if(post){
+               db.insertComment(newComment)
+               .then(comment => res.status(201).json(comment))
+               .catch(error => res.status(400).json({ errorMessage: "Please provide text for the comment." }))
+          }else{
                res.status(404).json({ message: "The post with the specified ID does not exist." })
-          } else if(!comment.title){
-               res.status(400).json({ errorMessage: "Please provide text for the comment." })
           }
      })
      .catch(error => {
