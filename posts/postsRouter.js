@@ -67,7 +67,7 @@ router.get("/:id", (req, res) => {
 
   findById(id)
     .then(post => {
-      console.log(post)
+      console.log(post);
       post
         ? res.status(200).json(post)
         : /* 
@@ -91,7 +91,36 @@ router.get("/:id", (req, res) => {
         serverError: `${err}`
       });
     });
-});
+}); 
 // DELETE - /api/posts/:id - Removes the post with the specified id and returns the deleted post object. You may need to make additional calls to the database in order to satisfy this requirement.
 
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+
+  remove(id)
+    .then(post => {
+      post
+        ? res.status(204).json(`deleted`)
+        : /* - If the _post_ with the specified `id` is not found:
+            - return HTTP status code `404` (Not Found).
+            - return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
+        */
+          res.status(404).json({
+            errorMessage: `The post with the specified ID does not exist`
+          });
+    })
+    /*
+    - If there's an error in removing the _post_ from the database:
+      - cancel the request.
+      - respond with HTTP status code `500`.
+      - return the following JSON object: `{ error: "The post could not be removed" }`. */
+    .catch(err => {
+      res
+        .status(500)
+        .json({
+          errorMessage: "The post could not be removed",
+          serverError: `${err}`
+        });
+    });
+});
 // PUT - /api/posts/:id - Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
