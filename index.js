@@ -14,6 +14,7 @@ server.post("/api/posts/:id/comments", createComment);
 server.get("/api/posts", getPosts);
 server.get("/api/posts/:id", getIndividualPost);
 server.get("/api/posts/:id/comments", getComments);
+server.delete("/api/posts/:id", deletePost);
 
 // END OF END POINTS
 
@@ -169,6 +170,28 @@ function getComments(req, res) {
     })
     .catch(error => {
       console.log(error);
+    });
+}
+
+function deletePost(req, res) {
+  const { id } = req.params;
+  posts
+    .remove(id)
+    .then(data => {
+      if (!data) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." })
+          .end();
+      } else {
+        res.status(200).json({ message: "the post was deleted" });
+      }
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ error: "The post could not be removed" })
+        .end();
     });
 }
 
