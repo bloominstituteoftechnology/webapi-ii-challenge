@@ -3,19 +3,26 @@ const db = require("../data/db");
 
 module.exports = router;
 
-const { find, findById, insert, update, remove } = db;
+const {
+  find,
+  findById,
+  insert,
+  update,
+  remove,
+  insertComment,
+  findPostComments
+} = db;
 
 // POST - /api/posts - Creates a post using the information sent inside the request body.
 router.post("/", (req, res) => {
   const { title, contents } = req.body;
   const newPost = { title, contents };
   title && contents
-    ?  
-        //  - If the information about the _post_ is valid:
-        //    - save the new _post_ the the database.
-        //    - return HTTP status code `201` (Created).
-        //    - return the newly created _post_.
-        
+    ? //  - If the information about the _post_ is valid:
+      //    - save the new _post_ the the database.
+      //    - return HTTP status code `201` (Created).
+      //    - return the newly created _post_.
+
       insert(newPost)
         .then(insertedpost => {
           res.status(200).json(insertedpost);
@@ -23,7 +30,7 @@ router.post("/", (req, res) => {
         //  - If there's an error while saving the _post_:
         //    - cancel the request.
         //    - respond with HTTP status code `500` (Server Error).
-        //    - return the following JSON object: `{ error: "There was an error while saving the post to the database" }`. 
+        //    - return the following JSON object: `{ error: "There was an error while saving the post to the database" }`.
         .catch(err => {
           res.status(500).json({
             errorMessage:
@@ -32,9 +39,9 @@ router.post("/", (req, res) => {
           });
         })
     : //  - If the request body is missing the `title` or `contents` property:
-        //   - cancel the request.
-        //   - respond with HTTP status code `400` (Bad Request).
-        //   - return the following JSON response: `{ errorMessage: "Please provide title and contents for the post." }`.
+      //   - cancel the request.
+      //   - respond with HTTP status code `400` (Bad Request).
+      //   - return the following JSON response: `{ errorMessage: "Please provide title and contents for the post." }`.
       res.status(400).json({
         errorMessage: "Please provide title and contents for the post."
       });
@@ -73,10 +80,10 @@ router.get("/:id", (req, res) => {
             errorMessage: `The post with the specified ID does not exist.`
           });
     })
-  // - If there's an error in retrieving the _post_ from the database:
-  //   - cancel the request.
-  //   - respond with HTTP status code `500`.
-  //   - return the following JSON object: `{ error: "The post information could not be retrieved." }`.
+    // - If there's an error in retrieving the _post_ from the database:
+    //   - cancel the request.
+    //   - respond with HTTP status code `500`.
+    //   - return the following JSON object: `{ error: "The post information could not be retrieved." }`.
     .catch(err => {
       res.status(500).json({
         errorMessage: `The post information could not be retrieved.`,
@@ -122,23 +129,21 @@ router.put("/:id", (req, res) => {
         .then(updatedPost => {
           updatedPost
             ? // - If the post is found and the new information is valid:
-            //   - update the post document in the database using the new information sent in the `request body`.
-            //   - return HTTP status code `200` (OK).
-            //   - return the newly updated _post_.
+              //   - update the post document in the database using the new information sent in the `request body`.
+              //   - return HTTP status code `200` (OK).
+              //   - return the newly updated _post_.
               res.status(200).json(updatedPost)
             : // - If the _post_ with the specified `id` is not found:
               //   - return HTTP status code `404` (Not Found).
               //   - return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
-              res
-                .status(404)
-                .json({
-                  errorMessage: `The post with the specified ID does not exist.`
-                });
+              res.status(404).json({
+                errorMessage: `The post with the specified ID does not exist.`
+              });
         })
-      //- If there's an error when updating the _post_:
-      //  - cancel the request.
-      //  - respond with HTTP status code `500`.
-      //  - return the following JSON object: `{ error: "The post information could not be modified." }`.
+        //- If there's an error when updating the _post_:
+        //  - cancel the request.
+        //  - respond with HTTP status code `500`.
+        //  - return the following JSON object: `{ error: "The post information could not be modified." }`.
         .catch(err =>
           res.status(500).json({
             errorMessage: `The post information could not be modified.`,
@@ -149,7 +154,57 @@ router.put("/:id", (req, res) => {
       //   - cancel the request.
       //   - respond with HTTP status code `400` (Bad Request).
       //   - return the following JSON response: `{ errorMessage: "Please provide title and contents for the post." }`.
-      res
-        .status(400)
-        .json({ errorMessage: `Please provide title and contents for the post.` });
+      res.status(400).json({
+        errorMessage: `Please provide title and contents for the post.`
+      });
+});
+
+// POST - /api/posts/:id/comments - Creates a comment for the post with the specified id using information sent inside of the `request body`.
+
+// - If the _post_ with the specified `id` is not found:
+//   - return HTTP status code `404` (Not Found).
+//   - return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
+
+// - If the request body is missing the `text` property:
+//   - cancel the request.
+//   - respond with HTTP status code `400` (Bad Request).
+//   - return the following JSON response: `{ errorMessage: "Please provide text for the comment." }`.
+
+// - If the information about the _comment_ is valid:
+//   - save the new _comment_ the the database.
+//   - return HTTP status code `201` (Created).
+//   - return the newly created _comment_.
+
+// - If there's an error while saving the _comment_:
+//   - cancel the request.
+//   - respond with HTTP status code `500` (Server Error).
+//   - return the following JSON object: `{ error: "There was an error while saving the comment to the database" }`.
+
+// GET - /api/posts/:id/comments - Returns an array of all the comment objects associated with the post with the specified id.
+router.get("/:id/comments", (req, res) => {
+  const postId = req.params;
+  findPostComments(postId)
+    .then(comment => {
+      if (comment) {
+        console.log(comment, postId)
+        res.status(200).json(comments);}
+      //- If the _post_ with the specified `id` is not found:
+      //  - return HTTP status code `404` (Not Found).
+      //  - return the following JSON object: `{ message: "The post with the specified ID does not exist." }`.
+      else {
+        res.status(404).json({
+          errorMessage: "The post with the specified ID does not exist."
+        });
+      }
+    })
+    // - If there's an error in retrieving the _comments_ from the database:
+    //   - cancel the request.
+    //   - respond with HTTP status code `500`.
+    //   - return the following JSON object: `{ error: "The comments information could not be retrieved." }`
+    .catch(err => {
+      res.status(500).json({
+        errorMessage: "The comments information could not be retrieved.",
+        serverError: `${err}`
+      });
+    });
 });
