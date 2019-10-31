@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 
 const server = express();
@@ -5,12 +7,20 @@ const postsRouter = require('./posts/postsRouter.js')
 
 server.use(express.json());
 
-server.get('/', (res, req)=> {
-     res.send('Hello this is my API')
-})
+
 
 server.use('/api/posts', postsRouter)
 
-server.listen(4000,() => {
-     console.log('Sever is running on port 4000')
+server.get('/', (res, req) => {
+     res.status(200).json({message: process.env.MSG})
 })
+
+const port = process.env.PORT 
+console.log(process.env.MSG)
+console.log(process.env.PORT)
+console.log(port)
+
+server.listen(port,() => {
+     console.log(`Sever is running on port ${port}`)
+})
+
