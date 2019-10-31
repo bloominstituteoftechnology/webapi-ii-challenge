@@ -12,7 +12,7 @@ server.get('/', (req,res) => {
      res.status(200).json({message: process.env.MSG})
 })
 
-const port = process.env.PORT 
+const port = process.env.PORT || 4000
 console.log(process.env.MSG)
 console.log(process.env.PORT)
 console.log(port)
