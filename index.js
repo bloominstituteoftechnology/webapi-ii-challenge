@@ -1,17 +1,14 @@
 require('dotenv').config()
 
 const express = require('express')
-
 const server = express();
 const postsRouter = require('./posts/postsRouter.js')
 
 server.use(express.json());
-
-
-
 server.use('/api/posts', postsRouter)
 
-server.get('/', (res, req) => {
+
+server.get('/', (req,res) => {
      res.status(200).json({message: process.env.MSG})
 })
 
