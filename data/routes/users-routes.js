@@ -26,6 +26,26 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.get("/:id/comments", (req, res) => {
+  const userId = req.params.id;
+  Users.findCommentById(userId)
+    .then(comments => {
+      if (comments.length) {
+        res.status(201).json(comments);
+      } else {
+        res
+          .status(404)
+          .json({ errorMessage: "Please provide text for the comment." });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      res
+        .status(404)
+        .json({ message: "The post with the specified ID does not exist." });
+    });
+});
+
 router.post("/", (req, res) => {
   const newUser = req.body;
 
