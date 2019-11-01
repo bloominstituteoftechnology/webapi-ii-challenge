@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Users = require("../data/db");
+const Users = require("../../data/db");
 
 router.get("/", (req, res) => {
   Users.find()
@@ -10,14 +10,13 @@ router.get("/", (req, res) => {
       res.status(500).json({ message: "Internal Server Error" });
     });
 });
-module.exports = router;
 
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   Users.findById(id)
     .then(users => {
-      if (user) {
-        res.status(200).json(user);
+      if (users) {
+        res.status(200).json(users);
       } else {
         res.status(404).json({ error: "We could not find the user." });
       }
@@ -73,23 +72,24 @@ router.delete("/:id", (req, res) => {
 router.put("/:id", (req, res) => {
   const changes = req.body;
   const id = req.params.id;
-
-  if (!changes.name || !changes.bio) {
-    res.status(400).json({message: `Please enter all fields!`})
+  console.log(id, changes);
+  if (!changes.title || !changes.contents) {
+    res.status(400).json({ message: `Please enter all fields!` });
   } else {
-const user = Users.findById(id);
-  if(!user) {
-    res.status(404).json({message: `There is no user with the id of ${id}`})
-  } else {
-    const updatedCount = Users.update(id, changes);
-    const updatedUser = User.findById({id});
-    res.status(200).json(updatedCount)
+    Users.update(id, changes)
+      .then(isThere => {
+        if (isThere) {
+          res.status(200).json(changes);
+        } else {
+          res
+            .status(404)
+            .json({ message: `There is no user with the id of ${id}` });
+        }
+      })
+      .catch(err => {
+        res.status(500).json({ message: "internal Server Error" });
+      });
   }
-  }
-   .catch(err => {
-      res.status(500).json({ message: "internal Server Error" })
-})
-
-
+});
 
 module.exports = router;
