@@ -1,6 +1,9 @@
 // Create express
 const express = require('express');
 
+// Route dependencies
+const postRouter = require('./Routes/posts');
+
 // Create server
 const server = express();
 
@@ -8,7 +11,9 @@ const server = express();
 server.use(express.json());
 
 // Routes
+server.use('/api/posts', postRouter);
 
+// Initial server message
 server.get('/', (req, res) => {
   res.send('This is working');
 });
