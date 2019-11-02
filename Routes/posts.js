@@ -57,10 +57,10 @@ router.post('/:id/comments', async (req, res) => {
         .json({ message: 'The post with the specified ID does not exist.' });
     }
 
-      const commentBody = { ...body, post_id: id };
-      const comment = await db.insertComment(commentBody);
-      const commentData = await db.findCommentById(comment.id);
-      res.status(201).json(commentData);
+    const commentBody = { ...body, post_id: id };
+    const comment = await db.insertComment(commentBody);
+    const commentData = await db.findCommentById(comment.id);
+    res.status(201).json(commentData);
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -107,7 +107,30 @@ router.get('/:id', async (req, res) => {
 
 // @route     GET api/posts/:id/comments
 // @desc      Returns an array of all the comment objects associated with the post with the specified id.
-router.get('/:id/comments', (req, res) => {});
+router.get('/:id/comments', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await db.findById(id);
+
+    if (post.length === 0) {
+      res
+        .status(404)
+        .json({ message: 'The post with the specified ID does not exist.' });
+    }
+
+    const comments = await db.findPostComments(id);
+    if (comments.length === 0) {
+      res.status(404).json({ message: 'This post does not have any comments' });
+    }
+
+    res.status(200).json(comments);
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json({ error: 'The comments information could not be retrieved.' });
+  }
+});
 
 // @route     DELETE api/posts/:id
 // @desc      Removes the post with the specified id and returns the deleted post object. You may need to make additional calls to the database in order to satisfy this requirement.
