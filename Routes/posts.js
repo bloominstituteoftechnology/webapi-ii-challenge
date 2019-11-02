@@ -134,20 +134,6 @@ router.get('/:id/comments', async (req, res) => {
 
 // @route     DELETE api/posts/:id
 // @desc      Removes the post with the specified id and returns the deleted post object. You may need to make additional calls to the database in order to satisfy this requirement.
-
-/**
- * When the client makes a DELETE request to /api/posts/:id:
-
-If the post with the specified id is not found:
-
-return HTTP status code 404 (Not Found).
-return the following JSON object: { message: "The post with the specified ID does not exist." }.
-If there's an error in removing the post from the database:
-
-cancel the request.
-respond with HTTP status code 500.
-return the following JSON object: { error: "The post could not be removed" }.
- */
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -168,6 +154,33 @@ router.delete('/:id', async (req, res) => {
 
 // @route     PUT api/posts/:id
 // @desc      Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
-router.put('/:id', (req, res) => {});
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+  const { title, contents } = body;
+
+  if (!title || !contents) {
+    res.status(400).json({
+      errorMessage: 'Please provide title and contents for the post.'
+    });
+  }
+  try {
+    const post = await db.findById(id);
+    if (post.length === 0) {
+      res
+        .status(404)
+        .json({ message: 'The post with the specified ID does not exist.' });
+    }
+
+    await db.update(id, body);
+    const updatedPost = await db.findById(id);
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json({ error: 'The post information could not be modified.' });
+  }
+});
 
 module.exports = router;
