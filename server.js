@@ -13,9 +13,4 @@ server.use(express.json());
 // Routes
 server.use('/api/posts', postRouter);
 
-// Initial server message
-server.get('/', (req, res) => {
-  res.send('This is working');
-});
-
 module.exports = server;

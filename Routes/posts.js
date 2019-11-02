@@ -5,10 +5,6 @@ const router = express.Router();
 // Pull in dependencies
 const db = require('../data/db');
 
-router.get('/', (req, res) => {
-  res.send('Testing');
-});
-
 // @route     POST api/posts
 // @desc      Creates a post using the information sent inside the request body.
 router.post('/', async (req, res) => {
@@ -74,7 +70,26 @@ router.post('/:id/comments', async (req, res) => {
 
 // @route     GET api/posts
 // @desc      Returns an array of all the post objects contained in the database.
-router.get('/', (req, res) => {});
+
+/**
+ * When the client makes a GET request to /api/posts:
+
+If there's an error in retrieving the posts from the database:
+cancel the request.
+respond with HTTP status code 500.
+return the following JSON object: { error: "The posts information could not be retrieved." }.
+ */
+router.get('/', async (req, res) => {
+  try {
+    const posts = await db.find();
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: 'The posts information could not be retrieved.' });
+  }
+});
 
 // @route     GET api/posts/:id
 // @desc      Returns the post object with the specified id.
