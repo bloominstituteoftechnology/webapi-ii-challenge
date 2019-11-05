@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 }); // READ data
 
 
-// 	Returns the post object with the specified id.
+// Returns the post object with the specified id.
 router.get('/:id', (req, res) => {
   Posts.findById(req.params.id)
   .then(posts => {
@@ -40,6 +40,7 @@ router.get('/:id', (req, res) => {
 }); // READ data
 
 
+// Returns an array of all the comment objects associated with the post with the specified id.
 router.get('/:id/comments', async (req, res) => {
   try {
     const comments = await Posts.findPostComments
@@ -62,9 +63,9 @@ router.get('/:id/comments', async (req, res) => {
 
 
 
-//Creates a post using the information sent inside the request body.
+// Creates a post using the information sent inside the request body.
 router.post("/", (req, res) => {
-  Posts.add(req.body)
+  Posts.insert(req.body)
   .then(data => {
     res.status(201).json(data);
   })
@@ -78,8 +79,21 @@ router.post("/", (req, res) => {
 });  // CREATE data
 
 
-// 	Creates a comment for the post with the specified id using information sent inside of the request body.
-//code here.
+// Creates a comment for the post with the specified id using information sent inside of the request body.
+router.post('/:id/comments', async (req, res) => {
+    const commentInfo = {...req.body, post_id: 
+    req.params.id }
+
+    try {
+      const comment = await Posts.addComment(commentInfo);
+      res.status(201).json(comment);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        err
+      });
+    }
+});  // CREATE data
 
 
 
