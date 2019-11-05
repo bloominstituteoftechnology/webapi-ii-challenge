@@ -40,6 +40,27 @@ router.get('/:id', (req, res) => {
 }); // READ data
 
 
+router.get('/:id/comments', async (req, res) => {
+  try {
+    const comments = await Posts.findPostComments
+    (req.params.id);
+    if (comments.length > 0) {
+      res.status(200).json(comments);
+
+    } else {
+      res.status(404).json({
+        Comments: "No comments for this post"
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      Message: "Error retrieving comments for this post"
+    })
+  }
+}); // READ data
+
+
 
 //Creates a post using the information sent inside the request body.
 router.post("/", (req, res) => {
