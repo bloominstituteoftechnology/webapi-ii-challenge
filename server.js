@@ -1,7 +1,19 @@
 const express = require('express');
+const dataRouter = require('./serverRoutes.js');
 
 const server = express();
 
-server.use('/', (req, res) => res.send('API up and running!'));
+server.use(express.json());
+server.use('/api/data', dataRouter);
 
-server.listen(8000, () => console.log('API running on port 8000'));
+server.get("/", (req, res) => {
+   res.send(` 
+   
+   <h1>Blog Posts</h1>
+   <p>Welcome to the blog</p>
+   
+   `);
+});
+
+
+module.exports = server; 
