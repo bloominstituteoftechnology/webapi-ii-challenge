@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router(); 
-const data = require('./data/db.js');
+const data = require('./db.js');
 
 
 //Creates a post using the information sent inside the request body.
