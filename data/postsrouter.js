@@ -85,7 +85,7 @@ router.post('/:id/comments', async (req, res) => {
     req.params.id }
 
     try {
-      const comment = await Posts.addComment(commentInfo);
+      const comment = await Posts.insertComment(commentInfo);
       res.status(201).json(comment);
     } catch (err) {
       console.log(err);
