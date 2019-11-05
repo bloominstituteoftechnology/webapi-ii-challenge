@@ -120,8 +120,25 @@ router.delete('/:id', (req, res) => {
 
 // Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
 router.put('/:id', (req, res) => {
-  res.status(200).json({url: '/hobbits', operation: 'PUT'});
-}) // UPDATE data
+  const changes = req.body;
+  Posts.update(req.params.id, changes)
+  .then(post => {
+    if(post) {
+      res.status(200).json(post);
+
+    } else {
+      res.status(404).json({
+        Message: "The post could not be found"
+      })
+    }
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json({
+      Message: "Error updating the post"
+    })
+  })
+}); // UPDATE data
 
 
 
