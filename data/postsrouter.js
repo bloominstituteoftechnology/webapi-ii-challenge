@@ -12,7 +12,7 @@ router.post("/", (req, res) => {
   .catch(error => {
     console.log(error);
     res.status(500).json({
-      message: "Error adding the data"
+      message: "Please provide title and contents for the post."
     });
   });
 
