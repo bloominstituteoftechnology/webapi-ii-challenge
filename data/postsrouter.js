@@ -20,7 +20,24 @@ router.get('/', (req, res) => {
 
 
 // 	Returns the post object with the specified id.
-//code here.
+router.get('/:id', (req, res) => {
+  Posts.findById(req.params.id)
+  .then(posts => {
+    if(posts) {
+      res.status(200).json(posts);
+    } else {
+      res.status(404).json({
+        Message: "Post not found"
+      })
+    }
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(400).json({
+      Mesage: "Error retrieving the posts"
+    })
+  })
+}); // READ data
 
 
 
