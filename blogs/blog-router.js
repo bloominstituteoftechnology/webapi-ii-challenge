@@ -57,7 +57,16 @@ router.put('/:id', (req,res) => {
 })
 
 
-
+router.delete('/:id', (req,res) => {
+    const id = req.body.id
+    Blogs.remove(id)
+        .then(post => {
+            res.status(200).json({message: 'post has been deleted'})
+        })
+        .catch(err => {
+            res.status(404).json({errorMessage: "this didnt work"})
+        })
+})
 
 
 
