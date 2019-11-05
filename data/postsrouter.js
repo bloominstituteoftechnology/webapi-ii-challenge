@@ -1,27 +1,21 @@
 const express = require('express');
 const router = express.Router(); 
-const data = require('./db.js');
+const Posts = require('./db.js');
 
 
 //Creates a post using the information sent inside the request body.
-router.post('/', (req, res) => {
-   res.status(200).send('hello from the POST /users endpoint');
- });
+//code here.
+
 
 // 	Creates a comment for the post with the specified id using information sent inside of the request body.
-router.post('/', (req, res) => {
-   res.status(200).send('hello from the POST /users endpoint');
- });
+//code here.
 
-// Returns an array of all the post objects contained in the database.
-router.get('/', (req, res) => {
-   res.status(200).send('hello from the GET /users endpoint');
- });
+// Returns an array of all the post objects contained in the 
+//code here.
+
 
 // 	Returns the post object with the specified id.
-router.get('/:id', (req, res) => {
-   res.status(200).send('hello from the GET /users/:id endpoint');
- });
+//code here.
 
 
 // Returns an array of all the comment objects associated with the post with the specified id.

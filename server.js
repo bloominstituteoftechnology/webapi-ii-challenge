@@ -1,10 +1,10 @@
 const express = require('express');
-const dataRouter = require('./data/serverroutes.js');
+const dataRouter = require('./data/postsrouter.js');
 
 const server = express();
 
 server.use(express.json());
-server.use('/api/data', dataRouter);
+server.use('/api/posts', dataRouter);
 
 server.get("/", (req, res) => {
    res.send(` 
