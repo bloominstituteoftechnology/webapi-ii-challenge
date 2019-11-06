@@ -14,12 +14,14 @@ router.post("/", (req, res) => {
      errorMsg: "Please provide title and contents for the post."
    })
 
+   // If the information about the post is valid:
  } else {
    Posts.insert(blogPost)
    .then(data => {
     res.status(201).json(data);
  
   })
+  // If there's an error while saving the post:
   .catch(error => {
     console.log(error);
     res.status(500).json({
@@ -30,10 +32,15 @@ router.post("/", (req, res) => {
 });  // CREATE data
 
 
+
+
 // Creates a comment for the post with the specified id using information sent inside of the request body.
 router.post('/:id/comments', async (req, res) => {
     const commentInfo = {...req.body, post_id: 
     req.params.id }
+    const id = req.params.id; 
+
+    
 
     try {
       const comment = await Posts.insertComment(commentInfo);
