@@ -40,20 +40,21 @@ if(!commentInfo.text) {
 } else {
   Posts.findById(id)
     .then(post => {
+
+   //If the information about the comment is valid:
       if (post.length > 0) {
         post.insertComment(commentInfo)
         .then(comment => {
-          //If the information about the comment is valid:
           res.status(201).json(comment);
         })
+   // If there's an error while saving the comment:
         .catch(err => {
-        // If there's an error while saving the comment:
           res.status(500).json({
             errorMsg: "There was an error while saving the comment to the database", err
           });
         });
+// If the post with the specified id is not found:
       } else {
-        // If the post with the specified id is not found:
         res.status(404).json({
           message: "The post with the specified ID does not exist."
         })
@@ -77,10 +78,11 @@ router.get("/", (req, res) => {
     .then(posts => {
       res.status(200).json(posts);
     })
+    // If there's an error in retrieving the posts from the database:
     .catch(error => {
       console.log(error);
       res.status(500).json({
-        message: "Error retrieving the posts"
+        errorMsg: "The posts information could not be retrieved."
       });
     });
 }); // READ data
@@ -89,18 +91,21 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   Posts.findById(req.params.id)
     .then(posts => {
+
       if (posts) {
         res.status(200).json(posts);
+// If the post with the specified id is not found:
       } else {
         res.status(404).json({
-          Message: "Post not found"
+          Message: "The post with the specified ID does not exist."
         });
       }
     })
+// If there's an error in retrieving the post from the database:
     .catch(error => {
       console.log(error);
-      res.status(400).json({
-        Mesage: "Error retrieving the posts"
+      res.status(500).json({
+        Mesage: "The post information could not be retrieved."
       });
     });
 }); // READ data
@@ -112,14 +117,15 @@ router.get("/:id/comments", async (req, res) => {
     if (comments.length > 0) {
       res.status(200).json(comments);
     } else {
+      // If the post with the specified id is not found:
       res.status(404).json({
-        Comments: "No comments for this post"
+        errorMsg: "The post with the specified ID does not exist."
       });
     }
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      Message: "Error retrieving comments for this post"
+      errorMsg: "The comments information could not be retrieved."
     });
   }
 }); // READ data
@@ -132,37 +138,42 @@ router.delete("/:id", (req, res) => {
         res.status(200).json({
           Message: "The post has been nuked"
         });
+   // If the post with the specified id is not found:
       } else {
         res.status(404).json({
-          Message: "The post could not be found"
-        });
-      }
-    })
-    .catch(error => {
-      console.log(error);
-      res.status(400).json({
-        Message: "Error removing the post"
-      });
-    });
-}); // DESTORYING data
-
-// Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
-router.put("/:id", (req, res) => {
-  const changes = req.body;
-  Posts.update(req.params.id, changes)
-    .then(post => {
-      if (post) {
-        res.status(200).json(post);
-      } else {
-        res.status(404).json({
-          Message: "The post could not be found"
+          Message: "The post with the specified ID does not exist."
         });
       }
     })
     .catch(error => {
       console.log(error);
       res.status(500).json({
-        Message: "Error updating the post"
+        Message: "The post could not be removed."
+      });
+    });
+}); // DESTORYING data
+
+// Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
+router.put("/:id", (req, res) => {
+  
+  const changes = req.body;
+
+  Posts.update(req.params.id, changes)
+    .then(post => {
+  // If the post is found and the new information is valid:
+      if (post) {
+        res.status(200).json(post);
+  // If the post with the specified id is not found:
+      } else {
+        res.status(404).json({
+          Message: "The post with the specified ID does not exist."
+        });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        Message: "The post information could not be modified."
       });
     });
 }); // UPDATE data
