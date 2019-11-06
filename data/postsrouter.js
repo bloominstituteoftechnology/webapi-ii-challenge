@@ -5,17 +5,28 @@ const Posts = require('./db.js');
 
 // Creates a post using the information sent inside the request body.
 router.post("/", (req, res) => {
-  Posts.insert(req.body)
-  .then(data => {
+
+  const blogPost = req.body;
+
+  // If the request body is missing the title or contents property:
+ if(!blogPost.title || !blogPost.contents) {
+   res.status(400).json({
+     errorMsg: "Please provide title and contents for the post."
+   })
+
+ } else {
+   Posts.insert(blogPost)
+   .then(data => {
     res.status(201).json(data);
+ 
   })
   .catch(error => {
     console.log(error);
     res.status(500).json({
-      message: "Please provide title and contents for the post."
+      message: "There was an error while saving the post to the database."
     });
   });
-
+ }
 });  // CREATE data
 
 
