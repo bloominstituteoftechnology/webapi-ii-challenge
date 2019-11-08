@@ -9,6 +9,7 @@ router.post("/", async (req, res) => {
     if (title && contents) {
         try {
             const post = await Posts.insert(newPost);
+            console.log(newPost);
             const addedPost = await Posts.findById(post.id);
             res.status(201).json(addedPost);
         } catch (err) {
@@ -117,22 +118,55 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+// router.put("/:id", async (req, res) => {
+//     const updatedPost = req.body;
+//     const { title, contents } = req.body;
+
+//     if (title && contents) {
+//         try {
+//             const post = await Posts.update(req.params.id, updatedPost);
+//             console.log(updatedPost);
+//             const addingUpdatedPost = await Posts.findById(post.id);
+//             console.log(addingUpdatedPost );
+//             res.status(200).json(addingUpdatedPost);
+//         } catch (err) {
+//             console.log(err);
+//             res.status(400).json({
+//                 message: "Please provide title and contents for the post."
+//             });
+//         }
+//     } else {
+//         res.status(500).json({
+//             err: "The post information could not be modified."
+//         });
+//     }
+// });
+
 router.put("/:id", async (req, res) => {
     const updatedPost = req.body;
-
-    if (updatedPost.title && updatedPost.contents) {
-        try {
-            const post = await Posts.update(req.params.id, req.body);
-            res.status(200).json(post);
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({
-                message: "The post information could not be modified."
+    const postId = req.params.id;
+    const { title, contents } = req.body;
+    try {
+        if (!title && contents) {
+            res.status(400).json({
+                message: "Please provide title and contents for the post."
             });
+        } else if (!(await Posts.findById(postId))) {
+            res.status(404).json({
+                message: "The post with the specified ID does not exist."
+            });
+        } else {
+            const post = await Posts.update(postId, updatedPost);
+            console.log(updatedPost);
+            const addingUpdatedPost = await Posts.findById(postId);
+            console.log(addingUpdatedPost);
+            res.status(200).json(addingUpdatedPost);
         }
-    } else {
-        res.status(400).json({
-            err: "Please provide title and contents for the post."
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message:
+                "There was an error while saving the comment to the database."
         });
     }
 });
