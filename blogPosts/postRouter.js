@@ -12,7 +12,6 @@ router.get('/:id', (req, res) => {
     const postId = req.params.id;
     db.findById(postId)
         .then((post) => {
-            console.log(post, post.length);
             if (post.length > 0) {
                 res.status(200).json(post)
             }
@@ -23,10 +22,22 @@ router.get('/:id', (req, res) => {
         .catch(err => res.status(500).json({ error: "The posts information could not be retrieved." }))
 });
 
+router.get('/:id/comments', (req, res) => {
+    const postId = req.params.id;
+    db.findPostComments(postId)
+        .then(comments => {
+            if (comments.length > 0) {
+                res.status(200).json(comments)
+            }
+            else {
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
+            }
+        })
+        .catch(err => res.status(500).json({ error: "The comments information could not be retrieved." }))
+});
+
 router.post('/', (req, res) => {
     const post = req.body;
-    console.log(post);
-
     if (post.title == undefined || post.contents == undefined) {
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." });
     }
