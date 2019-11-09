@@ -46,6 +46,21 @@ router.post('/', (req, res) => {
         .catch(err => res.status(500).json({ error: "There was an error while saving the post to the database" }));
 });
 
+router.post('/:id/comments', (req, res) => {
+    const postId = req.params.id;
+    const comment = { ...req.body, post_id: postId };
+
+    console.log(comment);
+
+    if (comment.text == undefined) {
+        res.status(400).json({ errorMessage: "Please provide text for the comment." });
+    }
+
+    db.insertComment(comment)
+        .then(data => res.status(201).json({ ...comment, ...data }))
+        .catch(err => res.status(500).json({ error: "There was an error while saving the comment to the database" }));
+});
+
 
 
 module.exports = router;
